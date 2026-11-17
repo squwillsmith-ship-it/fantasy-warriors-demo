@@ -1,20 +1,23 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 0.3** · Master Gameplay Manifesto **v0.7.0** (17 November 2026)
+**Build 0.4** · **Design manifesto v0.9.0** (17 November 2026)
 
-Play: https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=0.3
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=0.4
 
-## Build 0.3 changes
-- Battlefield is 150% wider and taller (2.25× area), with unchanged tower size.
-- Heroes move 20% faster (1.8 map units/sec) and navigate around the solid tower.
-- Enemies detect and pursue living heroes within 6 map units, instead of always heading straight for the tower.
-- Failed stages can be retried without losing the stage number; tower health resets to 100 HP.
-- Provisional economy safety net on retries: keep coins earned, with a minimum of 30 coins to avoid being stuck without a purchasable hero pack. This is not an approved long-term economy rule.
-- Fixed short-health-bar rendering on narrow mobile screens after the battlefield expansion.
+## What's new
+- **12-coin maximum**, starting each attempt with 12 coins.
+- Basic Hero Packs cost **2 coins each** and have no fixed purchase-count limit: buy as many as you can afford (currently six per attempt).
+- First shop offer is reusable and has unlimited stock; two future offer slots are shown locked, pending an approved upgrade system.
+- After **every win or loss**, the next preparation phase refills to your full coin capacity.
+- Enemy kills and stage completions **do not currently grant extra coins**; prior combat rewards are superseded.
+- Your stage number is kept on failure, and tower health resets to 100 on retry.
+- Heroes, combat behavior, rarity odds and enemy counts follow earlier versions.
 
-## Existing gameplay
-Buy up to three 10-coin packs before each stage. Packs open when combat begins, revealing one of five fixed-rarity heroes. Heroes fight automatically. Stage 1 has 30 regular enemies and a boss; later stages increase by 10 regular enemies each.
+## Playing
+Choose packs in the shop, press **Start Stage**, and reveal each purchased hero. They then fight automatically. Survive 30 regular enemies plus the boss in Stage 1; each new stage adds 10 regular enemies. Retry the same stage after defeat.
 
-Deploy GitHub Pages from `main` / `(root)`. No dependencies or build step.
+## Pending design
+Shop-slot unlock costs, other pack offers, permanent coin-cap upgrades, hero special abilities and the future combat-reward economy aren't designed yet; none are simulated as unlocked features.
 
-Not yet specified: permanent upgrades, hero abilities, long-term economy and progression balancing.
+## Hosting
+Single-file HTML5 app (`index.html`); GitHub Pages publishes from **main / (root)**. Refresh Safari with the `?v=0.4` link to bypass cached builds.
