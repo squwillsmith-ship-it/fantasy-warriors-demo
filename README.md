@@ -1,19 +1,20 @@
 # Fantasy Warriors — Playable Demo
 
-Current build: **0.2**, based on **Master Gameplay Manifesto v0.6.0** (17 November 2026).
+**Build 0.3** · Master Gameplay Manifesto **v0.7.0** (17 November 2026)
 
-Play on GitHub Pages: https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/
+Play: https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=0.3
 
-## Build 0.2
-- Packs are purchased before combat but open only after pressing **Start Stage**, with one hero per pack.
-- Heroes move autonomously toward enemies. Knight and Warrior are melee fighters (1-unit reach); Archer, Priest and Mage are ranged.
-- Stage 1 has **30** standard enemies and 1 boss; later stages add **10** standard enemies each.
-- Standard enemies spawn every second; the boss arrives 2 seconds after the last normal enemy.
-- Mobile HUD updates are throttled for smoother performance.
+## Build 0.3 changes
+- Battlefield is 150% wider and taller (2.25× area), with unchanged tower size.
+- Heroes move 20% faster (1.8 map units/sec) and navigate around the solid tower.
+- Enemies detect and pursue living heroes within 6 map units, instead of always heading straight for the tower.
+- Failed stages can be retried without losing the stage number; tower health resets to 100 HP.
+- Provisional economy safety net on retries: keep coins earned, with a minimum of 30 coins to avoid being stuck without a purchasable hero pack. This is not an approved long-term economy rule.
+- Fixed short-health-bar rendering on narrow mobile screens after the battlefield expansion.
 
-## How to play
-Buy up to three 10-coin hero packs before starting a stage. Press **Start Stage** to open them. Reveal each hero, then defend the tower. Heroes fight automatically; you can pause or restart anytime.
+## Existing gameplay
+Buy up to three 10-coin packs before each stage. Packs open when combat begins, revealing one of five fixed-rarity heroes. Heroes fight automatically. Stage 1 has 30 regular enemies and a boss; later stages increase by 10 regular enemies each.
 
-No backend, dependencies or build step. Deploy `index.html` at repository root with GitHub Pages configured as **main / (root)**.
+Deploy GitHub Pages from `main` / `(root)`. No dependencies or build step.
 
-**Not yet implemented:** upgrades, retries and permanent progression, special hero abilities, permanent tower-health design. These remain open in the manifesto.
+Not yet specified: permanent upgrades, hero abilities, long-term economy and progression balancing.
