@@ -1,19 +1,23 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 0.5** · **Design manifesto v0.20.0** (18 November 2026)
+**Build 0.6 · Master Gameplay Manifesto v0.22.1** (18 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=0.5
+**Play in Safari or desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=0.6
 
-## New in Build 0.5
-- **3 hero units per Recruit Pack**, drawn from Knight, Archer and Mage. Recruit Packs cost 2 coins; 12 coins buys up to six packs / 18 hero units. Demo draws are currently equal weight with duplicates possible, pending the undecided official odds and duplicate rules.
-- **15 current hero classes**, excluding retired Warrior. Each uses the exact four provisional core stats from manifesto v0.18.0 (HP, basic-attack damage, attacks/sec, walking speed).
-- **15 distinct basic-attack prototypes**: sword strike, straight arrow, AoE fireball, serrated bleed arrow, wide cleave, alternating daggers, hammer AoE patch, three-strike combination, channeled ray, weakening vial throw, vine wave, doom sigil, whip, ramping beam and knockback lunge.
-- **Separate Testing Shop**: enable debug mode during preparation, tap any of 15 classes repeatedly to queue individual free heroes (0 coins), clear the queue, and start a test round. Test wins never advance the normal stage; disabling debug mode restores pre-test tower health.
-- Displays the five approved pack pools, with provisional unlock stage milestones. The regular shop currently sells only Recruit Packs because later pack pricing and multi-slot offer rules are not yet settled.
-- Supports mobile and desktop, including triple-card pack reveals, rings of hero spawn positions and automatic combat.
+## Build 0.6
+- **15 heroes** retain approved HP, attack speed and walk speed. All basic attack damage is **10× lower** per v0.21.0, including fractional damage for Rogue (0.8) and Necromancer (4.2).
+- **Tower-defender AI:** heroes detect new enemies within **4** map units, patrol/return around their own starting positions and stay within **5** map units of the tower. Enemy hero-detection stays at **6**.
+- **13 time-charged special abilities are functional**, automatically charging over a provisional **10-second** default and activating only when the situation makes sense. Ready charge holds until the ability can activate. Includes Shield Bash, Arrow Volley, Chain Bolt, Tripwire Trap, Battle Frenzy, Smoke Bomb, Divine Aegis, Blessing of Courage, Spirit Totem, Bear Form, Life Siphon, Summon Hound and Dragon Breath.
+- **Necromancer** has a genuinely continuous Soul Sucking Beam, with baseline **4.2 × 0.50 = 2.1 DPS** and a tunable ramp while maintaining a target. Its separate **Raise the Fallen** special automatically reanimates **each qualifying non-boss enemy death** while at least one Necromancer lives. This event is **not** governed by a cooldown or chance.
+- **Nun's special remains unselected**; no extra ability is invented for her.
+- New **special-cast HUD**, charge progress on each hero, active ability effects, and a **Testing Shop tuning panel** for acquisition range, guard radius and shared charge time. Detailed per-hero effect parameters live in `window.__FW_TUNING__` for playtesting and are *explicitly provisional*.
+- Existing roster, 3-unit Recruit Packs (2 coins), 12-coin round budget/refill, five pack-type pools, separate free Testing Shop, stage bosses and same-stage retries remain.
 
-## Still upcoming
-Fourteen selected **special abilities are not yet active in Build 0.5**; ability cooldowns and numeric effects remain to be designed. Nun's special is still unselected. Newly introduced hero ranges, secondary-attack effects, pull probabilities and duplicate rules currently use *clearly labeled demo-only placeholders*, not approved balance values. Normal higher-tier pack offers are not yet available.
+## Playtest verification
+Checked mobile-sized and desktop browsers, pack opening, direct Testing Shop selection, timed special activation, charged versus ready states, Dragon Breath, Necromancer sustained beam, and raising a new undead for every qualifying enemy death. All checks were browser-local; GitHub Pages publication can lag behind the repository commit.
+
+## Still undefined in manifesto
+Higher-tier pack prices and shop-slot offer rules; Nun's special; exact future ability cooldowns/damage/durations, many new-hero attack ranges, summon/totem stats and other tuning; permanent upgrades; rarity rebalance and later progression systems. Current effect figures are transparent **demo-only settings**, not final game balance.
 
 ## Hosting
-Single-file HTML5 game (`index.html`). GitHub Pages deploys from **main / (root)**. Refresh via the versioned play link to bypass cached Safari builds.
+One standalone `index.html` file. GitHub Pages publishes from `main` / `(root)`; the `?v=0.6` link avoids stale mobile caching.
