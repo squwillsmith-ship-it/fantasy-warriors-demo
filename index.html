@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0e1724" />
-<title>Fantasy Warriors — Playable Demo 0.4</title>
+<title>Fantasy Warriors — Playable Demo 0.5</title>
 <style>
 :root{--bg:#0b1421;--panel:#111f2f;--panel2:#192b3d;--line:#35485b;--light:#f1e5cb;--muted:#9fb1bb;--gold:#eec27d;--gold2:#b9833d;--green:#73bd92;--red:#ed8177;--common:#bac4c9;--uncommon:#85cb9a;--rare:#7abaf6;--epic:#ce91ff;--legendary:#ffc770}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--light);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.48}button:focus-visible{outline:3px solid #b7dbff;outline-offset:3px}
@@ -17,13 +17,28 @@ body{background:radial-gradient(ellipse at 50% -25%,#294058 0%,transparent 57%),
 .modal{position:fixed;inset:0;background:#060d15e8;z-index:20;display:none;place-items:center;padding:18px;backdrop-filter:blur(7px)}.modal.active{display:grid}.reveal{width:min(440px,100%);background:radial-gradient(ellipse at 50% 8%,#34465e,#131e2d 68%);border:1px solid #b49465;border-radius:17px;padding:25px 25px 24px;text-align:center;box-shadow:0 20px 100px #000a}.reveal .kicker{margin-bottom:12px}.reveal h2{font:700 28px Georgia,serif;color:#ffe0a7;margin:3px 0 7px}.reveal p{font-size:13px;color:#afc3cf;line-height:1.5}.reveal .btn{margin-top:18px}.pack-large{width:142px;height:188px;margin:20px auto 20px;position:relative;display:grid;place-items:center;border:4px double #f1d6a2;border-radius:9px;background:radial-gradient(circle,#324b63,#122334);box-shadow:0 0 0 6px #493c38,0 0 45px #ddad5780,0 14px 28px #0008;transform:rotate(-5deg);animation:levitate 2s ease-in-out infinite}.pack-large:before{content:'✦';display:grid;place-items:center;color:#e7c282;border:2px solid #c49e69;border-radius:50%;font-size:54px;height:100px;width:100px}.pack-large:after{content:'F · W';position:absolute;bottom:12px;color:#e2be83;font:700 14px Georgia,serif;letter-spacing:.25em}.card-art{border-radius:12px;border:2px solid var(--reveal-color);margin:16px auto;padding:18px 15px 14px;max-width:243px;min-height:269px;background:linear-gradient(145deg,#21364a,#101c2b);box-shadow:0 0 40px color-mix(in srgb,var(--reveal-color) 23%,transparent),inset 0 0 0 3px #ffffff0a;animation:cardAppear .5s both}.card-rarity{font-size:10px;letter-spacing:.20em;text-transform:uppercase;font-weight:900;color:var(--reveal-color)}.card-icon{font-size:75px;margin:8px auto 3px;filter:drop-shadow(0 4px 13px #0008)}.card-name{font:700 25px Georgia,serif;color:#f5e9cf}.card-role{color:#a5b5bd;font-size:12px;margin:5px 0 14px}.card-stats{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}.card-stats span{background:#0b1826;border:1px solid #3a5366;padding:6px;font-size:10px;border-radius:6px;white-space:nowrap}.odds-note{font-size:11px;color:#8da3b1;margin-top:12px}.hidden{display:none!important}@keyframes levitate{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-8px) rotate(-2deg)}}@keyframes cardAppear{from{opacity:0;transform:translateY(20px) scale(.83) rotateY(90deg)}to{opacity:1;transform:translateY(0) scale(1) rotateY(0)}}
 @media(max-width:960px){body{padding:15px 12px 30px}.layout{grid-template-columns:minmax(0,1fr) 300px}.panel{padding:15px}.stat{min-width:115px;padding:9px 11px}}@media(max-width:740px){.layout{display:flex;flex-direction:column}.battleground{width:100%}.sidebar{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.panel:first-child{grid-column:1/-1}.canvas-wrap{height:clamp(320px,100vw,465px)}.stat{flex:1;min-width:calc(50% - 6px)}.stat.health{min-width:calc(50% - 6px)}.brand h1{font-size:29px}.version{font-size:10px}}@media(max-width:500px){body{padding:12px 9px 26px}.crest{height:45px;width:40px;font-size:22px}.brand{gap:10px}.brand h1{font-size:24px}.version{font-size:10px;max-width:100px}.statusline{gap:7px}.stat{min-width:calc(50% - 4px);padding:9px 10px;gap:8px}.stat.health{min-width:calc(50% - 4px)}.stat .value{font-size:16px}.stat .symbol{font-size:19px}.battle-head{top:9px;left:8px;right:8px}.battle-pill{padding:7px 8px;font-size:10px}.sidebar{display:flex}.panel{width:100%}.reveal{padding:20px 17px}.pack-promo{padding:12px}.hero-row{padding:7px}.arena-caption{font-size:9px;left:7px;right:7px}.canvas-wrap{height:350px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* Build 0.5: small-screen pack reveals and test-only picker. */
+.reveal{width:min(640px,100%);max-height:calc(100dvh - 24px);overflow-y:auto}
+.draw-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.draw-card{border:1px solid var(--reveal-color);border-radius:10px;padding:12px 6px;background:linear-gradient(155deg,#284054,#111e2c);box-shadow:inset 0 0 20px #ffffff05;min-width:0;animation:cardAppear .4s both}
+.draw-card .draw-glyph{font-size:32px;line-height:1.35;display:block}.draw-card b{font-family:Georgia,serif;font-size:15px;display:block;margin:3px 0;color:#fff2d7}
+.draw-card small{display:block;color:#b2c2d1;font-size:10px;line-height:1.5}.draw-card .draw-tier{color:var(--reveal-color);font-size:9px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.test-shop-panel{border-color:#4e8b94;background:linear-gradient(155deg,#192f37,#102129)}
+.test-badge{font-size:10px;letter-spacing:.08em;background:#163b3f;border:1px solid #4b9491;color:#aaf6e3;border-radius:8px;padding:8px;margin:13px 0}
+.test-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.test-hero{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:62px;border:1px solid #4c7280;border-radius:9px;background:#1b3440;color:#e8f5ec;touch-action:manipulation;font-weight:700;font-size:11px;padding:6px 3px}
+.test-hero .test-icon{font-size:21px}.test-hero small{font-size:9px;color:#81daba}.test-hero:active{background:#34576a}
+.test-queue{font-size:12px;margin:auto 0;color:#a1e6d6}
+.pack-progress{display:grid;gap:6px}.pack-progress .pack-tier{border:1px solid #465564;border-radius:7px;padding:8px 10px;background:#132334;font-size:11px;line-height:1.35}.pack-tier b{color:#f1d7a5}.pack-tier small{display:block;color:#9caab4}
+@media(max-width:500px){.reveal{padding:17px 12px}.draw-grid{gap:5px}.draw-card{padding:10px 4px}.draw-card .draw-glyph{font-size:26px}.draw-card b{font-size:12px}.draw-card small{font-size:9px}.test-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <div class="shell">
 <header class="topline">
   <div class="brand"><div class="crest" aria-hidden="true">⚔</div><div><div class="eyebrow">The first playable prototype</div><h1>FANTASY WARRIORS</h1></div></div>
-  <div class="version">PLAYABLE DEMO<br><strong>DESIGN v0.9.0 · BUILD 0.4</strong></div>
+  <div class="version">PLAYABLE DEMO<br><strong>DESIGN v0.20.0 · BUILD 0.5</strong></div>
 </header>
 <section class="statusline" aria-label="Game statistics">
   <div class="stat"><div class="symbol">⚑</div><div><div class="name">Stage</div><div class="value" id="stageValue">01</div></div></div>
@@ -41,10 +56,10 @@ body{background:radial-gradient(ellipse at 50% -25%,#294058 0%,transparent 57%),
   <aside class="sidebar">
     <div class="panel">
       <div class="section-top"><div><div class="kicker">Between stages</div><h2 id="shopTitle">Hero Pack Shop</h2></div><span style="font-size:20px;color:#c8ab7c">✧</span></div>
-      <p class="shop-note" id="shopDescription">Buy as many packs as your round budget allows. Packs open when combat starts.</p>
-      <div class="pack-promo"><div class="pack-small" aria-hidden="true"><span>✦</span></div><div><div class="pack-name">Basic Hero Pack</div><div class="pack-sub">1 random hero · repeatable shop offer</div><div class="pack-count" id="packCount">0 packs held · 2 coins each</div></div></div>
-      <div class="shop-slots" aria-label="Shop offer slots"><div class="shop-slot available"><span>✦ Slot 1</span><strong>Basic Hero Pack · Unlimited stock</strong></div><div class="shop-slot locked"><span>♢ Slot 2 · Locked</span><strong>Future offer</strong></div><div class="shop-slot locked"><span>♢ Slot 3 · Locked</span><strong>Future offer</strong></div></div>
-      <button class="btn" id="buyButton">◈ Buy Basic Pack · 2 coins</button>
+      <p class="shop-note" id="shopDescription">Recruit Packs contain 3 heroes each. Packs open when combat starts.</p>
+      <div class="pack-promo"><div class="pack-small" aria-hidden="true"><span>✦</span></div><div><div class="pack-name">Recruit Pack</div><div class="pack-sub">3 heroes per pack · repeatable offer</div><div class="pack-count" id="packCount">0 Recruit Packs held · 2 coins each</div></div></div>
+      <div class="shop-slots" aria-label="Shop offer slots"><div class="shop-slot available"><span>✦ Slot 1</span><strong>Recruit Pack · 3 hero draws each</strong></div><div class="shop-slot locked"><span>♢ Slot 2 · Locked</span><strong>Future offer</strong></div><div class="shop-slot locked"><span>♢ Slot 3 · Locked</span><strong>Future offer</strong></div></div>
+      <button class="btn" id="buyButton">◈ Buy Recruit Pack · 2 coins</button>
       <div class="coin-refill-note">✦ Your round budget refills to <b>12 coins</b> after every attempt. The coin-cap upgrade is not available yet.</div>
       <div class="button-row"><button class="btn secondary" id="stageButton">⚔ Start Stage 1</button><button class="btn secondary compact" id="pauseButton" aria-label="Pause or resume combat" disabled>Ⅱ Pause</button></div>
       <div class="button-row"><button class="btn danger compact" id="restartButton">↻ Restart run</button></div>
@@ -52,32 +67,60 @@ body{background:radial-gradient(ellipse at 50% -25%,#294058 0%,transparent 57%),
       <div class="small-label"><span>Stage heroes</span><span id="formationCount">0 heroes</span></div>
       <div class="formation" id="formation"><div class="empty-formation">Buy packs now; reveal heroes at stage start.</div></div>
     </div>
-    <div class="panel"><div class="section-top"><h2>Pack Odds</h2><span class="kicker">Fixed</span></div><div class="odds" id="odds"></div></div>
+    <div class="panel test-shop-panel" id="testingPanel">
+      <div class="section-top"><div><div class="kicker">Developer tools · separate from normal shop</div><h2>Testing Shop</h2></div><span class="kicker" id="testingStatus">OFF</span></div>
+      <p class="shop-note">Free access to all 15 heroes. Test battles do not advance your normal stage.</p>
+      <button class="btn secondary" id="testingToggle" aria-pressed="false">Enable testing mode</button>
+      <div id="testingControls" class="hidden"><div class="test-badge">⚒ TEST MODE · 0 COINS · ALL HEROES UNLOCKED</div><div class="test-grid" id="testingGrid"></div><div class="button-row"><button class="btn secondary compact" id="clearTestQueue">Clear test heroes</button><span class="test-queue" id="testQueueCount">0 queued</span></div></div>
+    </div>
+    <div class="panel"><div class="section-top"><h2>Recruit Pack Pool</h2><span class="kicker">3 hero draws</span></div><p class="shop-note">Knight · Archer · Mage. Demo uses equal draws with possible duplicates; final odds are undecided.</p><div class="odds" id="odds"></div><hr class="divider"><div class="small-label">Pack progression · later offers pending</div><div id="packProgress" class="pack-progress"></div></div>
     <div class="panel"><div class="section-top"><h2>Battle Log</h2><span class="kicker">Latest</span></div><ul class="event-log" id="events" aria-live="polite"></ul></div>
   </aside>
 </div>
-<p class="footer">Build 0.4 · Design v0.9.0: one reusable Basic Pack offer (2 coins), 12-coin maximum and a full refill after every win or loss; no enemy or stage coin payouts. Stages keep their enemy counts, automatic heroes, boss and retry rules. Future shop slots and permanent coin-cap upgrades are not yet available.</p>
+<p class="footer">Build 0.5 · Design v0.20.0: three heroes per Recruit Pack, current 15-hero roster and approved four-stat baselines, distinct prototype basic attacks, and unlimited free hero selection in the developer Testing Shop. Special abilities and later-tier pack pricing/slot rules await balancing; attack effect numbers are demo-only assumptions.</p>
 </div>
 <div class="modal" id="revealModal" role="dialog" aria-modal="true" aria-label="Open hero pack" aria-hidden="true">
-<div class="reveal"><div class="kicker" id="revealKicker">A hero awaits</div><h2 id="revealTitle">Open your pack</h2><p id="revealDescription">One hero is sealed inside. Every hero has a fixed rarity.</p><div class="pack-large" id="sealedPack" aria-hidden="true"></div><div class="card-art hidden" id="heroCard" style="--reveal-color:#d4a85c"><div class="card-rarity" id="cardRarity">Common</div><div class="card-icon" id="cardIcon">⚔</div><div class="card-name" id="cardName">Knight</div><div class="card-role" id="cardRole">Balanced melee</div><div class="card-stats" id="cardStats"></div></div><button class="btn" id="revealButton">✦ Open pack</button><div class="odds-note" id="revealFoot">Knight 40% · Archer 28% · Warrior 18% · Priest 10% · Mage 4%</div></div>
+<div class="reveal"><div class="kicker" id="revealKicker">A hero awaits</div><h2 id="revealTitle">Open your pack</h2><p id="revealDescription">Three heroes are sealed inside this Recruit Pack.</p><div class="pack-large" id="sealedPack" aria-hidden="true"></div><div class="draw-grid hidden" id="drawGrid"></div><button class="btn" id="revealButton">✦ Open pack</button><div class="odds-note" id="revealFoot">Recruit Pool: Knight · Archer · Mage</div></div>
 </div>
 <script>
 (()=>{'use strict';
 const HEROES=[
- {id:'knight',name:'Knight',rarity:'Common',chance:40,color:'#bac4c9',hp:50,damage:10,speed:1,range:1,role:'Melee fighter',glyph:'⚔'},
- {id:'archer',name:'Archer',rarity:'Uncommon',chance:28,color:'#85cb9a',hp:28,damage:9,speed:1.4,range:6,role:'Ranged fighter',glyph:'➶'},
- {id:'warrior',name:'Warrior',rarity:'Rare',chance:18,color:'#7abaf6',hp:100,damage:8,speed:.85,range:1,role:'Melee tank',glyph:'⬟'},
- {id:'priest',name:'Priest',rarity:'Epic',chance:10,color:'#ce91ff',hp:40,damage:12,speed:1.1,range:4,role:'Support-themed ranged',glyph:'✥'},
- {id:'mage',name:'Mage',rarity:'Legendary',chance:4,color:'#ffc770',hp:35,damage:25,speed:.85,range:5,role:'High-damage ranged',glyph:'✦'}
+ // Four approved core stats (HP / basic damage / attacks/sec / walking speed), v0.18.0.
+ // Ranges for newer classes are TEST placeholders, not approved balance decisions.
+ {id:'knight',name:'Knight',pack:0,rarity:'Common',color:'#b9c6d0',hp:75,damage:16,speed:.75,walk:1.78,range:1,role:'Sword Strike',glyph:'⚔'},
+ {id:'archer',name:'Archer',pack:0,rarity:'Uncommon',color:'#8acaab',hp:48,damage:18,speed:.70,walk:1.85,range:6,role:'Straight Arrow',glyph:'➶'},
+ {id:'mage',name:'Mage',pack:0,rarity:'Legendary',color:'#ffc770',hp:55,damage:24,speed:.55,walk:1.80,range:5,role:'Explosive Fireball',glyph:'✦'},
+ {id:'hunter',name:'Hunter',pack:1,rarity:'Unassigned',color:'#a1c391',hp:60,damage:28,speed:.55,walk:1.87,range:6.4,role:'Serrated Arrow',glyph:'⌁'},
+ {id:'barbarian',name:'Barbarian',pack:1,rarity:'Unassigned',color:'#df9878',hp:110,damage:32,speed:.50,walk:1.78,range:1.3,role:'Wide Cleave',glyph:'🪓'},
+ {id:'rogue',name:'Rogue',pack:1,rarity:'Unassigned',color:'#b3a0d8',hp:55,damage:8,speed:2.10,walk:1.95,range:1.1,role:'Alternating Daggers',glyph:'🗡'},
+ {id:'paladin',name:'Paladin',pack:2,rarity:'Unassigned',color:'#eac978',hp:145,damage:26,speed:.65,walk:1.72,range:1.3,role:'Hammer Strike',glyph:'⚒'},
+ {id:'nun',name:'Nun',pack:2,rarity:'Unassigned',color:'#d8cae5',hp:85,damage:19,speed:.90,walk:1.85,range:1.1,role:'Monastic Combination',glyph:'✚'},
+ {id:'priest',name:'Priest',pack:2,rarity:'Epic',color:'#ce91ff',hp:78,damage:28,speed:.60,walk:1.76,range:4,role:'Censuring Ray',glyph:'✥'},
+ {id:'shaman',name:'Shaman',pack:3,rarity:'Unassigned',color:'#78d6c5',hp:80,damage:30,speed:.60,walk:1.80,range:4.4,role:'Vial Throw',glyph:'☯'},
+ {id:'druid',name:'Druid',pack:3,rarity:'Unassigned',color:'#9cce79',hp:105,damage:29,speed:.65,walk:1.78,range:4.6,role:'Vine Wave',glyph:'❧'},
+ {id:'warlock',name:'Warlock',pack:3,rarity:'Unassigned',color:'#b06acc',hp:75,damage:38,speed:.50,walk:1.75,range:4.8,role:'Doom Sigil',glyph:'☽'},
+ {id:'beastmaster',name:'Beastmaster',pack:4,rarity:'Unassigned',color:'#dcab7f',hp:125,damage:33,speed:.60,walk:1.86,range:1.8,role:'Whip',glyph:'♞'},
+ {id:'necromancer',name:'Necromancer',pack:4,rarity:'Unassigned',color:'#9da2e8',hp:90,damage:42,speed:.50,walk:1.73,range:4.8,role:'Soul Sucking Beam',glyph:'☠'},
+ {id:'dragonkin',name:'Dragonkin',pack:4,rarity:'Unassigned',color:'#f49b69',hp:225,damage:50,speed:.40,walk:1.70,range:1.3,role:'Lunge',glyph:'🐉'}
 ];
+const PACKS=[
+ {name:'Recruit',stage:1,pool:['knight','archer','mage'],price:2},
+ {name:'Outlaw',stage:4,pool:['hunter','barbarian','rogue'],price:null},
+ {name:'Devotion',stage:8,pool:['paladin','nun','priest'],price:null},
+ {name:'Occult',stage:13,pool:['shaman','druid','warlock'],price:null},
+ {name:'Mythic',stage:20,pool:['beastmaster','necromancer','dragonkin'],price:null}
+];
+const HERO_MAP=Object.fromEntries(HEROES.map(h=>[h.id,h]));
+
 const $=id=>document.getElementById(id);
 const canvas=$('arena'),ctx=canvas.getContext('2d',{alpha:false});
-const refs={stage:$('stageValue'),coins:$('coinValue'),tower:$('towerValue'),hp:$('hpMeter'),kills:$('killValue'),total:$('totalValue'),phase:$('phaseLabel'),dot:$('phaseDot'),battleDetail:$('battleDetail'),count:$('packCount'),buy:$('buyButton'),start:$('stageButton'),pause:$('pauseButton'),restart:$('restartButton'),formation:$('formation'),formationCount:$('formationCount'),events:$('events'),shopTitle:$('shopTitle'),shopDescription:$('shopDescription'),overlay:$('messageOverlay'),messageSymbol:$('messageSymbol'),messageTitle:$('messageTitle'),messageText:$('messageText'),messageButton:$('messageButton'),captionLeft:$('captionLeft'),captionRight:$('captionRight'),modal:$('revealModal'),revealTitle:$('revealTitle'),revealDesc:$('revealDescription'),revealButton:$('revealButton'),sealed:$('sealedPack'),card:$('heroCard'),cardRarity:$('cardRarity'),cardIcon:$('cardIcon'),cardName:$('cardName'),cardRole:$('cardRole'),cardStats:$('cardStats'),revealKicker:$('revealKicker'),revealFoot:$('revealFoot')};
-const state={stage:1,coinMax:12,coins:12,towerHp:100,mode:'prep',paused:false,bought:0,packsToOpen:0,heroes:[],enemies:[],effects:[],notifications:[],regularSpawned:0,bossSpawned:false,kills:0,bossKilled:false,elapsed:0,spawnClock:0,uiClock:0,pendingPack:false,openedHero:null,lastTime:0,nextId:1};
+const refs={stage:$('stageValue'),coins:$('coinValue'),tower:$('towerValue'),hp:$('hpMeter'),kills:$('killValue'),total:$('totalValue'),phase:$('phaseLabel'),dot:$('phaseDot'),battleDetail:$('battleDetail'),count:$('packCount'),buy:$('buyButton'),start:$('stageButton'),pause:$('pauseButton'),restart:$('restartButton'),formation:$('formation'),formationCount:$('formationCount'),events:$('events'),shopTitle:$('shopTitle'),shopDescription:$('shopDescription'),overlay:$('messageOverlay'),messageSymbol:$('messageSymbol'),messageTitle:$('messageTitle'),messageText:$('messageText'),messageButton:$('messageButton'),captionLeft:$('captionLeft'),captionRight:$('captionRight'),modal:$('revealModal'),revealTitle:$('revealTitle'),revealDesc:$('revealDescription'),revealButton:$('revealButton'),sealed:$('sealedPack'),drawGrid:$('drawGrid'),testPanel:$('testingPanel'),testStatus:$('testingStatus'),testToggle:$('testingToggle'),testControls:$('testingControls'),testGrid:$('testingGrid'),testQueueCount:$('testQueueCount'),clearTest:$('clearTestQueue'),packProgress:$('packProgress'),revealKicker:$('revealKicker'),revealFoot:$('revealFoot')};
+const state={stage:1,coinMax:12,coins:12,towerHp:100,mode:'prep',paused:false,bought:0,packsToOpen:0,heroes:[],enemies:[],effects:[],notifications:[],regularSpawned:0,bossSpawned:false,kills:0,bossKilled:false,elapsed:0,spawnClock:0,uiClock:0,pendingPack:false,openedHeroes:null,testMode:false,testQueue:[],testSavedTowerHp:null,hazards:[],pendingHits:[],lastTime:0,nextId:1};
 let view={w:900,h:570,dpr:1,scale:42,worldW:20,worldH:14};
 function rand(a,b){return a+Math.random()*(b-a)}
 function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
-function chooseHero(){let roll=Math.random()*100;for(const h of HEROES){roll-=h.chance;if(roll<0)return h}return HEROES[HEROES.length-1]}
+function chooseHero(packIndex=0){const pool=PACKS[packIndex].pool;return HERO_MAP[pool[Math.floor(Math.random()*pool.length)]]}
+
 function regularCount(){return 30+10*(state.stage-1)}
 function totalCount(){return regularCount()+1}
 function log(message){state.notifications.unshift(message);state.notifications.length=Math.min(5,state.notifications.length);refs.events.replaceChildren(...state.notifications.map(t=>{const li=document.createElement('li');li.textContent=t;return li}))}
@@ -116,10 +159,11 @@ function drawHero(h,t){if(h.hp<=0)return;const x=px(h.x),y=py(h.y),s=view.scale;
  ctx.save();ctx.translate(x,y);ctx.rotate(h.facing||0);let q=s*.39;
  // cloth torso and boots.
  rounded(-q*.50,-q*.14,q*.97,q*.83,q*.27,h.base.color);circle(0,-q*.46,q*.44,'#e6cfa8');
- if(h.base.id==='knight'||h.base.id==='warrior'){rounded(-q*.34,-q*.7,q*.68,q*.25,q*.08,'#a2aeb8');ctx.fillStyle='#5a6d7d';ctx.fillRect(-q*.52,-q*.02,q*.3,q*.66);if(h.base.id==='warrior'){rounded(-q*.7,-q*.22,q*.49,q*.68,q*.15,'#9dc6e9');strokeCircle(-q*.45,q*.1,q*.21,'#254861',2)}}
- if(h.base.id==='archer'){ctx.strokeStyle='#e6bd76';ctx.lineWidth=s*.065;ctx.beginPath();ctx.arc(q*.3,0,q*.58,-1.1,1.1);ctx.stroke();ctx.strokeStyle='#f0e2be';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(q*.58,-q*.5);ctx.lineTo(q*.58,q*.5);ctx.stroke()}
+ if(['knight','paladin','dragonkin'].includes(h.base.id)){rounded(-q*.34,-q*.7,q*.68,q*.25,q*.08,'#a2aeb8');ctx.fillStyle='#5a6d7d';ctx.fillRect(-q*.52,-q*.02,q*.3,q*.66);if(h.base.id==='dragonkin'){rounded(-q*.7,-q*.22,q*.49,q*.68,q*.15,'#f4a56a');strokeCircle(-q*.45,q*.1,q*.21,'#9a3e30',2)}}
+ if(['archer','hunter'].includes(h.base.id)){ctx.strokeStyle='#e6bd76';ctx.lineWidth=s*.065;ctx.beginPath();ctx.arc(q*.3,0,q*.58,-1.1,1.1);ctx.stroke();ctx.strokeStyle='#f0e2be';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(q*.58,-q*.5);ctx.lineTo(q*.58,q*.5);ctx.stroke()}
  if(h.base.id==='priest'){ctx.fillStyle='#e8e0d6';ctx.beginPath();ctx.moveTo(-q*.48,-q*.82);ctx.lineTo(0,-q*1.3);ctx.lineTo(q*.48,-q*.82);ctx.closePath();ctx.fill();ctx.strokeStyle='#f8e3ab';ctx.lineWidth=s*.065;ctx.beginPath();ctx.moveTo(q*.48,-q*.25);ctx.lineTo(q*.48,q*.70);ctx.stroke()}
- if(h.base.id==='mage'){ctx.fillStyle='#253f67';ctx.beginPath();ctx.moveTo(-q*.56,-q*.74);ctx.lineTo(0,-q*1.4);ctx.lineTo(q*.56,-q*.74);ctx.closePath();ctx.fill();circle(q*.55,-q*.34,q*.18,'#ffd877')}
+ if(['mage','warlock','necromancer','shaman','druid'].includes(h.base.id)){ctx.fillStyle='#253f67';ctx.beginPath();ctx.moveTo(-q*.56,-q*.74);ctx.lineTo(0,-q*1.4);ctx.lineTo(q*.56,-q*.74);ctx.closePath();ctx.fill();circle(q*.55,-q*.34,q*.18,'#ffd877')}
+ if(['barbarian','rogue','beastmaster','nun'].includes(h.base.id)){ctx.fillStyle='#2b3341';ctx.fillRect(-q*.52,-q*.73,q*.98,q*.20)}
  ctx.restore();
  drawBar(x,y-s*.84,s*.95,s*.11,h.hp/h.maxHp,'#76cd99');
 }
@@ -129,17 +173,24 @@ function drawEnemy(e,t){const x=px(e.x),y=py(e.y),s=view.scale;let size=s*(e.bos
 function drawBar(x,y,w,h,fract,color){const hh=Math.max(2.3,h),ww=Math.max(4,w);rounded(x-ww/2,y,ww,hh,hh/2,'#0a1c26');if(fract>0){const inner=Math.max(1,hh-1.2);rounded(x-ww/2+.6,y+.6,Math.max(1,(ww-1.2)*clamp(fract,0,1)),inner,Math.min(inner/2,1.5),color)}}
 function drawEffects(dt){for(const e of state.effects){const a=clamp(e.life/e.maxLife,0,1);ctx.save();ctx.globalAlpha=a;
  if(e.kind==='bolt'){let tail=1-a;ctx.strokeStyle=e.color;ctx.lineWidth=Math.max(1,view.scale*.065*a);ctx.beginPath();ctx.moveTo(px(e.x1+(e.x2-e.x1)*tail*.8),py(e.y1+(e.y2-e.y1)*tail*.8));ctx.lineTo(px(e.x2),py(e.y2));ctx.stroke();circle(px(e.x2),py(e.y2),view.scale*.1*a,e.color)}
+ if(e.kind==='pulse'){strokeCircle(px(e.x),py(e.y),view.scale*e.radius*(1-a*.22),e.color,Math.max(1,view.scale*.07*a))}
  if(e.kind==='number'){ctx.font='900 '+Math.max(11,view.scale*.35)+'px sans-serif';ctx.textAlign='center';ctx.fillStyle=e.color;ctx.shadowColor='#000';ctx.shadowBlur=5;ctx.fillText(e.text,px(e.x),py(e.y)-view.scale*.35*(1-a))}
  ctx.restore()}}
-function render(t){drawGround(t);drawTower(t);for(const h of state.heroes)drawHero(h,t);for(const e of state.enemies)if(e.hp>0)drawEnemy(e,t);drawEffects();if(state.mode==='battle'&&state.paused){ctx.fillStyle='#030e17b0';ctx.fillRect(0,0,view.w,view.h);ctx.fillStyle='#fbe4bf';ctx.font='bold '+Math.max(25,view.scale*.8)+'px Georgia';ctx.textAlign='center';ctx.fillText('PAUSED',view.w/2,view.h/2-10);ctx.font='13px sans-serif';ctx.fillStyle='#d1dfe6';ctx.fillText('Resume to continue the stage',view.w/2,view.h/2+22)}}
-function addEffect(e){state.effects.push(e);if(state.effects.length>100)state.effects.shift()}
+function render(t){drawGround(t);for(const p of state.hazards){circle(px(p.x),py(p.y),view.scale*p.radius,'#d7ae521e');strokeCircle(px(p.x),py(p.y),view.scale*p.radius,'#e0c16b99',1.5)}drawTower(t);for(const h of state.heroes)drawHero(h,t);for(const e of state.enemies)if(e.hp>0)drawEnemy(e,t);drawEffects();if(state.mode==='battle'&&state.paused){ctx.fillStyle='#030e17b0';ctx.fillRect(0,0,view.w,view.h);ctx.fillStyle='#fbe4bf';ctx.font='bold '+Math.max(25,view.scale*.8)+'px Georgia';ctx.textAlign='center';ctx.fillText('PAUSED',view.w/2,view.h/2-10);ctx.font='13px sans-serif';ctx.fillStyle='#d1dfe6';ctx.fillText('Resume to continue the stage',view.w/2,view.h/2+22)}}
+function addEffect(e){state.effects.push(e);if(state.effects.length>160)state.effects.shift()}
 function damageNumber(x,y,text,color){addEffect({kind:'number',x,y,text:String(text),color,life:.8,maxLife:.8})}
-function createHero(base){const index=state.heroes.length;const a=-Math.PI/2+(index*2*Math.PI/Math.max(1,state.bought));const hero={id:state.nextId++,base,x:Math.cos(a)*1.5,y:Math.sin(a)*1.5,hp:base.hp,maxHp:base.hp,cooldown:rand(0,.45),facing:0};state.heroes.push(hero);reposition();return hero}
-function reposition(){const n=state.heroes.length;state.heroes.forEach((h,i)=>{const a=-Math.PI/2+2*Math.PI*i/n;h.x=Math.cos(a)*1.5;h.y=Math.sin(a)*1.5;h.facing=a+Math.PI/2})}
+function createHero(base){const hero={id:state.nextId++,base,x:0,y:0,hp:base.hp,maxHp:base.hp,cooldown:rand(0,.45),facing:0,combo:0,beamTarget:null,beamStacks:0};state.heroes.push(hero);reposition();return hero}
+function reposition(){const n=state.heroes.length;
+ // Rings prevent all 18 Recruit-pack heroes from piling up on the same tile.
+ const rings=[];let remaining=n,index=0,ring=0;
+ while(remaining>0){const slots=Math.min(8+6*ring,remaining);const radius=1.8+ring*.90;for(let j=0;j<slots;j++)rings.push({a:-Math.PI/2+2*Math.PI*j/slots+ring*.19,r:radius});remaining-=slots;ring++}
+ state.heroes.forEach((h,i)=>{const v=rings[i];h.x=Math.cos(v.a)*v.r;h.y=Math.sin(v.a)*v.r;h.facing=v.a+Math.PI/2})
+}
+
 function spawnEnemy(boss){const a=rand(0,Math.PI*2),halfW=view.worldW/2-.85,halfH=view.worldH/2-.85;let x,y;
  if(Math.random()<.55){x=(Math.random()<.5?-1:1)*halfW;y=rand(-halfH,halfH)}else{y=(Math.random()<.5?-1:1)*halfH;x=rand(-halfW,halfW)}
  const hp=boss?90+15*(state.stage-1):22;state.enemies.push({id:state.nextId++,x,y,hp,maxHp:hp,boss,speed:boss?.7:1,damage:boss?10:4,cooldown:rand(0,.5)})}
-const HERO_MOVE_SPEED=1.8;
+// Walk speed comes from each hero’s approved STATS entry, not a universal speed.
 const TOWER_BLOCK=1.02;     // tower half-width + hero safety margin (map units)
 const CORNER_DIST=1.17;     // navigation corners outside tower footprint
 function insideTower(x,y){return Math.abs(x)<TOWER_BLOCK&&Math.abs(y)<TOWER_BLOCK}
@@ -185,28 +236,59 @@ function moveHeroAroundTower(hero,enemy,dt){
  let target=heroWaypoint(hero.x,hero.y,enemy.x,enemy.y);
  let vx=target.x-hero.x,vy=target.y-hero.y,dist=Math.hypot(vx,vy);
  if(dist<1e-7)return;
- const move=Math.min(HERO_MOVE_SPEED*dt,dist);
+ const move=Math.min(hero.base.walk*dt,dist);
  const nx=hero.x+vx/dist*move,ny=hero.y+vy/dist*move;
  if(!insideTower(nx,ny)){hero.x=nx;hero.y=ny}
 }
 function applyTowerDamage(amount){state.towerHp=clamp(state.towerHp-amount,0,100);damageNumber(.2,-1.1,'−'+amount,'#ff9682');if(state.towerHp===0)gameOver()}
+function visualBeam(h,e,color=h.base.color,life=.18){addEffect({kind:'bolt',x1:h.x,y1:h.y,x2:e.x,y2:e.y,color,life,maxLife:life})}
+function visualRing(x,y,r,color){addEffect({kind:'pulse',x,y,radius:r,color,life:.36,maxLife:.36})}
+function hitEnemy(e,damage,color){if(!e||e.hp<=0)return;const n=Math.max(1,Math.round(damage));e.hp-=damage;damageNumber(e.x,e.y-.15,n,color)}
+function enemiesInRadius(x,y,r){const rr=r*r;return state.enemies.filter(e=>e.hp>0&&(e.x-x)**2+(e.y-y)**2<=rr)}
+function pushEnemy(e,fromX,fromY,dist){const dx=e.x-fromX,dy=e.y-fromY,len=Math.max(.01,Math.hypot(dx,dy));e.x=clamp(e.x+dx/len*dist,-view.worldW/2+.8,view.worldW/2-.8);e.y=clamp(e.y+dy/len*dist,-view.worldH/2+.8,view.worldH/2-.8)}
+function pointSegmentDistance(x,y,ax,ay,bx,by){const vx=bx-ax,vy=by-ay;const t=clamp(((x-ax)*vx+(y-ay)*vy)/(vx*vx+vy*vy||1),0,1);return Math.hypot(x-ax-t*vx,y-ay-t*vy)}
+// Numerical secondary effects are temporary demonstrations. Only the basic-attack concepts are approved.
+function basicAttack(h,target){if(target.hp<=0)return;const id=h.base.id,d=h.base.damage,col=h.base.color;visualBeam(h,target,col);h.cooldown=1/h.base.speed;
+ switch(id){
+  case 'knight':hitEnemy(target,d,col);break;
+  case 'archer':hitEnemy(target,d,col);break;
+  case 'mage':hitEnemy(target,d,col);for(const e of enemiesInRadius(target.x,target.y,1.4))if(e!==target)hitEnemy(e,d*.42,col);visualRing(target.x,target.y,1.4,'#f7b961');break;
+  case 'hunter':hitEnemy(target,d,col);target.bleed={time:2.4,tick:.6,damage:2};break;
+  case 'barbarian':{const ax=target.x-h.x,ay=target.y-h.y;for(const e of enemiesInRadius(h.x,h.y,1.8)){const vx=e.x-h.x,vy=e.y-h.y,dot=(ax*vx+ay*vy)/(Math.hypot(ax,ay)*Math.hypot(vx,vy)||1);if(dot>=.35)hitEnemy(e,e===target?d:d*.55,col)}visualRing(h.x,h.y,1.8,'#f4b195');break}
+  case 'rogue':h.combo=(h.combo+1)%2;hitEnemy(target,d,col);addEffect({kind:'bolt',x1:h.x+(h.combo?-.25:.25),y1:h.y,x2:target.x,y2:target.y,color:'#e4daff',life:.13,maxLife:.13});break;
+  case 'paladin':hitEnemy(target,d,col);state.hazards.push({x:target.x,y:target.y,life:2.4,clock:0,radius:1.15,color:'#e7bf62',damage:3});visualRing(target.x,target.y,1.15,col);break;
+  case 'nun':h.combo=(h.combo+1)%3;hitEnemy(target,d,col);if(h.combo===0){pushEnemy(target,h.x,h.y,.48);visualRing(target.x,target.y,.75,'#eedffc')}break;
+  case 'priest':for(let k=1;k<=4;k++)state.pendingHits.push({time:state.elapsed+k*.09,target,damage:d/4,color:col,x:h.x,y:h.y});break;
+  case 'shaman':hitEnemy(target,d,col);for(const e of enemiesInRadius(target.x,target.y,1.4)){e.weakUntil=state.elapsed+3;if(e!==target)hitEnemy(e,d*.42,col)}visualRing(target.x,target.y,1.4,'#78d6c5');break;
+  case 'druid':{const dx=target.x-h.x,dy=target.y-h.y,len=Math.max(.01,Math.hypot(dx,dy));const bx=h.x+dx/len*h.base.range,by=h.y+dy/len*h.base.range;for(const e of state.enemies)if(e.hp>0&&pointSegmentDistance(e.x,e.y,h.x,h.y,bx,by)<.45)hitEnemy(e,d,col);visualRing(target.x,target.y,.7,'#a5e882');break}
+  case 'warlock':hitEnemy(target,d,col);target.doom=true;visualRing(target.x,target.y,.55,'#a86bc5');break;
+  case 'beastmaster':hitEnemy(target,d,col);target.beastFocus=state.elapsed+3;break;
+  case 'necromancer':{if(h.beamTarget===target.id)h.beamStacks=Math.min(4,h.beamStacks+1);else{h.beamTarget=target.id;h.beamStacks=0}hitEnemy(target,d*(1+h.beamStacks*.15),col);break}
+  case 'dragonkin':hitEnemy(target,d,col);{const dx=target.x-h.x,dy=target.y-h.y,len=Math.max(.01,Math.hypot(dx,dy));const nx=h.x+dx/len*.32,ny=h.y+dy/len*.32;if(!insideTower(nx,ny)){h.x=nx;h.y=ny};pushEnemy(target,h.x,h.y,.72)}visualRing(target.x,target.y,.8,'#ff9e69');break;
+ }
+}
+function tickAttackEffects(dt){
+ for(let i=state.pendingHits.length-1;i>=0;i--){const p=state.pendingHits[i];if(p.time>state.elapsed)continue;state.pendingHits.splice(i,1);if(p.target.hp>0){hitEnemy(p.target,p.damage,p.color);addEffect({kind:'bolt',x1:p.x,y1:p.y,x2:p.target.x,y2:p.target.y,color:p.color,life:.08,maxLife:.08})}}
+ for(const e of state.enemies){if(e.hp<=0)continue;if(e.bleed){e.bleed.time-=dt;e.bleed.tick-=dt;if(e.bleed.tick<=0){e.bleed.tick+=.6;hitEnemy(e,e.bleed.damage,'#ff9d96')}if(e.bleed.time<=0)e.bleed=null}}
+ for(let i=state.hazards.length-1;i>=0;i--){const p=state.hazards[i];p.life-=dt;p.clock+=dt;if(p.clock>=.65){p.clock-=.65;for(const e of enemiesInRadius(p.x,p.y,p.radius))hitEnemy(e,p.damage,p.color)}if(p.life<=0)state.hazards.splice(i,1)}
+}
+
 function step(dt){if(state.mode!=='battle'||state.paused)return;
  state.elapsed+=dt;state.spawnClock+=dt;state.uiClock+=dt;
  if(state.regularSpawned===0){spawnEnemy(false);state.regularSpawned=1;state.spawnClock=0}
  else if(state.regularSpawned<regularCount()&&state.spawnClock>=1){state.spawnClock-=1;spawnEnemy(false);state.regularSpawned++}
  else if(state.regularSpawned===regularCount()&&!state.bossSpawned&&state.spawnClock>=2){spawnEnemy(true);state.bossSpawned=true;log('The stage boss has arrived!')}
- // Mobile heroes continually acquire a nearby enemy and chase until in attack range.
+ // Heroes acquire enemies autonomously; distinct recurring attacks follow the selected hero pattern.
  for(const h of state.heroes){if(h.hp<=0)continue;h.cooldown-=dt;
   let closest=null,best=Infinity;for(const e of state.enemies){if(e.hp<=0)continue;const dd=(h.x-e.x)**2+(h.y-e.y)**2;if(dd<best){best=dd;closest=e}}
   if(!closest)continue;
   const distance=Math.sqrt(best),attackRange=h.base.range;
   h.facing=Math.atan2(closest.y-h.y,closest.x-h.x)+Math.PI/2;
-  if(distance>attackRange){moveHeroAroundTower(h,closest,dt)}
-  else if(h.cooldown<=0){closest.hp-=h.base.damage;h.cooldown=1/h.base.speed;
-   if(attackRange<=1){addEffect({kind:'bolt',x1:h.x,y1:h.y,x2:closest.x,y2:closest.y,color:'#ffe4a8',life:.11,maxLife:.11})}
-   else{addEffect({kind:'bolt',x1:h.x,y1:h.y,x2:closest.x,y2:closest.y,color:h.base.color,life:.22,maxLife:.22})}
-   damageNumber(closest.x,closest.y-.15,h.base.damage,h.base.color)}
+  if(distance>attackRange)moveHeroAroundTower(h,closest,dt);
+  else if(h.cooldown<=0)basicAttack(h,closest);
  }
+ tickAttackEffects(dt);
+
  for(const e of state.enemies){if(e.hp<=0)continue;
   // Acquire the closest living hero inside the 6-unit detection radius.
   let hero=null,closest=6*6;
@@ -214,47 +296,73 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
   const target=hero||{x:0,y:0};const dist=Math.hypot(target.x-e.x,target.y-e.y);
   const reach=hero?1:.9;
   if(dist<=reach){e.cooldown-=dt;if(e.cooldown<=0){e.cooldown=1;
-    if(hero){hero.hp=Math.max(0,hero.hp-e.damage);damageNumber(hero.x,hero.y-.7,'−'+e.damage,'#ffb6a7');if(hero.hp===0)log('Your '+hero.base.name+' was defeated.')}
-    else{applyTowerDamage(e.damage);if(state.mode==='over')break}
+    if(hero){hero.hp=Math.max(0,hero.hp-e.damage*(e.weakUntil>state.elapsed?.8:1));damageNumber(hero.x,hero.y-.7,'−'+e.damage,'#ffb6a7');if(hero.hp===0)log('Your '+hero.base.name+' was defeated.')}
+    else{applyTowerDamage(e.damage*(e.weakUntil>state.elapsed?.8:1));if(state.mode==='over')break}
   }}else if(dist>0){const delta=Math.min(e.speed*dt,dist-reach*.97);e.x+=(target.x-e.x)/dist*delta;e.y+=(target.y-e.y)/dist*delta}
  }
  if(state.mode!=='battle')return;
- for(let i=state.enemies.length-1;i>=0;i--){const e=state.enemies[i];if(e.hp<=0){if(e.boss){state.bossKilled=true;log('Stage boss defeated!')}state.kills++;state.enemies.splice(i,1)}}
+ for(let i=state.enemies.length-1;i>=0;i--){const e=state.enemies[i];if(e.hp<=0){if(e.boss){state.bossKilled=true;log('Stage boss defeated!')}
+    if(e.doom){visualRing(e.x,e.y,1.6,'#be86df');for(const other of enemiesInRadius(e.x,e.y,1.6))if(other!==e)hitEnemy(other,12,'#ca91ef')}
+    state.kills++;state.enemies.splice(i,1)}}
  if(state.bossSpawned&&state.kills===totalCount()&&state.enemies.length===0){clearStage();return}
  if(state.uiClock>=.16){state.uiClock=0;updateUI()}
 }
 function tick(now){let dt=state.lastTime?clamp((now-state.lastTime)/1000,0,.06):0;state.lastTime=now;if(state.mode==='battle'&&!state.paused)step(dt);for(let i=state.effects.length-1;i>=0;i--){if(state.mode!=='battle'||!state.paused)state.effects[i].life-=dt;if(state.effects[i].life<=0)state.effects.splice(i,1)}render(now/1000);requestAnimationFrame(tick)}
 function updateFormation(){const groups=[];for(const h of state.heroes){let g=groups.find(g=>g.base.id===h.base.id);if(g)g.count++;else groups.push({base:h.base,count:1})}
- refs.formation.innerHTML='';if(!groups.length){const e=document.createElement('div');e.className='empty-formation';e.textContent=state.mode==='battle'?'No heroes remain.':state.mode==='opening'?'Opening purchased packs…':'Buy packs now; reveal heroes at stage start.';refs.formation.append(e)}else{for(const g of groups){const row=document.createElement('div');row.className='hero-row';row.style.setProperty('--hcolor',g.base.color);row.innerHTML=`<div class="hero-avatar">${g.base.glyph}</div><div class="hero-line"><b>${g.base.name}</b><small>${g.base.rarity} · ${g.base.role}</small></div><div class="hero-amount">×${g.count}</div>`;refs.formation.append(row)}}refs.formationCount.textContent=state.heroes.length+' heroes'}
-function updateUI(){refs.stage.textContent=String(state.stage).padStart(2,'0');refs.coins.textContent=state.coins+' / '+state.coinMax;refs.tower.textContent=String(Math.ceil(state.towerHp));refs.hp.style.width=state.towerHp+'%';refs.hp.style.background=state.towerHp<35?'linear-gradient(90deg,#ca5754,#ec997c)':'linear-gradient(90deg,#7abca1,#b4e0a6)';refs.kills.textContent=String(state.kills);refs.total.textContent=String(totalCount());refs.count.textContent=state.bought+' packs held · 2 coins each';
- refs.shopTitle.textContent=state.mode==='prep'?'Hero Pack Shop':state.mode==='opening'?'Opening Hero Packs':state.mode==='battle'?'Battle Underway':state.mode==='clear'?'Stage Complete':'Stage Failed';
- refs.shopDescription.textContent=state.mode==='prep'?'Spend your '+state.coinMax+'-coin round budget on repeatable 2-coin packs. They open when combat starts.':state.mode==='opening'?'Reveal your purchased heroes before the enemies arrive.':state.mode==='battle'?'Heroes chase enemies automatically. No combat coin rewards; the next round refills your budget.':state.mode==='clear'?'All heroes depart. Your next preparation starts with the full coin cap.':'Stage failed. Retry with your full coin budget restored.';
- refs.buy.disabled=state.mode!=='prep'||state.coins<2;refs.buy.textContent=state.mode==='prep'?(state.coins<2?'Round budget spent':'◈ Buy Basic Pack · 2 coins'):'Shop closed during combat';
- refs.start.disabled=state.mode!=='prep'&&state.mode!=='clear';refs.start.textContent=state.mode==='prep'?'⚔ Start Stage '+state.stage:state.mode==='clear'?'➜ Prepare Stage '+(state.stage+1):state.mode==='opening'?'✦ Opening packs':state.mode==='battle'?'⚔ Stage in progress':'↻ Retry Stage '+state.stage;
+ refs.formation.innerHTML='';
+ if(!groups.length){const e=document.createElement('div');e.className='empty-formation';e.textContent=state.mode==='battle'?'No heroes remain.':state.mode==='opening'?'Opening purchased packs…':state.testMode&&state.testQueue.length?state.testQueue.length+' test heroes queued to spawn when stage starts.':'Buy Recruit Packs or enable the separate Testing Shop.';refs.formation.append(e)}
+ else for(const g of groups){const row=document.createElement('div');row.className='hero-row';row.style.setProperty('--hcolor',g.base.color);row.innerHTML=`<div class="hero-avatar">${g.base.glyph}</div><div class="hero-line"><b>${g.base.name}</b><small>${g.base.rarity} · ${g.base.role}</small></div><div class="hero-amount">×${g.count}</div>`;refs.formation.append(row)}
+ refs.formationCount.textContent=state.heroes.length+' active · '+(state.testMode?state.testQueue.length+' test queued':'regular')
+}
+function updateTestingUI(){refs.testStatus.textContent=state.testMode?'ON · FREE':'OFF';refs.testStatus.style.color=state.testMode?'#92f2c9':'';refs.testToggle.textContent=state.testMode?'Disable testing mode':'Enable testing mode';refs.testToggle.setAttribute('aria-pressed',String(state.testMode));refs.testToggle.disabled=state.mode!=='prep';refs.testControls.classList.toggle('hidden',!state.testMode);refs.testQueueCount.textContent=state.testQueue.length+' queued';refs.clearTest.disabled=!state.testQueue.length||state.mode!=='prep';for(const b of refs.testGrid.querySelectorAll('button'))b.disabled=state.mode!=='prep'}
+function updateUI(){refs.stage.textContent=String(state.stage).padStart(2,'0');refs.coins.textContent=state.coins+' / '+state.coinMax;refs.tower.textContent=String(Math.ceil(state.towerHp));refs.hp.style.width=state.towerHp+'%';refs.hp.style.background=state.towerHp<35?'linear-gradient(90deg,#ca5754,#ec997c)':'linear-gradient(90deg,#7abca1,#b4e0a6)';refs.kills.textContent=String(state.kills);refs.total.textContent=String(totalCount());refs.count.textContent=state.bought+' Recruit Packs held · 3 heroes each';
+ refs.shopTitle.textContent=state.mode==='prep'?'Hero Pack Shop':state.mode==='opening'?'Opening Recruit Packs':state.mode==='battle'?'Battle Underway':state.mode==='clear'?'Stage Complete':'Stage Failed';
+ refs.shopDescription.textContent=state.mode==='prep'?'Spend your 12-coin round budget on 2-coin Recruit Packs (3 draws each). Final pull odds still undecided.':state.mode==='opening'?'Three heroes emerge from every purchased pack.':state.mode==='battle'?'Heroes use their distinct basic attacks. No combat coin rewards; coins refill next attempt.':state.mode==='clear'?'All heroes depart. Your next round starts at the coin maximum.':'Stage failed. Retry with fresh packs and restored coins.';
+ refs.buy.disabled=state.mode!=='prep'||state.coins<2||state.testMode;refs.buy.textContent=state.testMode?'Testing mode · free hero picker':state.mode==='prep'?(state.coins<2?'Round budget spent':'◈ Buy Recruit Pack · 2 coins'):'Shop closed during combat';
+ refs.start.disabled=state.mode!=='prep'&&state.mode!=='clear';refs.start.textContent=state.mode==='prep'?'⚔ Start Stage '+state.stage:state.mode==='clear'?(state.testMode?'↻ Return to test prep':'➜ Prepare Stage '+(state.stage+1)):state.mode==='opening'?'✦ Opening packs':state.mode==='battle'?'⚔ Stage in progress':'↻ Retry Stage '+state.stage;
  refs.pause.disabled=state.mode!=='battle';refs.pause.textContent=state.paused?'▶ Resume':'Ⅱ Pause';
- refs.phase.textContent=state.mode==='prep'?'PREPARATION':state.mode==='opening'?'PACK OPENING':state.mode==='battle'?(state.paused?'PAUSED':'IN BATTLE'):state.mode==='clear'?'STAGE CLEARED':'TOWER FALLEN';
+ refs.phase.textContent=state.mode==='prep'?(state.testMode?'TEST PREPARATION':'PREPARATION'):state.mode==='opening'?'PACK OPENING':state.mode==='battle'?(state.paused?'PAUSED':state.testMode?'TEST BATTLE':'IN BATTLE'):state.mode==='clear'?'STAGE CLEARED':'TOWER FALLEN';
  refs.dot.className='dot '+(state.mode==='battle'?'fighting':state.mode==='clear'?'finished':'');
  refs.battleDetail.textContent=state.mode==='battle'?('Spawned '+state.regularSpawned+'/'+regularCount()+' · Boss '+(state.bossSpawned?'arrived':'pending')):regularCount()+' enemies · 1 boss';
- refs.captionLeft.textContent=state.mode==='prep'?'Purchased packs open when combat starts':state.mode==='opening'?'Revealing your heroes':state.mode==='battle'?'Heroes chase and attack automatically':state.mode==='clear'?'Stage cleared! Heroes leave after every battle.':'Stage failed — retry available';
- refs.captionRight.textContent=state.mode==='battle'?'Boss at end · coins refill next round':'Automatic combat';updateFormation()}
-function buyPack(){if(state.mode!=='prep'||state.coins<2)return;state.coins-=2;state.bought++;log('Basic Pack '+state.bought+' purchased. Opens when the stage starts.');updateUI()}
-function openNextPack(){state.pendingPack=true;state.openedHero=null;refs.revealKicker.textContent='Pack '+(state.bought-state.packsToOpen+1)+' of '+state.bought;refs.revealTitle.textContent='Open your pack';refs.revealDesc.textContent='The combat round is starting. Reveal your hero.';refs.sealed.classList.remove('hidden');refs.card.classList.add('hidden');refs.revealButton.disabled=false;refs.revealButton.textContent='✦ Open pack';refs.revealFoot.textContent='Knight 40% · Archer 28% · Warrior 18% · Priest 10% · Mage 4%';refs.modal.classList.add('active');refs.modal.setAttribute('aria-hidden','false');refs.revealButton.focus();updateUI()}
-function revealPack(){if(state.mode!=='opening'||!state.pendingPack)return;
- if(!state.openedHero){const hero=chooseHero();state.openedHero=hero;refs.revealKicker.textContent=hero.rarity.toUpperCase()+' HERO';refs.revealTitle.textContent=hero.name+' discovered!';refs.revealDesc.textContent='One hero has emerged from your pack.';refs.card.style.setProperty('--reveal-color',hero.color);refs.cardRarity.textContent=hero.rarity;refs.cardIcon.textContent=hero.glyph;refs.cardName.textContent=hero.name;refs.cardRole.textContent=hero.role;refs.cardStats.innerHTML=`<span>${hero.hp} HP</span><span>${hero.damage} DMG</span><span>${hero.speed}/s</span><span>Range ${hero.range}</span>`;refs.sealed.classList.add('hidden');refs.card.classList.remove('hidden');refs.revealButton.textContent='✦ Recruit hero';refs.revealFoot.textContent='Each hero has one fixed rarity.';log('Revealed '+hero.rarity+' '+hero.name+'.')}
- else{createHero(state.openedHero);state.packsToOpen--;state.openedHero=null;state.pendingPack=false;if(state.packsToOpen>0)openNextPack();else{refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');beginBattle()}updateUI()}
+ refs.captionLeft.textContent=state.mode==='prep'?'Packs reveal 3 heroes each at battle start':state.mode==='opening'?'Revealing your heroes':state.mode==='battle'?'Heroes fight with distinct basic attacks':state.mode==='clear'?'Stage cleared! All heroes leave.':'Stage failed — retry available';
+ refs.captionRight.textContent=state.testMode?'⚒ DEBUG · NON-PROGRESSION':state.mode==='battle'?'Boss at end · coins refill':'Automatic combat';updateFormation();updateTestingUI()
 }
-function beginBattle(){state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.enemies=[];state.effects=[];log('Stage '+state.stage+' has begun — '+regularCount()+' regular enemies and 1 boss.');if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
-function startStage(){if(state.mode==='clear'){state.stage++;state.mode='prep';state.coins=state.coinMax;state.bought=0;state.packsToOpen=0;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.elapsed=0;state.spawnClock=0;state.enemies=[];state.heroes=[];state.effects=[];refs.overlay.classList.add('hidden');log('Stage '+state.stage+' preparation has begun.');updateUI();return}
- if(state.mode!=='prep')return;state.packsToOpen=state.bought;log('Starting stage '+state.stage+'.');if(state.packsToOpen>0){state.mode='opening';openNextPack()}else beginBattle()}
-function clearStage(){state.mode='clear';state.heroes=[];state.effects=[];refs.messageSymbol.textContent='✦';refs.messageTitle.textContent='Stage '+state.stage+' Cleared';refs.messageText.textContent='The boss has fallen and the tower stands! All heroes leave after this stage. Your next round refills to '+state.coinMax+' coins. Tower health: '+Math.ceil(state.towerHp)+'/100.';refs.messageButton.textContent='Prepare Stage '+(state.stage+1);refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' cleared! Next budget: '+state.coinMax+' coins.');updateUI()}
-function gameOver(){state.mode='over';state.paused=false;refs.messageSymbol.textContent='♜';refs.messageTitle.textContent='Stage '+state.stage+' Failed';refs.messageText.textContent='You defeated '+state.kills+' of '+totalCount()+' enemies. Retry this same stage with fresh packs and a restored tower.';refs.messageButton.textContent='↻ Retry Stage '+state.stage;refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' failed. You can retry.');updateUI()}
-function retryStage(){if(state.mode!=='over')return;state.towerHp=100;
- // Every attempt resets to full capacity, regardless of prior spending.
- state.coins=state.coinMax;state.mode='prep';state.paused=false;state.bought=0;state.packsToOpen=0;state.heroes=[];state.enemies=[];state.effects=[];state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.pendingPack=false;state.openedHero=null;refs.overlay.classList.add('hidden');log('Retry Stage '+state.stage+' — tower restored, '+state.coinMax+' coins refilled.');updateUI()}
 
-function restart(){state.stage=1;state.coinMax=12;state.coins=state.coinMax;state.towerHp=100;state.mode='prep';state.paused=false;state.bought=0;state.packsToOpen=0;state.uiClock=0;state.heroes=[];state.enemies=[];state.effects=[];state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.elapsed=0;state.spawnClock=0;state.pendingPack=false;state.openedHero=null;state.notifications=[];refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');refs.overlay.classList.add('hidden');log('New run — defend the tower!');updateUI()}
-function init(){for(const h of HEROES){const div=document.createElement('div');div.className='odd';div.style.setProperty('--hcolor',h.color);div.innerHTML=`<i></i><span class="nm">${h.name}</span><span class="tier">${h.rarity}</span><b>${h.chance}%</b>`;$('odds').append(div)}refs.buy.addEventListener('click',buyPack);refs.revealButton.addEventListener('click',revealPack);refs.start.addEventListener('click',startStage);refs.pause.addEventListener('click',()=>{if(state.mode!=='battle')return;state.paused=!state.paused;updateUI()});refs.restart.addEventListener('click',restart);refs.messageButton.addEventListener('click',()=>{if(state.mode==='clear')startStage();else if(state.mode==='over')retryStage()});document.addEventListener('keydown',e=>{if(e.code==='Space'&&state.mode==='battle'){e.preventDefault();state.paused=!state.paused;updateUI()}else if(e.key==='Enter'&&state.mode==='prep'&&!state.pendingPack)startStage()});window.addEventListener('resize',resize);if('ResizeObserver'in window)new ResizeObserver(resize).observe(canvas.parentElement);resize();restart();requestAnimationFrame(tick)}
-window.__FW_DEMO__={snapshot:()=>({stage:state.stage,coins:state.coins,coinMax:state.coinMax,towerHp:state.towerHp,mode:state.mode,paused:state.paused,bought:state.bought,packsToOpen:state.packsToOpen,regularTotal:regularCount(),heroes:state.heroes.map(h=>({name:h.base.name,rarity:h.base.rarity,hp:h.hp,x:h.x,y:h.y})),regularSpawned:state.regularSpawned,worldW:view.worldW,worldH:view.worldH,heroSpeed:HERO_MOVE_SPEED,bossSpawned:state.bossSpawned,kills:state.kills,enemies:state.enemies.length,hasPendingPack:state.pendingPack}),version:'design-0.9.0 / demo-0.4'};
+function buyPack(){if(state.mode!=='prep'||state.testMode||state.coins<2)return;state.coins-=2;state.bought++;log('Recruit Pack '+state.bought+' purchased (3 heroes).');updateUI()}
+function toggleTesting(){if(state.mode!=='prep')return;if(!state.testMode&&state.bought>0){log('Finish the regular-pack stage before enabling the separate Testing Shop.');return}if(!state.testMode)state.testSavedTowerHp=state.towerHp;state.testMode=!state.testMode;if(!state.testMode){state.testQueue=[];if(state.testSavedTowerHp!=null)state.towerHp=state.testSavedTowerHp;state.testSavedTowerHp=null}log(state.testMode?'Testing mode ON · free heroes do not affect progression.':'Testing mode OFF.');updateUI()}
+function addTestHero(base){if(!state.testMode||state.mode!=='prep')return;state.testQueue.push(base.id);log('Queued free '+base.name+' ('+state.testQueue.length+' test heroes).');updateUI()}
+function openNextPack(){state.pendingPack=true;state.openedHeroes=null;refs.revealKicker.textContent='Recruit Pack '+(state.bought-state.packsToOpen+1)+' of '+state.bought;refs.revealTitle.textContent='Open your Recruit Pack';refs.revealDesc.textContent='Three random heroes emerge from the Recruit pool.';refs.sealed.classList.remove('hidden');refs.drawGrid.classList.add('hidden');refs.drawGrid.replaceChildren();refs.revealButton.disabled=false;refs.revealButton.textContent='✦ Reveal 3 heroes';refs.revealFoot.textContent='Knight · Archer · Mage | Demo equal-weight draws; duplicates possible';refs.modal.classList.add('active');refs.modal.setAttribute('aria-hidden','false');refs.revealButton.focus();updateUI()}
+function revealPack(){if(state.mode!=='opening'||!state.pendingPack)return;
+ if(!state.openedHeroes){const heroes=Array.from({length:3},()=>chooseHero());state.openedHeroes=heroes;refs.revealKicker.textContent='THREE NEW HEROES';refs.revealTitle.textContent='Pack revealed!';refs.revealDesc.textContent='All three units join the stage when you continue.';refs.drawGrid.replaceChildren(...heroes.map(hero=>{const el=document.createElement('div');el.className='draw-card';el.style.setProperty('--reveal-color',hero.color);el.innerHTML=`<span class="draw-tier">${hero.rarity}</span><span class="draw-glyph">${hero.glyph}</span><b>${hero.name}</b><small>${hero.hp} HP · ${hero.damage} DMG<br>${hero.speed}/s · ${hero.walk} walk</small>`;return el}));refs.sealed.classList.add('hidden');refs.drawGrid.classList.remove('hidden');refs.revealButton.textContent='✦ Deploy all 3';refs.revealFoot.textContent='Class weights and duplicate rules remain open design choices.';log('Recruit Pack revealed: '+heroes.map(h=>h.name).join(', ')+'.')}
+ else{for(const hero of state.openedHeroes)createHero(hero);state.packsToOpen--;state.openedHeroes=null;state.pendingPack=false;if(state.packsToOpen>0)openNextPack();else{refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');beginBattle()}updateUI()}
+}
+
+function beginBattle(){state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];log('Stage '+state.stage+' begins — '+regularCount()+' regular enemies and a boss.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
+function resetPreparation(restoreTower=true){state.coins=state.coinMax;if(restoreTower)state.towerHp=100;state.mode='prep';state.paused=false;state.bought=0;state.packsToOpen=0;state.testQueue=[];state.heroes=[];state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.pendingPack=false;state.openedHeroes=null;refs.overlay.classList.add('hidden');updateUI()}
+function startStage(){if(state.mode==='clear'){if(!state.testMode)state.stage++;resetPreparation(state.testMode);log((state.testMode?'Test preparation':'Stage '+state.stage+' preparation')+' has begun.');updateUI();return}
+ if(state.mode!=='prep')return;
+ // Test units are temporary and deliberately do not spend coins or change normal progression.
+ if(state.testMode){for(const id of state.testQueue)createHero(HERO_MAP[id]);state.testQueue=[]}
+ state.packsToOpen=state.bought;log('Starting stage '+state.stage+(state.testMode?' in testing mode.':'.'));if(state.packsToOpen>0){state.mode='opening';openNextPack()}else beginBattle()}
+function clearStage(){state.mode='clear';state.heroes=[];state.effects=[];state.hazards=[];state.pendingHits=[];refs.messageSymbol.textContent='✦';refs.messageTitle.textContent='Stage '+state.stage+' Cleared';refs.messageText.textContent=state.testMode?'Test battle completed. Debug battles do not advance your stage. Return to preparation with full coins.':'The boss has fallen and the tower stands! All heroes leave after this stage. Your next round refills to '+state.coinMax+' coins.';refs.messageButton.textContent=state.testMode?'Back to Testing Prep':'Prepare Stage '+(state.stage+1);refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' cleared!'+(state.testMode?' (debug only)':''));updateUI()}
+function gameOver(){state.mode='over';state.paused=false;refs.messageSymbol.textContent='♜';refs.messageTitle.textContent='Stage '+state.stage+' Failed';refs.messageText.textContent='You defeated '+state.kills+' of '+totalCount()+' enemies. Retry this stage with a restored tower and a refilled coin budget.';refs.messageButton.textContent='↻ Retry Stage '+state.stage;refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' failed. You can retry.');updateUI()}
+function retryStage(){if(state.mode!=='over')return;resetPreparation();log('Retry Stage '+state.stage+' — 100 tower HP and '+state.coinMax+' coins.');updateUI()}
+function restart(){state.stage=1;state.coinMax=12;state.testMode=false;state.testSavedTowerHp=null;state.notifications=[];resetPreparation();refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');log('New run — defend the tower!');updateUI()}
+
+function init(){
+ // The first regular shop slot is Recruit only. Higher-tier offer rules and prices are not designed.
+ for(const h of HEROES.filter(h=>h.pack===0)){const div=document.createElement('div');div.className='odd';div.style.setProperty('--hcolor',h.color);div.innerHTML=`<i></i><span class="nm">${h.name}</span><span class="tier">${h.rarity}</span><b>Pool</b>`;$('odds').append(div)}
+ for(const p of PACKS){const div=document.createElement('div');div.className='pack-tier';div.innerHTML=`<b>${p.name} Pack</b> · ${p.stage===1?'Starting offer':'Stage '+p.stage+' milestone (provisional)'}<small>${p.pool.map(k=>HERO_MAP[k].name).join(' · ')}${p.stage!==1?' · future shop offer not configured':''}</small>`;refs.packProgress.append(div)}
+ for(const h of HEROES){const b=document.createElement('button');b.className='test-hero';b.type='button';b.innerHTML=`<span class="test-icon">${h.glyph}</span><span>${h.name}</span><small>FREE · +1</small>`;b.addEventListener('click',()=>addTestHero(h));refs.testGrid.append(b)}
+ refs.testToggle.addEventListener('click',toggleTesting);refs.clearTest.addEventListener('click',()=>{if(state.mode!=='prep')return;state.testQueue=[];updateUI()});
+ refs.buy.addEventListener('click',buyPack);refs.revealButton.addEventListener('click',revealPack);refs.start.addEventListener('click',startStage);
+ refs.pause.addEventListener('click',()=>{if(state.mode!=='battle')return;state.paused=!state.paused;updateUI()});refs.restart.addEventListener('click',restart);
+ refs.messageButton.addEventListener('click',()=>{if(state.mode==='clear')startStage();else if(state.mode==='over')retryStage()});
+ document.addEventListener('keydown',e=>{if(e.code==='Space'&&state.mode==='battle'){e.preventDefault();state.paused=!state.paused;updateUI()}else if(e.key==='Enter'&&state.mode==='prep'&&!state.pendingPack)startStage()});window.addEventListener('resize',resize);if('ResizeObserver'in window)new ResizeObserver(resize).observe(canvas.parentElement);resize();restart();requestAnimationFrame(tick)
+}
+
+window.__FW_DEMO__={snapshot:()=>({stage:state.stage,coins:state.coins,coinMax:state.coinMax,towerHp:state.towerHp,mode:state.mode,paused:state.paused,bought:state.bought,packsToOpen:state.packsToOpen,testMode:state.testMode,testQueue:state.testQueue.slice(),regularTotal:regularCount(),heroes:state.heroes.map(h=>({name:h.base.name,rarity:h.base.rarity,hp:h.hp,x:h.x,y:h.y})),regularSpawned:state.regularSpawned,worldW:view.worldW,worldH:view.worldH,bossSpawned:state.bossSpawned,kills:state.kills,enemies:state.enemies.length,hasPendingPack:state.pendingPack}),packs:PACKS.map(p=>({name:p.name,pool:p.pool,stage:p.stage})),version:'design-0.20.0 / demo-0.5'};
+
 init();
 })();
 </script>
