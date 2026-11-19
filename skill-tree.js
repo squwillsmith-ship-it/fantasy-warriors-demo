@@ -15,7 +15,8 @@ const legacyPerks=[
 ];
 const K='fantasy-warriors-skilltree-1.1';
 const defaultSave=()=>({up:0,upRemainder:0,nodes:[],kills:{},packOpens:{},highestClear:0,runHighest:0,runWins:0,campaignStage:1,tierWins:{},gateways:[],resets:0,shards:0,legacy:{},stats:{}}); 
-function load(){try{const p=JSON.parse(localStorage.getItem(K));if(p&&Array.isArray(p.nodes)){const migrated=Object.assign(defaultSave(),p);if(!Number.isInteger(p.campaignStage))migrated.campaignStage=Math.max(1,Math.min(10,1+Number(p.runHighest||0)));return migrated;}}catch(e){}return defaultSave();}
+function load(){try{const p=JSON.parse(localStorage.getItem(K));if(p&&Array.isArray(p.nodes)){const migrated=Object.assign(defaultSave(),p);migrated.upRemainder=0; // retired five-kills-to-one-UP counter
+ if(!Number.isInteger(p.campaignStage))migrated.campaignStage=Math.max(1,Math.min(10,1+Number(p.runHighest||0)));return migrated;}}catch(e){}return defaultSave();}
 let p=load(),api=null,active='tree',selected='T1-ROOT',initial=null,initialSpecials=null,initialSummons=null;
 const $=id=>document.getElementById(id);
 const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -114,15 +115,18 @@ function purchase(id){const n=nodeMap[id];if(!n||!api||api.state.mode!=='prep'||
  else{p.up-=check.cost;p.nodes.push(id);api.log(n.name+' purchased ('+check.cost+' UP).');}
  save();recalc();draw();updateLabels();
 }
-function addUP(amount){const gain=Number((Math.max(0,amount)*(1+rank('insight')*.25)).toFixed(2));p.up=Number((p.up+gain).toFixed(2));}
-function recordKill(heroId){if(!api||api.state.testMode)return;
- if(heroId&&classIds.some(a=>a.includes(heroId)))p.kills[heroId]=(p.kills[heroId]||0)+1;
- p.upRemainder=(p.upRemainder||0)+1;
- if(p.upRemainder>=5){const count=Math.floor(p.upRemainder/5);p.upRemainder%=5;addUP(count);}
+function addUP(amount){const gain=Number((Math.max(0,amount)*(1+rank('insight')*.25)).toFixed(2));p.up=Number((p.up+gain).toFixed(2));return gain;}
+function recordKill(heroId,isBoss=false){if(!api||api.state.testMode)return 0;
+ // Class kill gates count standard minions, never bosses.
+ if(!isBoss&&heroId&&classIds.some(a=>a.includes(heroId)))p.kills[heroId]=(p.kills[heroId]||0)+1;
+ // One independent 10% roll per ordinary enemy; a boss guarantees 5 UP.
+ const baseDrop=isBoss?5:(Math.random()<.10?1:0);
+ const awarded=baseDrop?addUP(baseDrop):0;
  save();updateLabels();
+ return awarded;
 }
 function recordPack(packIndex){if(!api||api.state.testMode)return;p.packOpens[packIndex]=(p.packOpens[packIndex]||0)+1;save();updateLabels();}
-function recordWin(stage){if(!api||api.state.testMode)return;p.campaignStage=Math.min(10,Math.max(1,stage+1));addUP(6);p.runWins++;p.highestClear=Math.max(p.highestClear,stage);p.runHighest=Math.max(p.runHighest||0,stage);
+function recordWin(stage){if(!api||api.state.testMode)return;p.campaignStage=Math.min(10,Math.max(1,stage+1));p.runWins++;p.highestClear=Math.max(p.highestClear,stage);p.runHighest=Math.max(p.runHighest||0,stage);
  for(let t=1;t<=5;t++)if(isTierOpen(t))p.tierWins[t]=(p.tierWins[t]||0)+1;
  save();updateLabels();
 }
@@ -191,7 +195,7 @@ function normalizeBackup(raw){
  const source=doc.state;
  const count=(x,max=100000000)=>{if(typeof x!=='number'||!Number.isFinite(x)||x<0||x>max)throw Error('Save contains invalid progression values.');return x};
  const clean=defaultSave();
- clean.up=count(source.up||0);clean.upRemainder=count(source.upRemainder||0,4);
+ clean.up=count(source.up||0);count(source.upRemainder||0,4);clean.upRemainder=0; // discard obsolete partial-kill counter
  clean.nodes=[...new Set(source.nodes.map(String))];
  if(clean.nodes.length>205||clean.nodes.some(id=>!nodeMap[id]))throw Error('Unknown upgrade node in save.');
  clean.highestClear=count(source.highestClear||0,10);
