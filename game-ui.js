@@ -63,7 +63,7 @@ function updateUI(){
  updateWaveTracker();
  const packs=state.packQueue.length?state.packQueue.reduce((a,i)=>(a[PACKS[i].name]=(a[PACKS[i].name]||0)+1,a),{}):{};
  refs.count.textContent=state.bought+' packs held · '+(Object.entries(packs).map(([k,v])=>v+' '+k).join(' · ')||'1 hero each');
- $('coinCapNote').textContent='Current maximum '+state.coinMax+' coins; upgrade it in the skill tree.';
+ $('coinCapNote').textContent='Current maximum '+state.coinMax+' coins · +2 for every completed class kill quest.';
  const shopKey=offers.join(',')+'|'+offer+'|'+state.shopSlots+'|'+state.mode+'|'+state.testMode;
  if(state.shopCacheKey!==shopKey){
   state.shopCacheKey=shopKey;
