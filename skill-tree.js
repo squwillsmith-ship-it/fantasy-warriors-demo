@@ -152,6 +152,22 @@ function recordWin(stage){if(!api||api.state.testMode)return;p.campaignStage=Mat
 function checkpointStage(stage){if(!api||api.state.testMode)return;p.campaignStage=Math.max(1,Math.min(10,Number(stage)||1));save();}
 function markRestart(){p.campaignStage=1;save();}
 function resumeStage(){if(!api||api.state.mode!=='prep'||api.state.testMode)return;api.state.stage=Math.max(1,Math.min(10,Number(p.campaignStage)||1));api.refresh?.();}
+function questProgress(){
+ return data.nodes.filter(n=>n.kind==='gate').map(n=>{
+  const id=classIds[n.tier-1][n.heroIndex],count=Math.max(0,Number(p.kills[id]||0)),unlocked=isTierOpen(n.tier);
+  return {id,nodeId:n.id,hero:data.classes[n.tier-1][n.heroIndex],name:n.name,tier:n.tier,tierName:data.tiers[n.tier-1],kills:count,goal:n.goal,available:unlocked,completed:unlocked&&count>=n.goal,reward:COINS_PER_CLASS_GATE,provisional:n.tier>1};
+ });
+}
+function showQuest(heroId){
+ const q=questProgress().find(q=>q.id===heroId);if(!q)return false;
+ active='tree';selected=q.nodeId;
+ const modal=$('skillModal');modal.classList.add('active');modal.hidden=false;
+ const pane=$('skillPane');pane.dataset.keepTop='0';pane.dataset.keepLeft='0';
+ draw();
+ const chosen=[...pane.querySelectorAll('[data-node]')].find(e=>e.dataset.node===q.nodeId);
+ if(chosen){chosen.classList.add('fw-active');chosen.scrollIntoView?.({behavior:'smooth',block:'center',inline:'center'});}
+ return true;
+}
 function notify(){if($('skillModal')?.classList.contains('active'))draw();updateLabels();}
 function prestige(){
  if(!api||api.state.mode!=='prep'||api.state.testMode||p.runWins===0)return;
@@ -296,7 +312,7 @@ function connect(opts){
  updateLabels();
 }
 window.FWSkillTree={connect,has:owns,isTierOpen,questProgress,points:()=>p.up,shards:()=>p.shards,shopSlots:()=>api?.state.shopSlots||1,recordKill,recordPack,recordWin,prestige,recalc,notify,rate:specialRate,
- debug:()=>JSON.parse(JSON.stringify(p)),purchase,nodes:data.nodes,backupPayload,normalizeBackup,checkpointStage,markRestart,resumeStage, 
+ debug:()=>JSON.parse(JSON.stringify(p)),purchase,nodes:data.nodes,questProgress,showQuest,backupPayload,normalizeBackup,checkpointStage,markRestart,resumeStage, 
  heroBonus:(h,e)=>{
   let extra=1;
   if(owns('T2-G02')&&!h.firstBasicUsed&&h.base.pack===1){extra*=1.5;h.firstBasicUsed=true;}
