@@ -1,8 +1,15 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0 · Gameplay Manifesto v1.1.1** (19 November 2026)
+**Build 1.0.1 · Gameplay Manifesto v1.1.2** (19 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.1
+
+## New in Build 1.0.1 — Upgrade Point drops
+
+- Every standard enemy has a **10% independent chance to drop 1 UP** when defeated.
+- Each boss guarantees **5 UP** on defeat.
+- No automatic UP bonus is awarded simply for clearing a stage; the previous 1 UP per five minion kills is retired.
+- Prestige income boosts still increase the amount of UP credited by a successful drop; class kill challenges and normal/test mode restrictions remain unchanged.
 
 ## New in Build 1.0 — Reliable progress and backups
 
