@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0e1724" />
-<title>Fantasy Warriors — Playable Demo 1.0.5 · Combat Balance</title>
+<title>Fantasy Warriors — Playable Demo 1.0.6 · Kill Quest Coin Rewards</title>
 <link rel="stylesheet" href="skill-tree.css?v=1.0">
 <link rel="stylesheet" href="game.css?v=1.0.4">
 </head>
@@ -12,11 +12,11 @@
 <div class="shell">
 <header class="topline">
   <div class="brand"><div class="crest" aria-hidden="true">⚔</div><div><div class="eyebrow">The first playable prototype</div><h1>FANTASY WARRIORS</h1></div></div>
-  <div class="version">PLAYABLE DEMO<br><strong>DESIGN v1.1.4 · BUILD 1.0.5</strong></div>
+  <div class="version">PLAYABLE DEMO<br><strong>DESIGN v1.1.5 · BUILD 1.0.6</strong></div>
 </header>
 <section class="statusline" aria-label="Game statistics">
   <div class="stat"><div class="symbol">⚑</div><div><div class="name">Stage / 10</div><div class="value" id="stageValue">01</div></div></div>
-  <div class="stat"><div class="symbol">◈</div><div><div class="name">Round coins / cap</div><div class="value" id="coinValue">12 / 12</div></div></div>
+  <div class="stat"><div class="symbol">◈</div><div><div class="name">Round coins / cap</div><div class="value" id="coinValue">2 / 2</div></div></div>
   <div class="stat health"><div class="symbol">♜</div><div class="health-content"><div class="name">Tower health</div><div class="value"><span id="towerValue">100</span> <span style="font-size:12px;color:#9eb3bc">/ <span id="towerMaxValue">100</span> HP</span></div><div class="meter"><div id="hpMeter"></div></div></div></div>
   <div class="stat"><div class="symbol">✺</div><div><div class="name">Special casts</div><div class="value" id="specialValue">0</div></div></div><div class="stat"><div class="symbol">☠</div><div><div class="name">Defeated</div><div class="value"><span id="killValue">0</span> / <span id="totalValue">31</span></div></div></div>
 </section>
@@ -63,7 +63,7 @@
     <div class="panel"><div class="section-top"><h2>Battle Log</h2><span class="kicker">Latest</span></div><ul class="event-log" id="events" aria-live="polite"></ul></div>
   </aside>
 </div>
-<p class="footer">Build 1.0.5 · Design v1.1.4: each pack grants one hero, heroes acquire targets within 15 units, ranged characters hold position instead of retreating, and standard minion HP is halved (22 → 11). Boss HP and the 5-unit tower guard limit are unchanged.</p>
+<p class="footer">Build 1.0.6 · Design v1.1.5: start with 2 maximum round coins; Recruit Knight, Archer and Mage challenges each require 5 standard-minion kills. Every completed hero-class kill quest adds +2 permanent maximum coins. Existing coin-cap skill and Legacy bonuses stack.</p>
 </div>
 <div class="modal" id="revealModal" role="dialog" aria-modal="true" aria-label="Open hero pack" aria-hidden="true">
 <div class="reveal"><div class="kicker" id="revealKicker">A hero awaits</div><h2 id="revealTitle">Open your pack</h2><p id="revealDescription">One hero is sealed inside this Recruit Pack.</p><div class="pack-large" id="sealedPack" aria-hidden="true"></div><div class="draw-grid hidden" id="drawGrid"></div><button class="btn" id="revealButton">✦ Open pack</button><div class="odds-note" id="revealFoot">Recruit Pool: Knight · Archer · Mage</div></div>
@@ -80,12 +80,12 @@
   <div class="fw-body"><div class="fw-pane" id="skillPane"></div><section class="fw-detail" id="skillDetails" aria-live="polite"></section></div>
  </div>
 </div>
-<script src="skill-tree-data.js?v=1.0"></script>
-<script src="skill-tree.js?v=1.0.1"></script>
+<script src="skill-tree-data.js?v=1.0.6"></script>
+<script src="skill-tree.js?v=1.0.6"></script>
 <script src="skill-tree-effects.js?v=1.0"></script>
 <script src="game-data.js?v=1.0.5"></script>
 <script src="game-render.js?v=1.0.5"></script>
-<script src="game-ui.js?v=1.0.5"></script>
-<script src="game-core.js?v=1.0.5"></script>
+<script src="game-ui.js?v=1.0.6"></script>
+<script src="game-core.js?v=1.0.6"></script>
 </body>
 </html>
