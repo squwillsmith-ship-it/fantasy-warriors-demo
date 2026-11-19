@@ -19,6 +19,7 @@ const HEROES=[
  {id:'necromancer',name:'Necromancer',pack:4,rarity:'Unassigned',color:'#9da2e8',hp:45,damage:8.4,speed:.50,walk:1.73,range:4.8,role:'Soul Sucking Beam',glyph:'☠'},
  {id:'dragonkin',name:'Dragonkin',pack:4,rarity:'Unassigned',color:'#f49b69',hp:112.5,damage:10,speed:.40,walk:1.70,range:1.3,role:'Lunge',glyph:'🐉'}
 ];
+const HEROES_PER_PACK=1;
 const PACKS=[
  {name:'Recruit',stage:1,pool:['knight','archer','mage'],price:2},
  {name:'Outlaw',stage:null,pool:['hunter','barbarian','rogue'],price:3},
@@ -40,7 +41,7 @@ const ENCOUNTERS=[
  {name:'Dark Cathedral',minion:'Cultist',boss:'Abyssal High Priest',minionIcon:'◈',bossIcon:'✥',minionColor:'#ad7ebd',bossColor:'#b374c0',approved:false},
  {name:'The Final Rift',minion:'Voidling',boss:'Eldritch Horror',minionIcon:'✺',bossIcon:'☼',minionColor:'#8f86cf',bossColor:'#cf70d0',approved:false}
 ];
-const TUNING={shared:{acquisitionRange:4,towerGuardRadius:5,specialChargeSeconds:10,enemyHeroDetection:6,returnRadius:2.4,actorRadius:.35,bossRadius:.75,personalSpace:.045,decisionInterval:.25,targetCommitSeconds:1,retargetMargin:.35,rangeStandoff:.76,meleeSlots:6,steerResponsiveness:9},heroes:{}};
+const TUNING={shared:{acquisitionRange:15,towerGuardRadius:5,specialChargeSeconds:10,enemyHeroDetection:6,returnRadius:2.4,actorRadius:.35,bossRadius:.75,personalSpace:.045,decisionInterval:.25,targetCommitSeconds:1,retargetMargin:.35,rangeStandoff:.76,meleeSlots:6,steerResponsiveness:9},heroes:{}};
 const ABILITIES={
  knight:{name:'Shield Bash',trigger:'autoCharge',bashRadius:1.9,bashStunSeconds:1.6,bashDamage:0},
  archer:{name:'Arrow Volley',trigger:'autoCharge',volleyArrowCount:5,volleyRadius:1.8,volleyDamage:1.4},
@@ -66,6 +67,6 @@ const UNDEAD={id:'undead',name:'Undead',rarity:'Summoned',color:'#7bd2c4',hp:13,
 
 
 
-const SPAWN_CONFIG={normalInterval:2,bossClearDelay:2};
-window.FWGameData={HEROES,PACKS,HERO_MAP,ENCOUNTERS,TUNING,ABILITIES,HOUND,UNDEAD,SPAWN_CONFIG};
+const SPAWN_CONFIG={normalInterval:2,bossClearDelay:2,normalHp:11};
+window.FWGameData={HEROES,HEROES_PER_PACK,PACKS,HERO_MAP,ENCOUNTERS,TUNING,ABILITIES,HOUND,UNDEAD,SPAWN_CONFIG};
 })();
