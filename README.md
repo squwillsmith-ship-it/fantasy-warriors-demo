@@ -1,9 +1,17 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.5 · Gameplay Manifesto v1.1.4** (19 November 2026)
+**Build 1.0.6 · Gameplay Manifesto v1.1.5** (19 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.5
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.6
 
+
+## New in Build 1.0.6 — Class kill challenges earn coin capacity
+
+- **Starting maximum coins:** 2, which buys one 2-coin Recruit Pack during the first attempt.
+- **Recruit kill challenges:** Knight, Archer and Mage each require **5 standard-minion killing blows** in ordinary battles (replacing 20 / 25 / 30). Hero-class kill counters persist across failed attempts, run restarts and voluntary prestige.
+- **Quest reward:** Each of the **15** class-specific kill gates automatically provides **+2 maximum coins** once its target has been reached and the tier is available. Rewards are derived from the saved class kill counters, so cannot be duplicated by retries, reloads, re-opening the tree or prestige. Previously completed challenges are credited immediately for older saves.
+- **Progression:** Base 2 → 4 after one class quest → 6 after two → 8 after all three Recruit quests, plus any coin-cap general upgrades or permanent Legacy ranks. The round coin balance still refills to the current maximum between attempts; if a gate completes mid-battle, the new maximum applies to the following preparation.
+- **Unchanged:** Pack cost, single-hero opening, other-tier draft kill targets, 10% standard-minion 1-UP drops, guaranteed boss 5-UP, Testing Shop exclusions, stage/checkpoint save keys and 205-node skill tree.
 
 ## New in Build 1.0.5 — Pack and Combat Adjustments
 
