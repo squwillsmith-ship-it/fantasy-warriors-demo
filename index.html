@@ -354,7 +354,7 @@ function stepSanctuaries(dt){
    for(const h of state.heroes){if(h.hp<=0||h.hp>=h.maxHp||(h===owner&&!spec.sanctuarySelfHealingAllowed))continue;if(Math.hypot(h.x-owner.x,h.y-owner.y)>zone.radius)continue;heals.set(h,Math.max(heals.get(h)||0,spec.sanctuaryHealPerSecond*tick*ticks));}}
  for(const [hero,amount] of heals)hero.hp=Math.min(hero.maxHp,hero.hp+amount);
 }
-function stepSpecials(h,dt){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return;h.charge=Math.min(chargeSeconds(h),h.charge+dt*(SKILLS?SKILLS.rate(h.base.id):1));if(h.charge>=chargeSeconds(h)){h.abilityStatus='ready';if(castSpecial(h)){h.charge=0;h.abilityStatus='charging'}}}
+function stepSpecials(h,dt){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return;h.charge=Math.min(chargeSeconds(h),h.charge+dt*(SKILLS?SKILLS.rate(h):1));if(h.charge>=chargeSeconds(h)){h.abilityStatus='ready';if(castSpecial(h)){h.charge=0;h.abilityStatus='charging'}}}
 // Every qualified enemy kill raises one undead if at least one living Necromancer exists.
 function onEnemyDeath(e){if(SKILLFX)SKILLFX.enemyDeath(e);if(e.boss)return;const necros=activeOriginalHeroes().filter(h=>h.base.id==='necromancer');if(!necros.length)return;const owner=necros[0],spec=cfg(owner).special;owner.raisedCount=(owner.raisedCount||0)+1;const veteran=SKILLS?.has('T5-NE-T04')&&owner.raisedCount%3===0;const base={...UNDEAD,hp:spec.undeadHealth*(veteran?1.5:1),damage:spec.undeadDamage*(veteran?1.4:1)};spawnSummon(base,e.x,e.y,'undead',spec.undeadLifetimeSeconds,owner.id);signalSpecial(owner,'Raise the Fallen',.7)}
 
