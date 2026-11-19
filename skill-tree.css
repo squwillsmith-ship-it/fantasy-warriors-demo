@@ -1,0 +1,49 @@
+/* Fantasy Warriors: skill tree map, five connected pack tiers. */
+#skillModal[hidden]{display:none!important}
+#skillModal{position:fixed;inset:0;z-index:60;background:#050b13e8;display:grid;place-items:center;padding:12px;backdrop-filter:blur(8px)}
+.fw-shell{display:flex;flex-direction:column;width:min(1420px,100%);height:min(92dvh,950px);min-height:360px;border:1px solid #987854;border-radius:16px;overflow:hidden;background:linear-gradient(160deg,#1a2e3d,#0c1927 65%);box-shadow:0 20px 85px #000b}
+.fw-head{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:linear-gradient(90deg,#233447,#152335);border-bottom:1px solid #6d6151;gap:8px}
+.fw-head h2{margin:0;font-family:Georgia,serif;font-size:clamp(18px,3vw,26px);color:#ffdfaa}.fw-head small{display:block;color:#b6cbd3;font-size:11px;margin-top:2px}
+.fw-dismiss{border-radius:8px;padding:8px 12px;background:#334557;border:1px solid #647887;color:#fff;font-weight:700}
+.fw-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:9px 14px;border-bottom:1px solid #334b60}
+.fw-tab{padding:8px 13px;border:1px solid #496176;border-radius:8px;color:#c5d2d7;background:#1b2b3b;font-weight:800;font-size:12px}.fw-tab.selected{background:#dbb06f;color:#1b2331;border-color:#e8ca91}
+#skillTierJump{background:#132333;color:#e9d5b4;border:1px solid #597082;border-radius:8px;padding:8px;min-width:118px;font-size:12px}
+.fw-body{min-height:0;display:flex;flex:1;flex-direction:column}
+.fw-pane{flex:1;min-height:0;overflow:auto;padding:15px;overscroll-behavior:contain;scrollbar-color:#7d6b4b #0e1924}
+.fw-tree-guide{font-size:12px;color:#b3c8d0;margin:0 0 14px;max-width:650px}
+.fw-tier{min-width:1040px;margin:0 auto 0;border:1px solid #796a50;border-radius:13px;background:radial-gradient(ellipse at center top,#2b3d47,#132533 76%);overflow:hidden;box-shadow:0 6px 20px #0003;scroll-margin-top:10px}
+.fw-tier-sealed{filter:saturate(.62);opacity:.83}
+.fw-tier-header{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 15px;background:linear-gradient(90deg,#58462e,#213749 35%,#233747);border-bottom:2px solid #947551}
+.fw-tier-header strong{font:700 20px Georgia,serif;color:#ffe3a9}.fw-tier-header span{font-size:11px;font-weight:800;color:#bcd3d8;letter-spacing:.05em}
+.fw-tier-connector{width:160px;margin:0 auto;text-align:center;height:36px;line-height:36px;color:#e9cc8b;font-size:10px;font-weight:800;border-left:3px solid #bf9661;transform:translateX(75px)}
+.fw-branches{display:grid;grid-template-columns:146px 136px repeat(3,222px);gap:9px;padding:14px;align-items:stretch}
+.fw-lane-title{min-height:34px;display:flex;flex-direction:column;justify-content:center;gap:3px;color:#f6dbac;font:700 13px Georgia,serif;text-align:center}
+.fw-lane-title small{font:500 10px system-ui,sans-serif;color:#b1bfcb}
+.fw-general-lane,.fw-spine,.fw-hero-lane{position:relative;display:flex;flex-direction:column;gap:8px;padding:4px 6px 12px;border:1px solid #354b5d;border-radius:10px;background:#101e2db9}
+.fw-spine{align-items:center;background:#1e2f3dc9;border-color:#7c6744}.fw-general-lane{background:#23313b8f}
+.fw-general-lane:before,.fw-hero-lane:before{content:'';position:absolute;left:50%;top:38px;bottom:15px;border-left:2px solid #58657c;z-index:0;opacity:.7}
+.fw-spine:before{content:'';position:absolute;top:44px;bottom:45px;left:50%;border-left:4px solid #aa8957;z-index:0}
+.fw-spine-line{height:92px;width:0;align-self:center;position:relative}
+.fw-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;align-items:start;position:relative}
+.fw-split:before{content:'';position:absolute;top:-12px;left:25%;right:25%;border-top:2px solid #62848b}
+.fw-subbranch{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fw-subbranch>span{text-align:center;color:#94bfae;font-size:9px;font-weight:900;letter-spacing:.12em;padding:2px}
+.fw-node{width:100%;min-width:0;min-height:63px;position:relative;z-index:1;padding:7px 4px;border:1px solid #476078;border-radius:8px;background:linear-gradient(135deg,#2b4354,#182a3b);color:#e5ebeb;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:3px;touch-action:manipulation;box-shadow:0 2px 6px #0006;transition:transform .12s,border-color .12s}
+.fw-node:hover{border-color:#daba83;transform:translateY(-1px)}.fw-node-symbol{font-size:15px;color:#f7d99c;line-height:1}
+.fw-node-name{font-size:9px;letter-spacing:.01em;font-weight:800;overflow-wrap:anywhere;line-height:1.2}
+.fw-node-cost{font-size:9px;color:#a7c0cc;line-height:1.2}
+.fw-node.fw-sealed{opacity:.48;filter:grayscale(1);background:#151c27}.fw-node.fw-locked{opacity:.72;background:#1b2c3b}
+.fw-node.fw-ready{border-color:#e8bd6e;background:linear-gradient(140deg,#62502e,#2d3f45);box-shadow:0 0 14px #ebb7593a}.fw-node.fw-owned{border-color:#7adeac;background:linear-gradient(135deg,#214c44,#1b3a3a);box-shadow:0 0 12px #62d3a236}
+.fw-node.fw-quest{border-color:#66a5c5;background:linear-gradient(135deg,#20455a,#192f41)}
+.fw-node.fw-exit{min-height:80px}.fw-node.fw-root{min-height:75px}
+.fw-detail{border-top:1px solid #607186;background:#152637;max-height:190px;overflow-y:auto;padding:12px 16px;color:#ccdbde;flex:none}
+.fw-detail-header{display:flex;align-items:center;justify-content:space-between;gap:8px}.fw-detail-header h3{font:700 18px Georgia,serif;color:#f5d7a0;margin:2px 0}.fw-detail-header small{color:#9db9c3;font-size:10px}.fw-state-pill{color:#97d8bf;font-size:10px;font-weight:900}
+.fw-detail p{font-size:12px;line-height:1.45;margin:6px 0}.fw-detail-meta{font-size:10px;color:#abbed0;margin:4px 0}
+.fw-action{border:1px solid #ddbd78;border-radius:8px;background:linear-gradient(180deg,#f1d598,#d0a356);padding:9px 14px;font-weight:900;color:#172b38;margin:8px 0 2px;font-size:12px}
+.fw-action:disabled{opacity:.56;filter:grayscale(.6)}.fw-legacy-intro{max-width:680px;margin:0 auto 14px;padding:16px;background:#1a3040;border:1px solid #4e6374;border-radius:12px}
+.fw-legacy-intro h3{font:700 24px Georgia,serif;color:#f7d6a4;margin:0}.fw-legacy-intro p{font-size:13px;line-height:1.5;color:#b8cbd3}
+.fw-legacy-balance{color:#dfb97b;font-weight:900}.fw-legacy-list{max-width:680px;margin:0 auto;display:grid;gap:9px}
+.fw-perk{display:flex;align-items:center;gap:14px;padding:13px;border:1px solid #53657b;border-radius:10px;background:#1c3140}.fw-perk-icon{font-size:24px;color:#e6bd75}
+.fw-perk-body{flex:1;min-width:0;display:grid;gap:2px}.fw-perk-body b{color:#e9d6ac}.fw-perk-body small{color:#c5d4d9}.fw-perk-body span{color:#a9d4c0;font-size:11px}
+.fw-perk button{padding:9px 13px;border:1px solid #d7b67a;border-radius:7px;color:#172a35;background:#e1c38d;font-weight:900}.fw-perk button:disabled{opacity:.48}.fw-legacy-foot{max-width:680px;color:#9eb4c2;font-size:11px;margin:18px auto}
+@media(max-width:740px){#skillModal{padding:0}.fw-shell{height:100dvh;border:0;border-radius:0}.fw-head{padding:12px 11px}.fw-controls{padding:9px}.fw-pane{padding:8px}.fw-detail{max-height:215px;padding:10px}.fw-tier{margin-left:0}.fw-dismiss{min-height:42px}.fw-tab{min-height:40px}}
