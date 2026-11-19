@@ -153,9 +153,9 @@ function tierPanel(t){
  const root=all.find(n=>n.kind==='root'),m1=all.find(n=>n.kind==='milestone'),exit=all.find(n=>n.kind==='exit'),general=all.filter(n=>n.kind==='general');
  const opened=isTierOpen(t),ownedCount=all.filter(has).length;
  return '<section class="fw-tier '+(opened?'fw-tier-open':'fw-tier-sealed')+'" id="fw-tier-'+t+'"><div class="fw-tier-header"><strong>Tier '+t+' · '+escapeHTML(data.tiers[t-1])+'</strong><span>'+ownedCount+'/41 · '+(opened?'OPEN':'SEALED')+'</span></div>'+
-  '<div class="fw-branches"><div class="fw-general-lane"><div class="fw-lane-title">⚜ General upgrades</div>'+general.map(nodeButton).join('')+'</div>'+
+  '<div class="fw-branches">'+lane(t,heroCode(t,0),0)+lane(t,heroCode(t,1),1)+
   '<div class="fw-spine"><div class="fw-lane-title">Main path</div>'+nodeButton(root)+'<div class="fw-spine-line"></div>'+nodeButton(m1)+'<div class="fw-spine-line"></div>'+nodeButton(exit)+'</div>'+
-  classIds[t-1].map((_,i)=>lane(t,heroCode(t,i),i)).join('')+'</div></section>';
+  lane(t,heroCode(t,2),2)+'<div class="fw-general-lane"><div class="fw-lane-title">⚜ General upgrades</div>'+general.map(nodeButton).join('')+'</div></div></section>';
 }
 function renderTree(){const pane=$('skillPane');if(!pane)return;const savedTop=pane.scrollTop,savedLeft=pane.scrollLeft;
  pane.innerHTML='<div class="fw-tree-guide">Swipe sideways to explore each hero branch. The central spine travels down through all five packs. Select any node for details and purchase.</div>'+[1,2,3,4,5].map(tierPanel).join('<div class="fw-tier-connector">↓ MAIN PATH ↓</div>');
