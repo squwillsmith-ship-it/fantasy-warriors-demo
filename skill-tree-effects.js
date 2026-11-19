@@ -146,6 +146,7 @@ function incoming(h,d,attacker){
  return d;
 }
 function afterHeroHit(h){
+ if(h.hp<=0&&h.base.id==='priest'&&owned('T3-PR-T04'))for(const ally of heroes())if(ally.blessingUntil>NOW())ally.blessingUntil+=2;
  if(h.hp>0||!owned('T3-P-T03'))return;
  const t=NOW();if(!h.shield||h.shield<=0)return;
  const other=heroes().find(a=>a!==h&&Math.hypot(a.x-h.x,a.y-h.y)<2.5);if(other){other.shield=(other.shield||0)+h.shield;other.shieldUntil=t+3;h.shield=0;}
