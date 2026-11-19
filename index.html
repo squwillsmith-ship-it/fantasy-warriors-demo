@@ -362,7 +362,7 @@ function basicAttack(h,target){if(target.hp<=0)return;const id=h.base.id,d=h.bas
  switch(id){
   case 'knight':hitEnemy(target,d,col);break;
   case 'archer':hitEnemy(target,d,col);break;
-  case 'mage':{const radius=1.4*(SKILLS?.rangeBonus('mage')||1);hitEnemy(target,d,col);for(const e of enemiesInRadius(target.x,target.y,radius))if(e!==target)hitEnemy(e,d*.42,col);visualRing(target.x,target.y,radius,'#f7b961');break;}
+  case 'mage':{const radius=1.4*(SKILLS?.rangeBonus('mage')||1);hitEnemy(target,d,col);for(const e of enemiesInRadius(target.x,target.y,radius))if(e!==target)hitEnemy(e,(SKILLS?SKILLS.mageSplashDamage():d)*.42,col);visualRing(target.x,target.y,radius,'#f7b961');break;}
   case 'hunter':hitEnemy(target,d,col);target.bleed={time:2.4*(SKILLS?.has('T2-H-S04')?1.4:1),tick:.6,damage:2,source:'hunter'};break;
   case 'barbarian':{const ax=target.x-h.x,ay=target.y-h.y;for(const e of enemiesInRadius(h.x,h.y,1.8)){const vx=e.x-h.x,vy=e.y-h.y,dot=(ax*vx+ay*vy)/(Math.hypot(ax,ay)*Math.hypot(vx,vy)||1);if(dot>=(SKILLS?.has('T2-B-T04')&&h.frenzyUntil>state.elapsed?-1:SKILLS?.has('T2-B-S04')?.20:.35))hitEnemy(e,e===target?d:d*.55,col)}visualRing(h.x,h.y,1.8,'#f4b195');break}
   case 'rogue':h.combo=(h.combo+1)%2;hitEnemy(target,d,col);addEffect({kind:'bolt',x1:h.x+(h.combo?-.25:.25),y1:h.y,x2:target.x,y2:target.y,color:'#e4daff',life:.13,maxLife:.13});break;
@@ -514,7 +514,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
   const cycle=1/(h.base.speed*(h.frenzyUntil>state.elapsed?cfg(h).special.frenzyAttackSpeedMultiplier:1));
   if(h.windupTime>0){h.windupTime-=dt;h.attackState='windup';if(h.windupTime>0)continue;
    const aim=state.enemies.find(e=>e.id===h.windupTarget&&e.hp>0);
-   if(aim&&Math.hypot(aim.x-h.x,aim.y-h.y)<=attackRange+.2){if(isBear){hitEnemy(aim,h.base.damage,h.base.color);visualBeam(h,aim,'#b2e585');visualRing(aim.x,aim.y,.5,'#96d46e');if(SKILLFX)SKILLFX.afterBasic(h,aim,h.base.damage,true)}else{const bonus=h.blessingUntil>state.elapsed?1+TUNING.heroes.priest.special.blessingDamageBonus:1;basicAttack(h,aim);if(bonus>1&&aim.hp>0)hitEnemy(aim,h.base.damage*(bonus-1),h.base.color)}}
+   if(aim&&Math.hypot(aim.x-h.x,aim.y-h.y)<=attackRange+.2){if(isBear){const bearDamage=SKILLS?SKILLS.bearBasicDamage():h.base.damage;hitEnemy(aim,bearDamage,h.base.color);visualBeam(h,aim,'#b2e585');visualRing(aim.x,aim.y,.5,'#96d46e');if(SKILLFX)SKILLFX.afterBasic(h,aim,bearDamage,true)}else{const bonus=h.blessingUntil>state.elapsed?1+TUNING.heroes.priest.special.blessingDamageBonus:1;basicAttack(h,aim);if(bonus>1&&aim.hp>0)hitEnemy(aim,h.base.damage*(bonus-1),h.base.color)}}
    h.cooldown=cycle*.8;h.attackState='recovery';h.windupTarget=null;continue;
   }
   h.cooldown-=dt;
