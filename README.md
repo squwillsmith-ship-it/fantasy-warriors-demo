@@ -1,9 +1,18 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.3 · Gameplay Manifesto v1.1.3** (19 November 2026)
+**Build 1.0.4 · Gameplay Manifesto v1.1.3** (19 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.3
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.4
 
+
+## New in Build 1.0.4 — Godot-friendly code structure
+
+- Extracted **game definitions** (15 hero profiles, five pack rosters, encounter identities, abilities, tuning and wave cadence) into `game-data.js`, away from rendering and combat rules.
+- Moved **simulation, combat, enemy and hero AI, progression, game actions and stage lifecycle** to `game-core.js`.
+- Extracted **Canvas graphics and animation drawing** into `game-render.js`, **DOM menus, shop, wave tracker and battle reports** into `game-ui.js`, and presentation CSS into `game.css`.
+- The `index.html` file is now a short shell containing the page elements and ordered script/style references; existing skill-tree definitions and permanent progression remain in their separate files.
+- **No intended gameplay changes.** A deterministic, seeded original-vs-modular simulation test matched pack opening, spawning, combat, Testing Shop state, saved progression and Canvas render startup. Existing local saves continue to use the same storage key and schema.
+- See [ARCHITECTURE.md](ARCHITECTURE.md) for module ownership, dependency order and a future Godot migration map.
 
 ## New in Build 1.0.3 — Wave Tracker & Battle Report
 
@@ -51,4 +60,4 @@ Higher-tier pack prices, exact upgrade percentages and currency economy, skill g
 
 ## Technical
 
-Five GitHub Pages files: `index.html`, `skill-tree-data.js`, `skill-tree.js`, `skill-tree-effects.js`, `skill-tree.css`. Deploy from `main` / root. Use the versioned link above to bypass mobile Safari caching.
+Published files: `index.html`, `game-data.js`, `game-core.js`, `game-render.js`, `game-ui.js`, `game.css`, `skill-tree-data.js`, `skill-tree.js`, `skill-tree-effects.js`, `skill-tree.css`. Deploy from `main` / root. Keep module script order in `index.html` and bump query-string version references after changes to avoid stale mobile Safari caches. See [ARCHITECTURE.md](ARCHITECTURE.md).
