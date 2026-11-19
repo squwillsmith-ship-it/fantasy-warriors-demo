@@ -1,23 +1,23 @@
 /* Portable game definitions: stats, rosters, encounter identities and provisional tuning. */
 (function(){'use strict';
 const HEROES=[
- // Active v1.0.1 stats: health half of v0.21.0, basic attack damage double; speeds and walks unchanged.
+ // Hero base HP is rounded to half of v1.0.7; attack damage and speeds remain unchanged.
  // Ranges for newer classes are TEST placeholders, not approved balance decisions.
- {id:'knight',name:'Knight',pack:0,rarity:'Common',color:'#b9c6d0',hp:37.5,damage:3.2,speed:.75,walk:1.78,range:1,role:'Sword Strike',glyph:'⚔'},
- {id:'archer',name:'Archer',pack:0,rarity:'Uncommon',color:'#8acaab',hp:24,damage:3.6,speed:.70,walk:1.85,range:6,role:'Straight Arrow',glyph:'➶'},
- {id:'mage',name:'Mage',pack:0,rarity:'Legendary',color:'#ffc770',hp:27.5,damage:4.8,speed:.55,walk:1.80,range:5,role:'Explosive Fireball',glyph:'✦'},
- {id:'hunter',name:'Hunter',pack:1,rarity:'Unassigned',color:'#a1c391',hp:30,damage:5.6,speed:.55,walk:1.87,range:6.4,role:'Serrated Arrow',glyph:'⌁'},
- {id:'barbarian',name:'Barbarian',pack:1,rarity:'Unassigned',color:'#df9878',hp:55,damage:6.4,speed:.50,walk:1.78,range:1.3,role:'Wide Cleave',glyph:'🪓'},
- {id:'rogue',name:'Rogue',pack:1,rarity:'Unassigned',color:'#b3a0d8',hp:27.5,damage:1.6,speed:2.10,walk:1.95,range:1.1,role:'Alternating Daggers',glyph:'🗡'},
- {id:'paladin',name:'Paladin',pack:2,rarity:'Unassigned',color:'#eac978',hp:72.5,damage:5.2,speed:.65,walk:1.72,range:1.3,role:'Hammer Strike',glyph:'⚒'},
- {id:'nun',name:'Nun',pack:2,rarity:'Unassigned',color:'#d8cae5',hp:42.5,damage:3.8,speed:.90,walk:1.85,range:1.1,role:'Monastic Combination',glyph:'✚'},
- {id:'priest',name:'Priest',pack:2,rarity:'Epic',color:'#ce91ff',hp:39,damage:5.6,speed:.60,walk:1.76,range:4,role:'Censuring Ray',glyph:'✥'},
- {id:'shaman',name:'Shaman',pack:3,rarity:'Unassigned',color:'#78d6c5',hp:40,damage:6,speed:.60,walk:1.80,range:4.4,role:'Vial Throw',glyph:'☯'},
- {id:'druid',name:'Druid',pack:3,rarity:'Unassigned',color:'#9cce79',hp:52.5,damage:5.8,speed:.65,walk:1.78,range:4.6,role:'Vine Wave',glyph:'❧'},
- {id:'warlock',name:'Warlock',pack:3,rarity:'Unassigned',color:'#b06acc',hp:37.5,damage:7.6,speed:.50,walk:1.75,range:4.8,role:'Doom Sigil',glyph:'☽'},
- {id:'beastmaster',name:'Beastmaster',pack:4,rarity:'Unassigned',color:'#dcab7f',hp:62.5,damage:6.6,speed:.60,walk:1.86,range:1.8,role:'Whip',glyph:'♞'},
- {id:'necromancer',name:'Necromancer',pack:4,rarity:'Unassigned',color:'#9da2e8',hp:45,damage:8.4,speed:.50,walk:1.73,range:4.8,role:'Soul Sucking Beam',glyph:'☠'},
- {id:'dragonkin',name:'Dragonkin',pack:4,rarity:'Unassigned',color:'#f49b69',hp:112.5,damage:10,speed:.40,walk:1.70,range:1.3,role:'Lunge',glyph:'🐉'}
+ {id:'knight',name:'Knight',pack:0,rarity:'Common',color:'#b9c6d0',hp:19,damage:3.2,speed:.75,walk:1.78,range:1,role:'Sword Strike',glyph:'⚔'},
+ {id:'archer',name:'Archer',pack:0,rarity:'Uncommon',color:'#8acaab',hp:12,damage:3.6,speed:.70,walk:1.85,range:6,role:'Straight Arrow',glyph:'➶'},
+ {id:'mage',name:'Mage',pack:0,rarity:'Legendary',color:'#ffc770',hp:14,damage:4.8,speed:.55,walk:1.80,range:5,role:'Explosive Fireball',glyph:'✦'},
+ {id:'hunter',name:'Hunter',pack:1,rarity:'Unassigned',color:'#a1c391',hp:15,damage:5.6,speed:.55,walk:1.87,range:6.4,role:'Serrated Arrow',glyph:'⌁'},
+ {id:'barbarian',name:'Barbarian',pack:1,rarity:'Unassigned',color:'#df9878',hp:28,damage:6.4,speed:.50,walk:1.78,range:1.3,role:'Wide Cleave',glyph:'🪓'},
+ {id:'rogue',name:'Rogue',pack:1,rarity:'Unassigned',color:'#b3a0d8',hp:14,damage:1.6,speed:2.10,walk:1.95,range:1.1,role:'Alternating Daggers',glyph:'🗡'},
+ {id:'paladin',name:'Paladin',pack:2,rarity:'Unassigned',color:'#eac978',hp:36,damage:5.2,speed:.65,walk:1.72,range:1.3,role:'Hammer Strike',glyph:'⚒'},
+ {id:'nun',name:'Nun',pack:2,rarity:'Unassigned',color:'#d8cae5',hp:21,damage:3.8,speed:.90,walk:1.85,range:1.1,role:'Monastic Combination',glyph:'✚'},
+ {id:'priest',name:'Priest',pack:2,rarity:'Epic',color:'#ce91ff',hp:20,damage:5.6,speed:.60,walk:1.76,range:4,role:'Censuring Ray',glyph:'✥'},
+ {id:'shaman',name:'Shaman',pack:3,rarity:'Unassigned',color:'#78d6c5',hp:20,damage:6,speed:.60,walk:1.80,range:4.4,role:'Vial Throw',glyph:'☯'},
+ {id:'druid',name:'Druid',pack:3,rarity:'Unassigned',color:'#9cce79',hp:26,damage:5.8,speed:.65,walk:1.78,range:4.6,role:'Vine Wave',glyph:'❧'},
+ {id:'warlock',name:'Warlock',pack:3,rarity:'Unassigned',color:'#b06acc',hp:19,damage:7.6,speed:.50,walk:1.75,range:4.8,role:'Doom Sigil',glyph:'☽'},
+ {id:'beastmaster',name:'Beastmaster',pack:4,rarity:'Unassigned',color:'#dcab7f',hp:31,damage:6.6,speed:.60,walk:1.86,range:1.8,role:'Whip',glyph:'♞'},
+ {id:'necromancer',name:'Necromancer',pack:4,rarity:'Unassigned',color:'#9da2e8',hp:23,damage:8.4,speed:.50,walk:1.73,range:4.8,role:'Soul Sucking Beam',glyph:'☠'},
+ {id:'dragonkin',name:'Dragonkin',pack:4,rarity:'Unassigned',color:'#f49b69',hp:56,damage:10,speed:.40,walk:1.70,range:1.3,role:'Lunge',glyph:'🐉'}
 ];
 const HEROES_PER_PACK=1;
 const PACKS=[
@@ -62,11 +62,11 @@ const ABILITIES={
 for(const core of HEROES){TUNING.heroes[core.id]={core,acquisitionRange:null,towerGuardRadius:null,special:{...ABILITIES[core.id],chargeSeconds:null}}}
 // Derive sustained Necromancer DPS from authoritative damage and attacks/sec, not another balance constant.
 TUNING.heroes.necromancer.special.beamBaseDamageRate=HERO_MAP.necromancer.damage*HERO_MAP.necromancer.speed;
-const HOUND={id:'hound',name:'Hound',rarity:'Summoned',color:'#c99d63',hp:18,damage:1.4,speed:1.1,walk:2,range:1,glyph:'🐕',role:'Summoned Bite'};
-const UNDEAD={id:'undead',name:'Undead',rarity:'Summoned',color:'#7bd2c4',hp:13,damage:1.2,speed:1,walk:1.62,range:1,glyph:'☠',role:'Undead Strike'};
+const HOUND={id:'hound',name:'Hound',rarity:'Summoned',color:'#c99d63',hp:9,damage:1.4,speed:1.1,walk:2,range:1,glyph:'🐕',role:'Summoned Bite'};
+const UNDEAD={id:'undead',name:'Undead',rarity:'Summoned',color:'#7bd2c4',hp:7,damage:1.2,speed:1,walk:1.62,range:1,glyph:'☠',role:'Undead Strike'};
 
 
 
-const SPAWN_CONFIG={normalInterval:2,bossClearDelay:2,normalHp:11};
+const SPAWN_CONFIG={normalInterval:2,bossClearDelay:2,normalHp:6,bossHpBase:90,bossHpPerStage:15,minionFirstAttackWindup:.65};
 window.FWGameData={HEROES,HEROES_PER_PACK,PACKS,HERO_MAP,ENCOUNTERS,TUNING,ABILITIES,HOUND,UNDEAD,SPAWN_CONFIG};
 })();
