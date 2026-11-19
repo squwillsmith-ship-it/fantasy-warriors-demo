@@ -1,8 +1,20 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.2 · Gameplay Manifesto v1.1.3** (19 November 2026)
+**Build 1.0.3 · Gameplay Manifesto v1.1.3** (19 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.2
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.3
+
+
+## New in Build 1.0.3 — Wave Tracker & Battle Report
+
+- A live **wave tracker** on the battlefield shows minions defeated, alive and still due to spawn, with a progress bar and the countdown to the next standard enemy.
+- **Boss arrival countdown** appears only after the entire standard wave has been defeated, using the approved 2-second wait. When the boss arrives, a new **boss health bar** shows current HP and maximum HP.
+- **Earned Upgrade Points (UP)** are displayed during battle; only successful independent minion drops and guaranteed 5-UP boss kills count. Testing Shop fights do not earn persistent UP.
+- **Stage completion and failure reports** show combat duration, enemies defeated, total UP earned, surviving starting heroes, special casts and remaining tower HP.
+- Purely informational improvements: stage wave pacing (2 seconds per minion), boss triggers, class stats, coin refills, upgrade drop probabilities, 205-node skill tree, prestige and save persistence are unchanged.
+- No new final balance values, invented abilities or additional currencies.
+
+Verification: JavaScript compiled, and in-memory browser-style interaction tests covered prep, live minion counts, next spawn countdown, post-wave boss delay, boss HP, reports and stage boss spawn. GitHub Pages publishing may lag behind the repository update.
 
 ## New in Build 1.0.2 — Wave Pacing
 
