@@ -37,7 +37,7 @@ function reposition(){const n=state.heroes.length;
 
 function spawnEnemy(boss){const a=rand(0,Math.PI*2),halfW=view.worldW/2-.85,halfH=view.worldH/2-.85;let x,y;
  if(Math.random()<.55){x=(Math.random()<.5?-1:1)*halfW;y=rand(-halfH,halfH)}else{y=(Math.random()<.5?-1:1)*halfH;x=rand(-halfW,halfW)}
- const hp=boss?90+15*(state.stage-1):SPAWN_CONFIG.normalHp;state.enemies.push({id:state.nextId++,x,y,hp,maxHp:hp,boss,stage:state.stage,speed:boss?.7:1,damage:boss?10:4,cooldown:rand(0,.5),radius:boss?.75:.35,vx:0,vy:0,targetId:null,hitFlash:0,towerLane:((state.nextId*7)%11-5)*.13})}
+ const hp=boss?Math.round((SPAWN_CONFIG.bossHpBase+SPAWN_CONFIG.bossHpPerStage*(state.stage-1))/2):SPAWN_CONFIG.normalHp;state.enemies.push({id:state.nextId++,x,y,hp,maxHp:hp,boss,stage:state.stage,speed:boss?.7:1,damage:boss?10:4,cooldown:rand(0,.5),inAttackRange:false,radius:boss?.75:.35,vx:0,vy:0,targetId:null,hitFlash:0,towerLane:((state.nextId*7)%11-5)*.13})}
 // Walk speed comes from each hero’s approved STATS entry, not a universal speed.
 const TOWER_BLOCK=1.36;     // tower half-width + hero safety margin (map units)
 const CORNER_DIST=1.73;     // navigation corners outside tower footprint
@@ -304,12 +304,15 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
   let totem=null,totemDist=Infinity;for(const p of state.totems){const sq=(p.x-e.x)**2+(p.y-e.y)**2;if(sq<=p.radius*p.radius&&sq<totemDist){totem=p;totemDist=sq}}
   const target=totem||hero||towerApproach(e);const dist=Math.hypot(target.x-e.x,target.y-e.y);e.attackingTower=!totem&&!hero&&dist<1.5;
   const reach=totem?actorRadius(e)+.35:hero?actorRadius(e)+actorRadius(hero)+.22:.34;
-  if(dist<=reach){e.cooldown-=dt;if(e.cooldown<=0){e.cooldown=1;
+  if(dist<=reach){
+    // Regular minions need 0.65s to wind up after first reaching contact; bosses do not.
+    if(!e.inAttackRange){e.inAttackRange=true;if(!e.boss)e.cooldown=Math.max(e.cooldown,SPAWN_CONFIG.minionFirstAttackWindup);}
+    e.cooldown-=dt;if(e.cooldown<=0){e.cooldown=1;
     const damage=e.damage*(e.weakUntil>state.elapsed?.8:1)*(e.weakerUntil>state.elapsed?.8:1);
     if(totem){totem.hp-=damage;visualRing(totem.x,totem.y,.35,'#51dcc0')}
     else if(hero){const dealt=hitHero(hero,damage,e);if(dealt>0)damageNumber(hero.x,hero.y-.7,'−'+dealt.toFixed(1),'#ffb6a7');if(hero.hp===0)log('Your '+hero.base.name+' was defeated.')}
     else{applyTowerDamage(damage);if(state.mode==='over')break}
-  }}else if(dist>0){let mult=1;for(const p of state.traps)if(Math.hypot(e.x-p.x,e.y-p.y)<=p.radius){mult=Math.min(mult,p.slow)}if(e.slowUntil>state.elapsed)mult=Math.min(mult,e.slowFactor||.75);if(e.rootUntil>state.elapsed)mult=0;takeTowerSafeStep(e,target,dt,e.speed*mult)}else brake(e,dt)
+  }}else if(dist>0){e.inAttackRange=false;let mult=1;for(const p of state.traps)if(Math.hypot(e.x-p.x,e.y-p.y)<=p.radius){mult=Math.min(mult,p.slow)}if(e.slowUntil>state.elapsed)mult=Math.min(mult,e.slowFactor||.75);if(e.rootUntil>state.elapsed)mult=0;takeTowerSafeStep(e,target,dt,e.speed*mult)}else brake(e,dt)
  }
  if(state.mode!=='battle')return;
  resolveActorCollisions();
@@ -365,14 +368,14 @@ function init(){
  document.addEventListener('keydown',e=>{if(e.code==='Space'&&state.mode==='battle'){e.preventDefault();state.paused=!state.paused;updateUI()}else if(e.key==='Enter'&&state.mode==='prep'&&!state.pendingPack)startStage()});window.addEventListener('resize',resize);if('ResizeObserver'in window)new ResizeObserver(resize).observe(canvas.parentElement);resize();restart();if(SKILLS)SKILLS.resumeStage();requestAnimationFrame(tick)
 }
 
-window.__FW_DEMO__={snapshot:()=>({combatTelemetry:{...state.combatTelemetry},stage:state.stage,coins:state.coins,coinMax:state.coinMax,towerHp:state.towerHp,mode:state.mode,paused:state.paused,bought:state.bought,packsToOpen:state.packsToOpen,testMode:state.testMode,testQueue:state.testQueue.slice(),regularTotal:regularCount(),heroes:state.heroes.map(h=>({name:h.base.name,rarity:h.base.rarity,hp:h.hp,x:h.x,y:h.y})),regularSpawned:state.regularSpawned,worldW:view.worldW,worldH:view.worldH,bossSpawned:state.bossSpawned,bossWaitClock:state.bossWaitClock,normalSpawnInterval:NORMAL_SPAWN_INTERVAL,kills:state.kills,enemies:state.enemies.length,hasPendingPack:state.pendingPack,abilityCasts:state.abilityCasts,totems:state.totems.length,traps:state.traps.length,heroesCharged:state.heroes.filter(h=>h.charge>=chargeSeconds(h)&&isOriginalHero(h)).length,heroesDetail:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,summonKind:h.summonKind,beamTarget:h.beamTarget,beamTime:h.beamTime,damage:h.base.damage})),tuning:TUNING.shared}),packs:PACKS.map(p=>({name:p.name,pool:p.pool,stage:p.stage})),encounter:{...encounter()},campaignStages:10,sanctuaries:state.sanctuaries.length,version:'design-1.1.5 / demo-1.0.7',skillTree:SKILLS?.debug(),quests:SKILLS?.questProgress?.(),wave:waveStatus(),battleReport:state.lastReport};
+window.__FW_DEMO__={snapshot:()=>({combatTelemetry:{...state.combatTelemetry},stage:state.stage,coins:state.coins,coinMax:state.coinMax,towerHp:state.towerHp,mode:state.mode,paused:state.paused,bought:state.bought,packsToOpen:state.packsToOpen,testMode:state.testMode,testQueue:state.testQueue.slice(),regularTotal:regularCount(),heroes:state.heroes.map(h=>({name:h.base.name,rarity:h.base.rarity,hp:h.hp,x:h.x,y:h.y})),regularSpawned:state.regularSpawned,worldW:view.worldW,worldH:view.worldH,bossSpawned:state.bossSpawned,bossWaitClock:state.bossWaitClock,normalSpawnInterval:NORMAL_SPAWN_INTERVAL,kills:state.kills,enemies:state.enemies.length,hasPendingPack:state.pendingPack,abilityCasts:state.abilityCasts,totems:state.totems.length,traps:state.traps.length,heroesCharged:state.heroes.filter(h=>h.charge>=chargeSeconds(h)&&isOriginalHero(h)).length,heroesDetail:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,summonKind:h.summonKind,beamTarget:h.beamTarget,beamTime:h.beamTime,damage:h.base.damage})),tuning:TUNING.shared}),packs:PACKS.map(p=>({name:p.name,pool:p.pool,stage:p.stage})),encounter:{...encounter()},campaignStages:10,sanctuaries:state.sanctuaries.length,version:'design-1.1.6 / demo-1.0.8',skillTree:SKILLS?.debug(),quests:SKILLS?.questProgress?.(),wave:waveStatus(),battleReport:state.lastReport};
 
 // Testing-only, non-persistent simulation controls for automated playtesting.
 window.__FW_TEST__={
  advance:(seconds)=>{if(!state.testMode||state.mode!=='battle')return false;for(let i=0;i<Math.round(seconds/.05)&&state.mode==='battle';i++)step(.05);updateUI();return true},
- enemy:(x,y,hp=SPAWN_CONFIG.normalHp)=>{if(!state.testMode||state.mode!=='battle')return false;state.enemies.push({id:state.nextId++,x,y,hp,maxHp:hp,boss:false,speed:0,damage:0,cooldown:0,testSpawn:true});return true},
+ enemy:(x,y,hp=SPAWN_CONFIG.normalHp,damage=0)=>{if(!state.testMode||state.mode!=='battle')return false;state.enemies.push({id:state.nextId++,x,y,hp,maxHp:hp,boss:false,speed:0,damage,cooldown:0,inAttackRange:false,testSpawn:true});return true},
  kill:(count=1)=>{if(!state.testMode||state.mode!=='battle')return false;let n=0;for(const e of state.enemies){if(!e.boss&&e.hp>0){e.hp=0;n++;if(n>=count)break}}return n},
- current:()=>({mode:state.mode,elapsed:state.elapsed,casts:state.abilityCasts,heroes:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,beamTarget:h.beamTarget,beamTime:h.beamTime,summonKind:h.summonKind,expiry:h.expiry,invisibleUntil:h.invisibleUntil,shield:h.shield})),enemies:state.enemies.map(e=>({id:e.id,hp:e.hp,x:e.x,y:e.y})),totems:state.totems.length,traps:state.traps.length,sanctuaries:state.sanctuaries.map(z=>({...z})),encounter:encounter().name})};
+ current:()=>({mode:state.mode,elapsed:state.elapsed,casts:state.abilityCasts,heroes:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,beamTarget:h.beamTarget,beamTime:h.beamTime,summonKind:h.summonKind,expiry:h.expiry,invisibleUntil:h.invisibleUntil,shield:h.shield})),enemies:state.enemies.map(e=>({id:e.id,hp:e.hp,maxHp:e.maxHp,x:e.x,y:e.y,damage:e.damage,cooldown:e.cooldown,inAttackRange:!!e.inAttackRange,boss:!!e.boss})),totems:state.totems.length,traps:state.traps.length,sanctuaries:state.sanctuaries.map(z=>({...z})),encounter:encounter().name})};
 
 window.__FW_TUNING__=TUNING;
 init();
