@@ -45,7 +45,7 @@ body{background:radial-gradient(ellipse at 50% -25%,#294058 0%,transparent 57%),
 <section class="statusline" aria-label="Game statistics">
   <div class="stat"><div class="symbol">⚑</div><div><div class="name">Stage / 10</div><div class="value" id="stageValue">01</div></div></div>
   <div class="stat"><div class="symbol">◈</div><div><div class="name">Round coins / cap</div><div class="value" id="coinValue">12 / 12</div></div></div>
-  <div class="stat health"><div class="symbol">♜</div><div class="health-content"><div class="name">Tower health</div><div class="value"><span id="towerValue">100</span> <span style="font-size:12px;color:#9eb3bc">/ 100 HP</span></div><div class="meter"><div id="hpMeter"></div></div></div></div>
+  <div class="stat health"><div class="symbol">♜</div><div class="health-content"><div class="name">Tower health</div><div class="value"><span id="towerValue">100</span> <span style="font-size:12px;color:#9eb3bc">/ <span id="towerMaxValue">100</span> HP</span></div><div class="meter"><div id="hpMeter"></div></div></div></div>
   <div class="stat"><div class="symbol">✺</div><div><div class="name">Special casts</div><div class="value" id="specialValue">0</div></div></div><div class="stat"><div class="symbol">☠</div><div><div class="name">Defeated</div><div class="value"><span id="killValue">0</span> / <span id="totalValue">31</span></div></div></div>
 </section>
 <div class="layout">
@@ -548,17 +548,45 @@ function updateFormation(){const groups=[];for(const h of state.heroes){let g=gr
  refs.formationCount.textContent=state.heroes.length+' active · '+(state.testMode?state.testQueue.length+' test queued':'regular')
 }
 function updateTestingUI(){refs.testStatus.textContent=state.testMode?'ON · FREE':'OFF';refs.testStatus.style.color=state.testMode?'#92f2c9':'';refs.testToggle.textContent=state.testMode?'Disable testing mode':'Enable testing mode';refs.testToggle.setAttribute('aria-pressed',String(state.testMode));refs.testToggle.disabled=state.mode!=='prep';refs.testControls.classList.toggle('hidden',!state.testMode);refs.testStage.disabled=!state.testMode||state.mode!=='prep';refs.testQueueCount.textContent=state.testQueue.length+' queued';refs.clearTest.disabled=!state.testQueue.length||state.mode!=='prep';for(const b of refs.testGrid.querySelectorAll('button'))b.disabled=state.mode!=='prep'}
-function updateUI(){refs.stage.textContent=String(state.stage).padStart(2,'0')+' / 10';$('encounterName').textContent=encounter().name;$('encounterUnits').textContent=encounter().minion+' → '+encounter().boss;$('encounterApproval').textContent=(encounter().approved?'SELECTED':'PROVISIONAL')+' · STAGE '+state.stage+'/10';if(refs.testStage&&state.testMode)refs.testStage.value=String(state.stage);refs.coins.textContent=state.coins+' / '+state.coinMax;refs.tower.textContent=String(Math.ceil(state.towerHp));refs.hp.style.width=state.towerHp+'%';refs.hp.style.background=state.towerHp<35?'linear-gradient(90deg,#ca5754,#ec997c)':'linear-gradient(90deg,#7abca1,#b4e0a6)';refs.specials.textContent=String(state.abilityCasts);refs.kills.textContent=String(state.kills);refs.total.textContent=String(totalCount());refs.count.textContent=state.bought+' Recruit Packs held · 3 heroes each';
- refs.shopTitle.textContent=state.mode==='prep'?'Hero Pack Shop':state.mode==='opening'?'Opening Recruit Packs':state.mode==='battle'?'Battle Underway':state.mode==='clear'?'Stage Complete':state.mode==='champion'?'Campaign Complete':'Stage Failed';
- refs.shopDescription.textContent=state.mode==='prep'?'Spend your 12-coin round budget on 2-coin Recruit Packs (3 draws each). Final pull odds still undecided.':state.mode==='opening'?'Three heroes emerge from every purchased pack.':state.mode==='battle'?'Heroes guard the tower and auto-cast specials. No combat coin rewards; coins refill next attempt.':state.mode==='clear'?'All heroes depart. Your next round starts at the coin maximum.':state.mode==='champion'?'All ten stages complete.':'Stage failed. Retry with fresh packs and restored coins.';
- refs.buy.disabled=state.mode!=='prep'||state.coins<2||state.testMode;refs.buy.textContent=state.testMode?'Testing mode · free hero picker':state.mode==='prep'?(state.coins<2?'Round budget spent':'◈ Buy Recruit Pack · 2 coins'):'Shop closed during combat';
- refs.start.disabled=state.mode!=='prep'&&state.mode!=='clear';refs.start.textContent=state.mode==='prep'?'⚔ Start Stage '+state.stage:state.mode==='clear'?(state.testMode?'↻ Return to test prep':'➜ Prepare Stage '+(state.stage+1)):state.mode==='opening'?'✦ Opening packs':state.mode==='battle'?'⚔ Stage in progress':'↻ Retry Stage '+state.stage;
+function updateUI(){
+ const offer=selectedOffer(),pack=PACKS[offer],offers=offeredPacks();
+ refs.stage.textContent=String(state.stage).padStart(2,'0')+' / 10';
+ $('encounterName').textContent=encounter().name;
+ $('encounterUnits').textContent=encounter().minion+' → '+encounter().boss;
+ $('encounterApproval').textContent=(encounter().approved?'SELECTED':'PROVISIONAL')+' · STAGE '+state.stage+'/10';
+ if(refs.testStage&&state.testMode)refs.testStage.value=String(state.stage);
+ refs.coins.textContent=state.coins+' / '+state.coinMax;
+ refs.tower.textContent=String(Math.ceil(state.towerHp));
+ $('towerMaxValue').textContent=String(Math.ceil(state.towerMax||100));
+ refs.hp.style.width=(100*state.towerHp/(state.towerMax||100))+'%';
+ refs.hp.style.background=state.towerHp/(state.towerMax||100)<.35?'linear-gradient(90deg,#ca5754,#ec997c)':'linear-gradient(90deg,#7abca1,#b4e0a6)';
+ refs.specials.textContent=String(state.abilityCasts);
+ refs.kills.textContent=String(state.kills);
+ refs.total.textContent=String(totalCount());
+ const packs=state.packQueue.length?state.packQueue.reduce((a,i)=>(a[PACKS[i].name]=(a[PACKS[i].name]||0)+1,a),{}):{};
+ refs.count.textContent=state.bought+' packs held · '+(Object.entries(packs).map(([k,v])=>v+' '+k).join(' · ')||'3 heroes each');
+ $('coinCapNote').textContent='Current maximum '+state.coinMax+' coins; upgrade it in the skill tree.';
+ const shopKey=offers.join(',')+'|'+offer+'|'+state.shopSlots+'|'+state.mode+'|'+state.testMode;
+ if(state.shopCacheKey!==shopKey){
+  state.shopCacheKey=shopKey;
+  $('packOfferButtons').innerHTML=offers.map(i=>'<button type="button" class="btn secondary compact" data-pack="'+i+'" '+(state.mode!=='prep'||state.testMode?'disabled':'')+' style="flex:1;min-width:120px;'+(offer===i?'border-color:#f4d392;background:#344b4c;':'')+'">'+PACKS[i].name+' · '+PACKS[i].price+'◈</button>').join('');
+  $('liveShopSlots').innerHTML=Array.from({length:Math.min(5,state.shopSlots)},(_,idx)=>'<div class="shop-slot '+(idx<offers.length?'available':'locked')+'"><span>✦ Slot '+(idx+1)+'</span><strong>'+(idx<offers.length?PACKS[offers[idx]].name+' Pack · 3 units':'No additional offer')+'</strong></div>').join('');
+  $('packProgress').innerHTML=PACKS.map((p,i)=>'<div class="pack-tier"><b>'+p.name+' Pack</b> · '+(SKILLS?.isTierOpen(i+1)?'UNLOCKED · '+p.price+' coins':'LOCKED · Tier '+(i+1)+' gateway')+'<small>'+p.pool.map(k=>HERO_MAP[k].name).join(' · ')+'</small></div>').join('');
+ }
+ $('rotateShop').disabled=state.mode!=='prep'||state.testMode||PACKS.filter((_,i)=>SKILLS?.isTierOpen(i+1)).length<=offers.length;
+ refs.shopTitle.textContent=state.mode==='prep'?'Hero Pack Shop':state.mode==='opening'?'Opening Packs':state.mode==='battle'?'Battle Underway':state.mode==='clear'?'Stage Complete':state.mode==='champion'?'Campaign Complete':'Stage Failed';
+ refs.shopDescription.textContent=state.mode==='prep'?'Buy unlocked packs (3 random units each). Shop prices and offer rotation for later tiers are provisional test values.':state.mode==='opening'?'Three heroes emerge from each purchased pack.':state.mode==='battle'?'Heroes defend automatically; coin budget refills after this attempt.':state.mode==='clear'?'All heroes leave; your next round starts at the current coin maximum.':state.mode==='champion'?'Ten stages complete.':'Stage failed: retry with new packs and restored coins.';
+ refs.buy.disabled=state.mode!=='prep'||state.coins<pack.price||state.testMode;
+ refs.buy.textContent=state.testMode?'Testing mode · free hero picker':state.mode==='prep'?(state.coins<pack.price?'Need '+pack.price+' coins':'◈ Buy '+pack.name+' Pack · '+pack.price+' coins'):'Shop closed during combat';
+ refs.start.disabled=state.mode!=='prep'&&state.mode!=='clear';
+ refs.start.textContent=state.mode==='prep'?'⚔ Start Stage '+state.stage:state.mode==='clear'?(state.testMode?'↻ Return to test prep':'➜ Prepare Stage '+(state.stage+1)):state.mode==='opening'?'✦ Opening packs':state.mode==='battle'?'⚔ Stage in progress':'↻ Retry Stage '+state.stage;
  refs.pause.disabled=state.mode!=='battle';refs.pause.textContent=state.paused?'▶ Resume':'Ⅱ Pause';
  refs.phase.textContent=state.mode==='prep'?(state.testMode?'TEST PREPARATION':'PREPARATION'):state.mode==='opening'?'PACK OPENING':state.mode==='battle'?(state.paused?'PAUSED':state.testMode?'TEST BATTLE':'IN BATTLE'):state.mode==='clear'?'STAGE CLEARED':state.mode==='champion'?'CAMPAIGN COMPLETE':'TOWER FALLEN';
  refs.dot.className='dot '+(state.mode==='battle'?'fighting':state.mode==='clear'?'finished':'');
  refs.battleDetail.textContent=state.mode==='battle'?('Spawned '+state.regularSpawned+'/'+regularCount()+' · '+encounter().boss+' '+(state.bossSpawned?'arrived':'pending')):regularCount()+' '+encounter().minion+' · '+encounter().boss;
- refs.captionLeft.textContent=state.mode==='prep'?'Packs reveal 3 heroes each at battle start':state.mode==='opening'?'Revealing your heroes':state.mode==='battle'?'Heroes guard the tower and use charged specials':state.mode==='clear'?'Stage cleared! All heroes leave.':state.mode==='champion'?'The ten-stage campaign is complete!':'Stage failed — retry available';
- refs.captionRight.textContent=state.testMode?'⚒ DEBUG · NON-PROGRESSION':state.mode==='battle'?'Boss at end · coins refill':'Automatic combat';updateFormation();updateTestingUI()
+ refs.captionLeft.textContent=state.mode==='prep'?'Buy packs; heroes deploy at battle start':state.mode==='opening'?'Revealing your heroes':state.mode==='battle'?'Heroes defend the tower and trigger specials':state.mode==='clear'?'Stage cleared! All heroes leave.':state.mode==='champion'?'The ten-stage campaign is complete!':'Stage failed — retry available';
+ refs.captionRight.textContent=state.testMode?'⚒ DEBUG · NON-PROGRESSION':state.mode==='battle'?'Boss at end · coins refill':'Automatic combat';
+ updateFormation();updateTestingUI();
 }
 
 function offeredPacks(){const unlocked=PACKS.map((p,i)=>i).filter(i=>SKILLS?SKILLS.isTierOpen(i+1):i===0);const limit=Math.min(unlocked.length,Math.max(1,state.shopSlots||1));const offset=unlocked.length?state.shopPage%unlocked.length:0;return Array.from({length:limit},(_,i)=>unlocked[(offset+i)%unlocked.length]);}
