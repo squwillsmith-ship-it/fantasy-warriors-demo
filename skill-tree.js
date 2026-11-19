@@ -72,9 +72,11 @@ const specialStatFields={
 function recalc(){
  if(!api)return;
  const previousMax=api.state.coinMax||12;
+ const priorTowerMax=api.state.towerMax||100;
  const maxTower=100*(1+(generalBonus(1,'G01')?.35:0)+(generalBonus(3,'G01')?.40:0));
  api.state.towerMax=Number(maxTower.toFixed(3));
- api.state.towerHp=Math.min(api.state.towerMax,api.state.towerHp);
+ if(api.state.mode==='prep'&&api.state.towerHp>=priorTowerMax-.001)api.state.towerHp=api.state.towerMax;
+ else api.state.towerHp=Math.min(api.state.towerMax,api.state.towerHp);
  const cap=12+(generalBonus(1,'G04')?4:0)+(generalBonus(2,'G04')?3:0)+(generalBonus(4,'G05')?4:0)+(generalBonus(5,'G05')?5:0)+2*rank('treasury');
  api.state.coinMax=cap;api.state.shopSlots=1+(generalBonus(1,'G05')?1:0)+(generalBonus(2,'G05')?1:0)+(generalBonus(3,'G05')?1:0)+rank('merchant');
  if(api.state.mode==='prep'&&api.state.bought===0&&api.state.coins===previousMax)api.state.coins=cap;
