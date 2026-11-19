@@ -100,6 +100,7 @@ body{background:radial-gradient(ellipse at 50% -25%,#294058 0%,transparent 57%),
 </div>
 <script src="skill-tree-data.js"></script>
 <script src="skill-tree.js"></script>
+<script src="skill-tree-effects.js"></script>
 <script>
 (()=>{'use strict';
 const HEROES=[
@@ -181,7 +182,7 @@ const $=id=>document.getElementById(id);
 const canvas=$('arena'),ctx=canvas.getContext('2d',{alpha:false});
 const refs={stage:$('stageValue'),coins:$('coinValue'),tower:$('towerValue'),hp:$('hpMeter'),kills:$('killValue'),total:$('totalValue'),phase:$('phaseLabel'),dot:$('phaseDot'),battleDetail:$('battleDetail'),count:$('packCount'),buy:$('buyButton'),start:$('stageButton'),pause:$('pauseButton'),restart:$('restartButton'),formation:$('formation'),formationCount:$('formationCount'),events:$('events'),shopTitle:$('shopTitle'),shopDescription:$('shopDescription'),overlay:$('messageOverlay'),messageSymbol:$('messageSymbol'),messageTitle:$('messageTitle'),messageText:$('messageText'),messageButton:$('messageButton'),captionLeft:$('captionLeft'),captionRight:$('captionRight'),modal:$('revealModal'),revealTitle:$('revealTitle'),revealDesc:$('revealDescription'),revealButton:$('revealButton'),sealed:$('sealedPack'),drawGrid:$('drawGrid'),testPanel:$('testingPanel'),testStatus:$('testingStatus'),testToggle:$('testingToggle'),testControls:$('testingControls'),testGrid:$('testingGrid'),specials:$('specialValue'),acquireTune:$('acquireTune'),guardTune:$('guardTune'),chargeTune:$('chargeTune'),testQueueCount:$('testQueueCount'),clearTest:$('clearTestQueue'),packProgress:$('packProgress'),testStage:$('testStage'),treeTiers:$('treeTiers'),revealKicker:$('revealKicker'),revealFoot:$('revealFoot')};
 const state={stage:1,coinMax:12,coins:12,towerHp:100,towerMax:100,shopSlots:1,packQueue:[],shopPage:0,selectedPack:0,currentRevealPack:0,mode:'prep',paused:false,bought:0,packsToOpen:0,heroes:[],enemies:[],effects:[],notifications:[],regularSpawned:0,bossSpawned:false,kills:0,bossKilled:false,elapsed:0,spawnClock:0,uiClock:0,pendingPack:false,openedHeroes:null,testMode:false,testQueue:[],testSavedTowerHp:null,testSavedStage:null,sanctuaries:[],hazards:[],pendingHits:[],totems:[],traps:[],abilityCasts:0,lastTime:0,nextId:1,combatTelemetry:{overlaps:0,targetSwitches:0,blocked:0}};
-const SKILLS=window.FWSkillTree;
+const SKILLS=window.FWSkillTree, SKILLFX=window.FWSkillEffects;
 let view={w:900,h:570,dpr:1,scale:42,worldW:20,worldH:14};
 function rand(a,b){return a+Math.random()*(b-a)}
 function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
@@ -321,13 +322,13 @@ function enemiesInRadius(x,y,r){const rr=r*r;return state.enemies.filter(e=>e.hp
 function pushEnemy(e,fromX,fromY,dist){const dx=e.x-fromX,dy=e.y-fromY,len=Math.max(.01,Math.hypot(dx,dy));e.x=clamp(e.x+dx/len*dist,-view.worldW/2+.8,view.worldW/2-.8);e.y=clamp(e.y+dy/len*dist,-view.worldH/2+.8,view.worldH/2-.8)}
 function pointSegmentDistance(x,y,ax,ay,bx,by){const vx=bx-ax,vy=by-ay;const t=clamp(((x-ax)*vx+(y-ay)*vy)/(vx*vx+vy*vy||1),0,1);return Math.hypot(x-ax-t*vx,y-ay-t*vy)}
 // Numerical secondary effects are temporary demonstrations. Only the basic-attack concepts are approved.
-function hitHero(h,d){if(SKILLS&&isOriginalHero(h))d=SKILLS.guardDamage(h,d);if(h.shield>0){const absorb=Math.min(h.shield,d);h.shield-=absorb;d-=absorb}if(d>0){h.hp=Math.max(0,h.hp-d);h.hitFlash=.11}return d}
+function hitHero(h,d,source){if(SKILLS&&isOriginalHero(h))d=SKILLS.guardDamage(h,d);if(SKILLFX)d=SKILLFX.incoming(h,d,source);if(h.shield>0){const absorb=Math.min(h.shield,d);h.shield-=absorb;d-=absorb}if(d>0){h.hp=Math.max(0,h.hp-d);h.hitFlash=.11}if(SKILLFX)SKILLFX.afterHeroHit(h);return d}
 function spawnSummon(base,atX,atY,kind,duration,ownerId){const s={id:state.nextId++,base,x:atX,y:atY,hp:base.hp,maxHp:base.hp,cooldown:.2,facing:0,charge:0,casts:0,shield:0,invisibleUntil:0,bearUntil:0,blessingUntil:0,frenzyUntil:0,summonKind:kind,ownerId,expiry:state.elapsed+duration,anchorX:atX,anchorY:atY,beamTarget:null};state.heroes.push(s);return s}
 function activeOriginalHeroes(){return state.heroes.filter(h=>h.hp>0&&isOriginalHero(h))}
 function enemyNear(h,r){let best=null,d=r*r;for(const e of state.enemies){if(e.hp<=0)continue;const sq=(e.x-h.x)**2+(e.y-h.y)**2;if(sq<=d){d=sq;best=e}}return best}
 function nearestAllowedEnemy(h){let choice=null,dist=acquireRadius(h)**2;for(const e of state.enemies){if(e.hp<=0)continue;const ds=(h.x-e.x)**2+(h.y-e.y)**2;if(ds>dist)continue;if(Math.hypot(e.x,e.y)>guardRadius(h)+Math.max(0.5,h.base.range))continue;choice=e;dist=ds}return choice}
 function signalSpecial(h,label,r=.9){state.abilityCasts++;h.casts++;h.abilityStatus='active';addEffect({kind:'label',x:h.x,y:h.y-.55,text:label,color:'#fff3bd',life:1.2,maxLife:1.2});visualRing(h.x,h.y,r,h.base.color);log(h.base.name+' used '+label+'!')}
-function castSpecial(h){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return false;const enemy=enemyNear(h,Math.max(acquireRadius(h),h.base.range,5));const otherAllies=state.heroes.filter(a=>a!==h&&a.hp>0&&Math.hypot(a.x-h.x,a.y-h.y)<=(spec.shieldRadius??spec.blessingRadius??3));const duration=(n)=>state.elapsed+n;
+function castSpecial(h){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return false;const enemy=SKILLFX?SKILLFX.specialTarget(h,enemyNear(h,Math.max(acquireRadius(h),h.base.range,5))):enemyNear(h,Math.max(acquireRadius(h),h.base.range,5));const otherAllies=state.heroes.filter(a=>a!==h&&a.hp>0&&Math.hypot(a.x-h.x,a.y-h.y)<=(spec.shieldRadius??spec.blessingRadius??3));const duration=(n)=>state.elapsed+n;
  switch(h.base.id){
  case 'knight':if(!enemy||Math.hypot(enemy.x-h.x,enemy.y-h.y)>2.3)return false;for(const e of enemiesInRadius(h.x,h.y,spec.bashRadius))e.stunnedUntil=duration(spec.bashStunSeconds);signalSpecial(h,'Shield Bash',spec.bashRadius);break;
  case 'archer':if(!enemy)return false;{const targets=enemiesInRadius(enemy.x,enemy.y,spec.volleyRadius);for(const e of targets)hitEnemy(e,spec.volleyDamage,h.base.color);for(let i=0;i<spec.volleyArrowCount;i++){const angle=2*Math.PI*i/spec.volleyArrowCount,r=.25+(i%3)*.33;addEffect({kind:'bolt',x1:h.x,y1:h.y,x2:enemy.x+Math.cos(angle)*r,y2:enemy.y+Math.sin(angle)*r,color:'#a5e1b5',life:.45,maxLife:.45})}visualRing(enemy.x,enemy.y,spec.volleyRadius,'#8acaab')}signalSpecial(h,'Arrow Volley');break;
@@ -345,7 +346,7 @@ function castSpecial(h){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='aut
  case 'dragonkin':if(!enemy)return false;{const dx=enemy.x-h.x,dy=enemy.y-h.y,len=Math.max(.01,Math.hypot(dx,dy));let hits=0;for(const e of state.enemies){if(e.hp<=0)continue;const ex=e.x-h.x,ey=e.y-h.y,dist=Math.hypot(ex,ey),dot=(ex*dx+ey*dy)/(dist*len||1);if(dist<=spec.breathRange&&dot>=Math.cos(spec.breathConeDegrees*Math.PI/360)){hitEnemy(e,spec.breathDamage,'#ffae76');hits++}}if(!hits)return false;visualRing(h.x,h.y,spec.breathRange,'#ff905b')}signalSpecial(h,'Dragon Breath');break;
  default:return false;
  }
- return true;
+ if(SKILLFX)SKILLFX.afterCast(h,enemy,spec);return true;
 }
 function stepSanctuaries(dt){
  const heals=new Map();state.sanctuaries=state.sanctuaries.filter(z=>z.expires>state.elapsed&&state.heroes.some(h=>h.id===z.ownerId&&h.hp>0));
@@ -437,7 +438,7 @@ function targetScore(h,e,focus){
  else if(['mage','barbarian','shaman','druid'].includes(id))role=clamp(state.enemies.filter(other=>other.hp>0&&Math.hypot(e.x-other.x,e.y-other.y)<1.9).length/4,0,1);
  else if(id==='necromancer'&&h.beamTarget===e.id)role=1.1;
  const nearby=Math.max(0,focus-(e.boss?3:1));
- return 4*urgency+2*role+(1-dist/Math.max(.01,acquireRadius(h)))-2*Math.min(2,nearby)/4+((h.id*17+e.id*13)%37)*.0001;
+ return 4*urgency+2*role+(1-dist/Math.max(.01,acquireRadius(h)))-2*Math.min(2,nearby)/4+(SKILLFX?SKILLFX.focusBias(h,e):0)+((h.id*17+e.id*13)%37)*.0001;
 }
 function selectHeroTarget(h,dt){
  h.targetClock=(h.targetClock||0)-dt;
@@ -485,7 +486,7 @@ function heroCombatGoal(h,e){
 
 function stepNecroBeam(h,target,dt){if(!target||target.hp<=0||Math.hypot(target.x-h.x,target.y-h.y)>h.base.range||Math.hypot(h.x,h.y)>guardRadius(h)+.1){h.beamTarget=null;h.beamTime=0;h.beamTickClock=0;return}if(h.beamTarget!==target.id){h.beamTarget=target.id;h.beamTime=0;h.beamTickClock=0}const spec=cfg(h).special;h.beamTime+=dt;h.beamTickClock+=dt;const ticks=Math.floor(h.beamTickClock/spec.beamTickSeconds);if(ticks>0){const n=Math.min(ticks,8);h.beamTickClock-=ticks*spec.beamTickSeconds;const mult=1+(spec.beamMaxRampMultiplier-1)*Math.min(1,h.beamTime/spec.beamRampSeconds);hitEnemy(target,spec.beamBaseDamageRate*spec.beamTickSeconds*n*mult,h.base.color)}}
 function step(dt){if(state.mode!=='battle'||state.paused)return;
- state.elapsed+=dt;state.spawnClock+=dt;state.uiClock+=dt;
+ state.elapsed+=dt;state.spawnClock+=dt;state.uiClock+=dt;if(SKILLFX)SKILLFX.tick(dt);
  if(state.regularSpawned===0){spawnEnemy(false);state.regularSpawned=1;state.spawnClock=0}
  else if(state.regularSpawned<regularCount()&&state.spawnClock>=1){state.spawnClock-=1;spawnEnemy(false);state.regularSpawned++}
  else if(state.regularSpawned===regularCount()&&!state.bossSpawned&&state.spawnClock>=2){spawnEnemy(true);state.bossSpawned=true;log(encounter().boss+' has arrived!')}
@@ -521,12 +522,12 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  for(const e of state.enemies){if(e.hp<=0)continue;if(e.stunnedUntil>state.elapsed)continue;
   let hero=null,closest=TUNING.shared.enemyHeroDetection**2;for(const h of state.heroes){if(h.hp<=0||h.invisibleUntil>state.elapsed)continue;const d=(h.x-e.x)**2+(h.y-e.y)**2;if(d<=closest){hero=h;closest=d}}
   let totem=null,totemDist=Infinity;for(const p of state.totems){const sq=(p.x-e.x)**2+(p.y-e.y)**2;if(sq<=p.radius*p.radius&&sq<totemDist){totem=p;totemDist=sq}}
-  const target=totem||hero||towerApproach(e);const dist=Math.hypot(target.x-e.x,target.y-e.y);
+  const target=totem||hero||towerApproach(e);const dist=Math.hypot(target.x-e.x,target.y-e.y);e.attackingTower=!totem&&!hero&&dist<1.5;
   const reach=totem?actorRadius(e)+.35:hero?actorRadius(e)+actorRadius(hero)+.22:.34;
   if(dist<=reach){e.cooldown-=dt;if(e.cooldown<=0){e.cooldown=1;
-    const damage=e.damage*(e.weakUntil>state.elapsed?.8:1);
+    const damage=e.damage*(e.weakUntil>state.elapsed?.8:1)*(e.weakerUntil>state.elapsed?.8:1);
     if(totem){totem.hp-=damage;visualRing(totem.x,totem.y,.35,'#51dcc0')}
-    else if(hero){const dealt=hitHero(hero,damage);if(dealt>0)damageNumber(hero.x,hero.y-.7,'−'+dealt.toFixed(1),'#ffb6a7');if(hero.hp===0)log('Your '+hero.base.name+' was defeated.')}
+    else if(hero){const dealt=hitHero(hero,damage,e);if(dealt>0)damageNumber(hero.x,hero.y-.7,'−'+dealt.toFixed(1),'#ffb6a7');if(hero.hp===0)log('Your '+hero.base.name+' was defeated.')}
     else{applyTowerDamage(damage);if(state.mode==='over')break}
   }}else if(dist>0){let mult=1;for(const p of state.traps)if(Math.hypot(e.x-p.x,e.y-p.y)<=p.radius){mult=Math.min(mult,p.slow)}takeTowerSafeStep(e,target,dt,e.speed*mult)}else brake(e,dt)
  }
@@ -616,7 +617,7 @@ function init(){
  // The full tree controls available pack offers and persistent progression.
  for(const h of HEROES.filter(h=>h.pack===0)){const div=document.createElement('div');div.className='odd';div.style.setProperty('--hcolor',h.color);div.innerHTML=`<i></i><span class="nm">${h.name}</span><span class="tier">${h.rarity}</span><b>Pool</b>`;$('odds').append(div)}
  for(const p of PACKS){const div=document.createElement('div');div.className='pack-tier';div.textContent=p.name+' Pack';refs.packProgress.append(div)}
- if(SKILLS)SKILLS.connect({state,heroes:HEROES,packs:PACKS,tuning:TUNING,hound:HOUND,undead:UNDEAD,log,refresh:updateUI,restart});
+ if(SKILLS)SKILLS.connect({state,heroes:HEROES,packs:PACKS,tuning:TUNING,hound:HOUND,undead:UNDEAD,log,refresh:updateUI,restart});if(SKILLFX)SKILLFX.connect({state,heroes:HEROES,tuning:TUNING,hitEnemy,pushEnemy,visualRing,nearTower,addEffect});
  for(let i=1;i<=10;i++){const opt=document.createElement('option');opt.value=String(i);opt.textContent='Stage '+i+' — '+ENCOUNTERS[i-1].name;refs.testStage.append(opt)}refs.testStage.addEventListener('change',()=>{if(!state.testMode||state.mode!=='prep')return;state.stage=clamp(Number(refs.testStage.value)||1,1,10);log('Debug stage selected: '+state.stage+' · '+encounter().name);updateUI()})
  for(const h of HEROES){const b=document.createElement('button');b.className='test-hero';b.type='button';b.innerHTML=`<span class="test-icon">${h.glyph}</span><span>${h.name}</span><small>FREE · +1</small>`;b.addEventListener('click',()=>addTestHero(h));refs.testGrid.append(b)}
  for(const [field,key] of [[refs.acquireTune,'acquisitionRange'],[refs.guardTune,'towerGuardRadius'],[refs.chargeTune,'specialChargeSeconds']])field.addEventListener('change',()=>{const v=Number(field.value);if(Number.isFinite(v)&&v>0){TUNING.shared[key]=v;log('Demo tuning updated: '+key+' = '+v);updateUI()}});refs.testToggle.addEventListener('click',toggleTesting);refs.clearTest.addEventListener('click',()=>{if(state.mode!=='prep')return;state.testQueue=[];updateUI()});
