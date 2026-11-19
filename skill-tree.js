@@ -226,6 +226,8 @@ window.FWSkillTree={connect,has:owns,isTierOpen,points:()=>p.up,shards:()=>p.sha
   if(id==='shaman'&&owns('T4-S-S04'))return 1.4;
   return 1;
  },
- legacyIncome:()=>1+rank('insight')*.25
+ legacyIncome:()=>1+rank('insight')*.25,
+ bearBasicDamage:()=>initial?.druid?initial.druid.damage*(1+rank('strength')*.08+(owns('T4-G04')?.35:0)):0,
+ mageSplashDamage:()=>initial?.mage?initial.mage.damage*(1+rank('strength')*.08):0
 };
 })();
