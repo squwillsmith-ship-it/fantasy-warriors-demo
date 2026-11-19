@@ -14,7 +14,7 @@ const legacyPerks=[
  {key:'merchant',name:'Market Charter',icon:'▤',description:'Permanent +1 shop offer slot per rank.',max:3,cost:3}
 ];
 const K='fantasy-warriors-skilltree-1.1';
-const defaultSave=()=>({up:0,upRemainder:0,nodes:[],kills:{},packOpens:{},highestClear:0,runWins:0,tierWins:{},gateways:[],resets:0,shards:0,legacy:{},stats:{}}); 
+const defaultSave=()=>({up:0,upRemainder:0,nodes:[],kills:{},packOpens:{},highestClear:0,runHighest:0,runWins:0,tierWins:{},gateways:[],resets:0,shards:0,legacy:{},stats:{}}); 
 function load(){try{const p=JSON.parse(localStorage.getItem(K));if(p&&Array.isArray(p.nodes))return Object.assign(defaultSave(),p);}catch(e){}return defaultSave();}
 let p=load(),api=null,active='tree',selected='T1-ROOT',initial=null,initialSpecials=null,initialSummons=null;
 const $=id=>document.getElementById(id);
@@ -120,16 +120,16 @@ function recordKill(heroId){if(!api||api.state.testMode)return;
  save();updateLabels();
 }
 function recordPack(packIndex){if(!api||api.state.testMode)return;p.packOpens[packIndex]=(p.packOpens[packIndex]||0)+1;save();updateLabels();}
-function recordWin(stage){if(!api||api.state.testMode)return;addUP(6);p.runWins++;p.highestClear=Math.max(p.highestClear,stage);
+function recordWin(stage){if(!api||api.state.testMode)return;addUP(6);p.runWins++;p.highestClear=Math.max(p.highestClear,stage);p.runHighest=Math.max(p.runHighest||0,stage);
  for(let t=1;t<=5;t++)if(isTierOpen(t))p.tierWins[t]=(p.tierWins[t]||0)+1;
  save();updateLabels();
 }
 function notify(){if($('skillModal')?.classList.contains('active'))draw();updateLabels();}
 function prestige(){
  if(!api||api.state.mode!=='prep'||api.state.testMode||p.runWins===0)return;
- const reward=Math.max(1,Math.floor(Math.max(1,p.highestClear)/2));
+ const reward=Math.max(1,Math.floor(Math.max(1,p.runHighest||0)/2));
  if(!confirm('Voluntarily reset stage and ordinary upgrades for '+reward+' permanent Legacy Shards? Earned class kills, pack quests, and permanent tier gateways are kept.'))return;
- p.resets++;p.shards+=reward;p.up=0;p.upRemainder=0;p.nodes=[];p.tierWins={};p.runWins=0;
+ p.resets++;p.shards+=reward;p.up=0;p.upRemainder=0;p.nodes=[];p.tierWins={};p.runWins=0;p.runHighest=0;
  progressGate();save();api.restart();recalc();draw();updateLabels();api.log('Prestige '+p.resets+': +'+reward+' permanent Shards.');
 }
 function buyLegacy(key){if(!api||api.state.mode!=='prep'||api.state.testMode)return;const def=legacyPerks.find(x=>x.key===key);if(!def)return;const level=rank(key),cost=def.cost+level;if(level>=def.max||p.shards<cost)return;p.shards-=cost;p.legacy[key]=level+1;save();recalc();draw();updateLabels();}
@@ -172,7 +172,7 @@ function details(){
  $('skillBuy').addEventListener('click',()=>purchase(n.id));
 }
 function renderLegacy(){
- const pane=$('skillPane');if(!pane)return;const reward=Math.max(1,Math.floor(Math.max(1,p.highestClear)/2));
+ const pane=$('skillPane');if(!pane)return;const reward=Math.max(1,Math.floor(Math.max(1,p.runHighest||0)/2));
  pane.innerHTML='<div class="fw-legacy-intro"><h3>Permanent Legacy Tree</h3><p>Voluntary resets earn Legacy Shards. Permanent upgrades survive future resets. The source design leaves exact amounts and scope open; these are adjustable test values.</p><div class="fw-legacy-balance">◈ '+p.shards+' Shards · '+p.resets+' resets</div><button type="button" class="fw-action" id="fwPrestige" '+(!api||api.state.mode!=='prep'||api.state.testMode||p.runWins===0?'disabled':'')+'>⟲ Prestige reset · earn '+reward+' Shards</button></div>'+
  '<div class="fw-legacy-list">'+legacyPerks.map(x=>{const level=rank(x.key),price=x.cost+level;return '<div class="fw-perk"><div class="fw-perk-icon">'+x.icon+'</div><div class="fw-perk-body"><b>'+escapeHTML(x.name)+'</b><small>'+escapeHTML(x.description)+'</small><span>Rank '+level+'/'+x.max+'</span></div><button type="button" data-perk="'+x.key+'" '+(level>=x.max||p.shards<price||api.state.mode!=='prep'||api.state.testMode?'disabled':'')+'>'+(level>=x.max?'MAX':price+' ◈')+'</button></div>'}).join('')+'</div>'+
  '<div class="fw-legacy-foot">Permanent older-class evolution branches are an approved direction but their exact nodes and abilities are not specified; no invented classes are added.</div>';
