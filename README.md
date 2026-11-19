@@ -1,9 +1,17 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.4 · Gameplay Manifesto v1.1.3** (19 November 2026)
+**Build 1.0.5 · Gameplay Manifesto v1.1.4** (19 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.4
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.5
 
+
+## New in Build 1.0.5 — Pack and Combat Adjustments
+
+- Every purchased hero pack now draws and deploys **one** random hero, from the same three-class pool. Pack prices and five-tier unlocks are unchanged; one pack still counts as one opening toward skill-tree tasks.
+- The shared **hero target acquisition distance is 15 units**, up from 4. The independent **tower guard/chase limit remains 5 units**: heroes don't run across the map simply because they detect a distant enemy. Basic attack ranges remain class-specific.
+- **Ranged/support heroes no longer kite or backpedal.** They advance if the selected enemy is outside attack range, but stop and hold their current position once able to attack. Without a target, they hold rather than walking back to their original anchor. Melee behaviour is unchanged.
+- Normal enemy HP is halved **22 → 11**. Boss HP and enemy movement/attack parameters are unchanged. Standard enemies still spawn every two seconds and the boss waits until every minion is defeated.
+- Local saves, all 205 skill nodes, UP drop odds and pack-opening task counters remain compatible.
 
 ## New in Build 1.0.4 — Godot-friendly code structure
 
@@ -49,7 +57,7 @@ Verification: JavaScript compiled, and in-memory browser-style interaction tests
 
 ## Existing gameplay (Build 0.9 and earlier)
 
-- Five pack types and a 15-hero roster. Recruit Packs cost 2 coins and each purchased pack produces three temporary heroes.
+- Five pack types and a 15-hero roster. Recruit Packs cost 2 coins and each purchased pack produces one temporary hero.
 - Interactive vertical **205-node skill tree** with class-specific minion kill challenges, ordinary Upgrade Points, shop offer slots, and provisional purchase/gateway prices.
 - Permanent Legacy upgrades and voluntary prestige resets, all with explicitly **provisional demo costs and effects**.
 - Ten stages with distinct featured minions and bosses, 14 automatically charged specials, Necromancer's event-triggered Raise the Fallen, collision-aware spatial combat and the free Testing Shop.
