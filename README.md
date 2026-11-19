@@ -1,9 +1,17 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.7 · Gameplay Manifesto v1.1.5** (19 November 2026)
+**Build 1.0.8 · Gameplay Manifesto v1.1.6** (19 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.7
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.8
 
+
+## New in Build 1.0.8 — Lower HP and minion first-attack wind-up
+
+- All **15 hero classes** now have half their previous base health, rounded to the nearest whole number. Recruit examples: Knight **37.5 → 19**, Archer **24 → 12**, Mage **27.5 → 14**. Allied summons are also halved: hound **18 → 9**, undead **13 → 7**.
+- Standard enemy minions: **11 → 6 HP**. All bosses: **round((90 + 15 × (stage − 1)) / 2)**; Stage 1 King Slime **45 HP**, Stage 2 Giant Plant **53 HP**, Stage 3 Orc Warlord **60 HP**, Stage 10 Eldritch Horror **113 HP**.
+- Normal minions have a **0.65-second attack wind-up** upon first entering reach, or after leaving and re-entering reach. After their first hit, they still hit at most once every **1 second**. Boss attacks are unchanged. Several minions can still threaten one hero together.
+- Hero and enemy damage, swing speeds, tower health, skill tree, kill quests, coin progression, stage waves, 10%/5-UP rewards and permanent saves are unchanged.
+- Testing-only debug enemies optionally accept a damage value for contact-timing regression tests.
 
 ## New in Build 1.0.7 — Live Hero Kill Quest Journal
 
