@@ -495,7 +495,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  state.totems=state.totems.filter(p=>p.hp>0&&p.expires>state.elapsed);
  for(const h of state.heroes){if(h.hp<=0)continue;if(h.expiry<=state.elapsed){h.hp=0;continue}if(h.shieldUntil>0&&h.shieldUntil<state.elapsed)h.shield=0;
   if(!isOriginalHero(h)){
-   h.cooldown-=dt;let enemy=null,best=Infinity,rangeDistance=Infinity;for(const e of state.enemies){if(e.hp<=0)continue;const actual=Math.hypot(e.x-h.x,e.y-h.y);let d=actual;if(h.summonKind==='hound'&&e.beastFocus>state.elapsed)d*=.35;if(SKILLFX)d+=SKILLFX.summonPriority(h,e);if(d<best&&Math.hypot(e.x,e.y)<TUNING.shared.towerGuardRadius+1){best=d;rangeDistance=actual;enemy=e}}
+   h.cooldown-=dt;let enemy=null,best=Infinity,rangeDistance=Infinity;for(const e of state.enemies){if(e.hp<=0)continue;const actual=Math.hypot(e.x-h.x,e.y-h.y);let d=actual;if(h.summonKind==='hound'&&e.beastFocus>state.elapsed)d*=.35;if(SKILLFX)d+=SKILLFX.summonPriority(h,e);if(d<best&&Math.hypot(e.x,e.y)<TUNING.shared.towerGuardRadius+(h.summonKind==='hound'&&SKILLS?.has('T5-BM-T01')?-.20:1)){best=d;rangeDistance=actual;enemy=e}}
    if(enemy){h.facing=Math.atan2(enemy.y-h.y,enemy.x-h.x)+Math.PI/2;if(rangeDistance>h.base.range)moveToPoint(h,enemy,dt);else if(h.cooldown<=0){h.cooldown=1/(h.base.speed*(h.alphaBuffUntil>state.elapsed?1.2:1));hitEnemy(enemy,h.base.damage,h.base.color);visualBeam(h,enemy)}}continue;
   }
   const tc=cfg(h),isBear=h.base.id==='druid'&&h.bearUntil>state.elapsed;
@@ -536,7 +536,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  resolveActorCollisions();
  // Process deaths after all attacks; event-based necromancy is an on-kill event, never timed or random.
  for(let i=state.enemies.length-1;i>=0;i--){const e=state.enemies[i];if(e.hp<=0){if(e.boss){state.bossKilled=true;log(encounter().boss+' defeated!')}
-    if(e.doom){visualRing(e.x,e.y,1.6,'#be86df');for(const other of enemiesInRadius(e.x,e.y,1.6))if(other!==e)hitEnemy(other,1.2,'#ca91ef')}
+    if(e.doom){const doomRadius=1.6*(SKILLS?.has('T4-W-S04')?1.4:1);visualRing(e.x,e.y,doomRadius,'#be86df');for(const other of enemiesInRadius(e.x,e.y,doomRadius))if(other!==e)hitEnemy(other,1.2,'#ca91ef')}
     if(!e.boss&&SKILLS)SKILLS.recordKill(e.lastHitHero||null);onEnemyDeath(e);state.kills++;state.enemies.splice(i,1)}}
  state.heroes=state.heroes.filter(h=>h.hp>0);
  if(state.bossSpawned&&state.kills===totalCount()&&state.enemies.length===0){clearStage();return}
