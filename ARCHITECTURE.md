@@ -52,7 +52,8 @@ Existing testing hooks (`window.__FW_DEMO__`, `window.__FW_TEST__`, `window.__FW
 - One Recruit Pack reveals exactly **one** hero and enters an ordinary stage; six Recruit Packs at the 12-coin cap deploy six heroes.
 - Testing Shop still spawns selected heroes without granting saved progression.
 - Shared hero acquisition is **15 units**, tower guard/chase remains **5 units**, and ranged units hold their position when a target is in attack reach.
-- Standard minions have **11 HP** rather than the former 22 HP; boss health is unaffected.
+- Standard minions have **6 HP** rather than 11. All boss HP is rounded to half the previous stage-scaled value (Stage 1: 45).
+- All 15 heroes and both allied summon types have their base HP halved and rounded. Normal minions have a **0.65-second** wind-up when they enter contact range; subsequent attacks use their prior one-second interval. Boss attack timing is unchanged.
 - Minions spawn every **2 seconds** and boss waits until all ordinary minions are defeated, then **2 seconds** more.
 - Ordinary enemy defeats have a **10% independent** 1-UP drop chance; bosses guarantee **5 UP**.
 - Hero engagement locking, tower collision and class special attacks still work.
