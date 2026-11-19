@@ -1,9 +1,18 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.6 · Gameplay Manifesto v1.1.5** (19 November 2026)
+**Build 1.0.7 · Gameplay Manifesto v1.1.5** (19 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.6
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.7
 
+
+## New in Build 1.0.7 — Live Hero Kill Quest Journal
+
+- **Quest Journal** in the main sidebar shows live standard-minion kill counts and progress bars for Knight, Archer and Mage, plus expandable details for the twelve higher-tier classes.
+- Shows each quest's target and the **permanent +2 max-coin reward**. Rewards are based on existing saved kill ledgers and remain available after retries, run restarts, prestige and reloads.
+- **Tap any quest** to jump directly to its corresponding gate in the 205-node Skill Tree, including locked tiers (which show their status).
+- Clearly marks Testing Shop battles as **non-progressing**. The other-tier kill thresholds are still draft values; Recruit challenges remain 5 kills each.
+- No change to the approved rules: starting coin cap is 2, one hero per 2-coin Recruit Pack, 11-HP minions, 2-second spawn cadence, boss after the cleared wave, 10% minion-UP chance and guaranteed 5-UP boss drop.
+- Verified via JavaScript simulations: 15 quest records, Knight 5/5 granting +2 coin cap (2 → 4), skill-tree deep link, live journal rendering and module syntax.
 
 ## New in Build 1.0.6 — Class kill challenges earn coin capacity
 
