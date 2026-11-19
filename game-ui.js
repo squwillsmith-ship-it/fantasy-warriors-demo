@@ -58,9 +58,9 @@ function updateQuests(){
   const pct=100*Math.min(1,q.kills/q.goal),earned=q.rewarded,locked=!q.available;
   const status=earned?'✓ +2 permanently earned':locked?'Tier '+q.tier+' locked':'Earn +2 max coins';
   const stateClass=earned?'complete':locked?'sealed':'incomplete';
-  return '<div class="quest-item '+stateClass+'"><div class="quest-row"><div class="quest-identity"><strong>'+escape(q.className)+'</strong><small>'+escape(q.questName)+'</small></div><span class="quest-progress">'+Math.min(q.kills,q.goal)+' / '+q.goal+'</span></div>'+
+  return '<button type="button" class="quest-item '+stateClass+'" data-quest="'+escape(q.heroId)+'" aria-label="Open '+escape(q.className)+' kill quest in skill tree"><div class="quest-row"><div class="quest-identity"><strong>'+escape(q.className)+'</strong><small>'+escape(q.questName)+'</small></div><span class="quest-progress">'+Math.min(q.kills,q.goal)+' / '+q.goal+'</span></div>'+
    '<div class="quest-track" role="progressbar" aria-label="'+escape(q.className)+' minion kills" aria-valuemin="0" aria-valuemax="'+q.goal+'" aria-valuenow="'+Math.min(q.kills,q.goal)+'"><span style="width:'+pct.toFixed(1)+'%"></span></div>'+
-   '<div class="quest-reward">'+escape(status)+'</div></div>';
+   '<div class="quest-reward">'+escape(status)+'</div></button>';
  };
  root.innerHTML=early.map(row).join('');
  other.innerHTML=[2,3,4,5].map(t=>'<div class="quest-tier-heading">Tier '+t+' · '+escape(quests.find(q=>q.tier===t)?.tierName||'')+'</div>'+quests.filter(q=>q.tier===t).map(row).join('')).join('');
