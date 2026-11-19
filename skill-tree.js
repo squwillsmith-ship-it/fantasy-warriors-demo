@@ -71,6 +71,15 @@ const specialStatFields={
  necromancer:['beamMaxRampMultiplier','undeadHealth'],
  dragonkin:[null,'breathConeDegrees']
 };
+// Live, read-only status for all fifteen hero-class kill challenges.
+function questProgress(){
+ return data.nodes.filter(n=>n.kind==='gate').map(n=>{
+  const heroId=classIds[n.tier-1][n.heroIndex];
+  return {id:n.id,heroId,className:data.classes[n.tier-1][n.heroIndex],questName:n.name,
+   tier:n.tier,tierName:data.tiers[n.tier-1],goal:n.goal,kills:p.kills[heroId]||0,
+   available:isTierOpen(n.tier),rewarded:has(n),rewardCoins:COINS_PER_CLASS_GATE};
+ });
+}
 function recalc(){
  if(!api)return;
  const previousMax=api.state.coinMax??BASE_MAX_COINS;
@@ -286,7 +295,7 @@ function connect(opts){
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('skillModal').classList.contains('active')){$('skillModal').hidden=true;$('skillModal').classList.remove('active')}});
  updateLabels();
 }
-window.FWSkillTree={connect,has:owns,isTierOpen,points:()=>p.up,shards:()=>p.shards,shopSlots:()=>api?.state.shopSlots||1,recordKill,recordPack,recordWin,prestige,recalc,notify,rate:specialRate,
+window.FWSkillTree={connect,has:owns,isTierOpen,questProgress,points:()=>p.up,shards:()=>p.shards,shopSlots:()=>api?.state.shopSlots||1,recordKill,recordPack,recordWin,prestige,recalc,notify,rate:specialRate,
  debug:()=>JSON.parse(JSON.stringify(p)),purchase,nodes:data.nodes,backupPayload,normalizeBackup,checkpointStage,markRestart,resumeStage, 
  heroBonus:(h,e)=>{
   let extra=1;
