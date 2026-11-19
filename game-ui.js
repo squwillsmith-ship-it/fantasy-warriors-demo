@@ -62,18 +62,18 @@ function updateUI(){
  refs.total.textContent=String(totalCount());
  updateWaveTracker();
  const packs=state.packQueue.length?state.packQueue.reduce((a,i)=>(a[PACKS[i].name]=(a[PACKS[i].name]||0)+1,a),{}):{};
- refs.count.textContent=state.bought+' packs held · '+(Object.entries(packs).map(([k,v])=>v+' '+k).join(' · ')||'3 heroes each');
+ refs.count.textContent=state.bought+' packs held · '+(Object.entries(packs).map(([k,v])=>v+' '+k).join(' · ')||'1 hero each');
  $('coinCapNote').textContent='Current maximum '+state.coinMax+' coins; upgrade it in the skill tree.';
  const shopKey=offers.join(',')+'|'+offer+'|'+state.shopSlots+'|'+state.mode+'|'+state.testMode;
  if(state.shopCacheKey!==shopKey){
   state.shopCacheKey=shopKey;
   $('packOfferButtons').innerHTML=offers.map(i=>'<button type="button" class="btn secondary compact" data-pack="'+i+'" '+(state.mode!=='prep'||state.testMode?'disabled':'')+' style="flex:1;min-width:120px;'+(offer===i?'border-color:#f4d392;background:#344b4c;':'')+'">'+PACKS[i].name+' · '+PACKS[i].price+'◈</button>').join('');
-  $('liveShopSlots').innerHTML=Array.from({length:Math.min(5,state.shopSlots)},(_,idx)=>'<div class="shop-slot '+(idx<offers.length?'available':'locked')+'"><span>✦ Slot '+(idx+1)+'</span><strong>'+(idx<offers.length?PACKS[offers[idx]].name+' Pack · 3 units':'No additional offer')+'</strong></div>').join('');
+  $('liveShopSlots').innerHTML=Array.from({length:Math.min(5,state.shopSlots)},(_,idx)=>'<div class="shop-slot '+(idx<offers.length?'available':'locked')+'"><span>✦ Slot '+(idx+1)+'</span><strong>'+(idx<offers.length?PACKS[offers[idx]].name+' Pack · 1 hero':'No additional offer')+'</strong></div>').join('');
   $('packProgress').innerHTML=PACKS.map((p,i)=>'<div class="pack-tier"><b>'+p.name+' Pack</b> · '+(SKILLS?.isTierOpen(i+1)?'UNLOCKED · '+p.price+' coins':'LOCKED · Tier '+(i+1)+' gateway')+'<small>'+p.pool.map(k=>HERO_MAP[k].name).join(' · ')+'</small></div>').join('');
  }
  $('rotateShop').disabled=state.mode!=='prep'||state.testMode||PACKS.filter((_,i)=>SKILLS?.isTierOpen(i+1)).length<=offers.length;
  refs.shopTitle.textContent=state.mode==='prep'?'Hero Pack Shop':state.mode==='opening'?'Opening Packs':state.mode==='battle'?'Battle Underway':state.mode==='clear'?'Stage Complete':state.mode==='champion'?'Campaign Complete':'Stage Failed';
- refs.shopDescription.textContent=state.mode==='prep'?'Buy unlocked packs (3 random units each). Shop prices and offer rotation for later tiers are provisional test values.':state.mode==='opening'?'Three heroes emerge from each purchased pack.':state.mode==='battle'?'Heroes defend automatically; coin budget refills after this attempt.':state.mode==='clear'?'All heroes leave; your next round starts at the current coin maximum.':state.mode==='champion'?'Ten stages complete.':'Stage failed: retry with new packs and restored coins.';
+ refs.shopDescription.textContent=state.mode==='prep'?'Buy unlocked packs (1 random hero each). Shop prices and offer rotation for later tiers are provisional test values.':state.mode==='opening'?'One hero emerges from each purchased pack.':state.mode==='battle'?'Heroes defend automatically; coin budget refills after this attempt.':state.mode==='clear'?'All heroes leave; your next round starts at the current coin maximum.':state.mode==='champion'?'Ten stages complete.':'Stage failed: retry with new packs and restored coins.';
  refs.buy.disabled=state.mode!=='prep'||state.coins<pack.price||state.testMode;
  refs.buy.textContent=state.testMode?'Testing mode · free hero picker':state.mode==='prep'?(state.coins<pack.price?'Need '+pack.price+' coins':'◈ Buy '+pack.name+' Pack · '+pack.price+' coins'):'Shop closed during combat';
  refs.start.disabled=state.mode!=='prep'&&state.mode!=='clear';
