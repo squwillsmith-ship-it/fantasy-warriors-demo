@@ -49,3 +49,29 @@ body{background:radial-gradient(ellipse at 50% -25%,#294058 0%,transparent 57%),
 .battle-message .message-box h2{font-size:clamp(22px,3vw,30px)}
 .battle-message .message-box p{font-size:12px;line-height:1.4;margin-bottom:8px}
 @media(max-width:500px){.wave-tracker{top:49px;left:8px;right:8px;padding:6px 7px}.wave-row{font-size:9px}.wave-row strong{font-size:9px}.wave-row.secondary{font-size:9px}.wave-meter{height:4px;margin-top:4px}.battle-report b{font-size:14px}.battle-report span{font-size:8px}.battle-message{padding:8px}}
+
+
+/* Build 1.0.7 — quest journal */
+.quest-panel{border-color:#6e836a}
+.quest-summary{background:#1d3b40;border:1px solid #60877a;color:#d5e8d4;border-radius:9px;padding:9px 11px;font-size:12px;font-weight:750;margin-bottom:11px;line-height:1.5}
+.quest-list{display:grid;gap:8px}
+.quest-item{background:#122636;border:1px solid #3c5565;border-radius:10px;padding:10px 11px;min-width:0}
+.quest-item.complete{border-color:#4c896e;background:#18372f}
+.quest-item.sealed{opacity:.78}
+.quest-row{display:flex;align-items:center;justify-content:space-between;gap:7px}
+.quest-identity{display:flex;flex-direction:column;gap:2px;min-width:0}
+.quest-identity strong{font-size:13px;color:#f4dfb5}
+.quest-identity small{font-size:10px;color:#adc2c9;line-height:1.35}
+.quest-progress{font-size:12px;font-weight:850;color:#f5db9f;white-space:nowrap;font-variant-numeric:tabular-nums}
+.quest-track{height:6px;overflow:hidden;border-radius:8px;background:#3a5360;margin-top:8px}
+.quest-track>span{display:block;height:100%;background:linear-gradient(90deg,#88b992,#b4e2ae);transition:width .15s}
+.quest-item.complete .quest-track>span{background:linear-gradient(90deg,#7fbc98,#ccefc2)}
+.quest-reward{font-size:10px;font-weight:700;color:#a8cfc0;margin-top:5px}
+.quest-item.complete .quest-reward{color:#ace5b3}
+.quest-advanced{border-top:1px solid #456177;margin-top:12px;padding-top:9px}
+.quest-advanced summary{cursor:pointer;color:#eed3a2;font-size:12px;font-weight:800;padding:7px 2px;min-height:34px}
+.quest-advanced summary:focus-visible{outline:2px solid #f5d69b;border-radius:5px}
+.quest-advanced[open] summary{margin-bottom:9px}
+.quest-tier-heading{font-size:11px;color:#f2d3a4;letter-spacing:.04em;font-weight:850;padding:9px 0 1px}
+.quest-mode-hint{color:#a8c4c8;font-size:11px;line-height:1.45;margin:12px 0 0}
+@media(max-width:500px){.quest-panel{padding:14px}.quest-item{padding:9px 10px}.quest-summary{font-size:11px}}
