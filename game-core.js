@@ -285,7 +285,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
   const dist=Math.hypot(target.x-h.x,target.y-h.y),attackRange=(isBear?1.15:h.base.range)+(target.boss&&h.base.range<=2.15?.4:0);
   h.facing=Math.atan2(target.y-h.y,target.x-h.x)+Math.PI/2;
   const goal=heroCombatGoal(h,target);
-  if(goal&&dist>attackRange-.02){h.attackState='approach';h.windupTime=0;moveToPoint(h,goal,dt);if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);continue}
+  if(goal&&dist>attackRange-(h.base.range>2.15?0:.02)){h.attackState='approach';h.windupTime=0;moveToPoint(h,goal,dt);if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);continue}
   if(goal&&h.base.range<=2.15&&Math.hypot(goal.x-h.x,goal.y-h.y)>.15)moveToPoint(h,goal,dt*.7);else brake(h,dt);
   if(h.base.id==='necromancer'){h.attackState='channel';h.engagedTargetId=target.id;stepNecroBeam(h,target,dt);continue}
   const cycle=1/(h.base.speed*(h.frenzyUntil>state.elapsed?cfg(h).special.frenzyAttackSpeedMultiplier:1));
