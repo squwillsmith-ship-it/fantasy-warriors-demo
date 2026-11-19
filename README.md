@@ -1,23 +1,23 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 0.7 · Master Gameplay Manifesto v1.0.1** (19 November 2026)
+**Build 0.8 · Gameplay Manifesto v1.1.0** (19 November 2026)
 
-**Play (iPhone and desktop):** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=0.7
+**Play:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=0.8
 
-## New in Build 0.7
-- **Updated 15-hero balance:** all hero core HP values HALVED and base basic-attack damages DOUBLED from the v0.21.0 baseline, preserving fractional stats. Walk speed and attacks/second are unchanged.
-- **Nun — Sanctuary Prayer:** the previously missing 14th auto-charged special. When charged and a nearby allied hero needs healing, she creates a temporary healing circle centred on herself. It restores health gradually while the affected ally stays inside. Radius, duration and healing rate are tunable **demo placeholders**, not final specifications. Does not heal the tower, and overlapping circles currently do not stack.
-- **Necromancer beam** starts at **8.4 damage × 0.50 attacks/sec = 4.2 HP/sec**, before its existing configurable ramp.
-- **Exactly 10 stages**, ending with campaign completion after Stage 10. The ten stage minion/boss identity pairs follow the Master Manifesto. Stages 1–3 are selected identities; 4–10 are provisional. They have distinct names, colors and glyphs. Until individual combat patterns are approved, they share the explicit generic provisional enemy/boss combat values and spawning formula.
-- **Five-tier skill tree structure preview**: a read-only vertical tree with hero branches, general branches and proposed gateways. It does **not** charge currencies, unlock upgrades or perform prestige resets, because costs, effects, persistence and gateway rules remain drafts.
-- **Testing Shop stage selector:** playtest any of the 10 stage rosters with any free hero combination without changing the normal campaign stage when testing mode is disabled.
-- Updated the stage HUD, fight log and hero reveal stat cards. Existing mobile controls, three-unit Recruit Packs, 12-coin refill economy, tower-defence AI, stage retries and other 13 specials remain.
+## Build 0.8 — Spatial Combat
+- **Collision-aware actors:** separate hero, enemy and boss footprints; local grid neighbour resolution keeps units apart without moving the tower.
+- **Solid tower for enemies too:** enemy pathing now routes around the tower's perimeter to an outside attack position. Multiple enemies approach different positions.
+- **Melee engagement slots:** defenders reserve positions around enemies instead of attempting to occupy the same spot.
+- **Ranged standoff:** archers and spellcasters retain attack range but avoid crowding into melee.
+- **Stable target assignment:** staggered decisions every ~0.25 seconds, threat scoring, soft overfocus penalties and target commitment rather than per-frame nearest-only changes.
+- **Approach braking and simple attack phases:** smooth steering, brief wind-ups and cosmetic hit flashes, without altering approved base attack values.
+- **All previously implemented systems retained:** 15 class stats, 14 timed specials and Necromancer's event-driven summoning, testing shop, 3-hero Recruit Packs, 10-stage encounters and coin refill.
 
-## Current limitations
-The specific 205 candidate skill nodes and four dual-route gateways remain **proposals only**; ordinary upgrade-currency earnings and prestige reset formulas are not settled. Advanced pack prices, shop offer rotation, class draw odds and more are undecided, so normal purchases still offer the Recruit Pack only. Unique boss combat mechanics and per-stage balance are not final. These planned mechanics are **not** falsely marked playable.
+## Testing
+Browser-tested at 390px and 1280px. Six Recruit Packs deployed 18 units. Stage 1 enemy progression produced no JavaScript exceptions, tower clipping or persistent overlapping centres in the automated scenarios. Stage 10 with 18 all-melee test heroes and dense enemies also produced no script errors or tower clipping.
 
-## Testing performed
-In-browser mobile checks verified six purchased Recruit Packs revealing 18 units, all 15 updated core hero statistics, Nun's auto-charge/READY and heal-over-time behaviour, debug-only Stage 10 selection, and campaign completion / restart without advancing to Stage 11. No JavaScript exceptions were detected.
+## Remaining design work
+The proposed 205 skill nodes, prestige gateway cost/persistence rules, higher-tier shop offers, individual boss mechanics, and many numeric ability effects remain unapproved for playable implementation. Combat AI thresholds are **editable demo-only defaults**, not locked game balance.
 
 ## Hosting
-Standalone HTML5 file (`index.html`). GitHub Pages publishes from `main` / `(root)`. Use the versioned URL above to bypass stale Safari caches.
+One self-contained `index.html` file, published via GitHub Pages from `main` / `(root)`. Use the versioned URL above to avoid mobile Safari cache.
