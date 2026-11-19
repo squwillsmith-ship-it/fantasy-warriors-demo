@@ -252,8 +252,8 @@ function meleeSlotGoal(h,e){
  if(candidates.length===0)return null;
  candidates.sort((a,b)=>a.score-b.score);const v=candidates[0];h.slotIndex=v.j;h.slotTarget=e.id;return{x:v.x,y:v.y};
 }
-function heroCombatGoal(h,e){
- const dist=Math.max(.01,Math.hypot(e.x-h.x,e.y-h.y)),range=h.base.range;
+function heroCombatGoal(h,e,isMeleeForm=false){
+ const dist=Math.max(.01,Math.hypot(e.x-h.x,e.y-h.y)),range=isMeleeForm?1.15:h.base.range;
  if(range<=2.15)return meleeSlotGoal(h,e);
  // Ranged and support heroes hold their current position whenever the target is in attack range.
  // No defensive kiting, backpedalling or standoff repositioning when an enemy approaches.
@@ -284,9 +284,9 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
   if(!target){h.attackState='idle';h.windupTime=0;h.slotIndex=-1;h.slotTarget=null;if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);if(h.base.range<=2.15&&Math.hypot(h.x-h.anchorX,h.y-h.anchorY)>.52)moveToPoint(h,{x:h.anchorX,y:h.anchorY},dt);else brake(h,dt);continue}
   const dist=Math.hypot(target.x-h.x,target.y-h.y),attackRange=(isBear?1.15:h.base.range)+(target.boss&&h.base.range<=2.15?.4:0);
   h.facing=Math.atan2(target.y-h.y,target.x-h.x)+Math.PI/2;
-  const goal=heroCombatGoal(h,target);
-  if(goal&&dist>attackRange-(h.base.range>2.15?0:.02)){h.attackState='approach';h.windupTime=0;moveToPoint(h,goal,dt);if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);continue}
-  if(goal&&h.base.range<=2.15&&Math.hypot(goal.x-h.x,goal.y-h.y)>.15)moveToPoint(h,goal,dt*.7);else brake(h,dt);
+  const goal=heroCombatGoal(h,target,isBear);
+  if(goal&&dist>attackRange-(!isBear&&h.base.range>2.15?0:.02)){h.attackState='approach';h.windupTime=0;moveToPoint(h,goal,dt);if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);continue}
+  if(goal&&(h.base.range<=2.15||isBear)&&Math.hypot(goal.x-h.x,goal.y-h.y)>.15)moveToPoint(h,goal,dt*.7);else brake(h,dt);
   if(h.base.id==='necromancer'){h.attackState='channel';h.engagedTargetId=target.id;stepNecroBeam(h,target,dt);continue}
   const cycle=1/(h.base.speed*(h.frenzyUntil>state.elapsed?cfg(h).special.frenzyAttackSpeedMultiplier:1));
   if(h.windupTime>0){h.windupTime-=dt;h.attackState='windup';if(h.windupTime>0)continue;
