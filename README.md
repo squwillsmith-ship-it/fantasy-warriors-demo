@@ -1,8 +1,14 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.1 · Gameplay Manifesto v1.1.2** (19 November 2026)
+**Build 1.0.2 · Gameplay Manifesto v1.1.3** (19 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.1
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.2
+
+## New in Build 1.0.2 — Wave Pacing
+
+- Normal minions spawn at **half the previous rate**: **one every 2 seconds**, starting with the first minion immediately after the battle begins.
+- The unique stage boss waits until **all standard minions have actually been defeated**, not simply spawned. A **2-second intermission after the last minion death** then precedes boss arrival.
+- Counts, enemy movement speeds, ten-stage clear conditions and Upgrade Point rewards stay unchanged.
 
 ## New in Build 1.0.1 — Upgrade Point drops
 
