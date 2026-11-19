@@ -155,7 +155,7 @@ function tierPanel(t){
   '<div class="fw-spine"><div class="fw-lane-title">Main path</div>'+nodeButton(root)+'<div class="fw-spine-line"></div>'+nodeButton(m1)+'<div class="fw-spine-line"></div>'+nodeButton(exit)+'</div>'+
   classIds[t-1].map((_,i)=>lane(t,heroCode(t,i),i)).join('')+'</div></section>';
 }
-function renderTree(){const pane=$('skillPane');if(!pane)return;
+function renderTree(){const pane=$('skillPane');if(!pane)return;const savedTop=pane.scrollTop,savedLeft=pane.scrollLeft;
  pane.innerHTML='<div class="fw-tree-guide">Swipe sideways to explore each hero branch. The central spine travels down through all five packs. Select any node for details and purchase.</div>'+[1,2,3,4,5].map(tierPanel).join('<div class="fw-tier-connector">↓ MAIN PATH ↓</div>');
 }
 function details(){
@@ -184,7 +184,7 @@ function updateLabels(){
 function draw(){if(!$('skillModal')?.classList.contains('active'))return;updateLabels();
  $('skillTreeTab').classList.toggle('selected',active==='tree');$('skillLegacyTab').classList.toggle('selected',active==='legacy');
  $('skillTierJump').hidden=active!=='tree';if(active==='tree')renderTree();else renderLegacy();
- if(active==='tree')details();else $('skillDetails').innerHTML='';
+ if(active==='tree'){details();$('skillPane').scrollTop=$('skillPane').dataset.keepTop||0;$('skillPane').scrollLeft=$('skillPane').dataset.keepLeft||0;}else $('skillDetails').innerHTML='';
 }
 function connect(opts){
  api=opts;initial=Object.fromEntries(api.heroes.map(h=>[h.id,{hp:h.hp,damage:h.damage,speed:h.speed,walk:h.walk}]));
@@ -196,13 +196,13 @@ function connect(opts){
  $('skillTreeTab').addEventListener('click',()=>{active='tree';draw()});
  $('skillLegacyTab').addEventListener('click',()=>{active='legacy';draw()});
  $('skillTierJump').addEventListener('change',()=>{$('fw-tier-'+$('skillTierJump').value)?.scrollIntoView({behavior:'smooth',block:'start'})});
- $('skillPane').addEventListener('click',e=>{const b=e.target.closest('[data-node]');if(b){selected=b.dataset.node;draw();}});
+ $('skillPane').addEventListener('click',e=>{const b=e.target.closest('[data-node]');if(b){selected=b.dataset.node;$('skillPane').dataset.keepTop=$('skillPane').scrollTop;$('skillPane').dataset.keepLeft=$('skillPane').scrollLeft;details();$('skillPane').querySelectorAll('.fw-node').forEach(x=>x.classList.toggle('fw-active',x.dataset.node===selected));}});
  $('skillModal').addEventListener('click',e=>{if(e.target.id==='skillModal'){$('skillModal').hidden=true;$('skillModal').classList.remove('active')}});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('skillModal').classList.contains('active')){$('skillModal').hidden=true;$('skillModal').classList.remove('active')}});
  updateLabels();
 }
 window.FWSkillTree={connect,has:owns,isTierOpen,points:()=>p.up,shards:()=>p.shards,shopSlots:()=>api?.state.shopSlots||1,recordKill,recordPack,recordWin,prestige,recalc,notify,rate:specialRate,
- debug:()=>JSON.parse(JSON.stringify(p)), nodes:data.nodes, 
+ debug:()=>JSON.parse(JSON.stringify(p)),purchase, nodes:data.nodes, 
  heroBonus:(h,e)=>{
   let extra=1;
   if(owns('T2-G02')&&!h.firstBasicUsed&&h.base.pack===1){extra*=1.5;h.firstBasicUsed=true;}
