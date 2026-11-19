@@ -485,7 +485,7 @@ function heroCombatGoal(h,e){
  return goal;
 }
 
-function stepNecroBeam(h,target,dt){if(!target||target.hp<=0||Math.hypot(target.x-h.x,target.y-h.y)>h.base.range||Math.hypot(h.x,h.y)>guardRadius(h)+.1){h.beamTarget=null;h.beamTime=0;h.beamTickClock=0;return}if(h.beamTarget!==target.id){h.beamTarget=target.id;h.beamTime=0;h.beamTickClock=0}const spec=cfg(h).special;h.beamTime+=dt;h.beamTickClock+=dt;const ticks=Math.floor(h.beamTickClock/spec.beamTickSeconds);if(ticks>0){const n=Math.min(ticks,8);h.beamTickClock-=ticks*spec.beamTickSeconds;const mult=1+(spec.beamMaxRampMultiplier-1)*Math.min(1,h.beamTime/spec.beamRampSeconds);hitEnemy(target,spec.beamBaseDamageRate*spec.beamTickSeconds*n*mult,h.base.color)}}
+function stepNecroBeam(h,target,dt){if(!target||target.hp<=0||Math.hypot(target.x-h.x,target.y-h.y)>h.base.range||Math.hypot(h.x,h.y)>guardRadius(h)+.1){h.beamTarget=null;h.beamTime=0;h.beamTickClock=0;return}if(h.beamTarget!==target.id){h.beamTarget=target.id;h.beamTime=h.beamTransferUntil>state.elapsed?(h.beamStoredRamp||0):0;h.beamTickClock=0}const spec=cfg(h).special;h.beamTime+=dt*(SKILLFX?SKILLFX.beamRampBoost(h):1);h.beamTickClock+=dt;const ticks=Math.floor(h.beamTickClock/spec.beamTickSeconds);if(ticks>0){const n=Math.min(ticks,8);h.beamTickClock-=ticks*spec.beamTickSeconds;const mult=1+(spec.beamMaxRampMultiplier-1)*Math.min(1,h.beamTime/spec.beamRampSeconds);hitEnemy(target,spec.beamBaseDamageRate*spec.beamTickSeconds*n*mult,h.base.color)}}
 function step(dt){if(state.mode!=='battle'||state.paused)return;
  state.elapsed+=dt;state.spawnClock+=dt;state.uiClock+=dt;if(SKILLFX)SKILLFX.tick(dt);
  if(state.regularSpawned===0){spawnEnemy(false);state.regularSpawned=1;state.spawnClock=0}
@@ -495,8 +495,8 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  state.totems=state.totems.filter(p=>p.hp>0&&p.expires>state.elapsed);
  for(const h of state.heroes){if(h.hp<=0)continue;if(h.expiry<=state.elapsed){h.hp=0;continue}if(h.shieldUntil>0&&h.shieldUntil<state.elapsed)h.shield=0;
   if(!isOriginalHero(h)){
-   h.cooldown-=dt;let enemy=null,best=Infinity;for(const e of state.enemies){if(e.hp<=0)continue;let d=Math.hypot(e.x-h.x,e.y-h.y);if(h.summonKind==='hound'&&e.beastFocus>state.elapsed)d*=.35;if(d<best&&Math.hypot(e.x,e.y)<TUNING.shared.towerGuardRadius+1){best=d;enemy=e}}
-   if(enemy){h.facing=Math.atan2(enemy.y-h.y,enemy.x-h.x)+Math.PI/2;if(best>h.base.range)moveToPoint(h,enemy,dt);else if(h.cooldown<=0){h.cooldown=1/h.base.speed;hitEnemy(enemy,h.base.damage,h.base.color);visualBeam(h,enemy)}}continue;
+   h.cooldown-=dt;let enemy=null,best=Infinity,rangeDistance=Infinity;for(const e of state.enemies){if(e.hp<=0)continue;const actual=Math.hypot(e.x-h.x,e.y-h.y);let d=actual;if(h.summonKind==='hound'&&e.beastFocus>state.elapsed)d*=.35;if(SKILLFX)d+=SKILLFX.summonPriority(h,e);if(d<best&&Math.hypot(e.x,e.y)<TUNING.shared.towerGuardRadius+1){best=d;rangeDistance=actual;enemy=e}}
+   if(enemy){h.facing=Math.atan2(enemy.y-h.y,enemy.x-h.x)+Math.PI/2;if(rangeDistance>h.base.range)moveToPoint(h,enemy,dt);else if(h.cooldown<=0){h.cooldown=1/(h.base.speed*(h.alphaBuffUntil>state.elapsed?1.2:1));hitEnemy(enemy,h.base.damage,h.base.color);visualBeam(h,enemy)}}continue;
   }
   const tc=cfg(h),isBear=h.base.id==='druid'&&h.bearUntil>state.elapsed;
   let target=selectHeroTarget(h,dt);
@@ -512,7 +512,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
   const cycle=1/(h.base.speed*(h.frenzyUntil>state.elapsed?cfg(h).special.frenzyAttackSpeedMultiplier:1));
   if(h.windupTime>0){h.windupTime-=dt;h.attackState='windup';if(h.windupTime>0)continue;
    const aim=state.enemies.find(e=>e.id===h.windupTarget&&e.hp>0);
-   if(aim&&Math.hypot(aim.x-h.x,aim.y-h.y)<=attackRange+.2){if(isBear){hitEnemy(aim,h.base.damage,h.base.color);visualBeam(h,aim,'#b2e585');visualRing(aim.x,aim.y,.5,'#96d46e')}else{const bonus=h.blessingUntil>state.elapsed?1+TUNING.heroes.priest.special.blessingDamageBonus:1;basicAttack(h,aim);if(bonus>1&&aim.hp>0)hitEnemy(aim,h.base.damage*(bonus-1),h.base.color)}}
+   if(aim&&Math.hypot(aim.x-h.x,aim.y-h.y)<=attackRange+.2){if(isBear){hitEnemy(aim,h.base.damage,h.base.color);visualBeam(h,aim,'#b2e585');visualRing(aim.x,aim.y,.5,'#96d46e');if(SKILLFX)SKILLFX.afterBasic(h,aim,h.base.damage,true)}else{const bonus=h.blessingUntil>state.elapsed?1+TUNING.heroes.priest.special.blessingDamageBonus:1;basicAttack(h,aim);if(bonus>1&&aim.hp>0)hitEnemy(aim,h.base.damage*(bonus-1),h.base.color)}}
    h.cooldown=cycle*.8;h.attackState='recovery';h.windupTarget=null;continue;
   }
   h.cooldown-=dt;
@@ -530,7 +530,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
     if(totem){totem.hp-=damage;visualRing(totem.x,totem.y,.35,'#51dcc0')}
     else if(hero){const dealt=hitHero(hero,damage,e);if(dealt>0)damageNumber(hero.x,hero.y-.7,'−'+dealt.toFixed(1),'#ffb6a7');if(hero.hp===0)log('Your '+hero.base.name+' was defeated.')}
     else{applyTowerDamage(damage);if(state.mode==='over')break}
-  }}else if(dist>0){let mult=1;for(const p of state.traps)if(Math.hypot(e.x-p.x,e.y-p.y)<=p.radius){mult=Math.min(mult,p.slow)}takeTowerSafeStep(e,target,dt,e.speed*mult)}else brake(e,dt)
+  }}else if(dist>0){let mult=1;for(const p of state.traps)if(Math.hypot(e.x-p.x,e.y-p.y)<=p.radius){mult=Math.min(mult,p.slow)}if(e.slowUntil>state.elapsed)mult=Math.min(mult,e.slowFactor||.75);if(e.rootUntil>state.elapsed)mult=0;takeTowerSafeStep(e,target,dt,e.speed*mult)}else brake(e,dt)
  }
  if(state.mode!=='battle')return;
  resolveActorCollisions();
