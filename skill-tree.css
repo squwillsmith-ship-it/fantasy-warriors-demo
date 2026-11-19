@@ -15,8 +15,8 @@
 .fw-tier-sealed{filter:saturate(.62);opacity:.83}
 .fw-tier-header{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 15px;background:linear-gradient(90deg,#58462e,#213749 35%,#233747);border-bottom:2px solid #947551}
 .fw-tier-header strong{font:700 20px Georgia,serif;color:#ffe3a9}.fw-tier-header span{font-size:11px;font-weight:800;color:#bcd3d8;letter-spacing:.05em}
-.fw-tier-connector{width:160px;margin:0 auto;text-align:center;height:36px;line-height:36px;color:#e9cc8b;font-size:10px;font-weight:800;border-left:3px solid #bf9661;transform:translateX(75px)}
-.fw-branches{display:grid;grid-template-columns:146px 136px repeat(3,222px);gap:9px;padding:14px;align-items:stretch}
+.fw-tier-connector{min-width:1040px;width:1040px;margin:0 auto;text-align:center;height:36px;line-height:36px;color:#e9cc8b;font-size:10px;font-weight:800;position:relative}.fw-tier-connector:before{content:'';height:36px;position:absolute;left:50%;top:0;border-left:3px solid #bf9661;opacity:.7}
+.fw-branches{display:grid;grid-template-columns:222px 222px 136px 222px 146px;gap:9px;padding:14px;align-items:stretch}
 .fw-lane-title{min-height:34px;display:flex;flex-direction:column;justify-content:center;gap:3px;color:#f6dbac;font:700 13px Georgia,serif;text-align:center}
 .fw-lane-title small{font:500 10px system-ui,sans-serif;color:#b1bfcb}
 .fw-general-lane,.fw-spine,.fw-hero-lane{position:relative;display:flex;flex-direction:column;gap:8px;padding:4px 6px 12px;border:1px solid #354b5d;border-radius:10px;background:#101e2db9}
