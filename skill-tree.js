@@ -43,11 +43,11 @@ function statPercent(id){if(!has(id))return 0;const m=nodeMap[id]?.description.m
 function rank(k){return Math.max(0,Math.min(20,Number(p.legacy[k]||0)));}
 function owns(id){return has(id);}
 function heroCode(t,index){return ['K','A','MG','H','B','R','P','N','PR','S','D','W','BM','NE','DR'][(t-1)*3+index];}
-function specialRate(heroId){const found=api?.heroes.find(h=>h.id===heroId);if(!found)return 1;const t=found.pack+1,code=heroCode(t,classIds[t-1].indexOf(heroId));let rate=1;
+function specialRate(hero){const heroId=typeof hero==='string'?hero:hero?.base?.id;const found=api?.heroes.find(h=>h.id===heroId);if(!found)return 1;const t=found.pack+1,code=heroCode(t,classIds[t-1].indexOf(heroId));let rate=1;
  if(owns('T4-G02')&&t===4)rate+=.35;
  if(heroId==='archer'&&owns('T1-A-S05'))rate+=.35;
  if(heroId==='rogue'&&owns('T2-R-S05'))rate+=.35;
- if(heroId==='dragonkin'&&owns('T5-DR-T05'))rate+=.12;
+ if(heroId==='dragonkin'&&typeof hero==='object'&&owns('T5-DR-T05')&&hero.hp<=hero.maxHp*.35&&!hero.heartOfDragonUsed)rate+=.55;
  return rate;
 }
 function generalBonus(t,name){return owns('T'+t+'-'+name);}
@@ -218,7 +218,7 @@ window.FWSkillTree={connect,has:owns,isTierOpen,points:()=>p.up,shards:()=>p.sha
   let factor=1;
   if(owns('T3-G03')&&h.base.pack===2&&Math.hypot(h.x,h.y)<3)factor*=.75;
   if(owns('T4-D-T04')&&h.base.id==='druid'&&h.bearUntil>api.state.elapsed)factor*=.80;
-  if(owns('T3-N-T05')&&api.state.sanctuaries.some(s=>Math.hypot(s.x-h.x,s.y-h.y)<=s.radius))factor*=.8;
+  if(owns('T3-N-T05')&&api.state.sanctuaries.some(s=>{const caster=api.state.heroes.find(a=>a.id===s.ownerId&&a.hp>0);return caster&&Math.hypot(caster.x-h.x,caster.y-h.y)<=s.radius}))factor*=.8;
   return damage*factor;
  },
  rangeBonus:(id)=>{
