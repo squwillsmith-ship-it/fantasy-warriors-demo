@@ -126,6 +126,7 @@ function afterCast(h,target,spec){
  }
  if(id==='beastmaster'&&owned('T5-BM-T04')){const hs=heroes().filter(a=>a.summonKind==='hound'&&a.ownerId===h.id);hs.forEach((a,i)=>a.alphaBuffUntil=t+(i===0?0:4));}
  if(id==='dragonkin'){
+  if(owned('T5-DR-T05')&&h.hp<=h.maxHp*.35&&!h.heartOfDragonUsed)h.heartOfDragonUsed=true;
   if(owned('T5-DR-T03')&&target)api.state.hazards.push({x:target.x,y:target.y,life:2.4,clock:0,radius:1,damage:.48,color:'#eaa261',source:'dragonkin'});
  }
 }
