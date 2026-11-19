@@ -6,6 +6,7 @@ if(!data||!Array.isArray(data.nodes)||data.nodes.length!==205){console.error('Mi
 const nodeMap=Object.fromEntries(data.nodes.map(n=>[n.id,n]));
 const classIds=[['knight','archer','mage'],['hunter','barbarian','rogue'],['paladin','nun','priest'],['shaman','druid','warlock'],['beastmaster','necromancer','dragonkin']];
 const gatePrices=[28,48,75,110];
+const BASE_MAX_COINS=2,COINS_PER_CLASS_GATE=2;
 const legacyPerks=[
  {key:'vitality',name:'Ancestral Vitality',icon:'♥',description:'Permanent +8% base hero HP per rank.',max:6,cost:1},
  {key:'strength',name:'Ancestral Arms',icon:'⚔',description:'Permanent +8% basic hero damage per rank.',max:6,cost:1},
@@ -72,13 +73,14 @@ const specialStatFields={
 };
 function recalc(){
  if(!api)return;
- const previousMax=api.state.coinMax||12;
+ const previousMax=api.state.coinMax??BASE_MAX_COINS;
  const priorTowerMax=api.state.towerMax||100;
  const maxTower=100*(1+(generalBonus(1,'G01')?.35:0)+(generalBonus(3,'G01')?.40:0));
  api.state.towerMax=Number(maxTower.toFixed(3));
  if(api.state.mode==='prep'&&api.state.towerHp>=priorTowerMax-.001)api.state.towerHp=api.state.towerMax;
  else api.state.towerHp=Math.min(api.state.towerMax,api.state.towerHp);
- const cap=12+(generalBonus(1,'G04')?4:0)+(generalBonus(2,'G04')?3:0)+(generalBonus(4,'G05')?4:0)+(generalBonus(5,'G05')?5:0)+2*rank('treasury');
+ const completedQuests=data.nodes.filter(node=>node.kind==='gate'&&has(node)).length;
+ const cap=BASE_MAX_COINS+COINS_PER_CLASS_GATE*completedQuests+(generalBonus(1,'G04')?4:0)+(generalBonus(2,'G04')?3:0)+(generalBonus(4,'G05')?4:0)+(generalBonus(5,'G05')?5:0)+2*rank('treasury');
  api.state.coinMax=cap;api.state.shopSlots=1+(generalBonus(1,'G05')?1:0)+(generalBonus(2,'G05')?1:0)+(generalBonus(3,'G05')?1:0)+rank('merchant');
  if(api.state.mode==='prep'&&api.state.bought===0&&api.state.coins===previousMax)api.state.coins=cap;
  for(const h of api.heroes){
@@ -118,11 +120,19 @@ function purchase(id){const n=nodeMap[id];if(!n||!api||api.state.mode!=='prep'||
 function addUP(amount){const gain=Number((Math.max(0,amount)*(1+rank('insight')*.25)).toFixed(2));p.up=Number((p.up+gain).toFixed(2));return gain;}
 function recordKill(heroId,isBoss=false){if(!api||api.state.testMode)return 0;
  // Class kill gates count standard minions, never bosses.
- if(!isBoss&&heroId&&classIds.some(a=>a.includes(heroId)))p.kills[heroId]=(p.kills[heroId]||0)+1;
+ let newlyCompletedGate=null;
+ if(!isBoss&&heroId&&classIds.some(a=>a.includes(heroId))){
+  const quest=data.nodes.find(n=>n.kind==='gate'&&classIds[n.tier-1][n.heroIndex]===heroId);
+  const previouslyCompleted=quest?has(quest):false;
+  p.kills[heroId]=(p.kills[heroId]||0)+1;
+  if(quest&&!previouslyCompleted&&has(quest))newlyCompletedGate=quest;
+ }
  // One independent 10% roll per ordinary enemy; a boss guarantees 5 UP.
  const baseDrop=isBoss?5:(Math.random()<.10?1:0);
  const awarded=baseDrop?addUP(baseDrop):0;
- save();updateLabels();
+ save();
+ if(newlyCompletedGate){recalc();api.log(newlyCompletedGate.name+' complete! +'+COINS_PER_CLASS_GATE+' permanent maximum coins.');}
+ updateLabels();
  return awarded;
 }
 function recordPack(packIndex){if(!api||api.state.testMode)return;p.packOpens[packIndex]=(p.packOpens[packIndex]||0)+1;save();updateLabels();}
@@ -146,7 +156,7 @@ function stateFor(n){if(has(n))return 'owned';if(!isTierOpen(n.tier))return 'sea
  const c=affordability(n);return c.ok?'ready':'locked';
 }
 function nodeMark(n){return n.kind==='gate'?'⚔':n.kind==='stat'?'✚':n.kind==='technique'?'✦':n.kind==='general'?'◆':n.kind==='exit'?'⬡':n.kind==='root'?'♜':'★';}
-function nodeButton(n){const state=stateFor(n);const requirement=n.kind==='gate'?((p.kills[classIds[n.tier-1][n.heroIndex]]||0)+'/'+n.goal+' kills'):n.kind==='exit'?(n.tier===5?'Apex':gatePrices[n.tier-1]+' UP / prestige'):n.cost?n.cost+' UP':'FREE';
+function nodeButton(n){const state=stateFor(n);const requirement=n.kind==='gate'?((p.kills[classIds[n.tier-1][n.heroIndex]]||0)+'/'+n.goal+' kills · +2 max ◈'):n.kind==='exit'?(n.tier===5?'Apex':gatePrices[n.tier-1]+' UP / prestige'):n.cost?n.cost+' UP':'FREE';
  return '<button type="button" class="fw-node fw-'+state+' fw-'+n.kind+'" data-node="'+escapeHTML(n.id)+'" aria-label="'+escapeHTML(n.name)+'; '+state+'"><span class="fw-node-symbol">'+nodeMark(n)+'</span><span class="fw-node-name">'+escapeHTML(n.name.replace(/ \((PROPOSED|DRAFT)\)/gi,''))+'</span><span class="fw-node-cost">'+(state==='owned'?'✓ Unlocked':escapeHTML(requirement))+'</span></button>';
 }
 function lane(t,code,i){
