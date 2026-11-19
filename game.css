@@ -75,3 +75,8 @@ body{background:radial-gradient(ellipse at 50% -25%,#294058 0%,transparent 57%),
 .quest-tier-heading{font-size:11px;color:#f2d3a4;letter-spacing:.04em;font-weight:850;padding:9px 0 1px}
 .quest-mode-hint{color:#a8c4c8;font-size:11px;line-height:1.45;margin:12px 0 0}
 @media(max-width:500px){.quest-panel{padding:14px}.quest-item{padding:9px 10px}.quest-summary{font-size:11px}}
+
+/* Quest journal buttons (Build 1.0.7) */
+.quest-item[data-quest]{display:block;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer;appearance:none}
+.quest-item[data-quest]:hover{border-color:#b39c68;background:#1b3540}
+.quest-item[data-quest]:focus-visible{outline:2px solid #ffe5a3;outline-offset:2px}
