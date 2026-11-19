@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0e1724" />
-<title>Fantasy Warriors — Playable Demo 0.7</title>
+<title>Fantasy Warriors — Playable Demo 0.8</title>
 <style>
 :root{--bg:#0b1421;--panel:#111f2f;--panel2:#192b3d;--line:#35485b;--light:#f1e5cb;--muted:#9fb1bb;--gold:#eec27d;--gold2:#b9833d;--green:#73bd92;--red:#ed8177;--common:#bac4c9;--uncommon:#85cb9a;--rare:#7abaf6;--epic:#ce91ff;--legendary:#ffc770}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--light);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.48}button:focus-visible{outline:3px solid #b7dbff;outline-offset:3px}
@@ -39,7 +39,7 @@ body{background:radial-gradient(ellipse at 50% -25%,#294058 0%,transparent 57%),
 <div class="shell">
 <header class="topline">
   <div class="brand"><div class="crest" aria-hidden="true">⚔</div><div><div class="eyebrow">The first playable prototype</div><h1>FANTASY WARRIORS</h1></div></div>
-  <div class="version">PLAYABLE DEMO<br><strong>DESIGN v1.0.1 · BUILD 0.7</strong></div>
+  <div class="version">PLAYABLE DEMO<br><strong>DESIGN v1.1.0 · BUILD 0.8</strong></div>
 </header>
 <section class="statusline" aria-label="Game statistics">
   <div class="stat"><div class="symbol">⚑</div><div><div class="name">Stage / 10</div><div class="value" id="stageValue">01</div></div></div>
@@ -80,7 +80,7 @@ body{background:radial-gradient(ellipse at 50% -25%,#294058 0%,transparent 57%),
     <div class="panel"><div class="section-top"><h2>Battle Log</h2><span class="kicker">Latest</span></div><ul class="event-log" id="events" aria-live="polite"></ul></div>
   </aside>
 </div>
-<p class="footer">Build 0.7 · Design v1.0.1: 15 revised stat profiles, Nun Sanctuary Prayer, ten unique stage encounters and a five-tier skill tree preview. Boss abilities, upgrade costs, gateway unlocks and advanced pack pricing remain UNDECIDED; demo balancing values are provisional.</p>
+<p class="footer">Build 0.8 · Design v1.1.0: physical separation, melee slots, ranged standoff, threat-aware targeting and solid tower pathing for enemies. Boss abilities, upgrade costs, gateway unlocks and advanced pack pricing remain UNDECIDED; demo balancing values are provisional.</p>
 </div>
 <div class="modal" id="revealModal" role="dialog" aria-modal="true" aria-label="Open hero pack" aria-hidden="true">
 <div class="reveal"><div class="kicker" id="revealKicker">A hero awaits</div><h2 id="revealTitle">Open your pack</h2><p id="revealDescription">Three heroes are sealed inside this Recruit Pack.</p><div class="pack-large" id="sealedPack" aria-hidden="true"></div><div class="draw-grid hidden" id="drawGrid"></div><button class="btn" id="revealButton">✦ Open pack</button><div class="odds-note" id="revealFoot">Recruit Pool: Knight · Archer · Mage</div></div>
@@ -131,7 +131,7 @@ const encounter=()=>ENCOUNTERS[Math.max(0,Math.min(9,state.stage-1))];
 
 // Build 0.6 editable DEMO tuning: all non-core numerics are explicitly provisional.
 // Each current hero has one authoritative core record in HEROES and an attached combat tuning record.
-const TUNING={shared:{acquisitionRange:4,towerGuardRadius:5,specialChargeSeconds:10,enemyHeroDetection:6,returnRadius:2.4},heroes:{}};
+const TUNING={shared:{acquisitionRange:4,towerGuardRadius:5,specialChargeSeconds:10,enemyHeroDetection:6,returnRadius:2.4,actorRadius:.35,bossRadius:.75,personalSpace:.045,decisionInterval:.25,targetCommitSeconds:1,retargetMargin:.35,rangeStandoff:.76,meleeSlots:6,steerResponsiveness:9},heroes:{}};
 const ABILITIES={
  knight:{name:'Shield Bash',trigger:'autoCharge',bashRadius:1.9,bashStunSeconds:1.6,bashDamage:0},
  archer:{name:'Arrow Volley',trigger:'autoCharge',volleyArrowCount:5,volleyRadius:1.8,volleyDamage:1.4},
@@ -165,7 +165,7 @@ const UNDEAD={id:'undead',name:'Undead',rarity:'Summoned',color:'#7bd2c4',hp:13,
 const $=id=>document.getElementById(id);
 const canvas=$('arena'),ctx=canvas.getContext('2d',{alpha:false});
 const refs={stage:$('stageValue'),coins:$('coinValue'),tower:$('towerValue'),hp:$('hpMeter'),kills:$('killValue'),total:$('totalValue'),phase:$('phaseLabel'),dot:$('phaseDot'),battleDetail:$('battleDetail'),count:$('packCount'),buy:$('buyButton'),start:$('stageButton'),pause:$('pauseButton'),restart:$('restartButton'),formation:$('formation'),formationCount:$('formationCount'),events:$('events'),shopTitle:$('shopTitle'),shopDescription:$('shopDescription'),overlay:$('messageOverlay'),messageSymbol:$('messageSymbol'),messageTitle:$('messageTitle'),messageText:$('messageText'),messageButton:$('messageButton'),captionLeft:$('captionLeft'),captionRight:$('captionRight'),modal:$('revealModal'),revealTitle:$('revealTitle'),revealDesc:$('revealDescription'),revealButton:$('revealButton'),sealed:$('sealedPack'),drawGrid:$('drawGrid'),testPanel:$('testingPanel'),testStatus:$('testingStatus'),testToggle:$('testingToggle'),testControls:$('testingControls'),testGrid:$('testingGrid'),specials:$('specialValue'),acquireTune:$('acquireTune'),guardTune:$('guardTune'),chargeTune:$('chargeTune'),testQueueCount:$('testQueueCount'),clearTest:$('clearTestQueue'),packProgress:$('packProgress'),testStage:$('testStage'),treeTiers:$('treeTiers'),revealKicker:$('revealKicker'),revealFoot:$('revealFoot')};
-const state={stage:1,coinMax:12,coins:12,towerHp:100,mode:'prep',paused:false,bought:0,packsToOpen:0,heroes:[],enemies:[],effects:[],notifications:[],regularSpawned:0,bossSpawned:false,kills:0,bossKilled:false,elapsed:0,spawnClock:0,uiClock:0,pendingPack:false,openedHeroes:null,testMode:false,testQueue:[],testSavedTowerHp:null,testSavedStage:null,sanctuaries:[],hazards:[],pendingHits:[],totems:[],traps:[],abilityCasts:0,lastTime:0,nextId:1};
+const state={stage:1,coinMax:12,coins:12,towerHp:100,mode:'prep',paused:false,bought:0,packsToOpen:0,heroes:[],enemies:[],effects:[],notifications:[],regularSpawned:0,bossSpawned:false,kills:0,bossKilled:false,elapsed:0,spawnClock:0,uiClock:0,pendingPack:false,openedHeroes:null,testMode:false,testQueue:[],testSavedTowerHp:null,testSavedStage:null,sanctuaries:[],hazards:[],pendingHits:[],totems:[],traps:[],abilityCasts:0,lastTime:0,nextId:1,combatTelemetry:{overlaps:0,targetSwitches:0,blocked:0}};
 let view={w:900,h:570,dpr:1,scale:42,worldW:20,worldH:14};
 function rand(a,b){return a+Math.random()*(b-a)}
 function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
@@ -206,7 +206,7 @@ function drawTower(t){let x=px(0),y=py(0),s=view.scale;circle(x,y+s*.22,s*.93,'#
  if(state.towerHp<35){strokeCircle(x,y,s*(1+Math.sin(t*5)*.06),'#ff716c99',3)}
 }
 function drawHero(h,t){if(h.hp<=0)return;const x=px(h.x),y=py(h.y),s=view.scale; if(h.invisibleUntil>state.elapsed){circle(x,y,s*.50,'#d9c6fa33')}if(h.bearUntil>state.elapsed){circle(x,y,s*.66,'#a6d97344')} if(h.shield>0){strokeCircle(x,y,s*.65,'#c9f7f5',Math.max(1.5,s*.06))}circle(x,y+s*.23,s*.43,'#08182288');circle(x,y,s*.45,h.base.color+'23');strokeCircle(x,y,s*.43,h.base.color,s*.055);
- ctx.save();ctx.translate(x,y);ctx.rotate(h.facing||0);let q=s*.39;
+ if(h.hitFlash>0)circle(x,y,s*.57,'#fff2c499');if(h.attackState==='windup')strokeCircle(x,y,s*.60,'#fee8aeaa',Math.max(1,s*.045));ctx.save();ctx.translate(x,y);ctx.rotate(h.facing||0);let q=s*.39;
  // cloth torso and boots.
  rounded(-q*.50,-q*.14,q*.97,q*.83,q*.27,h.base.color);circle(0,-q*.46,q*.44,'#e6cfa8');
  if(['knight','paladin','dragonkin'].includes(h.base.id)){rounded(-q*.34,-q*.7,q*.68,q*.25,q*.08,'#a2aeb8');ctx.fillStyle='#5a6d7d';ctx.fillRect(-q*.52,-q*.02,q*.3,q*.66);if(h.base.id==='dragonkin'){rounded(-q*.7,-q*.22,q*.49,q*.68,q*.15,'#f4a56a');strokeCircle(-q*.45,q*.1,q*.21,'#9a3e30',2)}}
@@ -222,7 +222,7 @@ function drawEnemy(e,t){const x=px(e.x),y=py(e.y),s=view.scale;const stage=ENCOU
  circle(x,y+size*.65,size*.91,'#06132388');ctx.save();ctx.translate(x,y);
  if(e.boss){circle(0,0,size*1.18,fill+'46');strokeCircle(0,0,size*1.22,fill,Math.max(1.5,s*.055));ctx.fillStyle=fill;ctx.beginPath();ctx.moveTo(-size*.9,size*.25);ctx.lineTo(-size*.7,-size*.6);ctx.lineTo(0,-size);ctx.lineTo(size*.7,-size*.6);ctx.lineTo(size*.9,size*.25);ctx.lineTo(size*.45,size);ctx.lineTo(-size*.45,size);ctx.closePath();ctx.fill();}
  else{ctx.fillStyle=fill;ctx.beginPath();ctx.ellipse(0,size*.1,size*.92,size*.8,0,0,Math.PI*2);ctx.fill();strokeCircle(0,size*.1,size*.89,'#071726aa',Math.max(1,s*.05));}
- ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=(e.boss?'bold ':'')+Math.max(12,size*(e.boss?1.3:1.2))+'px Georgia,serif';ctx.fillStyle=e.boss?'#fff2d5':'#142632';ctx.fillText(icon,0,0);ctx.restore();
+ if(e.hitFlash>0)circle(0,0,size*1.08,'#fff3e08c');ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=(e.boss?'bold ':'')+Math.max(12,size*(e.boss?1.3:1.2))+'px Georgia,serif';ctx.fillStyle=e.boss?'#fff2d5':'#142632';ctx.fillText(icon,0,0);ctx.restore();
  drawBar(x,y-size*1.60,size*2.15,s*.13,e.hp/e.maxHp,e.boss?'#f6d2ad':'#ec9282');
  if(e.boss){ctx.fillStyle='#fff0d9';ctx.font='bold '+Math.max(10,s*.29)+'px sans-serif';ctx.textAlign='center';ctx.fillText(stage.boss,x,y-size*1.9)}
 }
@@ -236,7 +236,7 @@ function drawEffects(dt){for(const e of state.effects){const a=clamp(e.life/e.ma
 function render(t){drawGround(t);for(const trap of state.traps){strokeCircle(px(trap.x),py(trap.y),view.scale*trap.radius,'#9dd4c8',2);circle(px(trap.x),py(trap.y),view.scale*.18,'#b4e9d3')}for(const totem of state.totems){circle(px(totem.x),py(totem.y),view.scale*.35,'#51dcc0');strokeCircle(px(totem.x),py(totem.y),view.scale*.51,'#92f2cb',3)}for(const p of state.hazards){circle(px(p.x),py(p.y),view.scale*p.radius,'#d7ae521e');strokeCircle(px(p.x),py(p.y),view.scale*p.radius,'#e0c16b99',1.5)}for(const z of state.sanctuaries){const owner=state.heroes.find(h=>h.id===z.ownerId&&h.hp>0);if(!owner)continue;const pulse=.15+.04*Math.sin(t*3);circle(px(owner.x),py(owner.y),view.scale*z.radius,'rgba(212,238,213,'+pulse+')');strokeCircle(px(owner.x),py(owner.y),view.scale*z.radius,'#d5fac2',Math.max(1,view.scale*.05))}drawTower(t);for(const h of state.heroes)drawHero(h,t);for(const h of state.heroes){if(h.base.id==='necromancer'&&h.hp>0&&h.beamTarget!=null){const e=state.enemies.find(e=>e.id===h.beamTarget&&e.hp>0);if(e){ctx.strokeStyle='#b3a6ff';ctx.lineWidth=Math.max(2,view.scale*(.075+Math.min(h.beamTime/16,.08)));ctx.shadowColor='#ab7af5';ctx.shadowBlur=7;ctx.beginPath();ctx.moveTo(px(h.x),py(h.y));ctx.lineTo(px(e.x),py(e.y));ctx.stroke();ctx.shadowBlur=0}}}for(const e of state.enemies)if(e.hp>0)drawEnemy(e,t);drawEffects();if(state.mode==='battle'&&state.paused){ctx.fillStyle='#030e17b0';ctx.fillRect(0,0,view.w,view.h);ctx.fillStyle='#fbe4bf';ctx.font='bold '+Math.max(25,view.scale*.8)+'px Georgia';ctx.textAlign='center';ctx.fillText('PAUSED',view.w/2,view.h/2-10);ctx.font='13px sans-serif';ctx.fillStyle='#d1dfe6';ctx.fillText('Resume to continue the stage',view.w/2,view.h/2+22)}}
 function addEffect(e){state.effects.push(e);if(state.effects.length>160)state.effects.shift()}
 function damageNumber(x,y,text,color){addEffect({kind:'number',x,y,text:String(text),color,life:.8,maxLife:.8})}
-function createHero(base){const hero={id:state.nextId++,base,x:0,y:0,hp:base.hp,maxHp:base.hp,cooldown:rand(0,.45),facing:0,combo:0,beamTarget:null,beamTime:0,beamTickClock:0,charge:0,casts:0,abilityStatus:"charging",activeUntil:0,shield:0,shieldUntil:0,blessingUntil:0,frenzyUntil:0,invisibleUntil:0,bearUntil:0,sanctuaryUntil:0,summonKind:null,expiry:Infinity,anchorX:0,anchorY:0};state.heroes.push(hero);reposition();return hero}
+function createHero(base){const hero={id:state.nextId++,base,x:0,y:0,hp:base.hp,maxHp:base.hp,cooldown:rand(0,.45),facing:0,combo:0,beamTarget:null,beamTime:0,beamTickClock:0,charge:0,casts:0,abilityStatus:"charging",activeUntil:0,shield:0,shieldUntil:0,blessingUntil:0,frenzyUntil:0,invisibleUntil:0,bearUntil:0,sanctuaryUntil:0,summonKind:null,expiry:Infinity,anchorX:0,anchorY:0,radius:base.id==='dragonkin'||base.id==='paladin'||base.id==='barbarian'?.45:.35,vx:0,vy:0,targetId:null,targetClock:rand(0,.25),lastTargetSwitch:-10,slotIndex:-1,slotTarget:null,windupTime:0,windupTarget:null,attackState:'idle',hitFlash:0};state.heroes.push(hero);reposition();return hero}
 function reposition(){const n=state.heroes.length;
  // Rings prevent all 18 Recruit-pack heroes from piling up on the same tile.
  const rings=[];let remaining=n,index=0,ring=0;
@@ -246,10 +246,10 @@ function reposition(){const n=state.heroes.length;
 
 function spawnEnemy(boss){const a=rand(0,Math.PI*2),halfW=view.worldW/2-.85,halfH=view.worldH/2-.85;let x,y;
  if(Math.random()<.55){x=(Math.random()<.5?-1:1)*halfW;y=rand(-halfH,halfH)}else{y=(Math.random()<.5?-1:1)*halfH;x=rand(-halfW,halfW)}
- const hp=boss?90+15*(state.stage-1):22;state.enemies.push({id:state.nextId++,x,y,hp,maxHp:hp,boss,stage:state.stage,speed:boss?.7:1,damage:boss?10:4,cooldown:rand(0,.5)})}
+ const hp=boss?90+15*(state.stage-1):22;state.enemies.push({id:state.nextId++,x,y,hp,maxHp:hp,boss,stage:state.stage,speed:boss?.7:1,damage:boss?10:4,cooldown:rand(0,.5),radius:boss?.75:.35,vx:0,vy:0,targetId:null,hitFlash:0,towerLane:((state.nextId*7)%11-5)*.13})}
 // Walk speed comes from each hero’s approved STATS entry, not a universal speed.
-const TOWER_BLOCK=1.02;     // tower half-width + hero safety margin (map units)
-const CORNER_DIST=1.17;     // navigation corners outside tower footprint
+const TOWER_BLOCK=1.36;     // tower half-width + hero safety margin (map units)
+const CORNER_DIST=1.73;     // navigation corners outside tower footprint
 function insideTower(x,y){return Math.abs(x)<TOWER_BLOCK&&Math.abs(y)<TOWER_BLOCK}
 function segmentHitsTower(ax,ay,bx,by){
  let near=0,far=1;const vx=bx-ax,vy=by-ay;
@@ -263,7 +263,7 @@ function segmentHitsTower(ax,ay,bx,by){
 }
 function safeGoal(x,y){
  if(!insideTower(x,y))return{x,y};
- // Enemies can attack the tower from inside its visible footprint;
+ // All actors must route toward a safe exterior point at the tower boundary;
  // find the nearest exterior position for approaching heroes.
  const edge=CORNER_DIST+.02;
  if(Math.abs(x)>Math.abs(y))return{x:Math.sign(x||1)*edge,y};
@@ -300,12 +300,12 @@ function moveHeroAroundTower(hero,enemy,dt){
 function applyTowerDamage(amount){state.towerHp=clamp(state.towerHp-amount,0,100);damageNumber(.2,-1.1,'−'+amount,'#ff9682');if(state.towerHp===0)gameOver()}
 function visualBeam(h,e,color=h.base.color,life=.18){addEffect({kind:'bolt',x1:h.x,y1:h.y,x2:e.x,y2:e.y,color,life,maxLife:life})}
 function visualRing(x,y,r,color){addEffect({kind:'pulse',x,y,radius:r,color,life:.36,maxLife:.36})}
-function hitEnemy(e,damage,color){if(!e||e.hp<=0)return;const n=Number(Math.abs(damage).toFixed(1));e.hp-=damage;if(damage>=.2)damageNumber(e.x,e.y-.15,n.toFixed(1),color)}
+function hitEnemy(e,damage,color){if(!e||e.hp<=0)return;const n=Number(Math.abs(damage).toFixed(1));e.hp-=damage;e.hitFlash=.11;if(damage>=.2)damageNumber(e.x,e.y-.15,n.toFixed(1),color)}
 function enemiesInRadius(x,y,r){const rr=r*r;return state.enemies.filter(e=>e.hp>0&&(e.x-x)**2+(e.y-y)**2<=rr)}
 function pushEnemy(e,fromX,fromY,dist){const dx=e.x-fromX,dy=e.y-fromY,len=Math.max(.01,Math.hypot(dx,dy));e.x=clamp(e.x+dx/len*dist,-view.worldW/2+.8,view.worldW/2-.8);e.y=clamp(e.y+dy/len*dist,-view.worldH/2+.8,view.worldH/2-.8)}
 function pointSegmentDistance(x,y,ax,ay,bx,by){const vx=bx-ax,vy=by-ay;const t=clamp(((x-ax)*vx+(y-ay)*vy)/(vx*vx+vy*vy||1),0,1);return Math.hypot(x-ax-t*vx,y-ay-t*vy)}
 // Numerical secondary effects are temporary demonstrations. Only the basic-attack concepts are approved.
-function hitHero(h,d){if(h.shield>0){const absorb=Math.min(h.shield,d);h.shield-=absorb;d-=absorb}if(d>0)h.hp=Math.max(0,h.hp-d);return d}
+function hitHero(h,d){if(h.shield>0){const absorb=Math.min(h.shield,d);h.shield-=absorb;d-=absorb}if(d>0){h.hp=Math.max(0,h.hp-d);h.hitFlash=.11}return d}
 function spawnSummon(base,atX,atY,kind,duration,ownerId){const s={id:state.nextId++,base,x:atX,y:atY,hp:base.hp,maxHp:base.hp,cooldown:.2,facing:0,charge:0,casts:0,shield:0,invisibleUntil:0,bearUntil:0,blessingUntil:0,frenzyUntil:0,summonKind:kind,ownerId,expiry:state.elapsed+duration,anchorX:atX,anchorY:atY,beamTarget:null};state.heroes.push(s);return s}
 function activeOriginalHeroes(){return state.heroes.filter(h=>h.hp>0&&isOriginalHero(h))}
 function enemyNear(h,r){let best=null,d=r*r;for(const e of state.enemies){if(e.hp<=0)continue;const sq=(e.x-h.x)**2+(e.y-h.y)**2;if(sq<=d){d=sq;best=e}}return best}
@@ -366,14 +366,114 @@ function tickAttackEffects(dt){
  for(let i=state.hazards.length-1;i>=0;i--){const p=state.hazards[i];p.life-=dt;p.clock+=dt;if(p.clock>=.65){p.clock-=.65;for(const e of enemiesInRadius(p.x,p.y,p.radius))hitEnemy(e,p.damage,p.color)}if(p.life<=0)state.hazards.splice(i,1)}
 }
 
-function moveToPoint(h,pt,dt){const wp=heroWaypoint(h.x,h.y,pt.x,pt.y),vx=wp.x-h.x,vy=wp.y-h.y,dist=Math.hypot(vx,vy);if(dist<.05)return;const speed=h.base.walk;const amount=Math.min(speed*dt,dist);let x=h.x+vx/dist*amount,y=h.y+vy/dist*amount;const guard=isOriginalHero(h)?guardRadius(h):TUNING.shared.towerGuardRadius;if(Math.hypot(x,y)>guard){const a=Math.atan2(y,x);x=Math.cos(a)*(guard-.03);y=Math.sin(a)*(guard-.03)}if(!insideTower(x,y)){h.x=x;h.y=y}}
+// All units use one movement system; the tower is impassable to both teams.
+function actorRadius(a){return a.radius||(a.boss?.75:.35)}
+function nearTower(x,y,r=.35){const dx=Math.max(0,Math.abs(x)-1.00),dy=Math.max(0,Math.abs(y)-1.00);return Math.hypot(dx,dy)<r+.025}
+function legalActorPosition(a,x,y){
+ if(nearTower(x,y,actorRadius(a)))return false;
+ if(a.base&&isOriginalHero(a)&&Math.hypot(x,y)>guardRadius(a)-.015)return false;
+ return Math.abs(x)<view.worldW/2-.3&&Math.abs(y)<view.worldH/2-.3;
+}
+function brake(a,dt){a.vx=(a.vx||0)*Math.max(0,1-dt*10);a.vy=(a.vy||0)*Math.max(0,1-dt*10)}
+function steerActor(a,pt,dt,speed,guarded=false){
+ const wp=heroWaypoint(a.x,a.y,pt.x,pt.y),dx=wp.x-a.x,dy=wp.y-a.y,d=Math.hypot(dx,dy);
+ if(d<.04){brake(a,dt);return}
+ const cap=Math.min(speed,Math.sqrt(Math.max(0,d)*8.5));
+ let vx=dx/d*cap,vy=dy/d*cap;
+ const k=Math.min(1,dt*TUNING.shared.steerResponsiveness);
+ a.vx=(a.vx||0)*(1-k)+vx*k;a.vy=(a.vy||0)*(1-k)+vy*k;
+ const nx=a.x+a.vx*dt,ny=a.y+a.vy*dt;
+ if(legalActorPosition(a,nx,ny)){a.x=nx;a.y=ny}
+ else{a.vx*=.15;a.vy*=.15;state.combatTelemetry.blocked++}
+}
+function moveToPoint(h,pt,dt){steerActor(h,pt,dt,h.base.walk)}
+function towerApproach(e){
+ // Commit to an outside face and offset the lateral approach so enemies don't share one point.
+ if(!e.approachSide){const a=Math.abs(e.x)>Math.abs(e.y)?'x':'y';e.approachSide=a;e.approachSign=(a==='x'?Math.sign(e.x):Math.sign(e.y))||1}
+ const face=1.72,offset=clamp(e.towerLane||0,-.79,.79);
+ return e.approachSide==='x'?{x:e.approachSign*face,y:offset}:{x:offset,y:e.approachSign*face};
+}
+function takeTowerSafeStep(e,goal,dt,speed){steerActor(e,goal,dt,speed)}
+// Nearby collision lookup replaces O(N^2) scans on large mobile waves.
+function resolveActorCollisions(){
+ const units=[...state.heroes,...state.enemies].filter(a=>a.hp>0);
+ const size=1.35,grid=new Map();
+ for(const a of units){const x=Math.floor(a.x/size),y=Math.floor(a.y/size),key=x+','+y;let cell=grid.get(key);if(!cell){cell=[];grid.set(key,cell)}cell.push(a)}
+ let overlaps=0;
+ for(const a of units){const x=Math.floor(a.x/size),y=Math.floor(a.y/size);
+  for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++)for(const b of grid.get((x+i)+','+(y+j))||[]){if(b.id<=a.id||b.hp<=0)continue;
+   const dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy),desired=actorRadius(a)+actorRadius(b)+TUNING.shared.personalSpace;
+   if(dist>=desired)continue;overlaps++;
+   const angle=((a.id*37+b.id*53)%360)*Math.PI/180,nx=dist>.001?dx/dist:Math.cos(angle),ny=dist>.001?dy/dist:Math.sin(angle),push=Math.min(.23,(desired-dist)*.53);
+   const weightA=a.boss?.34:1,weightB=b.boss?.34:1,shareA=weightA/(weightA+weightB),shareB=weightB/(weightA+weightB);
+   const ax=a.x-nx*push*shareA*2,ay=a.y-ny*push*shareA*2,bx=b.x+nx*push*shareB*2,by=b.y+ny*push*shareB*2;
+   if(legalActorPosition(a,ax,ay)){a.x=ax;a.y=ay}if(legalActorPosition(b,bx,by)){b.x=bx;b.y=by}
+  }
+ }
+ state.combatTelemetry.overlaps=overlaps;
+}
+function targetScore(h,e,focus){
+ const dist=Math.hypot(e.x-h.x,e.y-h.y),towerDist=Math.hypot(e.x,e.y);
+ const urgency=clamp((7-towerDist)/7,0,1)+(towerDist<2.4?.55:0);
+ let role=0;const id=h.base.id;
+ if(id==='knight'||id==='paladin'||id==='dragonkin')role=urgency*.65;
+ else if(id==='rogue')role=(1-e.hp/e.maxHp)*.7;
+ else if(['mage','barbarian','shaman','druid'].includes(id))role=clamp(state.enemies.filter(other=>other.hp>0&&Math.hypot(e.x-other.x,e.y-other.y)<1.9).length/4,0,1);
+ else if(id==='necromancer'&&h.beamTarget===e.id)role=1.1;
+ const nearby=Math.max(0,focus-(e.boss?3:1));
+ return 4*urgency+2*role+(1-dist/Math.max(.01,acquireRadius(h)))-2*Math.min(2,nearby)/4+((h.id*17+e.id*13)%37)*.0001;
+}
+function selectHeroTarget(h,dt){
+ h.targetClock=(h.targetClock||0)-dt;
+ let current=state.enemies.find(e=>e.id===h.targetId&&e.hp>0);
+ const legal=e=>e&&Math.hypot(e.x-h.x,h.y-e.y)<=acquireRadius(h)+.65&&Math.hypot(e.x,e.y)<=guardRadius(h)+Math.max(1,h.base.range);
+ if(!legal(current))current=null;
+ if(current&&h.targetClock>0)return current;
+ if(!current&&h.targetClock>0)return null;
+ h.targetClock=TUNING.shared.decisionInterval+((h.id*37)%7)*.007;
+ let winner=current,top=current?targetScore(h,current,state.heroes.filter(a=>a.hp>0&&a.id!==h.id&&a.targetId===current.id).length):-Infinity;
+ for(const e of state.enemies){if(!legal(e)||Math.hypot(e.x-h.x,e.y-h.y)>acquireRadius(h))continue;
+  const focus=state.heroes.filter(a=>a.hp>0&&a.id!==h.id&&a.targetId===e.id).length;
+  const score=targetScore(h,e,focus);
+  if(score>top+(current?0.10:0)){winner=e;top=score}
+ }
+ if(current&&winner&&winner!==current){const old=targetScore(h,current,state.heroes.filter(a=>a.hp>0&&a.id!==h.id&&a.targetId===current.id).length);
+  if(state.elapsed-h.lastTargetSwitch<TUNING.shared.targetCommitSeconds&&top<old*(1+TUNING.shared.retargetMargin)+.5)winner=current;
+  else if(top<old+Math.max(.35,Math.abs(old)*TUNING.shared.retargetMargin))winner=current;
+ }
+ if((winner?.id??null)!==(h.targetId??null)){h.lastTargetSwitch=state.elapsed;state.combatTelemetry.targetSwitches++;h.slotIndex=-1;h.slotTarget=null;h.windupTime=0}
+ h.targetId=winner?.id??null;
+ return winner;
+}
+function meleeSlotGoal(h,e){
+ const count=e.boss?10:TUNING.shared.meleeSlots;
+ const gap=actorRadius(h)+actorRadius(e)+.18;
+ const candidates=[];
+ for(let j=0;j<count;j++){
+  const a=2*Math.PI*j/count,eX=e.x+Math.cos(a)*gap,eY=e.y+Math.sin(a)*gap;
+  if(nearTower(eX,eY,actorRadius(h))||Math.hypot(eX,eY)>guardRadius(h)-.03)continue;
+  const occupied=state.heroes.filter(u=>u.hp>0&&u.id!==h.id&&u.slotTarget===e.id&&u.slotIndex===j).length;
+  candidates.push({j,x:eX,y:eY,score:Math.hypot(h.x-eX,h.y-eY)+(occupied?3.0:0)+(h.slotTarget===e.id&&h.slotIndex===j?-.55:0)});
+ }
+ if(candidates.length===0)return null;
+ candidates.sort((a,b)=>a.score-b.score);const v=candidates[0];h.slotIndex=v.j;h.slotTarget=e.id;return{x:v.x,y:v.y};
+}
+function heroCombatGoal(h,e){
+ const dist=Math.max(.01,Math.hypot(e.x-h.x,e.y-h.y)),range=h.base.range;
+ if(range<=2.15)return meleeSlotGoal(h,e);
+ const preferred=clamp(range*TUNING.shared.rangeStandoff,1.7,4.3),dx=(h.x-e.x)/dist,dy=(h.y-e.y)/dist;
+ const goal={x:e.x+dx*preferred,y:e.y+dy*preferred};
+ if(Math.hypot(goal.x,goal.y)>guardRadius(h)-.2){const a=Math.atan2(goal.y,goal.x);goal.x=Math.cos(a)*(guardRadius(h)-.25);goal.y=Math.sin(a)*(guardRadius(h)-.25)}
+ return goal;
+}
+
 function stepNecroBeam(h,target,dt){if(!target||target.hp<=0||Math.hypot(target.x-h.x,target.y-h.y)>h.base.range||Math.hypot(h.x,h.y)>guardRadius(h)+.1){h.beamTarget=null;h.beamTime=0;h.beamTickClock=0;return}if(h.beamTarget!==target.id){h.beamTarget=target.id;h.beamTime=0;h.beamTickClock=0}const spec=cfg(h).special;h.beamTime+=dt;h.beamTickClock+=dt;const ticks=Math.floor(h.beamTickClock/spec.beamTickSeconds);if(ticks>0){const n=Math.min(ticks,8);h.beamTickClock-=ticks*spec.beamTickSeconds;const mult=1+(spec.beamMaxRampMultiplier-1)*Math.min(1,h.beamTime/spec.beamRampSeconds);hitEnemy(target,spec.beamBaseDamageRate*spec.beamTickSeconds*n*mult,h.base.color)}}
 function step(dt){if(state.mode!=='battle'||state.paused)return;
  state.elapsed+=dt;state.spawnClock+=dt;state.uiClock+=dt;
  if(state.regularSpawned===0){spawnEnemy(false);state.regularSpawned=1;state.spawnClock=0}
  else if(state.regularSpawned<regularCount()&&state.spawnClock>=1){state.spawnClock-=1;spawnEnemy(false);state.regularSpawned++}
  else if(state.regularSpawned===regularCount()&&!state.bossSpawned&&state.spawnClock>=2){spawnEnemy(true);state.bossSpawned=true;log(encounter().boss+' has arrived!')}
- state.traps=state.traps.filter(p=>p.expires>state.elapsed);
+ for(const a of state.heroes)a.hitFlash=Math.max(0,(a.hitFlash||0)-dt);for(const a of state.enemies)a.hitFlash=Math.max(0,(a.hitFlash||0)-dt);state.traps=state.traps.filter(p=>p.expires>state.elapsed);
  state.totems=state.totems.filter(p=>p.hp>0&&p.expires>state.elapsed);
  for(const h of state.heroes){if(h.hp<=0)continue;if(h.expiry<=state.elapsed){h.hp=0;continue}if(h.shieldUntil>0&&h.shieldUntil<state.elapsed)h.shield=0;
   if(!isOriginalHero(h)){
@@ -381,36 +481,41 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
    if(enemy){h.facing=Math.atan2(enemy.y-h.y,enemy.x-h.x)+Math.PI/2;if(best>h.base.range)moveToPoint(h,enemy,dt);else if(h.cooldown<=0){h.cooldown=1/h.base.speed;hitEnemy(enemy,h.base.damage,h.base.color);visualBeam(h,enemy)}}continue;
   }
   const tc=cfg(h),isBear=h.base.id==='druid'&&h.bearUntil>state.elapsed;
-  let target=nearestAllowedEnemy(h);
-  if(h.base.id==='necromancer'&&h.beamTarget!=null){const continuing=state.enemies.find(e=>e.id===h.beamTarget&&e.hp>0);if(continuing&&Math.hypot(continuing.x-h.x,continuing.y-h.y)<Math.max(h.base.range,acquireRadius(h))&&Math.hypot(h.x,h.y)<=guardRadius(h)+.1)target=continuing}
-  stepSpecials(h,dt); // Specials charge independently of normal attack cadence.
-  if(Math.hypot(h.x,h.y)>guardRadius(h)-.05&&!target)moveToPoint(h,{x:h.anchorX,y:h.anchorY},dt);
-  if(!target){if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);if(Math.hypot(h.x-h.anchorX,h.y-h.anchorY)>.85)moveToPoint(h,{x:h.anchorX,y:h.anchorY},dt);continue}
-  const dist=Math.hypot(target.x-h.x,target.y-h.y),attackRange=isBear?1.15:h.base.range;
+  let target=selectHeroTarget(h,dt);
+  if(h.base.id==='necromancer'&&h.beamTarget!=null){const ongoing=state.enemies.find(e=>e.id===h.beamTarget&&e.hp>0);if(ongoing&&Math.hypot(ongoing.x-h.x,ongoing.y-h.y)<=h.base.range&&Math.hypot(h.x,h.y)<=guardRadius(h)+.05)target=ongoing}
+  stepSpecials(h,dt);
+  if(!target){h.attackState='idle';h.windupTime=0;h.slotIndex=-1;h.slotTarget=null;if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);if(Math.hypot(h.x-h.anchorX,h.y-h.anchorY)>.52)moveToPoint(h,{x:h.anchorX,y:h.anchorY},dt);else brake(h,dt);continue}
+  const dist=Math.hypot(target.x-h.x,target.y-h.y),attackRange=(isBear?1.15:h.base.range)+(target.boss&&h.base.range<=2.15?.4:0);
   h.facing=Math.atan2(target.y-h.y,target.x-h.x)+Math.PI/2;
-  if(dist>attackRange){if(Math.hypot(target.x,target.y)<=guardRadius(h)+attackRange)moveToPoint(h,target,dt);if(h.base.id==='necromancer')stepNecroBeam(h,null,dt)}
-  else if(h.base.id==='necromancer'){stepNecroBeam(h,target,dt)}
-  else{h.cooldown-=dt;if(h.cooldown<=0){if(isBear){h.cooldown=1/h.base.speed;hitEnemy(target,h.base.damage,h.base.color);visualBeam(h,target,'#b2e585');visualRing(target.x,target.y,.5,'#96d46e')}else{let bonus=1;if(h.blessingUntil>state.elapsed)bonus+=TUNING.heroes.priest.special.blessingDamageBonus; // demo-only buff
-     basicAttack(h,target); // base cadence unchanged by specials
-     if(bonus>1&&target.hp>0)hitEnemy(target,h.base.damage*(bonus-1),h.base.color);
-     if(h.frenzyUntil>state.elapsed)h.cooldown/=cfg(h).special.frenzyAttackSpeedMultiplier;
-    }}}
+  const goal=heroCombatGoal(h,target);
+  if(goal&&dist>attackRange-.02){h.attackState='approach';h.windupTime=0;moveToPoint(h,goal,dt);if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);continue}
+  if(goal&&h.base.range<=2.15&&Math.hypot(goal.x-h.x,goal.y-h.y)>.15)moveToPoint(h,goal,dt*.7);else if(goal&&h.base.range>2.15&&dist<Math.min(1.4,attackRange*.32))moveToPoint(h,goal,dt);else brake(h,dt);
+  if(h.base.id==='necromancer'){h.attackState='channel';stepNecroBeam(h,target,dt);continue}
+  const cycle=1/(h.base.speed*(h.frenzyUntil>state.elapsed?cfg(h).special.frenzyAttackSpeedMultiplier:1));
+  if(h.windupTime>0){h.windupTime-=dt;h.attackState='windup';if(h.windupTime>0)continue;
+   const aim=state.enemies.find(e=>e.id===h.windupTarget&&e.hp>0);
+   if(aim&&Math.hypot(aim.x-h.x,aim.y-h.y)<=attackRange+.2){if(isBear){hitEnemy(aim,h.base.damage,h.base.color);visualBeam(h,aim,'#b2e585');visualRing(aim.x,aim.y,.5,'#96d46e')}else{const bonus=h.blessingUntil>state.elapsed?1+TUNING.heroes.priest.special.blessingDamageBonus:1;basicAttack(h,aim);if(bonus>1&&aim.hp>0)hitEnemy(aim,h.base.damage*(bonus-1),h.base.color)}}
+   h.cooldown=cycle*.8;h.attackState='recovery';h.windupTarget=null;continue;
+  }
+  h.cooldown-=dt;
+  if(h.cooldown<=0){h.windupTime=cycle*.2;h.windupTarget=target.id;h.attackState='windup'}else h.attackState='recovery';
  }
  stepSanctuaries(dt);
  tickAttackEffects(dt);
  for(const e of state.enemies){if(e.hp<=0)continue;if(e.stunnedUntil>state.elapsed)continue;
   let hero=null,closest=TUNING.shared.enemyHeroDetection**2;for(const h of state.heroes){if(h.hp<=0||h.invisibleUntil>state.elapsed)continue;const d=(h.x-e.x)**2+(h.y-e.y)**2;if(d<=closest){hero=h;closest=d}}
   let totem=null,totemDist=Infinity;for(const p of state.totems){const sq=(p.x-e.x)**2+(p.y-e.y)**2;if(sq<=p.radius*p.radius&&sq<totemDist){totem=p;totemDist=sq}}
-  const target=totem||hero||{x:0,y:0};const dist=Math.hypot(target.x-e.x,target.y-e.y);
-  const reach=totem?0.75:hero?1:.9;
+  const target=totem||hero||towerApproach(e);const dist=Math.hypot(target.x-e.x,target.y-e.y);
+  const reach=totem?actorRadius(e)+.35:hero?actorRadius(e)+actorRadius(hero)+.22:.34;
   if(dist<=reach){e.cooldown-=dt;if(e.cooldown<=0){e.cooldown=1;
     const damage=e.damage*(e.weakUntil>state.elapsed?.8:1);
     if(totem){totem.hp-=damage;visualRing(totem.x,totem.y,.35,'#51dcc0')}
     else if(hero){const dealt=hitHero(hero,damage);if(dealt>0)damageNumber(hero.x,hero.y-.7,'−'+dealt.toFixed(1),'#ffb6a7');if(hero.hp===0)log('Your '+hero.base.name+' was defeated.')}
     else{applyTowerDamage(damage);if(state.mode==='over')break}
-  }}else if(dist>0){let mult=1;for(const p of state.traps)if(Math.hypot(e.x-p.x,e.y-p.y)<=p.radius){mult=Math.min(mult,p.slow)}const delta=Math.min(e.speed*mult*dt,Math.max(0,dist-reach*.97));e.x+=(target.x-e.x)/dist*delta;e.y+=(target.y-e.y)/dist*delta}
+  }}else if(dist>0){let mult=1;for(const p of state.traps)if(Math.hypot(e.x-p.x,e.y-p.y)<=p.radius){mult=Math.min(mult,p.slow)}takeTowerSafeStep(e,target,dt,e.speed*mult)}else brake(e,dt)
  }
  if(state.mode!=='battle')return;
+ resolveActorCollisions();
  // Process deaths after all attacks; event-based necromancy is an on-kill event, never timed or random.
  for(let i=state.enemies.length-1;i>=0;i--){const e=state.enemies[i];if(e.hp<=0){if(e.boss){state.bossKilled=true;log(encounter().boss+' defeated!')}
     if(e.doom){visualRing(e.x,e.y,1.6,'#be86df');for(const other of enemiesInRadius(e.x,e.y,1.6))if(other!==e)hitEnemy(other,1.2,'#ca91ef')}
@@ -449,7 +554,7 @@ function revealPack(){if(state.mode!=='opening'||!state.pendingPack)return;
  else{for(const hero of state.openedHeroes)createHero(hero);state.packsToOpen--;state.openedHeroes=null;state.pendingPack=false;if(state.packsToOpen>0)openNextPack();else{refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');beginBattle()}updateUI()}
 }
 
-function beginBattle(){state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.abilityCasts=0;log('Stage '+state.stage+' · '+encounter().name+' — '+regularCount()+' '+encounter().minion+' units and '+encounter().boss+'.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
+function beginBattle(){state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.abilityCasts=0;state.combatTelemetry={overlaps:0,targetSwitches:0,blocked:0};log('Stage '+state.stage+' · '+encounter().name+' — '+regularCount()+' '+encounter().minion+' units and '+encounter().boss+'.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
 function resetPreparation(restoreTower=true){state.coins=state.coinMax;if(restoreTower)state.towerHp=100;state.mode='prep';state.paused=false;state.bought=0;state.packsToOpen=0;state.testQueue=[];state.heroes=[];state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.abilityCasts=0;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.pendingPack=false;state.openedHeroes=null;refs.overlay.classList.add('hidden');updateUI()}
 function startStage(){if(state.mode==='clear'){if(!state.testMode)state.stage++;resetPreparation(state.testMode);log((state.testMode?'Test preparation':'Stage '+state.stage+' preparation')+' has begun.');updateUI();return}
  if(state.mode!=='prep')return;
@@ -475,7 +580,7 @@ function init(){
  document.addEventListener('keydown',e=>{if(e.code==='Space'&&state.mode==='battle'){e.preventDefault();state.paused=!state.paused;updateUI()}else if(e.key==='Enter'&&state.mode==='prep'&&!state.pendingPack)startStage()});window.addEventListener('resize',resize);if('ResizeObserver'in window)new ResizeObserver(resize).observe(canvas.parentElement);resize();restart();requestAnimationFrame(tick)
 }
 
-window.__FW_DEMO__={snapshot:()=>({stage:state.stage,coins:state.coins,coinMax:state.coinMax,towerHp:state.towerHp,mode:state.mode,paused:state.paused,bought:state.bought,packsToOpen:state.packsToOpen,testMode:state.testMode,testQueue:state.testQueue.slice(),regularTotal:regularCount(),heroes:state.heroes.map(h=>({name:h.base.name,rarity:h.base.rarity,hp:h.hp,x:h.x,y:h.y})),regularSpawned:state.regularSpawned,worldW:view.worldW,worldH:view.worldH,bossSpawned:state.bossSpawned,kills:state.kills,enemies:state.enemies.length,hasPendingPack:state.pendingPack,abilityCasts:state.abilityCasts,totems:state.totems.length,traps:state.traps.length,heroesCharged:state.heroes.filter(h=>h.charge>=chargeSeconds(h)&&isOriginalHero(h)).length,heroesDetail:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,summonKind:h.summonKind,beamTarget:h.beamTarget,beamTime:h.beamTime,damage:h.base.damage})),tuning:TUNING.shared}),packs:PACKS.map(p=>({name:p.name,pool:p.pool,stage:p.stage})),encounter:{...encounter()},campaignStages:10,sanctuaries:state.sanctuaries.length,version:'design-1.0.1 / demo-0.7'};
+window.__FW_DEMO__={snapshot:()=>({combatTelemetry:{...state.combatTelemetry},stage:state.stage,coins:state.coins,coinMax:state.coinMax,towerHp:state.towerHp,mode:state.mode,paused:state.paused,bought:state.bought,packsToOpen:state.packsToOpen,testMode:state.testMode,testQueue:state.testQueue.slice(),regularTotal:regularCount(),heroes:state.heroes.map(h=>({name:h.base.name,rarity:h.base.rarity,hp:h.hp,x:h.x,y:h.y})),regularSpawned:state.regularSpawned,worldW:view.worldW,worldH:view.worldH,bossSpawned:state.bossSpawned,kills:state.kills,enemies:state.enemies.length,hasPendingPack:state.pendingPack,abilityCasts:state.abilityCasts,totems:state.totems.length,traps:state.traps.length,heroesCharged:state.heroes.filter(h=>h.charge>=chargeSeconds(h)&&isOriginalHero(h)).length,heroesDetail:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,summonKind:h.summonKind,beamTarget:h.beamTarget,beamTime:h.beamTime,damage:h.base.damage})),tuning:TUNING.shared}),packs:PACKS.map(p=>({name:p.name,pool:p.pool,stage:p.stage})),encounter:{...encounter()},campaignStages:10,sanctuaries:state.sanctuaries.length,version:'design-1.1.0 / demo-0.8'};
 
 // Testing-only, non-persistent simulation controls for automated playtesting.
 window.__FW_TEST__={
