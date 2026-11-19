@@ -49,8 +49,10 @@ Existing testing hooks (`window.__FW_DEMO__`, `window.__FW_TEST__`, `window.__FW
 ## Regression checklist after each refactor
 
 - Browser starts on mobile and desktop with no runtime errors.
-- One Recruit Pack reveals **three** heroes and enters an ordinary stage.
+- One Recruit Pack reveals exactly **one** hero and enters an ordinary stage; six Recruit Packs at the 12-coin cap deploy six heroes.
 - Testing Shop still spawns selected heroes without granting saved progression.
+- Shared hero acquisition is **15 units**, tower guard/chase remains **5 units**, and ranged units hold their position when a target is in attack reach.
+- Standard minions have **11 HP** rather than the former 22 HP; boss health is unaffected.
 - Minions spawn every **2 seconds** and boss waits until all ordinary minions are defeated, then **2 seconds** more.
 - Ordinary enemy defeats have a **10% independent** 1-UP drop chance; bosses guarantee **5 UP**.
 - Hero engagement locking, tower collision and class special attacks still work.
