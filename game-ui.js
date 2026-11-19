@@ -45,6 +45,30 @@ function showBattleReport(){
  refs.battleReport.hidden=false;
 }
 
+
+function updateQuests(){
+ const root=$('questRecruit'),other=$('questOther'),label=$('questCount');
+ if(!root||!other||!label||!SKILLS?.questProgress)return;
+ const quests=SKILLS.questProgress(),done=quests.filter(q=>q.rewarded).length,early=quests.filter(q=>q.tier===1);
+ const signature=quests.map(q=>q.id+':'+q.kills+':'+Number(q.available)+':'+Number(q.rewarded)).join('|')+'|'+Number(state.testMode)+'|'+state.coinMax;
+ if(state.questJournalSignature===signature)return;
+ state.questJournalSignature=signature;
+ const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const row=q=>{
+  const pct=100*Math.min(1,q.kills/q.goal),earned=q.rewarded,locked=!q.available;
+  const status=earned?'✓ +2 permanently earned':locked?'Tier '+q.tier+' locked':'Earn +2 max coins';
+  const stateClass=earned?'complete':locked?'sealed':'incomplete';
+  return '<div class="quest-item '+stateClass+'"><div class="quest-row"><div class="quest-identity"><strong>'+escape(q.className)+'</strong><small>'+escape(q.questName)+'</small></div><span class="quest-progress">'+Math.min(q.kills,q.goal)+' / '+q.goal+'</span></div>'+
+   '<div class="quest-track" role="progressbar" aria-label="'+escape(q.className)+' minion kills" aria-valuemin="0" aria-valuemax="'+q.goal+'" aria-valuenow="'+Math.min(q.kills,q.goal)+'"><span style="width:'+pct.toFixed(1)+'%"></span></div>'+
+   '<div class="quest-reward">'+escape(status)+'</div></div>';
+ };
+ root.innerHTML=early.map(row).join('');
+ other.innerHTML=[2,3,4,5].map(t=>'<div class="quest-tier-heading">Tier '+t+' · '+escape(quests.find(q=>q.tier===t)?.tierName||'')+'</div>'+quests.filter(q=>q.tier===t).map(row).join('')).join('');
+ label.textContent=done+' / '+quests.length;
+ $('questSummary').textContent='Recruit quests: '+early.filter(q=>q.rewarded).length+'/3 complete · Total quest rewards: +'+(done*2)+' max coins · Current cap: '+state.coinMax;
+ $('questModeHint').textContent=state.testMode?'TESTING MODE: free hero battles do not advance quests or award coins.':'Quest rewards are automatic, permanent and stack with shop/Legacy bonuses.';
+}
+
 function updateUI(){
  const offer=selectedOffer(),pack=PACKS[offer],offers=offeredPacks();
  refs.stage.textContent=String(state.stage).padStart(2,'0')+' / 10';
@@ -60,6 +84,7 @@ function updateUI(){
  refs.specials.textContent=String(state.abilityCasts);
  refs.kills.textContent=String(state.kills);
  refs.total.textContent=String(totalCount());
+ updateQuests();
  updateWaveTracker();
  const packs=state.packQueue.length?state.packQueue.reduce((a,i)=>(a[PACKS[i].name]=(a[PACKS[i].name]||0)+1,a),{}):{};
  refs.count.textContent=state.bought+' packs held · '+(Object.entries(packs).map(([k,v])=>v+' '+k).join(' · ')||'1 hero each');
@@ -90,5 +115,5 @@ function updateUI(){
 function offeredPacks(){const unlocked=PACKS.map((p,i)=>i).filter(i=>SKILLS?SKILLS.isTierOpen(i+1):i===0);const limit=Math.min(unlocked.length,Math.max(1,state.shopSlots||1));const offset=unlocked.length?state.shopPage%unlocked.length:0;return Array.from({length:limit},(_,i)=>unlocked[(offset+i)%unlocked.length]);}
 function selectedOffer(){const offers=offeredPacks();if(!offers.includes(state.selectedPack))state.selectedPack=offers[0]??0;return state.selectedPack;}
 
-return {updateUI,updateFormation,updateTestingUI,updateWaveTracker,showBattleReport,battleSummary,waveStatus,offeredPacks,selectedOffer};
+return {updateUI,updateQuests,updateFormation,updateTestingUI,updateWaveTracker,showBattleReport,battleSummary,waveStatus,offeredPacks,selectedOffer};
 }};
