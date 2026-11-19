@@ -442,6 +442,8 @@ function targetScore(h,e,focus){
  return 4*urgency+2*role+(1-dist/Math.max(.01,acquireRadius(h)))-2*Math.min(2,nearby)/4+(SKILLFX?SKILLFX.focusBias(h,e):0)+((h.id*17+e.id*13)%37)*.0001;
 }
 function selectHeroTarget(h,dt){
+ // Finish current valid engagement before reconsidering other threats.
+ if(h.engagedTargetId!=null){const locked=state.enemies.find(e=>e.id===h.engagedTargetId&&e.hp>0);if(locked&&Math.hypot(locked.x,locked.y)<=guardRadius(h)+Math.max(1,h.base.range)){h.targetId=locked.id;return locked;}h.engagedTargetId=null;}
  h.targetClock=(h.targetClock||0)-dt;
  let current=state.enemies.find(e=>e.id===h.targetId&&e.hp>0);
  const legal=e=>e&&Math.hypot(e.x-h.x,h.y-e.y)<=acquireRadius(h)+.65&&Math.hypot(e.x,e.y)<=guardRadius(h)+Math.max(1,h.base.range);
@@ -508,7 +510,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
   const goal=heroCombatGoal(h,target);
   if(goal&&dist>attackRange-.02){h.attackState='approach';h.windupTime=0;moveToPoint(h,goal,dt);if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);continue}
   if(goal&&h.base.range<=2.15&&Math.hypot(goal.x-h.x,goal.y-h.y)>.15)moveToPoint(h,goal,dt*.7);else if(goal&&h.base.range>2.15&&dist<Math.min(1.4,attackRange*.32))moveToPoint(h,goal,dt);else brake(h,dt);
-  if(h.base.id==='necromancer'){h.attackState='channel';stepNecroBeam(h,target,dt);continue}
+  if(h.base.id==='necromancer'){h.attackState='channel';h.engagedTargetId=target.id;stepNecroBeam(h,target,dt);continue}
   const cycle=1/(h.base.speed*(h.frenzyUntil>state.elapsed?cfg(h).special.frenzyAttackSpeedMultiplier:1));
   if(h.windupTime>0){h.windupTime-=dt;h.attackState='windup';if(h.windupTime>0)continue;
    const aim=state.enemies.find(e=>e.id===h.windupTarget&&e.hp>0);
@@ -516,7 +518,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
    h.cooldown=cycle*.8;h.attackState='recovery';h.windupTarget=null;continue;
   }
   h.cooldown-=dt;
-  if(h.cooldown<=0){h.windupTime=cycle*.2;h.windupTarget=target.id;h.attackState='windup'}else h.attackState='recovery';
+  if(h.cooldown<=0){h.windupTime=cycle*.2;h.windupTarget=target.id;h.engagedTargetId=target.id;h.attackState='windup'}else h.attackState='recovery';
  }
  stepSanctuaries(dt);
  tickAttackEffects(dt);
