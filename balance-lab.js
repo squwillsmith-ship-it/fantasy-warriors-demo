@@ -211,6 +211,102 @@
     recordFinish(s);
   }
 
+  // Shareable snapshot: include effective base stats AND locally saved edits.
+  // Reading the input fields means no need to restart a battle just to copy the setup.
+  function currentBalanceSetup() {
+    const stage = num(Math.round(Number($('labStage').value)), 1, 10, 1);
+    const overrides = window.FWQuickStats?.snapshot?.() || {heroes:{}, minion:{}, boss:{}};
+    const configuredTeam = {};
+    for (const [id, input] of heroInputs.entries()) {
+      const count = num(Math.floor(Number(input.value)), 0, 40, 0);
+      if (count > 0) configuredTeam[id] = count;
+    }
+    const heroStats = {};
+    for (const hero of data.HEROES) {
+      const effective = {...hero, ...(overrides.heroes?.[hero.id] || {})};
+      heroStats[hero.id] = {
+        name:hero.name, hp:effective.hp, damage:effective.damage,
+        attacksPerSecond:effective.speed, movementSpeed:effective.walk,
+        attackRange:effective.range
+      };
+    }
+    const minionStats = {
+      hp: spawn.normalHp, damage: spawn.minionDamage,
+      movementSpeed: spawn.minionSpeed, attackPeriod: spawn.minionAttackPeriod,
+      firstHitDelay: spawn.minionFirstAttackWindup
+    };
+    const savedMinion = overrides.minion || {};
+    Object.assign(minionStats, Object.fromEntries(
+      Object.entries(savedMinion).map(([key,value]) =>
+        [({speed:'movementSpeed',firstDelay:'firstHitDelay'})[key] || key, value])
+    ));
+    const bossStatsByStage = {};
+    for (let i=1; i<=data.ENCOUNTERS.length; i++) {
+      const effective = {
+        hp: Math.round((spawn.bossHpBase + spawn.bossHpPerStage * (i-1)) / spawn.bossHpDivisor),
+        damage: spawn.bossDamage,
+        movementSpeed: spawn.bossSpeed,
+        attackPeriod: spawn.bossAttackPeriod
+      };
+      for (const [key,value] of Object.entries(overrides.boss?.[i] || {}))
+        effective[key==='speed'?'movementSpeed':key] = value;
+      bossStatsByStage[i] = {boss:data.ENCOUNTERS[i-1].boss, ...effective};
+    }
+    return {
+      format:'fantasy-warriors-balance-lab/v1',
+      balanceProfile:data.BALANCE.profileId,
+      encounter:{stage,name:data.ENCOUNTERS[stage-1].name},
+      playbackSpeed:Number($('labSpeed').value),
+      towerHP:num($('labTower').value,1,100000,defaults.towerHP),
+      wave:{
+        minions:num(Math.round(Number($('labWave').value)),1,2000,stageDefaultWave(stage)),
+        initialSpawnIntervalSeconds:num($('labSpawn').value,.1,30,defaults.normalInterval),
+        spawnRateRampExtraFactor:num($('labRamp').value,0,10,defaults.ramp)
+      },
+      heroTeam:configuredTeam,
+      heroStats,
+      minionStats,
+      bossStatsByStage,
+      combatTuning:{...data.TUNING.shared},
+      savedStatOverrides:overrides,
+      recentBattleResults:history.slice(-10)
+    };
+  }
+  function makeShareText() { return JSON.stringify(currentBalanceSetup(), null, 2); }
+  function revealShareText() {
+    const preview=$('labSettingsPreview');
+    preview.value=makeShareText();
+    preview.hidden=false;
+    $('labShowSettings').setAttribute('aria-expanded','true');
+    $('labShowSettings').textContent='Hide preview';
+    return preview;
+  }
+  $('labShowSettings').addEventListener('click', () => {
+    const preview=$('labSettingsPreview');
+    if (!preview.hidden) {
+      preview.hidden=true;
+      $('labShowSettings').textContent='Preview';
+      $('labShowSettings').setAttribute('aria-expanded','false');
+    } else revealShareText();
+  });
+  $('labCopySettings').addEventListener('click', async () => {
+    const text=makeShareText();
+    const feedback=$('labCopyFeedback');
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
+      await navigator.clipboard.writeText(text);
+      feedback.textContent='✓ Copied! Paste it into this chat.';
+    } catch (_) {
+      const preview=revealShareText();
+      preview.focus(); preview.select();
+      let copied=false;
+      try { copied=document.execCommand('copy'); } catch (_) {}
+      feedback.textContent=copied
+        ? '✓ Copied! Paste it into this chat.'
+        : 'Automatic copy is unavailable. The settings are selected below; use Copy, then paste them here.';
+    }
+  });
+
   $('labExport').addEventListener('click', () => {
     if (!history.length) return setStatus('Complete a battle before exporting.');
     const columns = ['run', 'stage', 'team', 'wave', 'spawnInterval', 'ramp', 'speed', 'towerMax', 'outcome', 'seconds', 'kills', 'towerLeft', 'abilityCasts'];
