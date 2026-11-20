@@ -27,7 +27,7 @@ function chooseHero(packIndex=0){const pool=PACKS[packIndex].pool;return HERO_MA
 const {normalInterval:NORMAL_SPAWN_INTERVAL,bossClearDelay:BOSS_AFTER_CLEAR_DELAY}=SPAWN_CONFIG;
 function regularCount(){return SPAWN_CONFIG.regularWaveBase+SPAWN_CONFIG.regularWavePerStage*(state.stage-1)}
 function totalCount(){return regularCount()+1}
-function nextSpawnInterval(){return ARCADE.spawnInterval(NORMAL_SPAWN_INTERVAL,SPAWN_CONFIG.normalRateRampFactor,state.regularSpawned,regularCount())}
+function nextSpawnInterval(){return ARCADE.spawnInterval(SPAWN_CONFIG.normalInterval,SPAWN_CONFIG.normalRateRampFactor,state.regularSpawned,regularCount())}
 function log(message){state.notifications.unshift(message);state.notifications.length=Math.min(5,state.notifications.length);refs.events.replaceChildren(...state.notifications.map(t=>{const li=document.createElement('li');li.textContent=t;return li}))}
 function addEffect(e){state.effects.push(e);if(state.effects.length>160)state.effects.shift()}
 function damageNumber(x,y,text,color){addEffect({kind:'number',x,y,text:String(text),color,life:.8,maxLife:.8})}
@@ -331,7 +331,28 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  if(state.bossSpawned&&state.kills===totalCount()&&state.enemies.length===0){clearStage();return}
  if(state.uiClock>=.16){state.uiClock=0;updateUI()}
 }
-function tick(now){let dt=state.lastTime?clamp((now-state.lastTime)/1000,0,.06):0;state.lastTime=now;if(state.mode==='battle'&&!state.paused)step(dt);for(let i=state.effects.length-1;i>=0;i--){if(state.mode!=='battle'||!state.paused)state.effects[i].life-=dt;if(state.effects[i].life<=0)state.effects.splice(i,1)}render(now/1000);requestAnimationFrame(tick)}
+function tick(now){
+ const dt=state.lastTime?clamp((now-state.lastTime)/1000,0,.06):0;
+ state.lastTime=now;
+ const lab=document.body.classList.contains('lab-mode');
+ const multiplier=lab?clamp(Number(window.__FW_LAB_SPEED__)||1,.25,100):1;
+ const simulated=dt*multiplier;
+ if(state.mode==='battle'&&!state.paused){
+  if(lab){
+   let remaining=simulated,steps=0;
+   while(remaining>1e-7&&state.mode==='battle'&&steps<160){
+    const slice=Math.min(.05,remaining);
+    step(slice);
+    remaining-=slice;steps++;
+   }
+  }else step(dt);
+ }
+ for(let i=state.effects.length-1;i>=0;i--){
+  if(state.mode!=='battle'||!state.paused)state.effects[i].life-=lab?simulated:dt;
+  if(state.effects[i].life<=0)state.effects.splice(i,1);
+ }
+ render(now/1000);requestAnimationFrame(tick);
+}
 const {updateUI,showBattleReport,waveStatus,offeredPacks,selectedOffer}=window.FWGameUI.create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,nextSpawnInterval,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY});
 function buyPack(){const i=selectedOffer(),pack=PACKS[i];if(state.mode!=='prep'||state.testMode||state.coins<pack.price)return;state.coins-=pack.price;state.packQueue.push(i);state.bought++;log(pack.name+' Pack '+state.bought+' purchased ('+HEROES_PER_PACK+' hero).');updateUI()}
 function toggleTesting(){if(state.mode!=='prep')return;if(!state.testMode&&state.bought>0){log('Finish the regular-pack stage before enabling the separate Testing Shop.');return}if(!state.testMode){state.testSavedTowerHp=state.towerHp;state.testSavedStage=state.stage}state.testMode=!state.testMode;if(!state.testMode){state.testQueue=[];if(state.testSavedTowerHp!=null)state.towerHp=state.testSavedTowerHp;if(state.testSavedStage!=null)state.stage=state.testSavedStage;state.testSavedTowerHp=null;state.testSavedStage=null}log(state.testMode?'Testing mode ON · free heroes do not affect progression.':'Testing mode OFF.');updateUI()}
@@ -379,6 +400,54 @@ window.__FW_TEST__={
  kill:(count=1)=>{if(!state.testMode||state.mode!=='battle')return false;let n=0;for(const e of state.enemies){if(!e.boss&&e.hp>0){e.hp=0;n++;if(n>=count)break}}return n},
  current:()=>({mode:state.mode,elapsed:state.elapsed,casts:state.abilityCasts,heroes:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,beamTarget:h.beamTarget,beamTime:h.beamTime,summonKind:h.summonKind,expiry:h.expiry,invisibleUntil:h.invisibleUntil,shield:h.shield})),enemies:state.enemies.map(e=>({id:e.id,hp:e.hp,maxHp:e.maxHp,x:e.x,y:e.y,damage:e.damage,speed:e.speed,attackPeriod:e.attackPeriod,cooldown:e.cooldown,inAttackRange:!!e.inAttackRange,boss:!!e.boss})),totems:state.totems.length,traps:state.traps.length,sanctuaries:state.sanctuaries.map(z=>({...z})),encounter:encounter().name})};
 
+if(document.body.classList.contains('lab-mode')){
+ window.__FW_LAB_API__={
+  prepare(){
+   resetPreparation();
+   if(!state.testMode)toggleTesting();
+   updateUI();
+   return true;
+  },
+  setStage(n){
+   if(state.mode!=='prep')return false;
+   state.stage=clamp(Math.round(Number(n)||1),1,ENCOUNTERS.length);
+   refs.testStage.value=String(state.stage);
+   updateUI();return true;
+  },
+  setTowerHP(n){
+   if(state.mode!=='prep')return false;
+   const hp=clamp(Number(n)||100,1,100000);
+   state.towerMax=hp;state.towerHp=hp;
+   updateUI();return true;
+  },
+  queueHero(id,count=1){
+   if(state.mode!=='prep'||!state.testMode||!HERO_MAP[id])return false;
+   for(let i=0;i<Math.min(80,Math.max(0,Math.floor(count)));i++)state.testQueue.push(id);
+   updateUI();return true;
+  },
+  clearQueue(){
+   if(state.mode!=='prep')return false;
+   state.testQueue=[];updateUI();return true;
+  },
+  start(){
+   if(state.mode!=='prep'||!state.testMode)return false;
+   startStage();return true;
+  },
+  pause(){
+   if(state.mode!=='battle')return false;
+   state.paused=!state.paused;updateUI();return state.paused;
+  },
+  snapshot(){
+   return {mode:state.mode,paused:state.paused,elapsed:state.elapsed,stage:state.stage,
+    towerHP:state.towerHp,towerMax:state.towerMax,kills:state.kills,
+    regularSpawned:state.regularSpawned,regularTotal:regularCount(),
+    heroesAlive:state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length,
+    heroesTotal:state.deployedHeroes,enemiesAlive:state.enemies.length,
+    bossKilled:state.bossKilled,specialCasts:state.abilityCasts,
+    report:state.lastReport};
+  }
+ };
+}
 window.__FW_TUNING__=TUNING;
 init();
 })();
