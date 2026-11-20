@@ -16,7 +16,7 @@ const legacyPerks=[
  {key:'treasury',name:'Royal Treasury',icon:'◈',description:'Permanent +2 to round coin maximum per rank.',max:4,cost:2},
  {key:'merchant',name:'Market Charter',icon:'▤',description:'Permanent +1 shop offer slot per rank.',max:3,cost:3}
 ];
-const K='fantasy-warriors-skilltree-1.1';
+const K=document.body.classList.contains('lab-mode')?'fantasy-warriors-lab-skilltree-1.1':'fantasy-warriors-skilltree-1.1';
 const defaultSave=()=>({up:0,upRemainder:0,nodes:[],kills:{},packOpens:{},highestClear:0,runHighest:0,runWins:0,campaignStage:1,tierWins:{},gateways:[],resets:0,shards:0,legacy:{},stats:{},purchaseCosts:{},grandfatheredGates:[],gateRulesVersion:2}); 
 function load(){try{const p=JSON.parse(localStorage.getItem(K));if(p&&Array.isArray(p.nodes)){const migrated=Object.assign(defaultSave(),p);migrated.upRemainder=0; // retired five-kills-to-one-UP counter
  if(!Number.isInteger(p.campaignStage))migrated.campaignStage=Math.max(1,Math.min(10,1+Number(p.runHighest||0)));
