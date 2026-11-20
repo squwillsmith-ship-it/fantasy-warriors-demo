@@ -1,9 +1,24 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.9 · Gameplay Manifesto v1.3.4** (20 November 2026)
+**Build 1.0.10 · Gameplay Manifesto v1.3.4** (20 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.9
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.10
 
+
+## New in Build 1.0.10 — Central Balance, Kill Goals & Safe Test Reset
+
+- **New `balance-config.js`:** versioned, validated, JSON-compatible **live balance profile `fw-live-v1.3.4`**. Numerical hero stats, both summons, five pack pools/prices, abilities, combat-AI settings, minion/boss HP and damage, normal wave size/spawn timing, round coin economy, UP award probability and boss reward, all **205 skill node costs**, all **15 class-kill thresholds**, and four proposed tier-gateway prices are now drawn from this single profile. Structural mechanics, secondary effect multipliers and some Legacy tuning remain in game code for subsequent migration.
+- **5 / 10 / 15 Recruit kill quests:** Knight Sword Duty requires **5** minion kills, Archer Target Practice **10**, Mage Arcane Trial **15**, each awarding the existing permanent **+2 max coins** once. Higher-tier quest thresholds are unchanged and still provisional.
+- **Older saved quests protected:** An Archer/Mage quest already completed at five kills in a prior build keeps its completed status and permanent +2 cap reward. Its saved kill count remains intact. Incomplete quests follow the new target.
+- **Isolated Reset Skill Tree for testing:** In **Skill Tree → 🧪 Test Reset**, start a temporary sandbox, reset purchased ordinary nodes, and **refund the original UP amounts** recorded for each purchase. The sandbox clone can be used for comparing builds and test battles, then discarded. It cannot overwrite the main progress save or grant permanent Legacy currency. Previously purchased older nodes without a cost ledger use their unchanged historical node cost as fallback.
+- **Balance export:** The same Test Reset tab can download the active numeric balance profile as JSON. The Google Sheets balance editor remains a separate *manual* editor and is **not live-synchronised**. There is no automatic import of experimental balance values.
+- **No unrelated rebalance:** Existing v1.3.4 hero HP/damage, 6-HP normal minions, 0.65-second minion first attack wind-up, 2-second spawn spacing, 10% independent UP drops, and 5 guaranteed boss UP are unchanged.
+
+### Verification
+
+- All 9 active JavaScript modules parsed; simulated startup reached normal preparation with a 2-coin cap, 15 heroes, 205 nodes, 30-minion Stage 1 wave and correct 5/10/15 Recruit targets.
+- Config validation rejected 5 deliberately invalid edits. Single-number edits to hero HP, purchase cost, class goal, pack price and spawn interval reached runtime data without changing gameplay code.
+- Progression tests verified coin-cap progression **2 → 4 → 6 → 8**, grandfathered older save credit, no duplicate quest rewards, exact sandbox refunds and preservation of the original localStorage save.
 
 ## New in Build 1.0.9 — Quick Stats (Testing Shop only)
 
@@ -102,4 +117,4 @@ Higher-tier pack prices, exact upgrade percentages and currency economy, skill g
 
 ## Technical
 
-Published files: `index.html`, `game-data.js`, `game-core.js`, `game-render.js`, `game-ui.js`, `game.css`, `skill-tree-data.js`, `skill-tree.js`, `skill-tree-effects.js`, `skill-tree.css`. Deploy from `main` / root. Keep module script order in `index.html` and bump query-string version references after changes to avoid stale mobile Safari caches. See [ARCHITECTURE.md](ARCHITECTURE.md).
+Published files: `index.html`, `balance-config.js`, `game-data.js`, `game-core.js`, `game-render.js`, `game-ui.js`, `game.css`, `skill-tree-data.js`, `skill-tree.js`, `skill-tree-effects.js`, `skill-tree.css`. Deploy from `main` / root. Keep module script order in `index.html` and bump query-string version references after changes to avoid stale mobile Safari caches. See [ARCHITECTURE.md](ARCHITECTURE.md).
