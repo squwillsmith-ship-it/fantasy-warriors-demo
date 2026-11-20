@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="skill-tree.css?v=1.0">
 <link rel="stylesheet" href="game.css?v=1.0.8">
 <link rel="stylesheet" href="quick-stats.css?v=1.0.9">
-<link rel="stylesheet" href="balance-lab.css?v=1">
+<link rel="stylesheet" href="balance-lab.css?v=2">
 </head>
 <body class="lab-mode">
 <div class="shell">
@@ -101,6 +101,17 @@
     <p>Change health, damage, attack speed, movement and range for heroes, or basic minion and boss stats. Separate local settings from the playable demo.</p>
     <div id="labStatsHost"></div>
   </section>
+  <section class="lab-card" aria-label="Copy balance setup">
+    <h2>Share your balance settings</h2>
+    <p>Copy the current team, wave settings, hero and enemy stats, and saved overrides. Paste the JSON into ChatGPT so I can review or reproduce your setup.</p>
+    <div class="lab-sidebuttons">
+      <button id="labCopySettings" type="button" class="btn">⧉ Copy all settings</button>
+      <button id="labShowSettings" type="button" class="btn secondary" aria-expanded="false" aria-controls="labSettingsPreview">Preview</button>
+    </div>
+    <textarea id="labSettingsPreview" class="lab-settings-preview" aria-label="Balance settings ready to copy" rows="9" readonly hidden></textarea>
+    <div id="labCopyFeedback" class="lab-status" role="status" aria-live="polite"></div>
+    <p class="lab-note" style="margin-top:8px">In Hero &amp; Enemy Stats, press <b>Apply test stats</b> first to include changes you have just entered.</p>
+  </section>
   <section class="lab-card">
     <h2>Battle results</h2>
     <p>Each finished attempt is recorded. Export results to compare different balance settings.</p>
@@ -176,6 +187,6 @@
 <script src="game-render.js?v=1.0.11"></script>
 <script src="game-ui.js?v=lab-0.1.1"></script>
 <script src="game-core.js?v=lab-0.1.1"></script>
-<script src="balance-lab.js?v=1"></script>
+<script src="balance-lab.js?v=2"></script>
 </body>
 </html>
