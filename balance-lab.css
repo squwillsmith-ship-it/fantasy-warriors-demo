@@ -1,0 +1,80 @@
+/* Isolated Balance Lab skin. All combat still renders through game-render.js. */
+.lab-mode .shell{max-width:1480px}
+.lab-mode .sidebar,.lab-mode .footer{display:none!important}
+.lab-mode .layout{grid-template-columns:minmax(0,1fr) minmax(295px,390px);align-items:start}
+.lab-mode .battleground{width:100%;min-width:0}
+.lab-mode .canvas-wrap{height:clamp(410px,52vw,690px)}
+.lab-mode .statusline .stat:nth-child(2),.lab-mode .statusline .stat:nth-child(4){display:none}
+.lab-mode .statusline .stat{flex:1}
+.lab-mode .statusline .stat.health{flex:1.6}
+.lab-mode .battle-message{display:none!important}
+.lab-mode .lab-panel{display:flex;flex-direction:column;gap:12px;min-width:0}
+.lab-mode .lab-card{background:linear-gradient(160deg,#1d3042,#101e2d);border:1px solid #42586a;border-radius:14px;padding:16px}
+.lab-mode .lab-card h2{font:700 20px Georgia,serif;margin:0 0 9px;color:#f3dfba}
+.lab-mode .lab-card p{color:#afc1c9;font-size:12px;line-height:1.5;margin:0 0 12px}
+.lab-mode .lab-card .lab-note{font-size:11px;color:#9db1bf}
+.lab-mode .lab-actions{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:0 0 13px;padding:10px;border:1px solid #40596b;background:#182b3a;border-radius:12px}
+.lab-mode .lab-actions .btn{width:auto;padding:10px 14px;min-height:43px;font-size:13px}
+.lab-mode .lab-actions label{font-size:12px;color:#bccdd1;display:flex;align-items:center;gap:8px;margin-left:auto;font-weight:700}
+.lab-mode .lab-actions select{width:auto;min-width:93px}
+.lab-mode .lab-link{font-size:12px;color:#bed5eb;text-decoration:underline;text-underline-offset:3px;margin-left:auto}
+.lab-mode input,.lab-mode select{border:1px solid #5b7084;background:#0d1c29;color:#f1e6ce;border-radius:8px;min-height:38px;padding:7px 9px;font-size:15px;width:100%;max-width:100%;font-family:inherit}
+.lab-mode .lab-fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.lab-mode .lab-fields label,.lab-mode .lab-full-label{font-size:11px;color:#afc4ce;letter-spacing:.025em;display:flex;flex-direction:column;gap:6px}
+.lab-mode .lab-full-label{margin-bottom:12px}
+.lab-mode .lab-preset{margin:4px 0 12px;display:flex;align-items:center;gap:8px}
+.lab-mode .lab-preset select{flex:1}
+.lab-mode .lab-preset span{font-size:11px;white-space:nowrap;color:#9cbdc3}
+.lab-mode .lab-tier{margin-top:8px;border:1px solid #344d60;background:#152738;border-radius:9px;overflow:hidden}
+.lab-mode .lab-tier summary{cursor:pointer;font-size:12px;font-weight:800;padding:11px 12px;color:#dfc698;list-style-position:inside}
+.lab-mode .lab-hero{display:flex;align-items:center;gap:9px;padding:6px 10px;border-top:1px solid #2f4658}
+.lab-mode .lab-glyph{width:26px;font-size:18px;text-align:center;flex:0 0 auto}
+.lab-mode .lab-hero-name{flex:1;min-width:0;font-size:12px;font-weight:700}
+.lab-mode .lab-hero .lab-minus,.lab-mode .lab-hero .lab-plus{border:1px solid #536e80;background:#284153;color:#f7e8ca;width:32px;height:32px;flex:0 0 32px;border-radius:7px;font-size:18px;font-weight:700;padding:0}
+.lab-mode .lab-hero input{width:47px;flex:0 0 47px;text-align:center;min-height:32px;padding:3px;font-size:13px}
+.lab-mode .lab-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:13px}
+.lab-mode .lab-metric{background:#162838;border:1px solid #3c5060;border-radius:11px;padding:10px;min-width:0}
+.lab-mode .lab-metric small{font-size:10px;color:#9db1bd;display:block;margin-bottom:3px}
+.lab-mode .lab-metric strong{font-size:17px;font-variant-numeric:tabular-nums;display:block;white-space:nowrap}
+.lab-mode .lab-status{font-size:12px;font-weight:700;color:#d1e5dd;margin-top:8px;min-height:18px}
+.lab-mode #fwQuickStats{margin:0;border:0;padding:0;background:none}
+.lab-mode #fwQuickStats summary{font-size:12px}
+.lab-mode #fwQuickStats .fw-quick-picker{display:flex;flex-wrap:wrap;gap:10px}
+.lab-mode #fwQuickStats label{font-size:11px}
+.lab-mode #fwQuickStats input,.lab-mode #fwQuickStats select{font-size:14px}
+.lab-mode #fwQuickStats .fw-quick-actions{flex-wrap:wrap}
+.lab-mode #fwQuickStats .btn{font-size:11px;padding:8px;min-height:32px}
+.lab-mode .lab-sidebuttons{display:flex;gap:8px;margin-top:12px}
+.lab-mode .lab-sidebuttons .btn{flex:1;font-size:12px;min-height:38px;padding:9px}
+.lab-mode .lab-history{font-size:12px;color:#d4e0df;line-height:1.75;max-height:155px;overflow:auto}
+.lab-mode .lab-history div{border-bottom:1px solid #35485b;padding:4px 0}
+.lab-mode .lab-history .lab-empty{color:#8499a4}
+.lab-mode .wave-tracker{max-width:100%}
+@media(max-width:1020px){
+ .lab-mode .layout{grid-template-columns:minmax(0,1fr) minmax(270px,320px)}
+ .lab-mode .canvas-wrap{height:clamp(410px,52vw,600px)}
+}
+@media(max-width:760px){
+ body.lab-mode{padding:10px 9px 22px}
+ .lab-mode .topline{margin-bottom:10px}
+ .lab-mode .brand h1{font-size:23px}
+ .lab-mode .crest{width:35px;height:43px;font-size:22px}
+ .lab-mode .version{font-size:9px}
+ .lab-mode .layout{display:flex;flex-direction:column;gap:12px}
+ .lab-mode .battleground,.lab-mode .lab-panel{width:100%}
+ .lab-mode .canvas-wrap{height:min(105vw,550px);min-height:330px}
+ .lab-mode .lab-actions{gap:6px;padding:8px}
+ .lab-mode .lab-actions .btn{font-size:12px;padding:9px 10px;min-height:40px}
+ .lab-mode .lab-actions label{margin-left:0}
+ .lab-mode .lab-link{margin-left:auto}
+ .lab-mode .lab-metrics{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+ .lab-mode .lab-metric{padding:8px 6px}
+ .lab-mode .lab-metric strong{font-size:14px}
+ .lab-mode .statusline{gap:6px}
+ .lab-mode .statusline .stat{padding:7px 8px;min-width:80px}
+ .lab-mode .stat .name{font-size:9px}
+ .lab-mode .stat .value{font-size:16px}
+ .lab-mode .battle-pill{font-size:10px;padding:6px 8px}
+ .lab-mode .lab-card{padding:13px}
+ .lab-mode .lab-fields{grid-template-columns:1fr 1fr}
+}
