@@ -19,10 +19,10 @@
   const MINION_FIELDS = [...ENEMY_FIELDS, { key: 'firstDelay', label: 'First-hit delay (seconds)', min: 0, max: 30, step: 0.05 }];
   const cloneEmpty = () => ({ heroes: {}, minion: {}, boss: {} });
   const heroDefaults = Object.fromEntries(HEROES.map(hero => [hero.id, Object.fromEntries(HERO_FIELDS.map(field => [field.key, hero[field.key]]))]));
-  const minionDefaults = { hp: SPAWN_CONFIG.normalHp, damage: 4, speed: 1, attackPeriod: 1, firstDelay: SPAWN_CONFIG.minionFirstAttackWindup };
+  const minionDefaults = { hp: SPAWN_CONFIG.normalHp, damage: SPAWN_CONFIG.minionDamage, speed: SPAWN_CONFIG.minionSpeed, attackPeriod: SPAWN_CONFIG.minionAttackPeriod, firstDelay: SPAWN_CONFIG.minionFirstAttackWindup };
   const bossDefaults = stage => ({
-    hp: Math.round((SPAWN_CONFIG.bossHpBase + SPAWN_CONFIG.bossHpPerStage * (stage - 1)) / 2),
-    damage: 10, speed: 0.7, attackPeriod: 1
+    hp: Math.round((SPAWN_CONFIG.bossHpBase + SPAWN_CONFIG.bossHpPerStage * (stage - 1)) / SPAWN_CONFIG.bossHpDivisor),
+    damage: SPAWN_CONFIG.bossDamage, speed: SPAWN_CONFIG.bossSpeed, attackPeriod: SPAWN_CONFIG.bossAttackPeriod
   });
   const valid = (value, field) => typeof value === 'number' && Number.isFinite(value) &&
     value >= field.min && value <= field.max;
