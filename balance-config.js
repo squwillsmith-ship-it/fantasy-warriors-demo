@@ -1,18 +1,18 @@
 /* Fantasy Warriors — one editable, JSON-compatible numerical profile.
-   Build 1.0.10 (design v1.3.4). Only profiles.live is applied by the game.
+   Build 1.0.11 (design v1.3.5). Only profiles.live is applied by the game.
    For spreadsheet workflows export the profile as JSON; NO automatic Google Sheets link.
    Structural engines are still in game-core.js and effects.js. */
 (function(){
 'use strict';
 const dataset={
   "schemaVersion": 1,
-  "activeProfile": "fw-live-v1.3.4",
+  "activeProfile": "fw-live-v1.3.5",
   "profiles": {
     "live": {
-      "profileId": "fw-live-v1.3.4",
+      "profileId": "fw-live-v1.3.5",
       "schemaVersion": 1,
       "status": "live",
-      "manifestoVersion": "1.3.4",
+      "manifestoVersion": "1.3.5",
       "lastReviewed": "2026-11-20",
       "notes": "Numeric values are the current playable baseline. Some skill effects, advanced prices and specials are provisional, not independently approved.",
       "heroes": [
@@ -546,6 +546,10 @@ const dataset={
       },
       "spawn": {
         "normalInterval": 2,
+        "normalRateRampFactor": 2,
+        "heroSpawnRadiusMin": 1.8,
+        "heroSpawnRadiusMultiplier": 4,
+        "heroSpawnSeparation": 0.95,
         "bossClearDelay": 2,
         "normalHp": 6,
         "bossHpBase": 90,
@@ -838,7 +842,7 @@ function validate(profile){
  finite(profile.packs.heroesPerPack,1,6,"pack size");
  for(const p of profile.packs.definitions){finite(p.price,1,100,"pack price");if(!Array.isArray(p.pool)||p.pool.length!==3||p.pool.some(id=>!profile.heroes.some(h=>h.id===id)))error("pack hero IDs");}
  if(!Array.isArray(profile.encounters)||profile.encounters.length!==10)error("stage encounters");
- const n=profile.spawn;for(const key of ["normalInterval","bossClearDelay","normalHp","bossHpBase","bossHpPerStage","minionFirstAttackWindup","regularWaveBase","regularWavePerStage","minionAttackPeriod","bossHpDivisor","bossAttackPeriod"] )finite(n[key],key==="bossHpPerStage"?0:.05,10000,"spawn."+key);
+ const n=profile.spawn;finite(n.normalRateRampFactor,0,10,"spawn.normalRateRampFactor");finite(n.heroSpawnRadiusMin,1.5,8,"spawn.heroSpawnRadiusMin");finite(n.heroSpawnRadiusMultiplier,1,6,"spawn.heroSpawnRadiusMultiplier");finite(n.heroSpawnSeparation,.5,3,"spawn.heroSpawnSeparation");for(const key of ["normalInterval","bossClearDelay","normalHp","bossHpBase","bossHpPerStage","minionFirstAttackWindup","regularWaveBase","regularWavePerStage","minionAttackPeriod","bossHpDivisor","bossAttackPeriod"] )finite(n[key],key==="bossHpPerStage"?0:.05,10000,"spawn."+key);
  for(const key of ["minionDamage","minionSpeed","bossDamage","bossSpeed"])finite(n[key],0,10000,"spawn."+key);
  const econ=profile.economy;finite(econ.startingCoinMax,1,100000,"coin maximum");finite(econ.coinsPerClassGate,0,100,"quest coin reward");finite(econ.minionUPChance,0,1,"UP probability");finite(econ.bossUP,0,10000,"boss UP");finite(econ.startingTowerHP,1,100000,"tower HP");
  const skill=profile.skill;if(!skill||Object.keys(skill.costs||{}).length!==205||Object.keys(skill.gateGoals||{}).length!==15)error("skill node / class gate completeness");
