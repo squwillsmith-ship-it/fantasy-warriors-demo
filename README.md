@@ -1,6 +1,6 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.9 · Gameplay Manifesto v1.3.3** (20 November 2026)
+**Build 1.0.9 · Gameplay Manifesto v1.3.4** (20 November 2026)
 
 **Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.9
 
