@@ -176,7 +176,7 @@
     applyEl.addEventListener('click', apply);
     resetEl.addEventListener('click', resetSelected);
     allEl.addEventListener('click', resetAll);
-    panel.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') { e.preventDefault(); apply(); } });
+    panel.addEventListener('keydown', e => { if (e.key === 'Enter') { e.stopPropagation(); if (e.target.tagName === 'INPUT') { e.preventDefault(); apply(); } } });
     populate();
   }
   window.FWQuickStats = { init, sync, heroForBattle, enemyForBattle, snapshot: () => JSON.parse(JSON.stringify(overrides)) };
