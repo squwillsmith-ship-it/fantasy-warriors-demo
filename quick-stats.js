@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   const { HEROES, SPAWN_CONFIG, ENCOUNTERS } = window.FWGameData;
-  const KEY = 'fw.quick.stats.1';
+  const KEY = document.body.classList.contains('lab-mode') ? 'fw.balance-lab.quick-stats.1' : 'fw.quick.stats.1';
   const HERO_FIELDS = [
     { key: 'hp', label: 'Health (HP)', min: 1, max: 10000, step: 1 },
     { key: 'damage', label: 'Basic hit damage', min: 0.05, max: 10000, step: 0.1 },
