@@ -22,6 +22,9 @@
       const x = Math.cos(angle) * distance;
       const y = Math.sin(angle) * distance;
       if (Math.abs(x) >= worldW / 2 - margin || Math.abs(y) >= worldH / 2 - margin) continue;
+      const edgeX = Math.max(0, Math.abs(x) - 1.00);
+      const edgeY = Math.max(0, Math.abs(y) - 1.00);
+      if (Math.hypot(edgeX, edgeY) <= radius + .025) continue; // Solid tower footprint
       const nearest = existing.reduce((d, h) => Math.min(d, Math.hypot(x - h.x, y - h.y)), Infinity);
       if (!best || nearest > best.nearest) best = { x, y, distance, angle, nearest };
       if (nearest >= separation) return { x, y, distance, angle };
