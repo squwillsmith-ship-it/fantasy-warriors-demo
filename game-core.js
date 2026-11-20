@@ -2,6 +2,7 @@
 (()=>{'use strict';
 const {HEROES,HEROES_PER_PACK,PACKS,HERO_MAP,ENCOUNTERS,TUNING,ABILITIES,HOUND,UNDEAD,SPAWN_CONFIG}=window.FWGameData;
 const QUICK_STATS=window.FWQuickStats;
+const ARCADE=window.FWArcade;
 const BALANCE=window.FWBalance.profile; // Never changes the normal game's approved stats.
 const encounter=()=>ENCOUNTERS[Math.max(0,Math.min(9,state.stage-1))];
 
@@ -26,15 +27,19 @@ function chooseHero(packIndex=0){const pool=PACKS[packIndex].pool;return HERO_MA
 const {normalInterval:NORMAL_SPAWN_INTERVAL,bossClearDelay:BOSS_AFTER_CLEAR_DELAY}=SPAWN_CONFIG;
 function regularCount(){return SPAWN_CONFIG.regularWaveBase+SPAWN_CONFIG.regularWavePerStage*(state.stage-1)}
 function totalCount(){return regularCount()+1}
+function nextSpawnInterval(){return ARCADE.spawnInterval(NORMAL_SPAWN_INTERVAL,SPAWN_CONFIG.normalRateRampFactor,state.regularSpawned,regularCount())}
 function log(message){state.notifications.unshift(message);state.notifications.length=Math.min(5,state.notifications.length);refs.events.replaceChildren(...state.notifications.map(t=>{const li=document.createElement('li');li.textContent=t;return li}))}
 function addEffect(e){state.effects.push(e);if(state.effects.length>160)state.effects.shift()}
 function damageNumber(x,y,text,color){addEffect({kind:'number',x,y,text:String(text),color,life:.8,maxLife:.8})}
-function createHero(base){if(state.testMode&&HERO_MAP[base.id]===base&&QUICK_STATS)base=QUICK_STATS.heroForBattle(base);const hero={id:state.nextId++,base,x:0,y:0,hp:base.hp,maxHp:base.hp,cooldown:rand(0,.45),facing:0,combo:0,beamTarget:null,beamTime:0,beamTickClock:0,charge:0,casts:0,abilityStatus:"charging",activeUntil:0,shield:0,shieldUntil:0,blessingUntil:0,frenzyUntil:0,invisibleUntil:0,bearUntil:0,sanctuaryUntil:0,summonKind:null,expiry:Infinity,anchorX:0,anchorY:0,radius:base.id==='dragonkin'||base.id==='paladin'||base.id==='barbarian'?.45:.35,vx:0,vy:0,targetId:null,targetClock:rand(0,.25),lastTargetSwitch:-10,slotIndex:-1,slotTarget:null,windupTime:0,windupTarget:null,attackState:'idle',hitFlash:0};if(SKILLS&&SKILLS.has('T1-G03')&&base.pack===0)hero.charge=chargeSeconds(hero)*.30;if(SKILLS&&SKILLS.has('T2-G03')&&base.pack===1)hero.charge=chargeSeconds(hero)*.40;state.heroes.push(hero);reposition();return hero}
-function reposition(){const n=state.heroes.length;
- // Rings prevent all 18 Recruit-pack heroes from piling up on the same tile.
- const rings=[];let remaining=n,index=0,ring=0;
- while(remaining>0){const slots=Math.min(8+6*ring,remaining);const radius=1.8+ring*.90;for(let j=0;j<slots;j++)rings.push({a:-Math.PI/2+2*Math.PI*j/slots+ring*.19,r:radius});remaining-=slots;ring++}
- state.heroes.forEach((h,i)=>{const v=rings[i];h.x=Math.cos(v.a)*v.r;h.y=Math.sin(v.a)*v.r;h.facing=v.a+Math.PI/2;h.anchorX=h.x;h.anchorY=h.y})
+function createHero(base){if(state.testMode&&HERO_MAP[base.id]===base&&QUICK_STATS)base=QUICK_STATS.heroForBattle(base);const hero={id:state.nextId++,base,x:0,y:0,hp:base.hp,maxHp:base.hp,cooldown:rand(0,.45),facing:0,combo:0,beamTarget:null,beamTime:0,beamTickClock:0,charge:0,casts:0,abilityStatus:"charging",activeUntil:0,shield:0,shieldUntil:0,blessingUntil:0,frenzyUntil:0,invisibleUntil:0,bearUntil:0,sanctuaryUntil:0,summonKind:null,expiry:Infinity,anchorX:0,anchorY:0,radius:base.id==='dragonkin'||base.id==='paladin'||base.id==='barbarian'?.45:.35,vx:0,vy:0,targetId:null,targetClock:rand(0,.25),lastTargetSwitch:-10,slotIndex:-1,slotTarget:null,windupTime:0,windupTarget:null,attackState:'idle',hitFlash:0};if(SKILLS&&SKILLS.has('T1-G03')&&base.pack===0)hero.charge=chargeSeconds(hero)*.30;if(SKILLS&&SKILLS.has('T2-G03')&&base.pack===1)hero.charge=chargeSeconds(hero)*.40;state.heroes.push(hero);placeNewHero(hero);return hero}
+// Place ONLY the new hero. Never rearrange a previously deployed unit.
+function placeNewHero(h){
+ const others=state.heroes.filter(a=>a!==h&&a.hp>0);
+ const p=ARCADE.heroPosition(others,view.worldW,view.worldH,SPAWN_CONFIG,Math.random,h.radius);
+ h.x=p.x;h.y=p.y;h.anchorX=p.x;h.anchorY=p.y;
+ h.initialSpawnRadius=p.distance;
+ // Heroes initially face away from the tower, defending their local sector.
+ h.facing=p.angle+Math.PI/2;
 }
 
 function spawnEnemy(boss){const a=rand(0,Math.PI*2),halfW=view.worldW/2-.85,halfH=view.worldH/2-.85;let x,y;
@@ -167,7 +172,13 @@ function actorRadius(a){return a.radius||(a.boss?.75:.35)}
 function nearTower(x,y,r=.35){const dx=Math.max(0,Math.abs(x)-1.00),dy=Math.max(0,Math.abs(y)-1.00);return Math.hypot(dx,dy)<r+.025}
 function legalActorPosition(a,x,y){
  if(nearTower(x,y,actorRadius(a)))return false;
- if(a.base&&isOriginalHero(a)&&Math.hypot(x,y)>guardRadius(a)-.015)return false;
+ if(a.base&&isOriginalHero(a)){
+   const guard=guardRadius(a),previous=Math.hypot(a.x,a.y),next=Math.hypot(x,y);
+   // Farther deployments may fight locally and move inward, but cannot wander
+   // farther than their initial position; after entering guard, its limit applies.
+   const leash=previous>guard?Math.max(guard,Math.min(a.initialSpawnRadius||guard,previous+.05)):guard;
+   if(next>leash-.015)return false;
+ }
  return Math.abs(x)<view.worldW/2-.3&&Math.abs(y)<view.worldH/2-.3;
 }
 function brake(a,dt){a.vx=(a.vx||0)*Math.max(0,1-dt*10);a.vy=(a.vy||0)*Math.max(0,1-dt*10)}
@@ -208,53 +219,40 @@ function resolveActorCollisions(){
  }
  state.combatTelemetry.overlaps=overlaps;
 }
-function targetScore(h,e,focus){
- const dist=Math.hypot(e.x-h.x,e.y-h.y),towerDist=Math.hypot(e.x,e.y);
- const urgency=clamp((7-towerDist)/7,0,1)+(towerDist<2.4?.55:0);
- let role=0;const id=h.base.id;
- if(id==='knight'||id==='paladin'||id==='dragonkin')role=urgency*.65;
- else if(id==='rogue')role=(1-e.hp/e.maxHp)*.7;
- else if(['mage','barbarian','shaman','druid'].includes(id))role=clamp(state.enemies.filter(other=>other.hp>0&&Math.hypot(e.x-other.x,e.y-other.y)<1.9).length/4,0,1);
- else if(id==='necromancer'&&h.beamTarget===e.id)role=1.1;
- const nearby=Math.max(0,focus-(e.boss?3:1));
- return 4*urgency+2*role+(1-dist/Math.max(.01,acquireRadius(h)))-2*Math.min(2,nearby)/4+(SKILLFX?SKILLFX.focusBias(h,e):0)+((h.id*17+e.id*13)%37)*.0001;
-}
+// Arcade AI: the closest living enemy in the hero's forward half-plane wins.
+// If nothing is ahead, turn toward the closest accessible enemy instead.
 function selectHeroTarget(h,dt){
- // Finish current valid engagement before reconsidering other threats.
- if(h.engagedTargetId!=null){const locked=state.enemies.find(e=>e.id===h.engagedTargetId&&e.hp>0);if(locked&&Math.hypot(locked.x,locked.y)<=guardRadius(h)+Math.max(1,h.base.range)){h.targetId=locked.id;return locked;}h.engagedTargetId=null;}
+ const current=state.enemies.find(e=>e.id===h.targetId&&e.hp>0);
+ const legal=e=>e&&Math.hypot(e.x-h.x,e.y-h.y)<=acquireRadius(h)
+   &&Math.hypot(e.x,e.y)<=guardRadius(h)+Math.max(1,h.base.range);
+ if(h.windupTime>0&&legal(current))return current; // Finish an attack.
  h.targetClock=(h.targetClock||0)-dt;
- let current=state.enemies.find(e=>e.id===h.targetId&&e.hp>0);
- const legal=e=>e&&Math.hypot(e.x-h.x,h.y-e.y)<=acquireRadius(h)+.65&&Math.hypot(e.x,e.y)<=guardRadius(h)+Math.max(1,h.base.range);
- if(!legal(current))current=null;
- if(current&&h.targetClock>0)return current;
- if(!current&&h.targetClock>0)return null;
- h.targetClock=TUNING.shared.decisionInterval+((h.id*37)%7)*.007;
- let winner=current,top=current?targetScore(h,current,state.heroes.filter(a=>a.hp>0&&a.id!==h.id&&a.targetId===current.id).length):-Infinity;
- for(const e of state.enemies){if(!legal(e)||Math.hypot(e.x-h.x,e.y-h.y)>acquireRadius(h))continue;
-  const focus=state.heroes.filter(a=>a.hp>0&&a.id!==h.id&&a.targetId===e.id).length;
-  const score=targetScore(h,e,focus);
-  if(score>top+(current?0.10:0)){winner=e;top=score}
+ if(legal(current)&&h.targetClock>0)return current;
+ h.targetClock=TUNING.shared.decisionInterval;
+ const target=ARCADE.nearestFrontTarget(
+   h,state.enemies,acquireRadius(h),guardRadius(h),h.base.range,
+   e=>SKILLFX?.focusBias(h,e)||0
+ );
+ if((target?.id??null)!==(h.targetId??null)){
+   h.lastTargetSwitch=state.elapsed;
+   state.combatTelemetry.targetSwitches++;
+   h.slotIndex=-1;h.slotTarget=null;h.windupTime=0;
  }
- if(current&&winner&&winner!==current){const old=targetScore(h,current,state.heroes.filter(a=>a.hp>0&&a.id!==h.id&&a.targetId===current.id).length);
-  if(state.elapsed-h.lastTargetSwitch<TUNING.shared.targetCommitSeconds&&top<old*(1+TUNING.shared.retargetMargin)+.5)winner=current;
-  else if(top<old+Math.max(.35,Math.abs(old)*TUNING.shared.retargetMargin))winner=current;
- }
- if((winner?.id??null)!==(h.targetId??null)){h.lastTargetSwitch=state.elapsed;state.combatTelemetry.targetSwitches++;h.slotIndex=-1;h.slotTarget=null;h.windupTime=0}
- h.targetId=winner?.id??null;
- return winner;
+ h.targetId=target?.id??null;
+ return target;
 }
 function meleeSlotGoal(h,e){
- const count=e.boss?10:TUNING.shared.meleeSlots;
- const gap=actorRadius(h)+actorRadius(e)+.18;
- const candidates=[];
- for(let j=0;j<count;j++){
-  const a=2*Math.PI*j/count,eX=e.x+Math.cos(a)*gap,eY=e.y+Math.sin(a)*gap;
-  if(nearTower(eX,eY,actorRadius(h))||Math.hypot(eX,eY)>guardRadius(h)-.03)continue;
-  const occupied=state.heroes.filter(u=>u.hp>0&&u.id!==h.id&&u.slotTarget===e.id&&u.slotIndex===j).length;
-  candidates.push({j,x:eX,y:eY,score:Math.hypot(h.x-eX,h.y-eY)+(occupied?3.0:0)+(h.slotTarget===e.id&&h.slotIndex===j?-.55:0)});
+ // Straight-line chase to a nearby hit position; collision and tower geometry
+ // are still resolved by the shared movement system, without slot auctions.
+ const dx=h.x-e.x,dy=h.y-e.y,d=Math.max(.01,Math.hypot(dx,dy));
+ const gap=actorRadius(h)+actorRadius(e)+.12;
+ let x=e.x+dx/d*gap,y=e.y+dy/d*gap;
+ const limit=guardRadius(h)-.08;
+ const length=Math.hypot(x,y);
+ if(length>limit&&Math.hypot(h.x,h.y)<=guardRadius(h)){
+   x=x/length*limit;y=y/length*limit;
  }
- if(candidates.length===0)return null;
- candidates.sort((a,b)=>a.score-b.score);const v=candidates[0];h.slotIndex=v.j;h.slotTarget=e.id;return{x:v.x,y:v.y};
+ return safeGoal(x,y);
 }
 function heroCombatGoal(h,e,isMeleeForm=false){
  const dist=Math.max(.01,Math.hypot(e.x-h.x,e.y-h.y)),range=isMeleeForm?1.15:h.base.range;
@@ -272,7 +270,7 @@ function stepNecroBeam(h,target,dt){if(!target||target.hp<=0||Math.hypot(target.
 function step(dt){if(state.mode!=='battle'||state.paused)return;
  state.elapsed+=dt;state.spawnClock+=dt;state.uiClock+=dt;if(SKILLFX)SKILLFX.tick(dt);
  if(state.regularSpawned===0){spawnEnemy(false);state.regularSpawned=1;state.spawnClock=0}
- else if(state.regularSpawned<regularCount()&&state.spawnClock>=NORMAL_SPAWN_INTERVAL){state.spawnClock-=NORMAL_SPAWN_INTERVAL;spawnEnemy(false);state.regularSpawned++}
+ else if(state.regularSpawned<regularCount()&&state.spawnClock>=nextSpawnInterval()){state.spawnClock-=nextSpawnInterval();spawnEnemy(false);state.regularSpawned++}
  // Boss arrival is checked after dead minions are removed: spawning the full wave is not enough.
  for(const a of state.heroes)a.hitFlash=Math.max(0,(a.hitFlash||0)-dt);for(const a of state.enemies)a.hitFlash=Math.max(0,(a.hitFlash||0)-dt);state.traps=state.traps.filter(p=>p.expires>state.elapsed);
  state.totems=state.totems.filter(p=>p.hp>0&&p.expires>state.elapsed);
@@ -334,7 +332,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  if(state.uiClock>=.16){state.uiClock=0;updateUI()}
 }
 function tick(now){let dt=state.lastTime?clamp((now-state.lastTime)/1000,0,.06):0;state.lastTime=now;if(state.mode==='battle'&&!state.paused)step(dt);for(let i=state.effects.length-1;i>=0;i--){if(state.mode!=='battle'||!state.paused)state.effects[i].life-=dt;if(state.effects[i].life<=0)state.effects.splice(i,1)}render(now/1000);requestAnimationFrame(tick)}
-const {updateUI,showBattleReport,waveStatus,offeredPacks,selectedOffer}=window.FWGameUI.create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY});
+const {updateUI,showBattleReport,waveStatus,offeredPacks,selectedOffer}=window.FWGameUI.create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,nextSpawnInterval,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY});
 function buyPack(){const i=selectedOffer(),pack=PACKS[i];if(state.mode!=='prep'||state.testMode||state.coins<pack.price)return;state.coins-=pack.price;state.packQueue.push(i);state.bought++;log(pack.name+' Pack '+state.bought+' purchased ('+HEROES_PER_PACK+' hero).');updateUI()}
 function toggleTesting(){if(state.mode!=='prep')return;if(!state.testMode&&state.bought>0){log('Finish the regular-pack stage before enabling the separate Testing Shop.');return}if(!state.testMode){state.testSavedTowerHp=state.towerHp;state.testSavedStage=state.stage}state.testMode=!state.testMode;if(!state.testMode){state.testQueue=[];if(state.testSavedTowerHp!=null)state.towerHp=state.testSavedTowerHp;if(state.testSavedStage!=null)state.stage=state.testSavedStage;state.testSavedTowerHp=null;state.testSavedStage=null}log(state.testMode?'Testing mode ON · free heroes do not affect progression.':'Testing mode OFF.');updateUI()}
 function addTestHero(base){if(!state.testMode||state.mode!=='prep')return;state.testQueue.push(base.id);log('Queued free '+base.name+' ('+state.testQueue.length+' test heroes).');updateUI()}
@@ -372,7 +370,7 @@ function init(){
  document.addEventListener('keydown',e=>{if(e.target.closest?.('#fwQuickStats'))return;if(e.code==='Space'&&state.mode==='battle'){e.preventDefault();state.paused=!state.paused;updateUI()}else if(e.key==='Enter'&&state.mode==='prep'&&!state.pendingPack)startStage()});window.addEventListener('resize',resize);if('ResizeObserver'in window)new ResizeObserver(resize).observe(canvas.parentElement);resize();restart();if(SKILLS)SKILLS.resumeStage();requestAnimationFrame(tick)
 }
 
-window.__FW_DEMO__={snapshot:()=>({combatTelemetry:{...state.combatTelemetry},stage:state.stage,coins:state.coins,coinMax:state.coinMax,towerHp:state.towerHp,mode:state.mode,paused:state.paused,bought:state.bought,packsToOpen:state.packsToOpen,testMode:state.testMode,testQueue:state.testQueue.slice(),regularTotal:regularCount(),heroes:state.heroes.map(h=>({name:h.base.name,rarity:h.base.rarity,hp:h.hp,x:h.x,y:h.y})),regularSpawned:state.regularSpawned,worldW:view.worldW,worldH:view.worldH,bossSpawned:state.bossSpawned,bossWaitClock:state.bossWaitClock,normalSpawnInterval:NORMAL_SPAWN_INTERVAL,kills:state.kills,enemies:state.enemies.length,hasPendingPack:state.pendingPack,abilityCasts:state.abilityCasts,totems:state.totems.length,traps:state.traps.length,heroesCharged:state.heroes.filter(h=>h.charge>=chargeSeconds(h)&&isOriginalHero(h)).length,heroesDetail:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,summonKind:h.summonKind,beamTarget:h.beamTarget,beamTime:h.beamTime,damage:h.base.damage})),tuning:TUNING.shared}),packs:PACKS.map(p=>({name:p.name,pool:p.pool,stage:p.stage})),encounter:{...encounter()},campaignStages:ENCOUNTERS.length,balanceProfile:BALANCE.profileId,balanceSchema:BALANCE.schemaVersion,sanctuaries:state.sanctuaries.length,version:'design-1.3.4 / demo-1.0.10',skillTree:SKILLS?.debug(),quests:SKILLS?.questProgress?.(),wave:waveStatus(),battleReport:state.lastReport};
+window.__FW_DEMO__={snapshot:()=>({combatTelemetry:{...state.combatTelemetry},stage:state.stage,coins:state.coins,coinMax:state.coinMax,towerHp:state.towerHp,mode:state.mode,paused:state.paused,bought:state.bought,packsToOpen:state.packsToOpen,testMode:state.testMode,testQueue:state.testQueue.slice(),regularTotal:regularCount(),heroes:state.heroes.map(h=>({name:h.base.name,rarity:h.base.rarity,hp:h.hp,x:h.x,y:h.y})),regularSpawned:state.regularSpawned,worldW:view.worldW,worldH:view.worldH,bossSpawned:state.bossSpawned,bossWaitClock:state.bossWaitClock,normalSpawnInterval:NORMAL_SPAWN_INTERVAL,nextSpawnInterval:nextSpawnInterval(),kills:state.kills,enemies:state.enemies.length,hasPendingPack:state.pendingPack,abilityCasts:state.abilityCasts,totems:state.totems.length,traps:state.traps.length,heroesCharged:state.heroes.filter(h=>h.charge>=chargeSeconds(h)&&isOriginalHero(h)).length,heroesDetail:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,summonKind:h.summonKind,beamTarget:h.beamTarget,beamTime:h.beamTime,damage:h.base.damage})),tuning:TUNING.shared}),packs:PACKS.map(p=>({name:p.name,pool:p.pool,stage:p.stage})),encounter:{...encounter()},campaignStages:ENCOUNTERS.length,balanceProfile:BALANCE.profileId,balanceSchema:BALANCE.schemaVersion,sanctuaries:state.sanctuaries.length,version:'design-1.3.5 / demo-1.0.11',skillTree:SKILLS?.debug(),quests:SKILLS?.questProgress?.(),wave:waveStatus(),battleReport:state.lastReport};
 
 // Testing-only, non-persistent simulation controls for automated playtesting.
 window.__FW_TEST__={
