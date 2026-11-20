@@ -17,7 +17,7 @@
     { key: 'attackPeriod', label: 'Seconds between hits', min: 0.05, max: 30, step: 0.05 }
   ];
   const MINION_FIELDS = [...ENEMY_FIELDS, { key: 'firstDelay', label: 'First-hit delay (seconds)', min: 0, max: 30, step: 0.05 }];
-  const cloneEmpty = () => ({ heroes: {}, minion: {}, boss: {}, bossHp: {} });
+  const cloneEmpty = () => ({ heroes: {}, minion: {}, boss: {} });
   const heroDefaults = Object.fromEntries(HEROES.map(hero => [hero.id, Object.fromEntries(HERO_FIELDS.map(field => [field.key, hero[field.key]]))]));
   const minionDefaults = { hp: SPAWN_CONFIG.normalHp, damage: 4, speed: 1, attackPeriod: 1, firstDelay: SPAWN_CONFIG.minionFirstAttackWindup };
   const bossDefaults = stage => ({
@@ -38,10 +38,8 @@
     if (raw && typeof raw === 'object') {
       for (const h of HEROES) overrides.heroes[h.id] = sanitized(raw.heroes?.[h.id], HERO_FIELDS);
       overrides.minion = sanitized(raw.minion, MINION_FIELDS);
-      overrides.boss = sanitized(raw.boss, ENEMY_FIELDS.filter(f => f.key !== 'hp'));
       for (let stage = 1; stage <= ENCOUNTERS.length; stage++) {
-        const hp = raw.bossHp?.[stage];
-        if (valid(hp, ENEMY_FIELDS[0])) overrides.bossHp[stage] = hp;
+        overrides.boss[stage] = sanitized(raw.boss?.[stage], ENEMY_FIELDS);
       }
     }
   } catch (_) { /* Storage may be unavailable in private browsing. Defaults are safe. */ }
@@ -49,7 +47,7 @@
   const heroForBattle = base => ({ ...base, ...(overrides.heroes[base.id] || {}) });
   const enemyForBattle = (stage, boss) => {
     if (!boss) return { ...minionDefaults, ...overrides.minion };
-    return { ...bossDefaults(stage), ...overrides.boss, hp: overrides.bossHp[stage] ?? bossDefaults(stage).hp };
+    return { ...bossDefaults(stage), ...(overrides.boss[stage] || {}) };
   };
   function persist() {
     try { localStorage.setItem(KEY, JSON.stringify(overrides)); }
@@ -121,12 +119,7 @@
     }
     if (kind === 'hero') overrides.heroes[selectedHero().id] = values;
     else if (kind === 'minion') overrides.minion = values;
-    else {
-      const { hp, ...other } = values;
-      overrides.boss = other;
-      if (hp === undefined) delete overrides.bossHp[selectedStage()];
-      else overrides.bossHp[selectedStage()] = hp;
-    }
+    else overrides.boss[selectedStage()] = values;
     persist();
     log('Quick test stats saved for ' + (kind === 'hero' ? selectedHero().name : kind === 'boss' ? 'Stage ' + selectedStage() + ' boss' : 'normal enemies') + '.');
     notice('✓ Saved for the next test battle on this device.');
@@ -136,7 +129,7 @@
     const kind = selectedKind();
     if (kind === 'hero') delete overrides.heroes[selectedHero().id];
     else if (kind === 'minion') overrides.minion = {};
-    else { overrides.boss = {}; delete overrides.bossHp[selectedStage()]; }
+    else delete overrides.boss[selectedStage()];
     persist(); populate(); notice('✓ Restored default values for this selection.');
   }
   function resetAll() {
