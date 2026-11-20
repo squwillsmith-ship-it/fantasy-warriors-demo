@@ -78,3 +78,5 @@
  .lab-mode .lab-card{padding:13px}
  .lab-mode .lab-fields{grid-template-columns:1fr 1fr}
 }
+.lab-mode .lab-settings-preview{display:block;width:100%;margin-top:12px;min-height:170px;background:#081623;color:#d9ecdd;border:1px solid #567084;border-radius:9px;padding:11px;font:11px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical;white-space:pre;overflow:auto}
+.lab-mode .lab-settings-preview[hidden]{display:none}
