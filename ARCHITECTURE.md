@@ -1,6 +1,6 @@
 # Fantasy Warriors — Technical Architecture
 
-**Build 1.0.4 · 19 November 2026**
+**Updated for Build 1.0.10 · 20 November 2026**
 
 The HTML prototype is deliberately modular. The goal is to preserve gameplay rules and game data while allowing the presentation layer to be replaced by Godot later. **This is a structural refactor, not a balancing or design update.**
 
@@ -9,6 +9,7 @@ The HTML prototype is deliberately modular. The goal is to preserve gameplay rul
 | File | Owns | Does not own |
 |---|---|---|
 | `index.html` | Semantic page markup and script loading order | Game rules, hero stats, rendering algorithms |
+| `balance-config.js` | Validated, single-source numerical live profile and JSON export; isolates experimental candidates | DOM, Canvas, save state, gameplay decisions |
 | `game-data.js` | Base hero definitions, five pack rosters, encounter themes, provisional ability configuration, tuning, spawn cadence and summon baselines | Active combat simulation, DOM, Canvas |
 | `skill-tree-data.js` | 205 node descriptions, proposed costs, dependencies and challenges | Skill effects and gameplay state |
 | `game-core.js` | Runtime game state, battle simulation, enemy/hero AI, collision, targeting, skills integration, pack purchases, stage flow and test hooks | Canvas drawing algorithms, full UI template generation, fixed hero/pack records |
@@ -20,13 +21,23 @@ The HTML prototype is deliberately modular. The goal is to preserve gameplay rul
 
 ### Load order
 
-The browser loads **`skill-tree-data.js` → `skill-tree.js` → `skill-tree-effects.js` → `game-data.js` → `game-render.js` → `game-ui.js` → `game-core.js`**. `game-core.js` starts the game once its dependencies exist.
+The browser loads **`balance-config.js` → `skill-tree-data.js` → `skill-tree.js` → `skill-tree-effects.js` → `game-data.js` → `game-render.js` → `game-ui.js` → `game-core.js`**. `game-core.js` starts the game once its dependencies exist.
 
 These files run as ordinary classic browser scripts so GitHub Pages can host the prototype without a build system. Script globals use dedicated `window.FW...` namespaces. Module factories accept the shared state and the narrow dependencies they need.
 
+### Central numerical configuration (Build 1.0.10)
+
+The **`fw-live-v1.3.4`** profile in `balance-config.js` is the current source of numerical hero baselines, summons, packs, abilities, combat tuning, wave and generic enemy values, round economy, all **205** node prices, **15** kill-goal values and proposed four gateway prices.
+
+The profile is plain JSON-compatible data wrapped as a classic script for synchronous GitHub Pages loading. `window.FWBalance.validate(profile)` rejects incomplete/invalid records; `window.FWBalance.exportJSON()` exposes the JSON profile for spreadsheet/import pipelines. **Only the live profile is loaded.** A separate unapproved experimental v1.2.0 trial is registered by ID, not activated or silently merged. Numerical settings still scattered through technique implementations and remaining Legacy effects are a **documented migration backlog**, not yet centralized.
+
+The Google Sheet is **not connected**. Changes made there do not update the live game until a deliberate versioned import/generation step. The profile's stable IDs and schema are designed to support this future tool and a Godot JSON adapter.
+
+**Save compatibility:** A new `purchaseCosts` ledger records actual costs of newly purchased ordinary tree nodes for exact test refunds; older nodes use the unchanged original node cost. Older 5-kill Archer/Mage quest completions are preserved in `grandfatheredGates` when migrated to 10/15 kill thresholds, preventing the loss of earned permanent coin rewards. `gateRulesVersion` distinguishes newer rules. Skill Tree → Test Reset clones saved progression in memory; its changes cannot be persisted, and exiting discards the clone. Permanent Legacy and import controls are disabled in the sandbox.
+
 ### Authoritative game data
 
-Use `game-data.js` to adjust base hero HP, damage, movement, basic attack speed and range, pack membership, encounter names/icons/colours, base ability parameters, shared tuning, and spawn cadence. Those definitions use serializable JavaScript object/array values, which can be exported as JSON-compatible records for Godot resources later.
+Edit **`balance-config.js`** to adjust base hero HP, damage, movement, basic attack speed and range, pack membership, encounter names/icons/colours, base ability parameters, shared tuning, and spawn cadence. `game-data.js` is an adapter that reads this profile. Those definitions use serializable JavaScript object/array values, which can be exported as JSON-compatible records for Godot resources later.
 
 Use `skill-tree-data.js` to edit skill node names, identifiers, prerequisites, costs and descriptions. Keep numerical effect implementations in `skill-tree.js` and `skill-tree-effects.js`, and do not silently invent or change manifesto-approved abilities.
 
