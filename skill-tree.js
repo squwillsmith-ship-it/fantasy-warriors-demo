@@ -213,11 +213,18 @@ function renderSandbox(){
  '<button id="fwSandboxStart" class="fw-action fw-backup-download" '+(activeTest||!ready?'disabled':'')+'>Start isolated test sandbox</button>'+
  '<button id="fwSandboxReset" class="fw-action fw-backup-download" '+(!activeTest||!ready?'disabled':'')+'>Reset purchased ordinary nodes · refund '+price.toFixed(2)+' UP</button>'+
  '<button id="fwSandboxExit" class="fw-action fw-backup-download" '+(!activeTest?'disabled':'')+'>Exit sandbox &amp; discard changes</button>'+
+ '<p class="fw-backup-foot">Live profile: '+BALANCE.profileId+' · schema '+BALANCE.schemaVersion+' · no automatic spreadsheet sync.</p>'+ 
+ '<button id="fwBalanceExport" class="fw-action fw-backup-download">↓ Download balance JSON</button>'+ 
  '<p class="fw-backup-notice">'+(activeTest?'SANDBOX ACTIVE: playing stages and buying upgrades is temporary. No normal save changes are written.':'Start the sandbox during normal stage preparation before buying packs. Existing kill gates, permanent coin rewards, prestige and stage progress are protected.')+'</p>'+
  '<p class="fw-backup-foot">Reset removes purchased ordinary nodes only. Tier gateways and automatically completed class-kill challenges are retained. It does not award Legacy Shards, and it cannot be invoked inside the Testing Shop or during combat.</p></div>';
  $('fwSandboxStart').addEventListener('click',startSandbox);
  $('fwSandboxReset').addEventListener('click',resetSandboxTree);
  $('fwSandboxExit').addEventListener('click',endSandbox);
+ $('fwBalanceExport').addEventListener('click',()=>{
+  const text=window.FWBalance.exportJSON(),blob=new Blob([text],{type:'application/json'}),url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='Fantasy_Warriors_Balance_'+BALANCE.profileId+'.json';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
+ });
 }
 
 function notify(){if($('skillModal')?.classList.contains('active'))draw();updateLabels();}
@@ -269,8 +276,8 @@ function details(){
 }
 function renderLegacy(){
  const pane=$('skillPane');if(!pane)return;const reward=Math.max(1,Math.floor(Math.max(1,p.runHighest||0)/2));
- pane.innerHTML='<div class="fw-legacy-intro"><h3>Permanent Legacy Tree</h3><p>Voluntary resets earn Legacy Shards. Permanent upgrades survive future resets. The source design leaves exact amounts and scope open; these are adjustable test values.</p><div class="fw-legacy-balance">◈ '+p.shards+' Shards · '+p.resets+' resets</div><button type="button" class="fw-action" id="fwPrestige" '+(!api||api.state.mode!=='prep'||api.state.testMode||p.runWins===0?'disabled':'')+'>⟲ Prestige reset · earn '+reward+' Shards</button></div>'+
- '<div class="fw-legacy-list">'+legacyPerks.map(x=>{const level=rank(x.key),price=x.cost+level;return '<div class="fw-perk"><div class="fw-perk-icon">'+x.icon+'</div><div class="fw-perk-body"><b>'+escapeHTML(x.name)+'</b><small>'+escapeHTML(x.description)+'</small><span>Rank '+level+'/'+x.max+'</span></div><button type="button" data-perk="'+x.key+'" '+(level>=x.max||p.shards<price||api.state.mode!=='prep'||api.state.testMode?'disabled':'')+'>'+(level>=x.max?'MAX':price+' ◈')+'</button></div>'}).join('')+'</div>'+
+ pane.innerHTML='<div class="fw-legacy-intro"><h3>Permanent Legacy Tree</h3><p>Voluntary resets earn Legacy Shards. Permanent upgrades survive future resets. The source design leaves exact amounts and scope open; these are adjustable test values.</p><div class="fw-legacy-balance">◈ '+p.shards+' Shards · '+p.resets+' resets</div><button type="button" class="fw-action" id="fwPrestige" '+(!api||api.state.mode!=='prep'||api.state.testMode||p.runWins===0||sandboxSaved?'disabled':'')+'>⟲ Prestige reset · earn '+reward+' Shards</button></div>'+
+ '<div class="fw-legacy-list">'+legacyPerks.map(x=>{const level=rank(x.key),price=x.cost+level;return '<div class="fw-perk"><div class="fw-perk-icon">'+x.icon+'</div><div class="fw-perk-body"><b>'+escapeHTML(x.name)+'</b><small>'+escapeHTML(x.description)+'</small><span>Rank '+level+'/'+x.max+'</span></div><button type="button" data-perk="'+x.key+'" '+(level>=x.max||p.shards<price||api.state.mode!=='prep'||api.state.testMode||sandboxSaved?'disabled':'')+'>'+(level>=x.max?'MAX':price+' ◈')+'</button></div>'}).join('')+'</div>'+
  '<div class="fw-legacy-foot">Permanent older-class evolution branches are an approved direction but their exact nodes and abilities are not specified; no invented classes are added.</div>';
  $('fwPrestige').addEventListener('click',prestige);pane.querySelectorAll('[data-perk]').forEach(b=>b.addEventListener('click',()=>buyLegacy(b.dataset.perk)));
 }
@@ -329,7 +336,7 @@ async function restoreBackup(file){
 }
 function renderBackup(){
  const pane=$('skillPane');if(!pane)return;
- const canImport=api&&api.state.mode==='prep'&&!api.state.testMode&&api.state.bought===0;
+ const canImport=api&&api.state.mode==='prep'&&!api.state.testMode&&api.state.bought===0&&!sandboxSaved;
  const opened=[1,2,3,4,5].filter(isTierOpen).length;
  pane.innerHTML='<div class="fw-backup"><h3>Save &amp; Backup</h3>'+
  '<p>Progress saves automatically in this browser. Export a backup before changing phones, clearing Safari data or testing major builds.</p>'+
