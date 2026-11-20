@@ -1,5 +1,5 @@
 /* DOM UI, shop presentation, wave tracker and battle report views. */
-window.FWGameUI={create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY}){
+window.FWGameUI={create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,nextSpawnInterval,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY}){
 const $=id=>document.getElementById(id);
 function updateFormation(){const groups=[];for(const h of state.heroes){let g=groups.find(g=>g.base.id===h.base.id);if(g)g.count++;else groups.push({base:h.base,count:1,charge:h.charge??0,activeUntil:Math.max(h.bearUntil||0,h.invisibleUntil||0,h.frenzyUntil||0,h.blessingUntil||0,h.shieldUntil||0,h.sanctuaryUntil||0),casts:h.casts||0})}
  refs.formation.innerHTML='';
@@ -16,7 +16,7 @@ function waveStatus(){
  let phase='WAVE PREPARATION',next='Buy packs and start the stage';
  if(state.mode==='battle'){
    if(boss){phase='BOSS FIGHT';next=encounter().boss+' has arrived';}
-   else if(unspawned){phase='MINION WAVE';next='Next '+encounter().minion+': '+Math.max(0,NORMAL_SPAWN_INTERVAL-state.spawnClock).toFixed(1)+'s · '+unspawned+' yet to spawn';}
+   else if(unspawned){phase='MINION WAVE';next='Next '+encounter().minion+': '+Math.max(0,nextSpawnInterval()-state.spawnClock).toFixed(1)+'s · '+unspawned+' left · '+(NORMAL_SPAWN_INTERVAL/nextSpawnInterval()).toFixed(1)+'× rate';}
    else if(live){phase='CLEAR THE WAVE';next=live+' '+encounter().minion+' remaining on field';}
    else{phase='BOSS INCOMING';next=encounter().boss+' in '+Math.max(0,BOSS_AFTER_CLEAR_DELAY-state.bossWaitClock).toFixed(1)+'s';}
    if(state.paused)phase='PAUSED · '+phase;
