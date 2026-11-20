@@ -1,8 +1,8 @@
 # Fantasy Warriors — Technical Architecture
 
-**Updated for Build 1.0.10 · 20 November 2026**
+**Updated for Build 1.0.11 · 20 November 2026**
 
-The HTML prototype is deliberately modular. The goal is to preserve gameplay rules and game data while allowing the presentation layer to be replaced by Godot later. **This is a structural refactor, not a balancing or design update.**
+The HTML prototype is deliberately modular. The goal is to preserve gameplay rules and game data while allowing the presentation layer to be replaced by Godot later. **Build 1.0.11 adds editable within-wave pacing and simpler arcade combat atop the central data system.**
 
 ## Responsibility and file map
 
@@ -10,7 +10,8 @@ The HTML prototype is deliberately modular. The goal is to preserve gameplay rul
 |---|---|---|
 | `index.html` | Semantic page markup and script loading order | Game rules, hero stats, rendering algorithms |
 | `balance-config.js` | Validated, single-source numerical live profile and JSON export; isolates experimental candidates | DOM, Canvas, save state, gameplay decisions |
-| `game-data.js` | Base hero definitions, five pack rosters, encounter themes, provisional ability configuration, tuning, spawn cadence and summon baselines | Active combat simulation, DOM, Canvas |
+| `game-data.js` | Adapter from the validated balance profile into hero, pack, enemy, ability and tuning records | DOM, Canvas, active simulation |
+| `game-arcade.js` | Pure functions for linear within-wave spawn acceleration, random hero start positions and closest-front target decisions | DOM, saves, game state |
 | `skill-tree-data.js` | 205 node descriptions, proposed costs, dependencies and challenges | Skill effects and gameplay state |
 | `game-core.js` | Runtime game state, battle simulation, enemy/hero AI, collision, targeting, skills integration, pack purchases, stage flow and test hooks | Canvas drawing algorithms, full UI template generation, fixed hero/pack records |
 | `game-render.js` | 2D Canvas drawing, animation cues, battlefield viewport and effects display | Damage, AI, progression, saving |
@@ -21,13 +22,13 @@ The HTML prototype is deliberately modular. The goal is to preserve gameplay rul
 
 ### Load order
 
-The browser loads **`balance-config.js` → `skill-tree-data.js` → `skill-tree.js` → `skill-tree-effects.js` → `game-data.js` → `game-render.js` → `game-ui.js` → `game-core.js`**. `game-core.js` starts the game once its dependencies exist.
+The browser loads **`balance-config.js` → `skill-tree-data.js` → `skill-tree.js` → `skill-tree-effects.js` → `game-data.js` → `game-arcade.js` → `quick-stats.js` → `game-render.js` → `game-ui.js` → `game-core.js`**. `game-core.js` starts the game once its dependencies exist.
 
 These files run as ordinary classic browser scripts so GitHub Pages can host the prototype without a build system. Script globals use dedicated `window.FW...` namespaces. Module factories accept the shared state and the narrow dependencies they need.
 
 ### Central numerical configuration (Build 1.0.10)
 
-The **`fw-live-v1.3.4`** profile in `balance-config.js` is the current source of numerical hero baselines, summons, packs, abilities, combat tuning, wave and generic enemy values, round economy, all **205** node prices, **15** kill-goal values and proposed four gateway prices.
+The **`fw-live-v1.3.5`** profile in `balance-config.js` is the current source of numerical hero baselines, summons, packs, abilities, combat tuning, wave and generic enemy values, round economy, all **205** node prices, **15** kill-goal values and proposed four gateway prices.
 
 The profile is plain JSON-compatible data wrapped as a classic script for synchronous GitHub Pages loading. `window.FWBalance.validate(profile)` rejects incomplete/invalid records; `window.FWBalance.exportJSON()` exposes the JSON profile for spreadsheet/import pipelines. **Only the live profile is loaded.** A separate unapproved experimental v1.2.0 trial is registered by ID, not activated or silently merged. Numerical settings still scattered through technique implementations and remaining Legacy effects are a **documented migration backlog**, not yet centralized.
 
@@ -65,9 +66,9 @@ Existing testing hooks (`window.__FW_DEMO__`, `window.__FW_TEST__`, `window.__FW
 - Shared hero acquisition is **15 units**, tower guard/chase remains **5 units**, and ranged units hold their position when a target is in attack reach.
 - Standard minions have **6 HP** rather than 11. All boss HP is rounded to half the previous stage-scaled value (Stage 1: 45).
 - All 15 heroes and both allied summon types have their base HP halved and rounded. Normal minions have a **0.65-second** wind-up when they enter contact range; subsequent attacks use their prior one-second interval. Boss attack timing is unchanged.
-- Minions spawn every **2 seconds** and boss waits until all ordinary minions are defeated, then **2 seconds** more.
+- First minion spawns immediately; later intervals decrease from **2 seconds** to about **0.67 seconds** as the shared rate grows **linearly from 1× to 3×** within a wave. Boss waits until all ordinary minions are defeated, then **2 seconds** more.
 - Ordinary enemy defeats have a **10% independent** 1-UP drop chance; bosses guarantee **5 UP**.
-- Hero engagement locking, tower collision and class special attacks still work.
+- Heroes spawn independently around the tower at **1.8–7.2 units** (best-effort spacing), select **closest eligible enemy ahead** with closest-anywhere fallback, and avoid reserved melee slots. Only active attack wind-ups and dedicated beam channels keep their own short target commitment; tower collision and class specials still work.
 - All **205** skill nodes load; existing saves can be exported/imported and resume at the correct campaign stage.
 
 **Scope note:** The game is not yet a Godot application. Extracting files now makes a later Godot rewrite more predictable, but the actual combat runtime and renderer still need porting.
