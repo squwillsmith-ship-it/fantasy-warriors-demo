@@ -1,0 +1,15 @@
+/* Build 1.0.9: touch-friendly, testing-only stat controls. */
+.fw-quick-stats{border-color:#bba06e;background:#132c37}
+.fw-quick-stats summary{cursor:pointer;font-size:13px;font-weight:800;color:#f7d9a2;padding:5px 2px;min-height:34px;line-height:1.8}
+.fw-quick-stats summary:focus-visible{outline:2px solid #ffe1a1;outline-offset:2px;border-radius:4px}
+.fw-quick-stats .tiny-note{line-height:1.5;font-size:11px}
+.fw-quick-picker,.fw-quick-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.fw-quick-picker label,.fw-quick-fields label{font-size:11px;font-weight:650;color:#c8dcd7;min-width:0}
+.fw-quick-picker label[hidden],.fw-quick-fields label[hidden]{display:none!important}
+.fw-quick-picker select,.fw-quick-fields input{display:block;box-sizing:border-box;width:100%;min-width:0;margin-top:5px;padding:11px 8px;border:1px solid #64858c;border-radius:7px;background:#0f2635;color:#f0f9f6;font:inherit;font-size:16px;min-height:43px}
+.fw-quick-picker select:disabled,.fw-quick-fields input:disabled{opacity:.55}
+.fw-quick-fields label:last-child:nth-child(odd){grid-column:1/-1}
+.fw-quick-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.fw-quick-actions .btn{flex:1 1 118px;min-height:43px;font-size:11px;padding:8px}
+.fw-quick-feedback{min-height:19px;margin-bottom:0}
+@media(max-width:420px){.fw-quick-picker,.fw-quick-fields{gap:8px}.fw-quick-stats{padding:10px}.fw-quick-actions{gap:6px}.fw-quick-actions .btn{flex:1 1 135px}}
