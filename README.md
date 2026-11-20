@@ -1,9 +1,18 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.8 · Gameplay Manifesto v1.1.6** (19 November 2026)
+**Build 1.0.9 · Gameplay Manifesto v1.3.3** (20 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.8
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.9
 
+
+## New in Build 1.0.9 — Quick Stats (Testing Shop only)
+
+- Inside **Testing Shop → Enable testing mode → Quick Stats**, select any of the 15 heroes and adjust **HP, basic damage, attacks per second, movement speed, and basic attack range**.
+- Select **Normal enemy (all stages)** to change their **HP, damage, movement speed, attack interval and first-hit wind-up**. Select **Stage boss** to adjust **HP, damage, movement speed and attack interval** independently for the currently selected test stage (1–10).
+- Press **Apply test stats** to use the new values on your **next testing battle**. **Reset selection** or **Reset all** restores defaults. Overrides are saved locally on that browser/device across refreshes.
+- **Normal campaign battles and permanent progression use untouched original stats.** This developer tool does not import or sync Google Sheets, change the manifesto's approved baseline, alter skill-tree costs/quests, or add new player-facing upgrades.
+- Necromancer's sustained basic beam damage scales with the editable damage and attack-rate values. Setting fields are validated against bounded positive ranges; all controls are disabled outside preparation.
+- On iPhone, changing values is possible directly in the Testing Shop. Because the game caches assets, use the new `?v=1.0.9` URL and refresh after GitHub Pages deploys.
 
 ## New in Build 1.0.8 — Lower HP and minion first-attack wind-up
 
