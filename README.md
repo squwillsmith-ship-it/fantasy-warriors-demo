@@ -1,9 +1,18 @@
 # Fantasy Warriors — Playable Demo
 
-**Build 1.0.10 · Gameplay Manifesto v1.3.4** (20 November 2026)
+**Build 1.0.11 · Gameplay Manifesto v1.3.5** (20 November 2026)
 
-**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.10
+**Play on iPhone / desktop:** https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.11
 
+
+## New in Build 1.0.11 — Accelerating Waves & Arcade AI
+
+- **Within-wave spawn acceleration:** Every stage begins at the familiar **2.0-second** minion interval and increases minion spawning **linearly in RATE**, from **1×** initially to **3×** by the end of its wave (the last interval is about **0.67 seconds**). This is a shared first-pass curve, *not exponential yet*, and stage-specific balance is deliberately deferred. Total enemies and the defeated-wave → 2-second boss gate are unchanged.
+- **Heroes now spread randomly:** Each hero independently spawns around the tower between **1.8 and 7.2 world units** from its centre—up to **four times the old 1.8-unit starting ring**—with basic spacing to reduce overlap. Summons retain their existing spawn rules. Heroes placed outside the existing 5-unit tower guard can fight near their deployment and move inward; once inside the ordinary guard, that original limit remains effective.
+- **Simpler arcade targeting:** Choose the **closest enemy in front of the hero**, falling back to the closest reachable enemy in any direction when none is ahead. Remove the older role/urgency/crowd scoring and melee-slot allocation; keep attacking, basic navigation, local collisions, specials, tower limits and purchased upgrades otherwise functioning. Skill-target focus perks provide only a small optional proximity bias.
+- **Tunable defaults in `balance-config.js`:** `spawn.normalRateRampFactor = 2` (rate multiplier ends at 1 + factor); `heroSpawnRadiusMin = 1.8`, `heroSpawnRadiusMultiplier = 4`, `heroSpawnSeparation = 0.95`. Reusable pure functions live in `game-arcade.js`.
+- **Wave tracker:** displays the live countdown and rate multiplier. Existing local saves, ordinary progression, the Quick Stats tester, 5/10/15 Recruit challenges, and Reset Skill Tree are kept. **Google Sheets is still not connected.**
+- **Balance caveat:** The shorter wave-spawning period will affect stage timings and difficulty. These settings are placeholders to verify through later playtesting, not a claim that stages meet the 10–15-minute target.
 
 ## New in Build 1.0.10 — Central Balance, Kill Goals & Safe Test Reset
 
