@@ -172,7 +172,7 @@
     for (const hero of HEROES) heroEl.add(new Option(hero.name, hero.id));
     for (let i = 0; i < ENCOUNTERS.length; i++) stageEl.add(new Option('Stage ' + (i + 1) + ' — ' + ENCOUNTERS[i].boss, String(i + 1)));
     stageEl.value = String(state.stage);
-    kindEl.addEventListener('change', populate);
+    kindEl.addEventListener('change', () => { if (selectedKind() === 'boss') stageEl.value = String(state.stage); populate(); });
     heroEl.addEventListener('change', populate);
     stageEl.addEventListener('change', () => {
       const testStage = $('testStage');
