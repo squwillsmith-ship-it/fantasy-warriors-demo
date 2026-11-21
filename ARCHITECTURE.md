@@ -19,12 +19,20 @@ The HTML prototype is deliberately modular. The goal is to preserve gameplay rul
 | `skill-tree.js` | Upgrade entitlement, purchase rules, currency, prestige, save/import/export | Full hero base statistics and Canvas |
 | `skill-tree-effects.js` | Purchased-upgrade combat modifiers and techniques | Upgrade tree node descriptions and pages |
 | `game.css` / `skill-tree.css` | Layout, colours, responsive/mobile styling | Gameplay logic |
+| `quick-stats.js` / `quick-stats.css` | Main-game Testing Shop stat overrides and their editor | Baseline balance profile and normal campaign progression |
+| `balance-lab.html` / `balance-lab.js` / `balance-lab.css` | Standalone combat testing screen, playback speed, test scenarios, copyable configuration and result export | Permanent campaign progress, production balance defaults |
 
 ### Load order
 
 The browser loads **`balance-config.js` → `skill-tree-data.js` → `skill-tree.js` → `skill-tree-effects.js` → `game-data.js` → `game-arcade.js` → `quick-stats.js` → `game-render.js` → `game-ui.js` → `game-core.js`**. `game-core.js` starts the game once its dependencies exist.
 
 These files run as ordinary classic browser scripts so GitHub Pages can host the prototype without a build system. Script globals use dedicated `window.FW...` namespaces. Module factories accept the shared state and the narrow dependencies they need.
+
+### Separate playable and test entry points
+
+- `index.html` runs the playable campaign. It loads `quick-stats.css` alongside the main styles, and the Testing Shop is the in-game quick-access test interface.
+- `balance-lab.html` loads the same combat, balance, progression and presentation scripts, then `balance-lab.js` for lab-specific controls. It also loads `balance-lab.css` and uses its own testing state, speed controls, scenario settings and export UI.
+- Keep both HTML script dependency chains in sync when extracting or renaming shared modules. Do not make the standalone lab alter the browser's campaign progress or change the canonical `balance-config.js` profile when users experiment.
 
 ### Central numerical configuration (Build 1.0.10)
 
