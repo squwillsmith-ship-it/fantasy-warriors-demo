@@ -1,6 +1,6 @@
 # Fantasy Warriors — Playable Demo
 
-**Current build: 1.0.12** · **Gameplay Manifesto: v1.4.1** · 22 November 2026
+**Current build: 1.0.12** · **Gameplay Manifesto: v1.4.2** · 22 November 2026
 
 A browser-based tower-defence prototype for testing pack-drawn heroes, automatic combat, waves, upgrades and persistent progression.
 
