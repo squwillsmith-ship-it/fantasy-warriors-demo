@@ -1,3 +1,10 @@
+## Build 1.0.12 — 22 November 2026 (finite shop; run-scoped prestige gateways and class quests)
+
+- **Limited stock:** Start each ordinary attempt with three random one-purchase standard-pack offers; at least one initial offer is affordable. All slots restock on stage failure or success. Removed unlimited free rotation. Additional stock slots still come from appropriate upgrades.
+- **Prestige reset:** Voluntary prestige now clears run-scoped class-kill quest progress, class branch gates and their +2 maximum-coin bonuses, pack-opening tasks, ordinary skill purchases and pack tier gateways. Permanent Legacy perks and earned Lifetime/Shards remain.
+- **Gateway progression:** Prestige count qualifies a zero-UP route for an individual tier gateway after its in-run mastery milestone. Tier unlocks no longer auto-appear across prestige cycles; the player must open them again through the ordinary skill tree.
+- **Scope:** Current shop items are still one-hero themed packs. Booster boxes, individual heroes, Golden/Shiny and combined packs, as well as merchant rerolls, remain planned future features.
+
 # Fantasy Warriors — Build History
 
 Implementation notes retained from the original README, latest first. These entries describe historical build changes, not necessarily current balance values; refer to the current game and Master Gameplay Manifesto for live rules.

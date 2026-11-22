@@ -1,6 +1,6 @@
 # Fantasy Warriors — Playable Demo
 
-**Current build: 1.0.11** · **Gameplay Manifesto: v1.3.5** · 20 November 2026
+**Current build: 1.0.12** · **Gameplay Manifesto: v1.4.1** · 22 November 2026
 
 A browser-based tower-defence prototype for testing pack-drawn heroes, automatic combat, waves, upgrades and persistent progression.
 
@@ -13,7 +13,8 @@ A browser-based tower-defence prototype for testing pack-drawn heroes, automatic
 
 ## Current gameplay snapshot
 
-- One hero per purchased pack; 15 heroes across five pack tiers, with provisional later-tier progression.
+- Three randomly rolled standard-pack shop offers per attempt, with one purchase per slot and at least one affordable opening offer. Shops restock after failed or successful attempts; unlimited free rotation is disabled.
+- Five pack tiers unlock again through the ordinary skill tree in each prestige cycle. Prestige resets class-kill quest progress and +2 coin-cap bonuses, run pack-opening tasks, tier gateways and ordinary upgrades, but preserves permanent Legacy perks.
 - Ten stages, waves and bosses, an interactive 205-node skill tree, hero-class kill quests, Upgrade Points and Legacy resets.
 - Normal minion spawn rate accelerates *linearly in rate* from 1× to 3× within each wave. This is provisional, not yet stage-balanced.
 - Heroes spawn at randomized distances around the tower and use simplified closest-enemy-in-front targeting.
@@ -42,4 +43,4 @@ GitHub Pages deploys from **`main` / repository root**, with no build process. P
 
 ## Known limitations
 
-Later pack costs, some skill and Legacy effects, stage-specific balancing and parts of the prestige economy remain provisional. The Balance Lab is a test environment, not a second campaign. A campaign JSON backup includes progression, **not** a live battle snapshot.
+Later pack costs, guaranteed individual heroes, booster/special packs, merchant rerolls, some skill and Legacy effects, stage-specific balancing and parts of the prestige economy remain provisional. The Balance Lab is a test environment, not a second campaign. A campaign JSON backup includes progression, **not** a live battle snapshot.

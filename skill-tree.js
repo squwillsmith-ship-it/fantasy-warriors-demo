@@ -41,13 +41,12 @@ function has(n){const node=typeof n==='string'?nodeMap[n]:n;if(!node)return fals
  return p.nodes.includes(node.id);
 }
 function isTierOpen(t){return t===1||p.gateways.includes(t);}
-function progressGate(){let changed=false;for(let t=1;t<5;t++)if(isTierOpen(t)&&p.resets>=t&&!isTierOpen(t+1)){p.gateways.push(t+1);changed=true;}if(changed)save();}
 function affordability(node){if(!isTierOpen(node.tier))return {ok:false,reason:'Unlock '+data.tiers[node.tier-1]+' tier first'};
  if(has(node))return {ok:false,reason:'Unlocked'};
  if(node.kind==='root'||node.kind==='milestone'||node.kind==='gate')return {ok:false,reason:'Automatic task or milestone'};
  if(node.kind==='exit'){if(node.tier===5){return p.highestClear>=10?{ok:true,cost:0}:{ok:false,reason:'Clear Stage 10'};}
   if(!has('T'+node.tier+'-M1'))return {ok:false,reason:'Complete this tier’s mastery milestone first'};
-  const cost=gatePrices[node.tier-1];return p.up>=cost?{ok:true,cost}:{ok:false,reason:'Need '+cost+' Upgrade Points (or qualify through voluntary prestige)',cost};}
+  const cost=p.resets>=node.tier?0:gatePrices[node.tier-1];return p.up>=cost?{ok:true,cost}:{ok:false,reason:'Need '+cost+' Upgrade Points (or qualify through voluntary prestige)',cost};}
  for(const id of node.requires){if(!has(id))return {ok:false,reason:'Requires '+(nodeMap[id]?.name||id)};}
  if(node.packTask){const count=p.packOpens[node.tier-1]||0;if(count<node.packTask)return {ok:false,reason:'Open '+node.packTask+' '+data.tiers[node.tier-1]+' Packs ('+count+'/'+node.packTask+')'};}
  return p.up>=node.cost?{ok:true,cost:node.cost}:{ok:false,reason:'Need '+node.cost+' Upgrade Points',cost:node.cost};
@@ -101,7 +100,7 @@ function recalc(){
  else api.state.towerHp=Math.min(api.state.towerMax,api.state.towerHp);
  const completedQuests=data.nodes.filter(node=>node.kind==='gate'&&has(node)).length;
  const cap=BASE_MAX_COINS+COINS_PER_CLASS_GATE*completedQuests+(generalBonus(1,'G04')?4:0)+(generalBonus(2,'G04')?3:0)+(generalBonus(4,'G05')?4:0)+(generalBonus(5,'G05')?5:0)+2*rank('treasury');
- api.state.coinMax=cap;api.state.shopSlots=1+(generalBonus(1,'G05')?1:0)+(generalBonus(2,'G05')?1:0)+(generalBonus(3,'G05')?1:0)+rank('merchant');
+ api.state.coinMax=cap;api.state.shopSlots=3+(generalBonus(1,'G05')?1:0)+(generalBonus(2,'G05')?1:0)+(generalBonus(3,'G05')?1:0)+rank('merchant');
  if(api.state.mode==='prep'&&api.state.bought===0&&api.state.coins===previousMax)api.state.coins=cap;
  for(const h of api.heroes){
   const orig=initial[h.id],t=h.pack+1,heroIdx=classIds[t-1].indexOf(h.id),code=heroCode(t,heroIdx);
@@ -133,7 +132,7 @@ function recalc(){
 }
 function purchase(id){const n=nodeMap[id];if(!n||!api||api.state.mode!=='prep'||api.state.testMode)return;
  const check=affordability(n);if(!check.ok)return;
- if(n.kind==='exit'&&n.tier<5){p.up-=check.cost;p.gateways.push(n.tier+1);p.gateways=[...new Set(p.gateways)].sort();api.log('Unlocked '+data.tiers[n.tier]+' Tier (test gateway price).');}
+ if(n.kind==='exit'&&n.tier<5){p.up-=check.cost;p.gateways.push(n.tier+1);p.gateways=[...new Set(p.gateways)].sort();api.log('Unlocked '+data.tiers[n.tier]+' Tier for this prestige run ('+(check.cost?'paid UP':'earned prestige route')+').');}
  else{p.up-=check.cost;p.nodes.push(id);p.purchaseCosts=p.purchaseCosts||{};p.purchaseCosts[id]=check.cost;api.log(n.name+' purchased ('+check.cost+' UP).');}
  save();recalc();draw();updateLabels();
 }
@@ -151,7 +150,7 @@ function recordKill(heroId,isBoss=false){if(!api||api.state.testMode)return 0;
  const baseDrop=isBoss?BALANCE.economy.bossUP:(Math.random()<BALANCE.economy.minionUPChance?1:0);
  const awarded=baseDrop?addUP(baseDrop):0;
  save();
- if(newlyCompletedGate){recalc();api.log(newlyCompletedGate.name+' complete! +'+COINS_PER_CLASS_GATE+' permanent maximum coins.');}
+ if(newlyCompletedGate){recalc();api.log(newlyCompletedGate.name+' complete! +'+COINS_PER_CLASS_GATE+' maximum coins this prestige run.');}
  updateLabels();
  return awarded;
 }
@@ -231,16 +230,16 @@ function notify(){if($('skillModal')?.classList.contains('active'))draw();update
 function prestige(){
  if(!api||api.state.mode!=='prep'||api.state.testMode||sandboxSaved||p.runWins===0)return;
  const reward=Math.max(1,Math.floor(Math.max(1,p.runHighest||0)/2));
- if(!confirm('Voluntarily reset stage and ordinary upgrades for '+reward+' permanent Legacy Shards? Earned class kills, pack quests, and permanent tier gateways are kept.'))return;
- p.resets++;p.shards+=reward;p.up=0;p.upRemainder=0;p.nodes=[];p.purchaseCosts={};p.tierWins={};p.runWins=0;p.runHighest=0;p.campaignStage=1;
- progressGate();save();api.restart();recalc();draw();updateLabels();api.log('Prestige '+p.resets+': +'+reward+' permanent Shards.');
+ if(!confirm('Prestige for '+reward+' permanent Legacy Shards? Stages, ordinary upgrades, class kill quests, coin-cap quest rewards and pack tiers all reset. Permanent Legacy perks remain.'))return;
+ p.resets++;p.shards+=reward;p.up=0;p.upRemainder=0;p.nodes=[];p.purchaseCosts={};p.tierWins={};p.kills={};p.grandfatheredGates=[];p.packOpens={};p.gateways=[];p.runWins=0;p.runHighest=0;p.campaignStage=1;
+ save();api.restart();recalc();draw();updateLabels();api.log('Prestige '+p.resets+': +'+reward+' permanent Shards. Class quests and pack tiers reset; Legacy perks retained.');
 }
 function buyLegacy(key){if(!api||api.state.mode!=='prep'||api.state.testMode||sandboxSaved)return;const def=legacyPerks.find(x=>x.key===key);if(!def)return;const level=rank(key),cost=def.cost+level;if(level>=def.max||p.shards<cost)return;p.shards-=cost;p.legacy[key]=level+1;save();recalc();draw();updateLabels();}
 function stateFor(n){if(has(n))return 'owned';if(!isTierOpen(n.tier))return 'sealed';if(n.kind==='gate')return 'quest';
  const c=affordability(n);return c.ok?'ready':'locked';
 }
 function nodeMark(n){return n.kind==='gate'?'⚔':n.kind==='stat'?'✚':n.kind==='technique'?'✦':n.kind==='general'?'◆':n.kind==='exit'?'⬡':n.kind==='root'?'♜':'★';}
-function nodeButton(n){const state=stateFor(n);const requirement=n.kind==='gate'?((p.kills[classIds[n.tier-1][n.heroIndex]]||0)+'/'+n.goal+' kills · +'+COINS_PER_CLASS_GATE+' max ◈'):n.kind==='exit'?(n.tier===5?'Apex':gatePrices[n.tier-1]+' UP / prestige'):n.cost?n.cost+' UP':'FREE';
+function nodeButton(n){const state=stateFor(n);const requirement=n.kind==='gate'?((p.kills[classIds[n.tier-1][n.heroIndex]]||0)+'/'+n.goal+' kills · +'+COINS_PER_CLASS_GATE+' max ◈'):n.kind==='exit'?(n.tier===5?'Apex':p.resets>=n.tier?'0 UP · prestige':gatePrices[n.tier-1]+' UP / prestige'):n.cost?n.cost+' UP':'FREE';
  return '<button type="button" class="fw-node fw-'+state+' fw-'+n.kind+'" data-node="'+escapeHTML(n.id)+'" aria-label="'+escapeHTML(n.name)+'; '+state+'"><span class="fw-node-symbol">'+nodeMark(n)+'</span><span class="fw-node-name">'+escapeHTML(n.name.replace(/ \((PROPOSED|DRAFT)\)/gi,''))+'</span><span class="fw-node-cost">'+(state==='owned'?'✓ Unlocked':escapeHTML(requirement))+'</span></button>';
 }
 function lane(t,code,i){
@@ -332,7 +331,7 @@ async function restoreBackup(file){
  if(!file||file.size>2000000)throw Error('Choose a Fantasy Warriors save JSON file under 2 MB.');
  const clean=normalizeBackup(await file.text());
  if(!confirm('Replace this device’s saved skill tree, legacy upgrades and campaign stage with this backup?'))return;
- p=clean;save();progressGate();api.restart();resumeStage();recalc();draw();updateLabels();api.log('Imported saved progression for Stage '+p.campaignStage+'.');
+ p=clean;save();api.restart();resumeStage();recalc();draw();updateLabels();api.log('Imported saved progression for Stage '+p.campaignStage+'.');
 }
 function renderBackup(){
  const pane=$('skillPane');if(!pane)return;
@@ -371,7 +370,7 @@ function connect(opts){
  api=opts;initial=Object.fromEntries(api.heroes.map(h=>[h.id,{hp:h.hp,damage:h.damage,speed:h.speed,walk:h.walk}]));
  initialSpecials=Object.fromEntries(api.heroes.map(h=>[h.id,{...api.tuning.heroes[h.id].special}]));
  initialSummons={hound:{hp:api.hound.hp,damage:api.hound.damage},undead:{hp:api.undead.hp,damage:api.undead.damage}};
- progressGate();recalc();
+ recalc();
  $('openSkillTree').addEventListener('click',()=>{$('skillModal').classList.add('active');$('skillModal').hidden=false;draw();});
  $('closeSkillTree').addEventListener('click',()=>{$('skillModal').classList.remove('active');$('skillModal').hidden=true;});
  $('skillTreeTab').addEventListener('click',()=>{active='tree';draw()});
@@ -382,7 +381,7 @@ function connect(opts){
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('skillModal').classList.contains('active')){$('skillModal').hidden=true;$('skillModal').classList.remove('active')}});
  updateLabels();
 }
-window.FWSkillTree={connect,has:owns,isTierOpen,questProgress,startSandbox,resetSandboxTree,endSandbox,sandboxActive:()=>!!sandboxSaved,points:()=>p.up,shards:()=>p.shards,shopSlots:()=>api?.state.shopSlots||1,recordKill,recordPack,recordWin,prestige,recalc,notify,rate:specialRate,
+window.FWSkillTree={connect,has:owns,isTierOpen,questProgress,startSandbox,resetSandboxTree,endSandbox,sandboxActive:()=>!!sandboxSaved,points:()=>p.up,shards:()=>p.shards,shopSlots:()=>api?.state.shopSlots||3,recordKill,recordPack,recordWin,prestige,recalc,notify,rate:specialRate,
  debug:()=>JSON.parse(JSON.stringify(p)),purchase,nodes:data.nodes,showQuest,backupPayload,normalizeBackup,checkpointStage,markRestart,resumeStage, 
  heroBonus:(h,e)=>{
   let extra=1;

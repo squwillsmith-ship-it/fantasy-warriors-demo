@@ -70,7 +70,7 @@ function updateQuests(){
 }
 
 function updateUI(){
- const offer=selectedOffer(),pack=PACKS[offer],offers=offeredPacks();
+ const offer=selectedStock(),pack=offer?PACKS[offer.packIndex]:null,offers=offeredPacks();
  refs.stage.textContent=String(state.stage).padStart(2,'0')+' / 10';
  $('encounterName').textContent=encounter().name;
  $('encounterUnits').textContent=encounter().minion+' → '+encounter().boss;
@@ -89,18 +89,18 @@ function updateUI(){
  const packs=state.packQueue.length?state.packQueue.reduce((a,i)=>(a[PACKS[i].name]=(a[PACKS[i].name]||0)+1,a),{}):{};
  refs.count.textContent=state.bought+' packs held · '+(Object.entries(packs).map(([k,v])=>v+' '+k).join(' · ')||'1 hero each');
  $('coinCapNote').textContent='Current maximum '+state.coinMax+' coins · +2 for every completed class kill quest.';
- const shopKey=offers.join(',')+'|'+offer+'|'+state.shopSlots+'|'+state.mode+'|'+state.testMode;
- if(state.shopCacheKey!==shopKey){
-  state.shopCacheKey=shopKey;
-  $('packOfferButtons').innerHTML=offers.map(i=>'<button type="button" class="btn secondary compact" data-pack="'+i+'" '+(state.mode!=='prep'||state.testMode?'disabled':'')+' style="flex:1;min-width:120px;'+(offer===i?'border-color:#f4d392;background:#344b4c;':'')+'">'+PACKS[i].name+' · '+PACKS[i].price+'◈</button>').join('');
-  $('liveShopSlots').innerHTML=Array.from({length:Math.min(5,state.shopSlots)},(_,idx)=>'<div class="shop-slot '+(idx<offers.length?'available':'locked')+'"><span>✦ Slot '+(idx+1)+'</span><strong>'+(idx<offers.length?PACKS[offers[idx]].name+' Pack · 1 hero':'No additional offer')+'</strong></div>').join('');
-  $('packProgress').innerHTML=PACKS.map((p,i)=>'<div class="pack-tier"><b>'+p.name+' Pack</b> · '+(SKILLS?.isTierOpen(i+1)?'UNLOCKED · '+p.price+' coins':'LOCKED · Tier '+(i+1)+' gateway')+'<small>'+p.pool.map(k=>HERO_MAP[k].name).join(' · ')+'</small></div>').join('');
- }
- $('rotateShop').disabled=state.mode!=='prep'||state.testMode||PACKS.filter((_,i)=>SKILLS?.isTierOpen(i+1)).length<=offers.length;
- refs.shopTitle.textContent=state.mode==='prep'?'Hero Pack Shop':state.mode==='opening'?'Opening Packs':state.mode==='battle'?'Battle Underway':state.mode==='clear'?'Stage Complete':state.mode==='champion'?'Campaign Complete':'Stage Failed';
- refs.shopDescription.textContent=state.mode==='prep'?'Buy unlocked packs (1 random hero each). Shop prices and offer rotation for later tiers are provisional test values.':state.mode==='opening'?'One hero emerges from each purchased pack.':state.mode==='battle'?'Heroes defend automatically; coin budget refills after this attempt.':state.mode==='clear'?'All heroes leave; your next round starts at the current coin maximum.':state.mode==='champion'?'Ten stages complete.':'Stage failed: retry with new packs and restored coins.';
- refs.buy.disabled=state.mode!=='prep'||state.coins<pack.price||state.testMode;
- refs.buy.textContent=state.testMode?'Testing mode · free hero picker':state.mode==='prep'?(state.coins<pack.price?'Need '+pack.price+' coins':'◈ Buy '+pack.name+' Pack · '+pack.price+' coins'):'Shop closed during combat';
+ const shopKey=offers.map(o=>o.packIndex+':'+Number(o.sold)).join(',')+'|'+state.selectedSlot+'|'+state.shopSlots+'|'+state.mode+'|'+state.testMode;
+  if(state.shopCacheKey!==shopKey){
+   state.shopCacheKey=shopKey;
+   $('packOfferButtons').innerHTML=offers.map((o,i)=>'<button type="button" class="btn secondary compact" data-shop-slot="'+i+'" '+(state.mode!=='prep'||state.testMode||o.sold?'disabled':'')+' style="flex:1;min-width:120px;'+(state.selectedSlot===i&&!o.sold?'border-color:#f4d392;background:#344b4c;':'')+'">'+PACKS[o.packIndex].name+' · '+PACKS[o.packIndex].price+'◈'+(o.sold?' · SOLD':'')+'</button>').join('');
+   $('liveShopSlots').innerHTML=offers.map((o,i)=>'<div class="shop-slot '+(o.sold?'locked':'available')+'"><span>✦ Slot '+(i+1)+(o.sold?' · SOLD':' · IN STOCK')+'</span><strong>'+PACKS[o.packIndex].name+' Pack · '+PACKS[o.packIndex].price+' coins'+(o.sold?' · locked':'')+'</strong></div>').join('');
+   $('packProgress').innerHTML=PACKS.map((p,i)=>'<div class="pack-tier"><b>'+p.name+' Pack</b> · '+(SKILLS?.isTierOpen(i+1)?'UNLOCKED · '+p.price+' coins':'LOCKED · Tier '+(i+1)+' gateway')+'<small>'+p.pool.map(k=>HERO_MAP[k].name).join(' · ')+'</small></div>').join('');
+  }
+  $('rotateShop').disabled=true;$('rotateShop').textContent='↻ Rerolls: future permanent upgrade';
+  refs.shopTitle.textContent=state.mode==='prep'?'Hero Pack Shop':state.mode==='opening'?'Opening Packs':state.mode==='battle'?'Battle Underway':state.mode==='clear'?'Stage Complete':state.mode==='champion'?'Campaign Complete':'Stage Failed';
+ refs.shopDescription.textContent=state.mode==='prep'?'Three finite stock slots at the start. Each offer can be bought once; stock refreshes after each attempt. At least one offer is affordable at the start.':state.mode==='opening'?'One hero emerges from each purchased pack.':state.mode==='battle'?'Heroes defend automatically; coin budget refills after this attempt.':state.mode==='clear'?'All heroes leave; your next round starts at the current coin maximum.':state.mode==='champion'?'Ten stages complete.':'Stage failed: retry with new packs and restored coins.';
+ refs.buy.disabled=state.mode!=='prep'||!pack||state.coins<pack.price||state.testMode;
+ refs.buy.textContent=state.testMode?'Testing mode · free hero picker':state.mode==='prep'?(pack?(state.coins<pack.price?'Need '+pack.price+' coins':'◈ Buy '+pack.name+' Pack · '+pack.price+' coins'):'All shop slots sold out'):'Shop closed during combat';
  refs.start.disabled=state.mode!=='prep'&&state.mode!=='clear';
  refs.start.textContent=state.mode==='prep'?'⚔ Start Stage '+state.stage:state.mode==='clear'?(state.testMode?'↻ Return to test prep':'➜ Prepare Stage '+(state.stage+1)):state.mode==='opening'?'✦ Opening packs':state.mode==='battle'?'⚔ Stage in progress':'↻ Retry Stage '+state.stage;
  refs.pause.disabled=state.mode!=='battle';refs.pause.textContent=state.paused?'▶ Resume':'Ⅱ Pause';
@@ -112,8 +112,34 @@ function updateUI(){
  updateFormation();updateTestingUI();
 }
 
-function offeredPacks(){const unlocked=PACKS.map((p,i)=>i).filter(i=>SKILLS?SKILLS.isTierOpen(i+1):i===0);const limit=Math.min(unlocked.length,Math.max(1,state.shopSlots||1));const offset=unlocked.length?state.shopPage%unlocked.length:0;return Array.from({length:limit},(_,i)=>unlocked[(offset+i)%unlocked.length]);}
-function selectedOffer(){const offers=offeredPacks();if(!offers.includes(state.selectedPack))state.selectedPack=offers[0]??0;return state.selectedPack;}
+// Finite merchant stock. New inventory is generated once per stage attempt.
+function eligiblePackIndices(){return PACKS.map((_,i)=>i).filter(i=>SKILLS?SKILLS.isTierOpen(i+1):i===0);}
+function createShopOffer(){const unlocked=eligiblePackIndices();return {packIndex:unlocked[Math.floor(Math.random()*unlocked.length)]??0,sold:false};}
+function rollShop(){
+ const count=Math.max(3,Math.floor(Number(state.shopSlots)||3));
+ state.shopOffers=Array.from({length:count},createShopOffer);
+ const affordable=eligiblePackIndices().filter(i=>PACKS[i].price<=state.coins);
+ if(affordable.length&&!state.shopOffers.some(o=>PACKS[o.packIndex].price<=state.coins)){
+  const guaranteed=affordable.includes(0)?0:affordable.reduce((a,b)=>PACKS[a].price<=PACKS[b].price?a:b);
+  state.shopOffers[0]={packIndex:guaranteed,sold:false};
+ }
+ state.selectedSlot=0;
+ state.shopCacheKey='';
+ return state.shopOffers;
+}
+function ensureShopStock(){
+ if(!Array.isArray(state.shopOffers)||!state.shopOffers.length)rollShop();
+ const count=Math.max(3,Math.floor(Number(state.shopSlots)||3));
+ while(state.shopOffers.length<count)state.shopOffers.push(createShopOffer());
+ if(state.shopOffers.length>count)state.shopOffers.length=count;
+}
+function offeredPacks(){ensureShopStock();return state.shopOffers;}
+function selectedStock(){
+ const stock=offeredPacks();
+ if(!stock[state.selectedSlot]||stock[state.selectedSlot].sold)state.selectedSlot=stock.findIndex(o=>!o.sold);
+ return state.selectedSlot>=0?stock[state.selectedSlot]:null;
+}
+function selectedOffer(){return selectedStock()?.packIndex??0;}
 
-return {updateUI,updateQuests,updateFormation,updateTestingUI,updateWaveTracker,showBattleReport,battleSummary,waveStatus,offeredPacks,selectedOffer};
+return {updateUI,updateQuests,updateFormation,updateTestingUI,updateWaveTracker,showBattleReport,battleSummary,waveStatus,rollShop,offeredPacks,selectedStock,selectedOffer};
 }};
