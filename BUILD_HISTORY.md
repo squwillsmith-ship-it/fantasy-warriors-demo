@@ -1,3 +1,14 @@
+## Build 1.0.14 — 23 November 2026 (v1.5 combat foundations)
+
+- **Player-aimed automatic tower fire:** 2-damage projectile every 3 seconds, moving straight at 9 units/sec with a 0.30-unit collision radius. Mouse movement or a tap updates persistent aim. Player shots do not grant hero-class kill credit.
+- **New live stage profiles:** standard waves across Stages 1–10 now contain 48/56/84/76/88/96/108/114/126/138 scheduled enemies with explicitly stage-specific basic/boss HP, damage and speeds in the central balance profile; no longer use the former generic minion HP or simple +10 waves. Elite stat records exist but aren't spawned until their signature mechanics are implemented.
+- **Three-part rising spawn intensity:** Opening 2.2→1.4s, escalation 1.4→0.75s, 0.55s final rush. First minion still appears immediately; 2-second boss intermission remains.
+- **Guaranteed Upgrade Points:** 1 UP for every six eligible scheduled-wave kills, cumulative remainder persisted within the prestige run; 5 UP guaranteed on boss defeat. Tower kills count for the general cadence but not class-specific kill gates. Spawned children grant no UP or class progress. Existing UP-income multipliers remain.
+- **First signatures:** Stage 1 King Slime splits into four radial standard-HP Slimes at 50% of its 95-HP opening bar; reward deferred until all four die. Stage 2 normal Mushroom Man leaves a two-second spore damage cloud. Basic Bandit and Imp acquire provisional ranged engagement. Stage 10 Eldritch Horror has three rebirth HP bars of 300, 350 and 420.
+- **Persistence:** First lifetime attempts at each stage are recorded for a later elite schedule, without enabling incomplete elite types. Existing skill-tree saves and finite stock shop persist.
+- **Unimplemented/unfinished v1.5 areas:** prestige elite substitutions and all ten elite signatures, most normal/boss enemy special abilities, spell equipment and manually targeted casts, additional Tower Armament skill branches, full-battle balance and iPhone testing. Numeric targets are still initial and not validated for 10–15 minute cumulative stage duration.
+- **Regression checks:** Script parsing and mock initialization; wave intervals, tower projectile damage/targeting, deterministic six-kill UP, generated-unit credit exclusion, King Slime split/deferred boss reward and final-boss three-phase succession.
+
 ## Build 1.0.13 — 23 November 2026 (explicit final-blow hero attribution)
 
 - **Precise source tracking:** Every damaging hit now explicitly carries the originating hero class; display colours never determine kill ownership. Only the source of the actual killing hit receives the class kill credit.
