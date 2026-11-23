@@ -6,15 +6,15 @@
 'use strict';
 const dataset={
   "schemaVersion": 1,
-  "activeProfile": "fw-live-v1.3.5",
+  "activeProfile": "fw-live-v1.5.0-core",
   "profiles": {
     "live": {
-      "profileId": "fw-live-v1.3.5",
+      "profileId": "fw-live-v1.5.0-core",
       "schemaVersion": 1,
       "status": "live",
-      "manifestoVersion": "1.3.5",
-      "lastReviewed": "2026-11-20",
-      "notes": "Numeric values are the current playable baseline. Some skill effects, advanced prices and specials are provisional, not independently approved.",
+      "manifestoVersion": "1.5.0",
+      "lastReviewed": "2026-11-23",
+      "notes": "First-pass v1.5.0 staged combat numerics; boss/elite abilities and spells may remain partially unimplemented. No full-engine balance certification.",
       "heroes": [
         {
           "id": "knight",
@@ -563,14 +563,25 @@ const dataset={
         "bossDamage": 10,
         "bossSpeed": 0.7,
         "bossAttackPeriod": 1,
-        "bossHpDivisor": 2
+        "bossHpDivisor": 2,
+        "wavePhases": {
+          "openingFraction": 0.3,
+          "middleEndFraction": 0.85,
+          "openingStart": 2.2,
+          "openingEnd": 1.4,
+          "middleEnd": 0.75,
+          "finalInterval": 0.55
+        }
       },
       "economy": {
         "startingCoinMax": 2,
         "coinsPerClassGate": 2,
         "minionUPChance": 0.1,
         "bossUP": 5,
-        "startingTowerHP": 100
+        "startingTowerHP": 100,
+        "minionUPMode": "deterministic-six",
+        "eligibleKillsPerUP": 6,
+        "eliteKillUP": 1
       },
       "skill": {
         "costs": {
@@ -810,6 +821,335 @@ const dataset={
         "upIncomePctPerRank": 0.25,
         "coinsPerTreasuryRank": 2,
         "shopSlotsPerMerchantRank": 1
+      },
+      "stages": [
+        {
+          "id": "stage-01",
+          "number": 1,
+          "slots": 48,
+          "basic": {
+            "hp": 7,
+            "damage": 3,
+            "speed": 0.85,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "elite": {
+            "name": "Trickster Slime",
+            "hp": 22,
+            "damage": 4,
+            "speed": 0.85,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "boss": {
+            "hp": 95,
+            "damage": 8,
+            "speed": 0.55,
+            "attackPeriod": 1.5
+          },
+          "status": "first-pass-design-target",
+          "abilitiesStatus": "pending-implementation"
+        },
+        {
+          "id": "stage-02",
+          "number": 2,
+          "slots": 56,
+          "basic": {
+            "hp": 10,
+            "damage": 4,
+            "speed": 0.75,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "elite": {
+            "name": "Fungal Healer",
+            "hp": 30,
+            "damage": 3,
+            "speed": 0.75,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "boss": {
+            "hp": 145,
+            "damage": 9,
+            "speed": 0.5,
+            "attackPeriod": 1.5
+          },
+          "status": "first-pass-design-target",
+          "abilitiesStatus": "pending-implementation"
+        },
+        {
+          "id": "stage-03",
+          "number": 3,
+          "slots": 84,
+          "basic": {
+            "hp": 6,
+            "damage": 3,
+            "speed": 1.65,
+            "attackPeriod": 1,
+            "firstDelay": 0.25
+          },
+          "elite": {
+            "name": "Goblin Thief",
+            "hp": 20,
+            "damage": 4,
+            "speed": 1.55,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "boss": {
+            "hp": 200,
+            "damage": 13,
+            "speed": 0.45,
+            "attackPeriod": 1.5
+          },
+          "status": "first-pass-design-target",
+          "abilitiesStatus": "pending-implementation"
+        },
+        {
+          "id": "stage-04",
+          "number": 4,
+          "slots": 76,
+          "basic": {
+            "hp": 12,
+            "damage": 5,
+            "speed": 1.05,
+            "attackPeriod": 1.4,
+            "firstDelay": 0.65
+          },
+          "elite": {
+            "name": "Bandit Saboteur",
+            "hp": 36,
+            "damage": 6,
+            "speed": 1.2,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "boss": {
+            "hp": 240,
+            "damage": 14,
+            "speed": 0.85,
+            "attackPeriod": 1.5
+          },
+          "status": "first-pass-design-target",
+          "abilitiesStatus": "pending-implementation"
+        },
+        {
+          "id": "stage-05",
+          "number": 5,
+          "slots": 88,
+          "basic": {
+            "hp": 15,
+            "damage": 5,
+            "speed": 1.15,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "elite": {
+            "name": "Kobold Firecaller",
+            "hp": 48,
+            "damage": 6,
+            "speed": 0.95,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "boss": {
+            "hp": 300,
+            "damage": 16,
+            "speed": 0.8,
+            "attackPeriod": 1.5
+          },
+          "status": "first-pass-design-target",
+          "abilitiesStatus": "pending-implementation"
+        },
+        {
+          "id": "stage-06",
+          "number": 6,
+          "slots": 96,
+          "basic": {
+            "hp": 18,
+            "damage": 6,
+            "speed": 1.2,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "elite": {
+            "name": "Sacred Inquisitor",
+            "hp": 55,
+            "damage": 7,
+            "speed": 0.85,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "boss": {
+            "hp": 370,
+            "damage": 16,
+            "speed": 0.85,
+            "attackPeriod": 1.5
+          },
+          "status": "first-pass-design-target",
+          "abilitiesStatus": "pending-implementation"
+        },
+        {
+          "id": "stage-07",
+          "number": 7,
+          "slots": 108,
+          "basic": {
+            "hp": 14,
+            "damage": 6,
+            "speed": 1.25,
+            "attackPeriod": 1.6,
+            "firstDelay": 0.65
+          },
+          "elite": {
+            "name": "Hellhound",
+            "hp": 65,
+            "damage": 9,
+            "speed": 1.8,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "boss": {
+            "hp": 440,
+            "damage": 18,
+            "speed": 1.05,
+            "attackPeriod": 1.5
+          },
+          "status": "first-pass-design-target",
+          "abilitiesStatus": "pending-implementation"
+        },
+        {
+          "id": "stage-08",
+          "number": 8,
+          "slots": 114,
+          "basic": {
+            "hp": 20,
+            "damage": 7,
+            "speed": 1.2,
+            "attackPeriod": 1.6,
+            "firstDelay": 0.65
+          },
+          "elite": {
+            "name": "Cursed Bone Pile",
+            "hp": 80,
+            "damage": 0,
+            "speed": 0,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "boss": {
+            "hp": 525,
+            "damage": 18,
+            "speed": 0.65,
+            "attackPeriod": 1.5
+          },
+          "status": "first-pass-design-target",
+          "abilitiesStatus": "pending-implementation"
+        },
+        {
+          "id": "stage-09",
+          "number": 9,
+          "slots": 126,
+          "basic": {
+            "hp": 24,
+            "damage": 8,
+            "speed": 1,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "elite": {
+            "name": "Shadow Assassin",
+            "hp": 80,
+            "damage": 10,
+            "speed": 1.5,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "boss": {
+            "hp": 620,
+            "damage": 20,
+            "speed": 0.85,
+            "attackPeriod": 1.5
+          },
+          "status": "first-pass-design-target",
+          "abilitiesStatus": "pending-implementation"
+        },
+        {
+          "id": "stage-10",
+          "number": 10,
+          "slots": 138,
+          "basic": {
+            "hp": 28,
+            "damage": 9,
+            "speed": 1.2,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "elite": {
+            "name": "Rift Caster",
+            "hp": 96,
+            "damage": 10,
+            "speed": 1,
+            "attackPeriod": 1,
+            "firstDelay": 0.65
+          },
+          "boss": {
+            "hp": 1070,
+            "damage": 14,
+            "speed": 0.6,
+            "attackPeriod": 1.8,
+            "phases": [
+              {
+                "hp": 300,
+                "damage": 14,
+                "speed": 0.6,
+                "attackPeriod": 1.8
+              },
+              {
+                "hp": 350,
+                "damage": 18,
+                "speed": 0.85,
+                "attackPeriod": 1.35
+              },
+              {
+                "hp": 420,
+                "damage": 22,
+                "speed": 1.1,
+                "attackPeriod": 1
+              }
+            ]
+          },
+          "status": "first-pass-design-target",
+          "abilitiesStatus": "pending-implementation"
+        }
+      ],
+      "towerFire": {
+        "damage": 2,
+        "cooldownSeconds": 3,
+        "projectileSpeed": 9,
+        "projectileRadius": 0.3
+      },
+      "eliteSchedule": {
+        "firstReset": 1,
+        "unlockStagesPerReset": 2,
+        "baseShare": 0.04,
+        "extraSharePerAge": 0.03,
+        "maxShare": 0.18,
+        "openingExclusion": 0.3,
+        "middleShare": 0.7,
+        "liveCaps": [
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4
+        ]
       }
     }
   },
@@ -850,6 +1190,24 @@ function validate(profile){
  for(const [id,value] of Object.entries(skill.gateGoals))finite(value,1,100000,"class gate "+id);
  if(skill.tierGatewayUP.length!==4)error("tier gateways");for(const v of skill.tierGatewayUP)finite(v,0,100000,"gateway UP");
  if(!profile.combat||!profile.abilities||Object.keys(profile.abilities).length!==15)error("combat / abilities");
+
+ const stages=profile.stages;if(!Array.isArray(stages)||stages.length!==10)error("stage targets");
+ for(let i=0;i<stages.length;i++){
+  const stage=stages[i];if(stage.number!==i+1||stage.id!=='stage-'+String(i+1).padStart(2,'0'))error("stage ID");
+  finite(stage.slots,1,1000,"stage slots");
+  for(const role of ['basic','elite','boss']){
+   const a=stage[role];if(!a)error("stage "+(i+1)+" "+role);
+   finite(a.hp,1,100000,"stage "+i+" "+role+" HP");
+   finite(a.damage,0,10000,"stage "+i+" "+role+" damage");
+   finite(a.speed,0,30,"stage "+i+" "+role+" speed");
+   finite(a.attackPeriod,.1,30,"stage "+i+" "+role+" attack cadence");
+  }
+ }
+ for(const key of ['damage','cooldownSeconds','projectileSpeed','projectileRadius'])finite(profile.towerFire?.[key],.01,10000,'towerFire.'+key);
+ finite(profile.economy.eligibleKillsPerUP,1,1000,'UP cadence');
+ if(profile.economy.minionUPMode!=='deterministic-six')error('UP mode');
+ for(const key of ['openingFraction','middleEndFraction','openingStart','openingEnd','middleEnd','finalInterval'])finite(profile.spawn.wavePhases?.[key],.01,30,'wave.'+key);
+ if(!profile.eliteSchedule||profile.eliteSchedule.liveCaps?.length!==10)error('elite schedule');
  return true;
 }
 validate(dataset.profiles.live);
