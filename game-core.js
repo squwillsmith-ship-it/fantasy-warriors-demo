@@ -75,7 +75,7 @@ function placeNewHero(h){
 
 function spawnEnemy(boss,kind='basic',at=null){
  const halfW=view.worldW/2-.85,halfH=view.worldH/2-.85;let x,y;
- if(at){x=clamp(at.x,-halfW,halfW);y=clamp(at.y,-halfH,halfH);}
+ if(at){x=clamp(at.x,-halfW,halfW);y=clamp(at.y,-halfH,halfH);const safe=safeGoal(x,y);x=clamp(safe.x,-halfW,halfW);y=clamp(safe.y,-halfH,halfH);}
  else if(Math.random()<.55){x=(Math.random()<.5?-1:1)*halfW;y=rand(-halfH,halfH);}
  else{y=(Math.random()<.5?-1:1)*halfH;x=rand(-halfW,halfW);}
  const profile=BALANCE.stages[state.stage-1];
