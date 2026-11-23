@@ -15,9 +15,9 @@ function waveStatus(){
  const preparing=state.mode==='prep'||state.mode==='opening',finished=['clear','champion','over'].includes(state.mode);
  let phase='WAVE PREPARATION',next='Buy packs and start the stage';
  if(state.mode==='battle'){
-   if(boss){phase='BOSS FIGHT';next=encounter().boss+' has arrived';}
-   else if(unspawned){phase='MINION WAVE';next='Next '+encounter().minion+': '+Math.max(0,nextSpawnInterval()-state.spawnClock).toFixed(1)+'s · '+unspawned+' left · '+(window.FWGameData.SPAWN_CONFIG.normalInterval/nextSpawnInterval()).toFixed(1)+'× rate';}
-   else if(live){phase='CLEAR THE WAVE';next=live+' '+encounter().minion+' remaining on field';}
+   if(boss){phase=state.stage===10?'ELDRITCH PHASE '+boss.phase+'/3':'BOSS FIGHT';next=encounter().boss+' has arrived';}
+   else if(unspawned){const p=state.regularSpawned/total;phase=p<.30?'OPENING WAVE':p<.85?'ESCALATING WAVE':'FINAL RUSH';next='Next '+encounter().minion+': '+Math.max(0,nextSpawnInterval()-state.spawnClock).toFixed(1)+'s · '+unspawned+' left';}
+   else if(live){phase=state.bossRewardPending?'KING SLIME SPLIT':'CLEAR THE WAVE';next=live+' '+encounter().minion+' remaining on field';}
    else{phase='BOSS INCOMING';next=encounter().boss+' in '+Math.max(0,BOSS_AFTER_CLEAR_DELAY-state.bossWaitClock).toFixed(1)+'s';}
    if(state.paused)phase='PAUSED · '+phase;
  } else if(finished){phase=state.mode==='over'?'STAGE FAILED':'STAGE COMPLETE';next=state.mode==='over'?'Retry when ready':'Wave resolved';}
