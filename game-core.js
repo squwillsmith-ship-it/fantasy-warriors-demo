@@ -82,7 +82,7 @@ function spawnEnemy(boss,kind='basic',at=null){
  const base=boss?profile.boss:kind==='elite'?profile.elite:profile.basic;
  const overrides=state.testMode&&QUICK_STATS&&kind!=='generated'?QUICK_STATS.enemyForBattle(state.stage,boss):null;
  const stats=overrides?{...base,...overrides}:base;
- const hp=stats.hp,elite=kind==='elite',generated=kind==='generated';
+ const hp=boss&&state.stage===10&&!overrides?BALANCE.stages[9].boss.phases[0].hp:stats.hp,elite=kind==='elite',generated=kind==='generated';
  const e={id:state.nextId++,x,y,hp,maxHp:hp,boss,elite,generated,scheduled:!boss&&!generated,stage:state.stage,speed:stats.speed,damage:stats.damage,
   attackPeriod:stats.attackPeriod??1,firstDelay:stats.firstDelay??SPAWN_CONFIG.minionFirstAttackWindup,cooldown:rand(0,.5),
   inAttackRange:false,radius:boss?.75:elite?.48:.35,vx:0,vy:0,targetId:null,hitFlash:0,
@@ -183,7 +183,7 @@ function stepSanctuaries(dt){
 }
 function stepSpecials(h,dt){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return;h.charge=Math.min(chargeSeconds(h),h.charge+dt*(SKILLS?SKILLS.rate(h):1));if(h.charge>=chargeSeconds(h)){h.abilityStatus='ready';if(castSpecial(h)){h.charge=0;h.abilityStatus='charging'}}}
 // Every qualified enemy kill raises one undead if at least one living Necromancer exists.
-function onEnemyDeath(e){if(SKILLFX)SKILLFX.enemyDeath(e);if(e.boss)return;const necros=activeOriginalHeroes().filter(h=>h.base.id==='necromancer');if(!necros.length)return;const owner=necros[0],spec=cfg(owner).special;owner.raisedCount=(owner.raisedCount||0)+1;const veteran=SKILLS?.has('T5-NE-T04')&&owner.raisedCount%3===0;const base={...UNDEAD,hp:spec.undeadHealth*(veteran?1.5:1),damage:spec.undeadDamage*(veteran?1.4:1)};spawnSummon(base,e.x,e.y,'undead',spec.undeadLifetimeSeconds,owner.id);signalSpecial(owner,'Raise the Fallen',.7)}
+function onEnemyDeath(e){if(SKILLFX)SKILLFX.enemyDeath(e);if(e.boss||e.generated)return;const necros=activeOriginalHeroes().filter(h=>h.base.id==='necromancer');if(!necros.length)return;const owner=necros[0],spec=cfg(owner).special;owner.raisedCount=(owner.raisedCount||0)+1;const veteran=SKILLS?.has('T5-NE-T04')&&owner.raisedCount%3===0;const base={...UNDEAD,hp:spec.undeadHealth*(veteran?1.5:1),damage:spec.undeadDamage*(veteran?1.4:1)};spawnSummon(base,e.x,e.y,'undead',spec.undeadLifetimeSeconds,owner.id);signalSpecial(owner,'Raise the Fallen',.7)}
 
 function basicAttack(h,target){if(target.hp<=0)return;const id=h.base.id,d=h.base.damage*(SKILLS?SKILLS.heroBonus(h,target):1),col=h.base.color;if(id!=='necromancer')visualBeam(h,target,col);h.cooldown=1/h.base.speed;
  switch(id){
@@ -363,16 +363,48 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  if(state.mode!=='battle')return;
  resolveActorCollisions();
  // Process deaths after all attacks; event-based necromancy is an on-kill event, never timed or random.
- for(let i=state.enemies.length-1;i>=0;i--){const e=state.enemies[i];if(e.hp<=0){if(e.boss){state.bossKilled=true;log(encounter().boss+' defeated!')}
-    if(e.doom){const doomRadius=1.6*(SKILLS?.has('T4-W-S04')?1.4:1);visualRing(e.x,e.y,doomRadius,'#be86df');for(const other of enemiesInRadius(e.x,e.y,doomRadius))if(other!==e)hitEnemy(other,1.2,'#ca91ef',e.doomSourceHeroId||null)}
-    const upDrop=SKILLS?SKILLS.recordKill(e.lastHitHero||null,!!e.boss):0;if(upDrop>0){state.upEarned=Number((state.upEarned+upDrop).toFixed(3));state.upDrops++;const amount=Number(upDrop.toFixed(2));if(e.boss)log('Boss reward: +'+amount+' UP guaranteed!');else damageNumber(e.x,e.y-.55,'+'+amount+' UP','#ffd886');}onEnemyDeath(e);state.kills++;state.enemies.splice(i,1)}}
+ // Boss transformations are one encounter, not fresh reward-bearing enemies.
+ for(let i=state.enemies.length-1;i>=0;i--){
+  const e=state.enemies[i];
+  if(e.boss&&state.stage===1&&e.hp<=e.maxHp*.5&&!state.bossRewardPending){
+   state.bossRewardPending=true;state.bossKilled=true;
+   state.enemies.splice(i,1);
+   for(let n=0;n<4;n++){
+    const angle=Math.PI*2*n/4+.4;
+    const child=spawnEnemy(false,'generated',{x:e.x+Math.cos(angle)*1.25,y:e.y+Math.sin(angle)*1.25});
+    child.hp=BALANCE.stages[0].basic.hp;child.maxHp=child.hp;
+    child.kind='king-split';child.scheduled=false;child.generated=true;
+    child.vx=Math.cos(angle)*1.5;child.vy=Math.sin(angle)*1.5;
+   }
+   visualRing(e.x,e.y,2,'#9affbb');log('King Slime split into FOUR Slimes — defeat them all!');
+   break;
+  }
+ }
+ for(let i=state.enemies.length-1;i>=0;i--){
+  const e=state.enemies[i];if(e.hp>0)continue;
+  if(e.boss&&state.stage===10&&e.phase<3){
+   e.phase++;
+   const next=BALANCE.stages[9].boss.phases[e.phase-1];
+   e.hp=e.maxHp=next.hp;e.damage=next.damage;e.speed=next.speed;e.attackPeriod=next.attackPeriod;
+   e.hitFlash=.5;e.cooldown=.5;e.lastHitHero=null;
+   visualRing(e.x,e.y,2+e.phase*.45,'#d18fff');
+   log('Eldritch Horror reborn — Phase '+e.phase+' of 3!');
+   continue;
+  }
+  if(e.boss){state.bossKilled=true;log(encounter().boss+' defeated!')}
+  if(e.doom){const radius=1.6*(SKILLS?.has('T4-W-S04')?1.4:1);visualRing(e.x,e.y,radius,'#be86df');for(const other of enemiesInRadius(e.x,e.y,radius))if(other!==e)hitEnemy(other,1.2,'#ca91ef',e.doomSourceHeroId||null)}
+  const upDrop=SKILLS?SKILLS.recordKill(e.lastHitHero||null,!!e.boss,{scheduled:!!e.scheduled,elite:!!e.elite}):0;
+  if(upDrop>0){state.upEarned=Number((state.upEarned+upDrop).toFixed(3));state.upDrops++;const amount=Number(upDrop.toFixed(2));if(e.boss)log('Boss reward: +'+amount+' UP guaranteed!');else damageNumber(e.x,e.y-.55,'+'+amount+' UP','#ffd886');}
+  onEnemyDeath(e);if(e.scheduled||e.boss)state.kills++;state.enemies.splice(i,1);
+ }
+
  state.heroes=state.heroes.filter(h=>h.hp>0);
  // Only begin the boss intermission once every regular minion has spawned AND been defeated.
  if(!state.bossSpawned&&state.regularSpawned===regularCount()&&state.kills>=regularCount()&&state.enemies.every(e=>e.hp<=0||e.boss)){
   state.bossWaitClock+=dt;
   if(state.bossWaitClock>=BOSS_AFTER_CLEAR_DELAY){spawnEnemy(true);state.bossSpawned=true;log(encounter().boss+' has arrived after the minion wave!')}
  }else if(!state.bossSpawned)state.bossWaitClock=0;
- if(state.bossSpawned&&state.kills===totalCount()&&state.enemies.length===0){clearStage();return}
+ if(state.bossSpawned&&state.bossKilled&&state.regularSpawned===regularCount()&&state.enemies.length===0){clearStage();return}
  if(state.uiClock>=.16){state.uiClock=0;updateUI()}
 }
 function tick(now){
@@ -407,8 +439,8 @@ function revealPack(){if(state.mode!=='opening'||!state.pendingPack)return;
  else{for(const hero of state.openedHeroes)createHero(hero);if(SKILLS)SKILLS.recordPack(state.currentRevealPack);state.packsToOpen--;state.openedHeroes=null;state.pendingPack=false;if(state.packsToOpen>0)openNextPack();else{refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');beginBattle()}updateUI()}
 }
 
-function beginBattle(){state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.bossWaitClock=0;state.enemies=[];TOWER_FIRE.reset();state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.abilityCasts=0;state.towerShield=0;state.lastTowerShield=false;state.combatTelemetry={overlaps:0,targetSwitches:0,blocked:0};state.deployedHeroes=state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length;state.upEarned=0;state.upDrops=0;state.lastReport=null;refs.battleReport.hidden=true;log('Stage '+state.stage+' · '+encounter().name+' — '+regularCount()+' '+encounter().minion+' units and '+encounter().boss+'.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
-function resetPreparation(restoreTower=true){state.coins=state.coinMax;if(restoreTower)state.towerHp=state.towerMax||100;state.mode='prep';state.paused=false;state.bought=0;state.packQueue=[];state.packsToOpen=0;state.testQueue=[];state.heroes=[];state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.abilityCasts=0;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.elapsed=0;state.spawnClock=0;state.bossWaitClock=0;state.uiClock=0;TOWER_FIRE.reset();state.upEarned=0;state.upDrops=0;state.deployedHeroes=0;state.lastReport=null;refs.battleReport.hidden=true;state.pendingPack=false;state.openedHeroes=null;refs.overlay.classList.add('hidden');if(SKILLS)SKILLS.recalc();state.coins=state.coinMax;rollShop();updateUI();saveShopStock()}
+function beginBattle(){state.firstEncounterProtected=SKILLS?!SKILLS.markStageAttempt(state.stage):true;state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.bossRewardPending=false;state.bossWaitClock=0;state.enemies=[];TOWER_FIRE.reset();state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.abilityCasts=0;state.towerShield=0;state.lastTowerShield=false;state.combatTelemetry={overlaps:0,targetSwitches:0,blocked:0};state.deployedHeroes=state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length;state.upEarned=0;state.upDrops=0;state.lastReport=null;refs.battleReport.hidden=true;log('Stage '+state.stage+' · '+encounter().name+' — '+regularCount()+' '+encounter().minion+' units and '+encounter().boss+'.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
+function resetPreparation(restoreTower=true){state.coins=state.coinMax;if(restoreTower)state.towerHp=state.towerMax||100;state.mode='prep';state.paused=false;state.bought=0;state.packQueue=[];state.packsToOpen=0;state.testQueue=[];state.heroes=[];state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.abilityCasts=0;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.bossRewardPending=false;state.elapsed=0;state.spawnClock=0;state.bossWaitClock=0;state.uiClock=0;TOWER_FIRE.reset();state.upEarned=0;state.upDrops=0;state.deployedHeroes=0;state.lastReport=null;state.bossRewardPending=false;refs.battleReport.hidden=true;state.pendingPack=false;state.openedHeroes=null;refs.overlay.classList.add('hidden');if(SKILLS)SKILLS.recalc();state.coins=state.coinMax;rollShop();updateUI();saveShopStock()}
 function startStage(){if(state.mode==='clear'){if(!state.testMode)state.stage++;resetPreparation(state.testMode);if(SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);log((state.testMode?'Test preparation':'Stage '+state.stage+' preparation')+' has begun.');updateUI();return}
  if(state.mode!=='prep')return;
  clearShopStock();
@@ -416,7 +448,13 @@ function startStage(){if(state.mode==='clear'){if(!state.testMode)state.stage++;
  // Test units are temporary and deliberately do not spend coins or change normal progression.
  if(state.testMode){for(const id of state.testQueue)createHero(HERO_MAP[id]);state.testQueue=[]}
  state.packsToOpen=state.bought;log('Starting stage '+state.stage+(state.testMode?' in testing mode.':'.'));if(state.packsToOpen>0){state.mode='opening';openNextPack()}else beginBattle()}
-function clearStage(){showBattleReport();if(SKILLS)SKILLS.recordWin(state.stage);state.mode=(!state.testMode&&state.stage===10)?'champion':'clear';state.heroes=[];state.effects=[];state.hazards=[];state.pendingHits=[];refs.messageSymbol.textContent='✦';refs.messageTitle.textContent=state.mode==='champion'?'Ten Stages Complete!':'Stage '+state.stage+' Cleared';refs.messageText.textContent=state.mode==='champion'?'You have cleared all ten stages and defeated the Eldritch Horror. The campaign is complete; post-game progression is not yet designed.':state.testMode?'Test battle completed. Debug battles do not advance your stage. Return to preparation with full coins.':'The boss has fallen and the tower stands! All heroes leave after this stage. Your next round refills to '+state.coinMax+' coins.';refs.messageButton.textContent=state.mode==='champion'?'↻ Start New Run':state.testMode?'Back to Testing Prep':'Prepare Stage '+(state.stage+1);refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' cleared!'+(state.testMode?' (debug only)':''));updateUI()}
+function clearStage(){
+ if(state.bossRewardPending){
+  state.bossRewardPending=false;state.kills++;
+  const reward=SKILLS?SKILLS.recordKill(null,true):0;
+  if(reward>0){state.upEarned=Number((state.upEarned+reward).toFixed(2));state.upDrops++;log('King Slime defeated! +'+reward+' UP boss reward.');}
+ }
+ showBattleReport();if(SKILLS)SKILLS.recordWin(state.stage);state.mode=(!state.testMode&&state.stage===10)?'champion':'clear';state.heroes=[];state.effects=[];state.hazards=[];state.pendingHits=[];refs.messageSymbol.textContent='✦';refs.messageTitle.textContent=state.mode==='champion'?'Ten Stages Complete!':'Stage '+state.stage+' Cleared';refs.messageText.textContent=state.mode==='champion'?'You have cleared all ten stages and defeated the Eldritch Horror. The campaign is complete; post-game progression is not yet designed.':state.testMode?'Test battle completed. Debug battles do not advance your stage. Return to preparation with full coins.':'The boss has fallen and the tower stands! All heroes leave after this stage. Your next round refills to '+state.coinMax+' coins.';refs.messageButton.textContent=state.mode==='champion'?'↻ Start New Run':state.testMode?'Back to Testing Prep':'Prepare Stage '+(state.stage+1);refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' cleared!'+(state.testMode?' (debug only)':''));updateUI()}
 function gameOver(){showBattleReport();if(SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);state.mode='over';state.paused=false;refs.messageSymbol.textContent='♜';refs.messageTitle.textContent='Stage '+state.stage+' Failed';refs.messageText.textContent='You defeated '+state.kills+' of '+totalCount()+' enemies. Retry this stage with a restored tower and a refilled coin budget.';refs.messageButton.textContent='↻ Retry Stage '+state.stage;refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' failed. You can retry.');updateUI()}
 function retryStage(){if(state.mode!=='over')return;resetPreparation();log('Retry Stage '+state.stage+' — 100 tower HP and '+state.coinMax+' coins.');updateUI()}
 function restart(){state.stage=1;state.coinMax=BALANCE.economy.startingCoinMax;state.testMode=false;state.testSavedTowerHp=null;state.testSavedStage=null;state.notifications=[];resetPreparation();refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');if(SKILLS)SKILLS.recalc();log('New run — defend the tower!');updateUI()}
