@@ -1,17 +1,20 @@
 # Fantasy Warriors — Playable Demo
 
-**Current build: 1.0.12** · **Gameplay Manifesto: v1.4.2** · 22 November 2026
+**Current build: 1.0.13** · **Gameplay Manifesto: v1.4.6** · 23 November 2026
 
 A browser-based tower-defence prototype for testing pack-drawn heroes, automatic combat, waves, upgrades and persistent progression.
 
 ## Play and test
 
-- **[Play the game](https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.11)** — main campaign and its own local saved progression.
+- **[Play the game](https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/?v=1.0.13)** — main campaign and its own local saved progression.
 - **[Open the Combat Balance Lab](https://squwillsmith-ship-it.github.io/fantasy-warriors-demo/balance-lab.html)** — stripped-down combat test using the current game engine, configurable teams/stats/spawns, 0.25×–100× speed, result export and a copyable JSON configuration. Lab settings are separate from campaign progression.
 - **[Full build history](BUILD_HISTORY.md)** — release-by-release implementation details.
 - **[Technical architecture](ARCHITECTURE.md)** — source-file responsibilities, dependency order, migration map and regression checklist.
 
 ## Current gameplay snapshot
+
+- Accurate hero-class killing-blow attribution across basics, specials, damage-over-time, delayed hits and summoned allies; summoning heroes retain credit even after leaving the field.
+
 
 - Three randomly rolled standard-pack shop offers per attempt, with one purchase per slot and at least one affordable opening offer. Shops restock after failed or successful attempts; unlimited free rotation is disabled.
 - Five pack tiers unlock again through the ordinary skill tree in each prestige cycle. Prestige resets class-kill quest progress and +2 coin-cap bonuses, run pack-opening tasks, tier gateways and ordinary upgrades, but preserves permanent Legacy perks.

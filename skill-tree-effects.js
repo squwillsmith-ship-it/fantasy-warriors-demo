@@ -6,7 +6,7 @@ const NOW=()=>api.state.elapsed;
 const enemies=()=>api.state.enemies.filter(e=>e.hp>0);
 const heroes=()=>api.state.heroes.filter(h=>h.hp>0);
 const near=(x,y,r)=>enemies().filter(e=>Math.hypot(e.x-x,e.y-y)<=r);
-const dmg=(e,n,h)=>api.hitEnemy(e,n,h?.base?.color||'#f0cd99');
+const dmg=(e,n,h)=>api.hitEnemy(e,n,h?.base?.color||'#f0cd99',h?.base?.id||null);
 const circle=(x,y,r,col)=>api.visualRing(x,y,r,col||'#b7ddaa');
 const hit=(e,h)=>Math.hypot(e.x-h.x,e.y-h.y);
 const randEnemy=(x,y,r,excluded)=>near(x,y,r).filter(e=>e!==excluded)[0];
@@ -39,8 +39,8 @@ function afterBasic(h,e,d,isBear=false){
   if(owned('T1-A-T05')){e.arrowMarks=(e.arrowMarks||0)+1;if(e.arrowMarks>=2){e.arrowMarkUntil=t+6;e.arrowMarks=0;}}
  }
  if(id==='mage'){
-  if(owned('T1-MG-T01'))api.state.hazards.push({x:e.x,y:e.y,life:2.1,clock:0,radius:.86,damage:.42,color:'#e8a068',source:'mage'});
-  if(owned('T1-MG-T02'))api.state.pendingHits.push({time:t+.35,target:e,damage:d*.30,color:'#e9b984',x:e.x,y:e.y});
+  if(owned('T1-MG-T01'))api.state.hazards.push({x:e.x,y:e.y,life:2.1,clock:0,radius:.86,damage:.42,color:'#e8a068',sourceHeroId:h.base.id});
+  if(owned('T1-MG-T02'))api.state.pendingHits.push({time:t+.35,target:e,damage:d*.30,color:'#e9b984',sourceHeroId:h.base.id,x:e.x,y:e.y});
   if(owned('T1-MG-T03'))e.fireRuneUntil=t+5;
  }
  if(id==='hunter'){
@@ -67,7 +67,7 @@ function afterBasic(h,e,d,isBear=false){
  if(id==='priest'&&owned('T3-PR-T01'))e.priestMarkUntil=t+3;
  if(id==='shaman'){
   if(owned('T4-S-T01')){for(const q of near(e.x,e.y,1.4)){q.slowUntil=t+2.3;q.slowFactor=.75;}}
-  if(owned('T4-S-T02'))api.state.hazards.push({x:e.x,y:e.y,life:2.8,clock:0,radius:.85,damage:.15,color:'#78d6c5',source:'shaman'});
+  if(owned('T4-S-T02'))api.state.hazards.push({x:e.x,y:e.y,life:2.8,clock:0,radius:.85,damage:.15,color:'#78d6c5',sourceHeroId:h.base.id});
   if(owned('T4-S-T05')&&h.vialEcho){h.vialEcho=false;for(const q of near(e.x,e.y,.9))dmg(q,d*.22,h);}
  }
  if(id==='druid'){
@@ -100,7 +100,7 @@ function afterCast(h,target,spec){
   if(owned('T1-K-T04'))h.tauntUntil=t+2.8;
  }
  if(id==='archer'){
-  if(owned('T1-A-T03')&&target){for(const e of near(target.x,target.y,spec.volleyRadius))api.state.pendingHits.push({time:t+.22,target:e,damage:spec.volleyDamage*.25,color:h.base.color,x:h.x,y:h.y});}
+  if(owned('T1-A-T03')&&target){for(const e of near(target.x,target.y,spec.volleyRadius))api.state.pendingHits.push({time:t+.22,target:e,damage:spec.volleyDamage*.25,color:h.base.color,sourceHeroId:h.base.id,x:h.x,y:h.y});}
   if(owned('T1-A-T04')&&target)for(const e of near(target.x,target.y,spec.volleyRadius)){e.slowUntil=t+2;e.slowFactor=.7;}
  }
  if(id==='mage'&&target){
@@ -127,7 +127,7 @@ function afterCast(h,target,spec){
  if(id==='beastmaster'&&owned('T5-BM-T04')){const hs=heroes().filter(a=>a.summonKind==='hound'&&a.ownerId===h.id);hs.forEach((a,i)=>a.alphaBuffUntil=t+(i===0?0:4));}
  if(id==='dragonkin'){
   if(owned('T5-DR-T05')&&h.hp<=h.maxHp*.35&&!h.heartOfDragonUsed)h.heartOfDragonUsed=true;
-  if(owned('T5-DR-T03')&&target)api.state.hazards.push({x:target.x,y:target.y,life:2.4,clock:0,radius:1,damage:.48,color:'#eaa261',source:'dragonkin'});
+  if(owned('T5-DR-T03')&&target)api.state.hazards.push({x:target.x,y:target.y,life:2.4,clock:0,radius:1,damage:.48,color:'#eaa261',sourceHeroId:h.base.id});
  }
 }
 function incoming(h,d,attacker){
@@ -156,9 +156,9 @@ function enemyDeath(e){
  const t=NOW(),killedBy=e.lastHitHero;
  if(killedBy==='barbarian'&&owned('T2-B-T01'))for(const h of heroes())if(h.base.id==='barbarian'&&h.frenzyUntil>t)h.frenzyUntil=Math.min(h.frenzyUntil+1,t+8);
  if(owned('T3-PR-T05'))for(const h of heroes())if(h.blessingUntil>t)h.blessingUntil=Math.min(h.blessingUntil+.8,t+8);
- if(e.doom&&owned('T4-W-T02'))api.state.hazards.push({x:e.x,y:e.y,life:2.2,clock:0,radius:1,damage:.32,color:'#b67acc',source:'warlock'});
+ if(e.doom&&owned('T4-W-T02'))api.state.hazards.push({x:e.x,y:e.y,life:2.2,clock:0,radius:1,damage:.32,color:'#b67acc',sourceHeroId:e.doomSourceHeroId||null});
  if(e.doom&&owned('T4-W-T05')&&!e.chainDoom){
-  const next=randEnemy(e.x,e.y,1.7,e);if(next&&!next.doom){next.doom=true;next.chainDoom=true;}
+  const next=randEnemy(e.x,e.y,1.7,e);if(next&&!next.doom){next.doom=true;next.chainDoom=true;next.doomSourceHeroId=e.doomSourceHeroId||null;}
  }
  if(owned('T5-NE-T01'))for(const h of heroes())if(h.base.id==='necromancer'&&h.beamTarget===e.id){h.beamStoredRamp=h.beamTime*.45;h.beamTransferUntil=t+1.0;}
 }
