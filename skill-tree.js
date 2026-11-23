@@ -17,7 +17,7 @@ const legacyPerks=[
  {key:'merchant',name:'Market Charter',icon:'▤',description:'Permanent +1 shop offer slot per rank.',max:3,cost:3}
 ];
 const K=document.body.classList.contains('lab-mode')?'fantasy-warriors-lab-skilltree-1.1':'fantasy-warriors-skilltree-1.1';
-const defaultSave=()=>({up:0,upRemainder:0,nodes:[],kills:{},packOpens:{},highestClear:0,runHighest:0,runWins:0,campaignStage:1,tierWins:{},gateways:[],resets:0,shards:0,legacy:{},stats:{},purchaseCosts:{},grandfatheredGates:[],gateRulesVersion:2}); 
+const defaultSave=()=>({up:0,upRemainder:0,nodes:[],kills:{},packOpens:{},highestClear:0,runHighest:0,runWins:0,campaignStage:1,tierWins:{},gateways:[],resets:0,shards:0,legacy:{},stats:{},purchaseCosts:{},grandfatheredGates:[],gateRulesVersion:2,eligibleKillRemainder:0,attemptedStages:[]}); 
 function load(){try{const p=JSON.parse(localStorage.getItem(K));if(p&&Array.isArray(p.nodes)){const migrated=Object.assign(defaultSave(),p);migrated.upRemainder=0; // retired five-kills-to-one-UP counter
  if(!Number.isInteger(p.campaignStage))migrated.campaignStage=Math.max(1,Math.min(10,1+Number(p.runHighest||0)));
  // Previously completed 5-kill Archer/Mage gates are grandfathered; existing coin rewards cannot be lost.
@@ -28,6 +28,8 @@ function load(){try{const p=JSON.parse(localStorage.getItem(K));if(p&&Array.isAr
   migrated.grandfatheredGates=[...earned];migrated.gateRulesVersion=2;
  }
  if(!migrated.purchaseCosts||typeof migrated.purchaseCosts!=='object')migrated.purchaseCosts={};
+ migrated.eligibleKillRemainder=Number.isInteger(migrated.eligibleKillRemainder)&&migrated.eligibleKillRemainder>=0&&migrated.eligibleKillRemainder<6?migrated.eligibleKillRemainder:0;
+ migrated.attemptedStages=Array.isArray(migrated.attemptedStages)?[...new Set(migrated.attemptedStages.filter(n=>Number.isInteger(n)&&n>=1&&n<=10))]:[];
  return migrated;}}catch(e){}return defaultSave();}
 let p=load(),api=null,active='tree',selected='T1-ROOT',initial=null,initialSpecials=null,initialSummons=null,sandboxSaved=null,sandboxGame=null;
 const $=id=>document.getElementById(id);
@@ -137,22 +139,35 @@ function purchase(id){const n=nodeMap[id];if(!n||!api||api.state.mode!=='prep'||
  save();recalc();draw();updateLabels();
 }
 function addUP(amount){const gain=Number((Math.max(0,amount)*(1+rank('insight')*.25)).toFixed(2));p.up=Number((p.up+gain).toFixed(2));return gain;}
-function recordKill(heroId,isBoss=false){if(!api||api.state.testMode)return 0;
- // Class kill gates count standard minions, never bosses.
+function recordKill(heroId,isBoss=false,flags={}){
+ if(!api||api.state.testMode)return 0;
+ const scheduled=!isBoss&&flags.scheduled!==false;
  let newlyCompletedGate=null;
- if(!isBoss&&heroId&&classIds.some(a=>a.includes(heroId))){
+ if(scheduled&&heroId&&classIds.some(a=>a.includes(heroId))){
   const quest=data.nodes.find(n=>n.kind==='gate'&&classIds[n.tier-1][n.heroIndex]===heroId);
-  const previouslyCompleted=quest?has(quest):false;
+  const previous=quest?has(quest):false;
   p.kills[heroId]=(p.kills[heroId]||0)+1;
-  if(quest&&!previouslyCompleted&&has(quest))newlyCompletedGate=quest;
+  if(quest&&!previous&&has(quest))newlyCompletedGate=quest;
  }
- // One independent 10% roll per ordinary enemy; a boss guarantees 5 UP.
- const baseDrop=isBoss?BALANCE.economy.bossUP:(Math.random()<BALANCE.economy.minionUPChance?1:0);
- const awarded=baseDrop?addUP(baseDrop):0;
+ let baseReward=0;
+ if(isBoss)baseReward=BALANCE.economy.bossUP;
+ else if(scheduled){
+  p.eligibleKillRemainder=(p.eligibleKillRemainder||0)+1;
+  const span=BALANCE.economy.eligibleKillsPerUP;
+  while(p.eligibleKillRemainder>=span){p.eligibleKillRemainder-=span;baseReward++;}
+  if(flags.elite)baseReward+=BALANCE.economy.eliteKillUP;
+ }
+ const credited=baseReward?addUP(baseReward):0;
  save();
  if(newlyCompletedGate){recalc();api.log(newlyCompletedGate.name+' complete! +'+COINS_PER_CLASS_GATE+' maximum coins this prestige run.');}
  updateLabels();
- return awarded;
+ return credited;
+}
+function markStageAttempt(stage){
+ if(!api||api.state.testMode)return false;
+ const already=p.attemptedStages.includes(stage);
+ if(!already){p.attemptedStages.push(stage);p.attemptedStages.sort((a,b)=>a-b);save();}
+ return already;
 }
 function recordPack(packIndex){if(!api||api.state.testMode)return;p.packOpens[packIndex]=(p.packOpens[packIndex]||0)+1;save();updateLabels();}
 function recordWin(stage){if(!api||api.state.testMode)return;p.campaignStage=Math.min(10,Math.max(1,stage+1));p.runWins++;p.highestClear=Math.max(p.highestClear,stage);p.runHighest=Math.max(p.runHighest||0,stage);
@@ -231,7 +246,7 @@ function prestige(){
  if(!api||api.state.mode!=='prep'||api.state.testMode||sandboxSaved||p.runWins===0)return;
  const reward=Math.max(1,Math.floor(Math.max(1,p.runHighest||0)/2));
  if(!confirm('Prestige for '+reward+' permanent Legacy Shards? Stages, ordinary upgrades, class kill quests, coin-cap quest rewards and pack tiers all reset. Permanent Legacy perks remain.'))return;
- p.resets++;p.shards+=reward;p.up=0;p.upRemainder=0;p.nodes=[];p.purchaseCosts={};p.tierWins={};p.kills={};p.grandfatheredGates=[];p.packOpens={};p.gateways=[];p.runWins=0;p.runHighest=0;p.campaignStage=1;
+ p.resets++;p.shards+=reward;p.up=0;p.upRemainder=0;p.eligibleKillRemainder=0;p.nodes=[];p.purchaseCosts={};p.tierWins={};p.kills={};p.grandfatheredGates=[];p.packOpens={};p.gateways=[];p.runWins=0;p.runHighest=0;p.campaignStage=1;
  save();api.restart();recalc();draw();updateLabels();api.log('Prestige '+p.resets+': +'+reward+' permanent Shards. Class quests and pack tiers reset; Legacy perks retained.');
 }
 function buyLegacy(key){if(!api||api.state.mode!=='prep'||api.state.testMode||sandboxSaved)return;const def=legacyPerks.find(x=>x.key===key);if(!def)return;const level=rank(key),cost=def.cost+level;if(level>=def.max||p.shards<cost)return;p.shards-=cost;p.legacy[key]=level+1;save();recalc();draw();updateLabels();}
@@ -305,6 +320,10 @@ function normalizeBackup(raw){
  for(const [k,v] of Object.entries(source.tierWins||{})){if(!/^[1-5]$/.test(k))throw Error('Invalid tier data.');clean.tierWins[k]=count(v,1000000);}
  for(const [k,v] of Object.entries(source.legacy||{})){const perk=legacyPerks.find(x=>x.key===k);if(!perk)throw Error('Unknown permanent perk.');clean.legacy[k]=count(v,perk.max);if(!Number.isInteger(v))throw Error('Invalid permanent perk rank.');}
  clean.stats=source.stats&&typeof source.stats==='object'&&!Array.isArray(source.stats)?source.stats:{};
+ clean.eligibleKillRemainder=count(source.eligibleKillRemainder||0,5);
+ if(!Number.isInteger(clean.eligibleKillRemainder))throw Error('Invalid deterministic UP remainder.');
+ clean.attemptedStages=Array.isArray(source.attemptedStages)?[...new Set(source.attemptedStages)]:[];
+ if(clean.attemptedStages.some(n=>!Number.isInteger(n)||n<1||n>10))throw Error('Invalid stage attempt history.');
  clean.purchaseCosts={};
  for(const [id,value] of Object.entries(source.purchaseCosts||{})){
   if(!nodeMap[id]||!source.nodes.includes(id))throw Error('Invalid purchase-cost ledger');
@@ -381,7 +400,7 @@ function connect(opts){
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('skillModal').classList.contains('active')){$('skillModal').hidden=true;$('skillModal').classList.remove('active')}});
  updateLabels();
 }
-window.FWSkillTree={connect,has:owns,isTierOpen,questProgress,startSandbox,resetSandboxTree,endSandbox,sandboxActive:()=>!!sandboxSaved,points:()=>p.up,shards:()=>p.shards,shopSlots:()=>api?.state.shopSlots||3,recordKill,recordPack,recordWin,prestige,recalc,notify,rate:specialRate,
+window.FWSkillTree={connect,has:owns,isTierOpen,questProgress,startSandbox,resetSandboxTree,endSandbox,sandboxActive:()=>!!sandboxSaved,points:()=>p.up,shards:()=>p.shards,shopSlots:()=>api?.state.shopSlots||3,recordKill,markStageAttempt,recordPack,recordWin,prestige,recalc,notify,rate:specialRate,
  debug:()=>JSON.parse(JSON.stringify(p)),purchase,nodes:data.nodes,showQuest,backupPayload,normalizeBackup,checkpointStage,markRestart,resumeStage, 
  heroBonus:(h,e)=>{
   let extra=1;
