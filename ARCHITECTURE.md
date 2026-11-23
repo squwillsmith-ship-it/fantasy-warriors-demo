@@ -1,8 +1,20 @@
 # Fantasy Warriors — Technical Architecture
 
-**Updated for Build 1.0.11 · 20 November 2026**
+**Updated for Build 1.0.14 · 23 November 2026**
 
 The HTML prototype is deliberately modular. The goal is to preserve gameplay rules and game data while allowing the presentation layer to be replaced by Godot later. **Build 1.0.11 adds editable within-wave pacing and simpler arcade combat atop the central data system.**
+
+## Build 1.0.14 combat architecture
+
+The validated live **`balance-config.js`** profile now includes named **`stages[0..9]`** records, with scheduled-wave counts and basic/elite/boss baseline stats. **`spawn.wavePhases`** owns the 30% / 85% breakpoints and interval curve. **`towerFire`** owns automatic projectile damage, rate, speed and collision radius. The profile now has `economy.minionUPMode = "deterministic-six"` and `eligibleKillsPerUP = 6`. Previous linear-spawn and random-UP fields are retained only for compatibility where still referenced; the live combat logic uses the new keys.
+
+**`tower-fire.js`** contains mouse/touch coordinate mapping, remembered aim, automatic projectile spawning, collision and visual indicators; it receives the existing `hitEnemy` with an explicit null hero source. It does not change hero-class quest credit. `game-core.js` calls its update only while battles are active and pauses with the simulation; `game-render.js` draws spore effects. Both game and lab HTML load `tower-fire.js` ahead of `game-core.js`.
+
+**`skill-tree.js`** now stores `eligibleKillRemainder` and `attemptedStages` in the existing save format. The former survives normal attempts and restart, resets on voluntary prestige, and awards each full six-kill group immediately. The latter is lifetime account-local stage history reserved for the future eligible-elite schedule; it is deliberately not erased by prestige. Existing backups still import with default values for these optional fields.
+
+The Stage 1 boss transformation and Stage 10 boss phase succession reside in `game-core.js`; generated child Slimes have `generated=true`, `scheduled=false` and cannot earn UP or class-gate credit. The deferred Stage 1 boss payout occurs after children are defeated. Spore clouds are runtime-area effects, not independently reward-bearing enemies.
+
+**Not yet implemented:** elite placement schedule and 10 elite abilities, most boss signature abilities, manually equipped battlefield spells, added Tower Armament nodes beyond the 205-node ordinary tree, and full-playthrough numeric tuning. Do not describe the live game as implementing these solely because the design profile includes proposed records.
 
 ## Responsibility and file map
 
