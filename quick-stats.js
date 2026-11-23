@@ -19,11 +19,8 @@
   const MINION_FIELDS = [...ENEMY_FIELDS, { key: 'firstDelay', label: 'First-hit delay (seconds)', min: 0, max: 30, step: 0.05 }];
   const cloneEmpty = () => ({ heroes: {}, minion: {}, boss: {} });
   const heroDefaults = Object.fromEntries(HEROES.map(hero => [hero.id, Object.fromEntries(HERO_FIELDS.map(field => [field.key, hero[field.key]]))]));
-  const minionDefaults = { hp: SPAWN_CONFIG.normalHp, damage: SPAWN_CONFIG.minionDamage, speed: SPAWN_CONFIG.minionSpeed, attackPeriod: SPAWN_CONFIG.minionAttackPeriod, firstDelay: SPAWN_CONFIG.minionFirstAttackWindup };
-  const bossDefaults = stage => ({
-    hp: Math.round((SPAWN_CONFIG.bossHpBase + SPAWN_CONFIG.bossHpPerStage * (stage - 1)) / SPAWN_CONFIG.bossHpDivisor),
-    damage: SPAWN_CONFIG.bossDamage, speed: SPAWN_CONFIG.bossSpeed, attackPeriod: SPAWN_CONFIG.bossAttackPeriod
-  });
+  const minionDefaults = stage => ({...window.FWBalance.profile.stages[Math.max(0,Math.min(9,stage-1))].basic});
+  const bossDefaults = stage => ({...window.FWBalance.profile.stages[Math.max(0,Math.min(9,stage-1))].boss});
   const valid = (value, field) => typeof value === 'number' && Number.isFinite(value) &&
     value >= field.min && value <= field.max;
   const sanitized = (source, fields) => {
@@ -46,7 +43,7 @@
 
   const heroForBattle = base => ({ ...base, ...(overrides.heroes[base.id] || {}) });
   const enemyForBattle = (stage, boss) => {
-    if (!boss) return { ...minionDefaults, ...overrides.minion };
+    if (!boss) return { ...minionDefaults(stage), ...overrides.minion };
     return { ...bossDefaults(stage), ...(overrides.boss[stage] || {}) };
   };
   function persist() {
@@ -63,12 +60,12 @@
   const currentFields = () => selectedKind() === 'hero' ? HERO_FIELDS : selectedKind() === 'minion' ? MINION_FIELDS : ENEMY_FIELDS;
   function defaults() {
     const kind = selectedKind();
-    return kind === 'hero' ? heroDefaults[selectedHero().id] : kind === 'minion' ? minionDefaults : bossDefaults(selectedStage());
+    return kind === 'hero' ? heroDefaults[selectedHero().id] : kind === 'minion' ? minionDefaults(selectedStage()) : bossDefaults(selectedStage());
   }
   function current() {
     const kind = selectedKind();
     if (kind === 'hero') return { ...defaults(), ...(overrides.heroes[selectedHero().id] || {}) };
-    if (kind === 'minion') return { ...minionDefaults, ...overrides.minion };
+    if (kind === 'minion') return { ...minionDefaults(selectedStage()), ...overrides.minion };
     return enemyForBattle(selectedStage(), true);
   }
   function notice(text, error = false) {
