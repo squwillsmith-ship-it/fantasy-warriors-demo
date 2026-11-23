@@ -1,6 +1,8 @@
 # Fantasy Warriors — Playable Demo
 
-**Current build: 1.0.13** · **Gameplay Manifesto: v1.4.6** · 23 November 2026
+**Current playable build: 1.0.13** · **Current design manifesto: v1.5.0** · 23 November 2026
+
+**Design/implementation boundary:** The v1.5.0 enemy balance tables, prestige-unlocked elites, three-phase waves, automatic aimed tower shots, and later spell system are planned but **not in Build 1.0.13**. The currently playable build retains its generic 6-HP normal enemies, 10% random minion-UP drop chance, and linear spawn-rate ramp.
 
 A browser-based tower-defence prototype for testing pack-drawn heroes, automatic combat, waves, upgrades and persistent progression.
 
