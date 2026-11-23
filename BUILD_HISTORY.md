@@ -1,3 +1,11 @@
+## Build 1.0.13 — 23 November 2026 (explicit final-blow hero attribution)
+
+- **Precise source tracking:** Every damaging hit now explicitly carries the originating hero class; display colours never determine kill ownership. Only the source of the actual killing hit receives the class kill credit.
+- **All damage paths:** Basic attacks, auto-charge specials, chain/splash abilities, Priest delayed hits, Hunter bleed, Paladin/Mage/Shaman/Dragonkin ground hazards, Warlock doom explosions and technique procs preserve ownership.
+- **Summons:** Hounds and raised undead store their summoner's hero class on creation, so their final blows count for the original class even if the summoner subsequently dies or leaves the field.
+- **No false credits:** Unattributed damage overwrites stale hit ownership rather than reusing the previous attacker. Bosses still grant their existing guaranteed UP reward and do not increase ordinary minion-kill quest counters. Test mode still cannot award permanent progression.
+- **Regression tests:** `node --test tests/kill-attribution.test.cjs` covers final-blow precedence, custom visual colours, uncredited damage, dead enemies, and summon-source persistence. No enemy design abilities or balance values were changed.
+
 ## Build 1.0.12 — 22 November 2026 (finite shop; run-scoped prestige gateways and class quests)
 
 - **Limited stock:** Start each ordinary attempt with three random one-purchase standard-pack offers; at least one initial offer is affordable. All slots restock on stage failure or success. Removed unlimited free rotation. Additional stock slots still come from appropriate upgrades.
