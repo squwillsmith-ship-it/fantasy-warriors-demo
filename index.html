@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0e1724" />
 <title>Fantasy Warriors — Demo 1.0.14 · Tower Fire & New Waves</title>
-<link rel="stylesheet" href="skill-tree.css?v=1.16-prestige-dev">
-<link rel="stylesheet" href="game.css?v=1.16-prestige-dev">
-<link rel="stylesheet" href="quick-stats.css?v=1.16-prestige-dev">
+<link rel="stylesheet" href="skill-tree.css?v=1.16-skins-dev">
+<link rel="stylesheet" href="game.css?v=1.16-skins-dev">
+<link rel="stylesheet" href="quick-stats.css?v=1.16-skins-dev">
 </head>
 <body>
 <div class="shell">
@@ -71,7 +71,7 @@
     </div>
     <div class="panel"><div class="section-top"><h2>Recruit Pack Pool</h2><span class="kicker">1 hero draw</span></div><p class="shop-note">Knight · Archer · Mage. Demo uses equal draws with possible duplicates; final odds are undecided.</p><div class="odds" id="odds"></div><hr class="divider"><div class="small-label">Pack progression · later offers pending</div><div id="packProgress" class="pack-progress"></div></div>
     <div class="panel encounter-panel"><div class="section-top"><h2>Encounter</h2><span class="kicker" id="encounterApproval">STAGE 1 OF 10</span></div><div class="encounter-name" id="encounterName">Slime Pits</div><p class="shop-note" id="encounterUnits">Slime → King Slime</p><p class="tiny-note">Stage identities follow the manifesto; special boss mechanics and per-enemy tuning are not yet specified.</p></div>
-    <div class="panel" style="border-color:#9c835d"><div class="section-top"><h2>Skill Tree</h2><span class="kicker">205 NODES</span></div><p class="shop-note">Five connected pack tiers, three hero branches in each tier, task-based unlocks and permanent Legacy upgrades.</p><button type="button" class="btn" id="openSkillTree">✧ Open Skill Tree</button><div class="coin-refill-note" id="skillBalance">0 UP · 0 ◈</div></div>
+    <div class="panel" style="border-color:#9c835d"><div class="section-top"><h2>Skill Tree</h2><span class="kicker">228 UPGRADES</span></div><p class="shop-note">Five connected pack tiers, three hero branches in each tier, task-based unlocks and permanent Legacy upgrades.</p><button type="button" class="btn" id="openSkillTree">✧ Open Skill Tree</button><div class="coin-refill-note" id="skillBalance">0 UP · 0 ◈</div></div>
     <div class="panel"><div class="section-top"><h2>Battle Log</h2><span class="kicker">Latest</span></div><ul class="event-log" id="events" aria-live="polite"></ul></div>
   </aside>
 </div>
@@ -85,26 +85,27 @@
  <div class="fw-shell">
   <div class="fw-head"><div><h2>✧ The Skill Tree</h2><small id="skillMeta">Upgrade Points 0 · Legacy Shards 0</small></div><button class="fw-dismiss" type="button" id="closeSkillTree" aria-label="Close skill tree">✕ Close</button></div>
   <div class="fw-controls">
-   <button type="button" class="fw-tab selected" id="skillTreeTab">🌳 Ordinary Tree · 205 nodes</button>
-   <button type="button" class="fw-tab" id="skillLegacyTab">◈ Permanent Legacy</button><button type="button" class="fw-tab" id="skillBackupTab">↓ Save &amp; Backup</button><button type="button" class="fw-tab" id="skillSandboxTab">🧪 Test Reset</button>
+   <button type="button" class="fw-tab selected" id="skillTreeTab">🌳 Ordinary Tree · 228 upgrades</button>
+   <button type="button" class="fw-tab" id="skillLegacyTab">◈ Permanent Legacy</button><button type="button" class="fw-tab" id="skillSkinsTab">✦ Hero Collection</button><button type="button" class="fw-tab" id="skillBackupTab">↓ Save &amp; Backup</button><button type="button" class="fw-tab" id="skillSandboxTab">🧪 Test Reset</button>
    <select id="skillTierJump" aria-label="Jump to skill tree tier"><option value="1">Tier 1 · Recruit</option><option value="2">Tier 2 · Outlaw</option><option value="3">Tier 3 · Devotion</option><option value="4">Tier 4 · Occult</option><option value="5">Tier 5 · Mythic</option></select>
   </div>
   <div class="fw-body"><div class="fw-pane" id="skillPane"></div><section class="fw-detail" id="skillDetails" aria-live="polite"></section></div>
  </div>
 </div>
-<script src="balance-config.js?v=1.16-prestige-dev"></script>
+<script src="balance-config.js?v=1.16-skins-dev"></script>
 <script src="merchant.js?v=1.16-dev"></script>
-<script src="skill-tree-data.js?v=1.16-prestige-dev"></script>
-<script src="skill-tree.js?v=1.16-prestige-dev"></script>
-<script src="skill-tree-effects.js?v=1.16-prestige-dev"></script>
-<script src="game-data.js?v=1.16-prestige-dev"></script>
-<script src="game-arcade.js?v=1.16-prestige-dev"></script>
-<script src="quick-stats.js?v=1.16-prestige-dev"></script>
-<script src="game-render.js?v=1.16-prestige-dev"></script>
-<script src="game-ui.js?v=1.16-prestige-dev"></script>
-<script src="tower-fire.js?v=1.16-prestige-dev"></script>
-<script src="battle-actions.js?v=1.16-prestige-dev"></script>
-<script src="prestige-enemies.js?v=1.16-prestige-dev"></script>
-<script src="game-core.js?v=1.16-prestige-dev"></script>
+<script src="skins.js?v=1.16-skins-dev"></script>
+<script src="skill-tree-data.js?v=1.16-skins-dev"></script>
+<script src="skill-tree.js?v=1.16-skins-dev"></script>
+<script src="skill-tree-effects.js?v=1.16-skins-dev"></script>
+<script src="game-data.js?v=1.16-skins-dev"></script>
+<script src="game-arcade.js?v=1.16-skins-dev"></script>
+<script src="quick-stats.js?v=1.16-skins-dev"></script>
+<script src="game-render.js?v=1.16-skins-dev"></script>
+<script src="game-ui.js?v=1.16-skins-dev"></script>
+<script src="tower-fire.js?v=1.16-skins-dev"></script>
+<script src="battle-actions.js?v=1.16-skins-dev"></script>
+<script src="prestige-enemies.js?v=1.16-skins-dev"></script>
+<script src="game-core.js?v=1.16-skins-dev"></script>
 </body>
 </html>
