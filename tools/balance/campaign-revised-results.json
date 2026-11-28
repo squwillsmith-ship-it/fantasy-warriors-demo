@@ -1,0 +1,1561 @@
+[
+  {
+    "seed": 271129,
+    "candidate": false,
+    "result": [
+      {
+        "i": 1,
+        "p": 0,
+        "stage": 1,
+        "cap": 2,
+        "team": [
+          "knight"
+        ],
+        "outcome": "over",
+        "sec": 51.2,
+        "kills": 9,
+        "up": 1,
+        "bought": 0,
+        "rescueTaps": 30,
+        "spells": 0
+      },
+      {
+        "i": 2,
+        "p": 0,
+        "stage": 1,
+        "cap": 4,
+        "team": [
+          "knight",
+          "archer"
+        ],
+        "outcome": "over",
+        "sec": 84.15,
+        "kills": 35,
+        "up": 6,
+        "bought": 0,
+        "rescueTaps": 60,
+        "spells": 0
+      },
+      {
+        "i": 3,
+        "p": 0,
+        "stage": 1,
+        "cap": 8,
+        "team": [
+          "knight",
+          "knight",
+          "archer"
+        ],
+        "outcome": "clear",
+        "sec": 127.6,
+        "kills": 49,
+        "up": 13,
+        "bought": 2,
+        "rescueTaps": 58,
+        "spells": 0
+      },
+      {
+        "i": 4,
+        "p": 0,
+        "stage": 2,
+        "cap": 8,
+        "team": [
+          "knight",
+          "mage",
+          "mage",
+          "knight"
+        ],
+        "outcome": "over",
+        "sec": 88.75,
+        "kills": 49,
+        "up": 8,
+        "bought": 1,
+        "rescueTaps": 47,
+        "spells": 0
+      },
+      {
+        "i": 5,
+        "p": 0,
+        "stage": 2,
+        "cap": 10,
+        "team": [
+          "archer",
+          "barbarian",
+          "rogue"
+        ],
+        "outcome": "over",
+        "sec": 88.6,
+        "kills": 44,
+        "up": 7,
+        "bought": 4,
+        "rescueTaps": 61,
+        "spells": 0
+      },
+      {
+        "i": 6,
+        "p": 0,
+        "stage": 2,
+        "cap": 10,
+        "team": [
+          "archer",
+          "rogue",
+          "hunter"
+        ],
+        "outcome": "clear",
+        "sec": 109.1,
+        "kills": 57,
+        "up": 15,
+        "bought": 2,
+        "rescueTaps": 28,
+        "spells": 0
+      },
+      {
+        "i": 7,
+        "p": 0,
+        "stage": 3,
+        "cap": 10,
+        "team": [
+          "archer",
+          "archer",
+          "hunter",
+          "hunter"
+        ],
+        "outcome": "clear",
+        "sec": 132.15,
+        "kills": 85,
+        "up": 19,
+        "bought": 7,
+        "rescueTaps": 0,
+        "spells": 0
+      },
+      {
+        "i": 8,
+        "p": 0,
+        "stage": 4,
+        "cap": 12,
+        "team": [
+          "knight",
+          "knight",
+          "barbarian",
+          "hunter"
+        ],
+        "outcome": "over",
+        "sec": 84.55,
+        "kills": 31,
+        "up": 5,
+        "bought": 0,
+        "rescueTaps": 75,
+        "spells": 0
+      },
+      {
+        "i": 9,
+        "p": 0,
+        "stage": 4,
+        "cap": 14,
+        "team": [
+          "mage",
+          "rogue",
+          "nun",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 67.85,
+        "kills": 22,
+        "up": 4,
+        "bought": 1,
+        "rescueTaps": 85,
+        "spells": 0
+      },
+      {
+        "i": 10,
+        "p": 0,
+        "stage": 4,
+        "cap": 14,
+        "team": [
+          "mage",
+          "archer",
+          "paladin",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 142.65,
+        "kills": 76,
+        "up": 12,
+        "bought": 1,
+        "rescueTaps": 73,
+        "spells": 0
+      },
+      {
+        "i": 11,
+        "p": 0,
+        "stage": 4,
+        "cap": 14,
+        "team": [
+          "knight",
+          "priest",
+          "nun",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 91,
+        "kills": 39,
+        "up": 7,
+        "bought": 4,
+        "rescueTaps": 79,
+        "spells": 0
+      },
+      {
+        "i": 12,
+        "p": 1,
+        "stage": 1,
+        "cap": 4,
+        "team": [
+          "knight",
+          "archer"
+        ],
+        "outcome": "over",
+        "sec": 68.9,
+        "kills": 23,
+        "up": 3,
+        "bought": 3,
+        "rescueTaps": 60,
+        "spells": 0
+      },
+      {
+        "i": 13,
+        "p": 1,
+        "stage": 1,
+        "cap": 8,
+        "team": [
+          "archer",
+          "knight",
+          "knight",
+          "mage"
+        ],
+        "outcome": "over",
+        "sec": 148.65,
+        "kills": 48,
+        "up": 10,
+        "bought": 1,
+        "rescueTaps": 89,
+        "spells": 0
+      },
+      {
+        "i": 14,
+        "p": 1,
+        "stage": 1,
+        "cap": 10,
+        "team": [
+          "knight",
+          "knight",
+          "archer",
+          "archer",
+          "archer"
+        ],
+        "outcome": "clear",
+        "sec": 86.2,
+        "kills": 49,
+        "up": 15,
+        "bought": 4,
+        "rescueTaps": 0,
+        "spells": 0
+      },
+      {
+        "i": 15,
+        "p": 1,
+        "stage": 2,
+        "cap": 10,
+        "team": [
+          "archer",
+          "archer",
+          "knight",
+          "archer",
+          "knight"
+        ],
+        "outcome": "clear",
+        "sec": 93.35,
+        "kills": 57,
+        "up": 17,
+        "bought": 5,
+        "rescueTaps": 0,
+        "spells": 0
+      },
+      {
+        "i": 16,
+        "p": 1,
+        "stage": 3,
+        "cap": 10,
+        "team": [
+          "mage",
+          "archer",
+          "mage",
+          "hunter"
+        ],
+        "outcome": "clear",
+        "sec": 122.85,
+        "kills": 85,
+        "up": 19,
+        "bought": 7,
+        "rescueTaps": 0,
+        "spells": 0
+      },
+      {
+        "i": 17,
+        "p": 1,
+        "stage": 4,
+        "cap": 12,
+        "team": [
+          "mage",
+          "knight",
+          "knight",
+          "rogue",
+          "barbarian"
+        ],
+        "outcome": "over",
+        "sec": 75.05,
+        "kills": 29,
+        "up": 5,
+        "bought": 1,
+        "rescueTaps": 103,
+        "spells": 0
+      },
+      {
+        "i": 18,
+        "p": 1,
+        "stage": 4,
+        "cap": 12,
+        "team": [
+          "knight",
+          "archer",
+          "nun",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 83.8,
+        "kills": 39,
+        "up": 6,
+        "bought": 2,
+        "rescueTaps": 71,
+        "spells": 0
+      },
+      {
+        "i": 19,
+        "p": 1,
+        "stage": 4,
+        "cap": 14,
+        "team": [
+          "archer",
+          "mage",
+          "nun",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 101.35,
+        "kills": 58,
+        "up": 10,
+        "bought": 1,
+        "rescueTaps": 69,
+        "spells": 0
+      },
+      {
+        "i": 20,
+        "p": 1,
+        "stage": 4,
+        "cap": 14,
+        "team": [
+          "mage",
+          "hunter",
+          "archer",
+          "barbarian",
+          "paladin"
+        ],
+        "outcome": "clear",
+        "sec": 133.8,
+        "kills": 77,
+        "up": 17,
+        "bought": 2,
+        "rescueTaps": 102,
+        "spells": 0
+      },
+      {
+        "i": 21,
+        "p": 1,
+        "stage": 5,
+        "cap": 16,
+        "team": [
+          "archer",
+          "hunter",
+          "barbarian",
+          "priest",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 124.5,
+        "kills": 73,
+        "up": 13,
+        "bought": 6,
+        "rescueTaps": 77,
+        "spells": 0
+      },
+      {
+        "i": 22,
+        "p": 1,
+        "stage": 5,
+        "cap": 16,
+        "team": [
+          "knight",
+          "knight",
+          "barbarian",
+          "priest",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 112.45,
+        "kills": 60,
+        "up": 10,
+        "bought": 4,
+        "rescueTaps": 88,
+        "spells": 0
+      },
+      {
+        "i": 23,
+        "p": 1,
+        "stage": 5,
+        "cap": 16,
+        "team": [
+          "knight",
+          "knight",
+          "mage",
+          "nun",
+          "priest"
+        ],
+        "outcome": "over",
+        "sec": 114,
+        "kills": 66,
+        "up": 11,
+        "bought": 4,
+        "rescueTaps": 82,
+        "spells": 0
+      },
+      {
+        "i": 24,
+        "p": 1,
+        "stage": 5,
+        "cap": 16,
+        "team": [
+          "knight",
+          "hunter",
+          "paladin",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 111.95,
+        "kills": 62,
+        "up": 10,
+        "bought": 3,
+        "rescueTaps": 39,
+        "spells": 0
+      },
+      {
+        "i": 25,
+        "p": 2,
+        "stage": 1,
+        "cap": 4,
+        "team": [
+          "archer",
+          "archer"
+        ],
+        "outcome": "over",
+        "sec": 77.75,
+        "kills": 31,
+        "up": 6,
+        "bought": 2,
+        "rescueTaps": 30,
+        "spells": 0
+      },
+      {
+        "i": 26,
+        "p": 2,
+        "stage": 1,
+        "cap": 8,
+        "team": [
+          "knight",
+          "archer",
+          "knight",
+          "archer"
+        ],
+        "outcome": "clear",
+        "sec": 90,
+        "kills": 49,
+        "up": 15,
+        "bought": 2,
+        "rescueTaps": 37,
+        "spells": 0
+      },
+      {
+        "i": 27,
+        "p": 2,
+        "stage": 2,
+        "cap": 10,
+        "team": [
+          "knight",
+          "knight",
+          "knight",
+          "mage"
+        ],
+        "outcome": "over",
+        "sec": 75.4,
+        "kills": 28,
+        "up": 5,
+        "bought": 5,
+        "rescueTaps": 86,
+        "spells": 0
+      },
+      {
+        "i": 28,
+        "p": 2,
+        "stage": 2,
+        "cap": 10,
+        "team": [
+          "archer",
+          "archer",
+          "mage",
+          "hunter"
+        ],
+        "outcome": "clear",
+        "sec": 105.7,
+        "kills": 57,
+        "up": 19,
+        "bought": 2,
+        "rescueTaps": 0,
+        "spells": 0
+      },
+      {
+        "i": 29,
+        "p": 2,
+        "stage": 3,
+        "cap": 12,
+        "team": [
+          "knight",
+          "knight",
+          "archer",
+          "hunter",
+          "hunter"
+        ],
+        "outcome": "clear",
+        "sec": 138.15,
+        "kills": 85,
+        "up": 22,
+        "bought": 9,
+        "rescueTaps": 0,
+        "spells": 0
+      },
+      {
+        "i": 30,
+        "p": 2,
+        "stage": 4,
+        "cap": 16,
+        "team": [
+          "archer",
+          "mage",
+          "barbarian",
+          "hunter",
+          "hunter"
+        ],
+        "outcome": "clear",
+        "sec": 122.85,
+        "kills": 77,
+        "up": 20,
+        "bought": 5,
+        "rescueTaps": 54,
+        "spells": 5
+      },
+      {
+        "i": 31,
+        "p": 2,
+        "stage": 5,
+        "cap": 16,
+        "team": [
+          "knight",
+          "mage",
+          "rogue",
+          "priest",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 108.45,
+        "kills": 56,
+        "up": 10,
+        "bought": 5,
+        "rescueTaps": 79,
+        "spells": 5
+      },
+      {
+        "i": 32,
+        "p": 2,
+        "stage": 5,
+        "cap": 16,
+        "team": [
+          "mage",
+          "archer",
+          "nun",
+          "paladin",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 126.45,
+        "kills": 71,
+        "up": 12,
+        "bought": 3,
+        "rescueTaps": 57,
+        "spells": 6
+      },
+      {
+        "i": 33,
+        "p": 2,
+        "stage": 5,
+        "cap": 16,
+        "team": [
+          "mage",
+          "hunter",
+          "hunter",
+          "nun",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 124,
+        "kills": 77,
+        "up": 12,
+        "bought": 4,
+        "rescueTaps": 84,
+        "spells": 5
+      },
+      {
+        "i": 34,
+        "p": 2,
+        "stage": 5,
+        "cap": 16,
+        "team": [
+          "knight",
+          "paladin",
+          "nun",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 116.3,
+        "kills": 63,
+        "up": 11,
+        "bought": 4,
+        "rescueTaps": 91,
+        "spells": 5
+      },
+      {
+        "i": 35,
+        "p": 3,
+        "stage": 1,
+        "cap": 4,
+        "team": [
+          "knight",
+          "archer"
+        ],
+        "outcome": "over",
+        "sec": 60.15,
+        "kills": 18,
+        "up": 3.75,
+        "bought": 2,
+        "rescueTaps": 48,
+        "spells": 0
+      },
+      {
+        "i": 36,
+        "p": 3,
+        "stage": 1,
+        "cap": 4,
+        "team": [
+          "archer",
+          "knight",
+          "archer"
+        ],
+        "outcome": "over",
+        "sec": 85.85,
+        "kills": 31,
+        "up": 8.75,
+        "bought": 1,
+        "rescueTaps": 59,
+        "spells": 0
+      },
+      {
+        "i": 37,
+        "p": 3,
+        "stage": 1,
+        "cap": 10,
+        "team": [
+          "knight",
+          "knight",
+          "archer",
+          "archer",
+          "knight"
+        ],
+        "outcome": "clear",
+        "sec": 92.6,
+        "kills": 49,
+        "up": 21.25,
+        "bought": 3,
+        "rescueTaps": 25,
+        "spells": 0
+      },
+      {
+        "i": 38,
+        "p": 3,
+        "stage": 2,
+        "cap": 10,
+        "team": [
+          "mage",
+          "knight",
+          "knight",
+          "knight",
+          "mage"
+        ],
+        "outcome": "clear",
+        "sec": 100.6,
+        "kills": 57,
+        "up": 22.5,
+        "bought": 8,
+        "rescueTaps": 31,
+        "spells": 0
+      },
+      {
+        "i": 39,
+        "p": 3,
+        "stage": 3,
+        "cap": 12,
+        "team": [
+          "knight",
+          "hunter",
+          "archer",
+          "hunter",
+          "rogue"
+        ],
+        "outcome": "clear",
+        "sec": 135.15,
+        "kills": 85,
+        "up": 30,
+        "bought": 10,
+        "rescueTaps": 63,
+        "spells": 0
+      },
+      {
+        "i": 40,
+        "p": 3,
+        "stage": 4,
+        "cap": 14,
+        "team": [
+          "knight",
+          "archer",
+          "hunter",
+          "rogue",
+          "hunter"
+        ],
+        "outcome": "over",
+        "sec": 105.05,
+        "kills": 64,
+        "up": 17.5,
+        "bought": 6,
+        "rescueTaps": 74,
+        "spells": 5
+      },
+      {
+        "i": 41,
+        "p": 3,
+        "stage": 4,
+        "cap": 16,
+        "team": [
+          "archer",
+          "nun",
+          "paladin",
+          "priest"
+        ],
+        "outcome": "over",
+        "sec": 111.2,
+        "kills": 57,
+        "up": 16.25,
+        "bought": 5,
+        "rescueTaps": 92,
+        "spells": 5
+      },
+      {
+        "i": 42,
+        "p": 3,
+        "stage": 4,
+        "cap": 16,
+        "team": [
+          "knight",
+          "mage",
+          "rogue",
+          "rogue",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 87,
+        "kills": 40,
+        "up": 11.25,
+        "bought": 6,
+        "rescueTaps": 94,
+        "spells": 4
+      },
+      {
+        "i": 43,
+        "p": 3,
+        "stage": 4,
+        "cap": 16,
+        "team": [
+          "mage",
+          "barbarian",
+          "nun",
+          "nun",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 99.25,
+        "kills": 49,
+        "up": 13.75,
+        "bought": 4,
+        "rescueTaps": 114,
+        "spells": 4
+      },
+      {
+        "i": 44,
+        "p": 4,
+        "stage": 1,
+        "cap": 4,
+        "team": [
+          "archer",
+          "archer"
+        ],
+        "outcome": "over",
+        "sec": 66.3,
+        "kills": 26,
+        "up": 7.5,
+        "bought": 3,
+        "rescueTaps": 45,
+        "spells": 0
+      },
+      {
+        "i": 45,
+        "p": 4,
+        "stage": 1,
+        "cap": 8,
+        "team": [
+          "knight",
+          "knight",
+          "knight",
+          "mage",
+          "mage"
+        ],
+        "outcome": "clear",
+        "sec": 110.05,
+        "kills": 49,
+        "up": 21.25,
+        "bought": 3,
+        "rescueTaps": 110,
+        "spells": 0
+      },
+      {
+        "i": 46,
+        "p": 4,
+        "stage": 2,
+        "cap": 12,
+        "team": [
+          "archer",
+          "knight",
+          "archer",
+          "archer",
+          "knight",
+          "knight",
+          "mage"
+        ],
+        "outcome": "clear",
+        "sec": 96.6,
+        "kills": 57,
+        "up": 22.5,
+        "bought": 9,
+        "rescueTaps": 0,
+        "spells": 0
+      },
+      {
+        "i": 47,
+        "p": 4,
+        "stage": 3,
+        "cap": 12,
+        "team": [
+          "archer",
+          "archer",
+          "hunter",
+          "barbarian",
+          "barbarian"
+        ],
+        "outcome": "clear",
+        "sec": 123.45,
+        "kills": 85,
+        "up": 33.75,
+        "bought": 10,
+        "rescueTaps": 10,
+        "spells": 0
+      },
+      {
+        "i": 48,
+        "p": 4,
+        "stage": 4,
+        "cap": 14,
+        "team": [
+          "archer",
+          "knight",
+          "knight",
+          "knight",
+          "knight",
+          "hunter"
+        ],
+        "outcome": "over",
+        "sec": 100.35,
+        "kills": 53,
+        "up": 17.5,
+        "bought": 8,
+        "rescueTaps": 103,
+        "spells": 4
+      },
+      {
+        "i": 49,
+        "p": 4,
+        "stage": 4,
+        "cap": 14,
+        "team": [
+          "mage",
+          "barbarian",
+          "nun",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 91.15,
+        "kills": 42,
+        "up": 12.5,
+        "bought": 6,
+        "rescueTaps": 70,
+        "spells": 4
+      },
+      {
+        "i": 50,
+        "p": 4,
+        "stage": 4,
+        "cap": 14,
+        "team": [
+          "mage",
+          "archer",
+          "paladin",
+          "paladin",
+          "paladin"
+        ],
+        "outcome": "clear",
+        "sec": 134.05,
+        "kills": 77,
+        "up": 31.25,
+        "bought": 4,
+        "rescueTaps": 96,
+        "spells": 6
+      },
+      {
+        "i": 51,
+        "p": 4,
+        "stage": 5,
+        "cap": 14,
+        "team": [
+          "knight",
+          "barbarian",
+          "hunter",
+          "hunter",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 99.6,
+        "kills": 47,
+        "up": 12.5,
+        "bought": 8,
+        "rescueTaps": 70,
+        "spells": 4
+      },
+      {
+        "i": 52,
+        "p": 4,
+        "stage": 5,
+        "cap": 16,
+        "team": [
+          "knight",
+          "rogue",
+          "barbarian",
+          "barbarian",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 109.8,
+        "kills": 59,
+        "up": 13.75,
+        "bought": 5,
+        "rescueTaps": 88,
+        "spells": 5
+      },
+      {
+        "i": 53,
+        "p": 4,
+        "stage": 5,
+        "cap": 18,
+        "team": [
+          "mage",
+          "barbarian",
+          "nun",
+          "rogue",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 105.45,
+        "kills": 59,
+        "up": 15,
+        "bought": 5,
+        "rescueTaps": 84,
+        "spells": 5
+      },
+      {
+        "i": 54,
+        "p": 4,
+        "stage": 5,
+        "cap": 18,
+        "team": [
+          "archer",
+          "knight",
+          "knight",
+          "knight",
+          "knight",
+          "priest",
+          "priest"
+        ],
+        "outcome": "over",
+        "sec": 123.5,
+        "kills": 74,
+        "up": 21.25,
+        "bought": 4,
+        "rescueTaps": 87,
+        "spells": 5
+      },
+      {
+        "i": 55,
+        "p": 5,
+        "stage": 1,
+        "cap": 6,
+        "team": [
+          "archer",
+          "knight",
+          "mage",
+          "knight"
+        ],
+        "outcome": "over",
+        "sec": 87.15,
+        "kills": 39,
+        "up": 11.25,
+        "bought": 3,
+        "rescueTaps": 68,
+        "spells": 0
+      },
+      {
+        "i": 56,
+        "p": 5,
+        "stage": 1,
+        "cap": 12,
+        "team": [
+          "knight",
+          "archer",
+          "archer",
+          "knight",
+          "knight",
+          "mage"
+        ],
+        "outcome": "clear",
+        "sec": 87.25,
+        "kills": 49,
+        "up": 22.5,
+        "bought": 5,
+        "rescueTaps": 3,
+        "spells": 0
+      },
+      {
+        "i": 57,
+        "p": 5,
+        "stage": 2,
+        "cap": 14,
+        "team": [
+          "knight",
+          "archer",
+          "archer",
+          "mage",
+          "knight",
+          "knight",
+          "knight",
+          "knight"
+        ],
+        "outcome": "clear",
+        "sec": 133.75,
+        "kills": 60,
+        "up": 31,
+        "bought": 10,
+        "rescueTaps": 0,
+        "spells": 0
+      },
+      {
+        "i": 58,
+        "p": 5,
+        "stage": 3,
+        "cap": 14,
+        "team": [
+          "knight",
+          "rogue",
+          "hunter",
+          "rogue",
+          "rogue"
+        ],
+        "outcome": "over",
+        "sec": 109.15,
+        "kills": 70,
+        "up": 23.75,
+        "bought": 12,
+        "rescueTaps": 69,
+        "spells": 0
+      },
+      {
+        "i": 59,
+        "p": 5,
+        "stage": 3,
+        "cap": 16,
+        "team": [
+          "knight",
+          "hunter",
+          "mage",
+          "hunter",
+          "hunter",
+          "rogue"
+        ],
+        "outcome": "clear",
+        "sec": 129.75,
+        "kills": 85,
+        "up": 36.25,
+        "bought": 9,
+        "rescueTaps": 0,
+        "spells": 0
+      },
+      {
+        "i": 60,
+        "p": 5,
+        "stage": 4,
+        "cap": 18,
+        "team": [
+          "mage",
+          "mage",
+          "archer",
+          "mage",
+          "archer",
+          "archer",
+          "knight",
+          "rogue",
+          "barbarian"
+        ],
+        "outcome": "clear",
+        "sec": 133.8,
+        "kills": 80,
+        "up": 38.5,
+        "bought": 9,
+        "rescueTaps": 1,
+        "spells": 6
+      },
+      {
+        "i": 61,
+        "p": 5,
+        "stage": 5,
+        "cap": 18,
+        "team": [
+          "knight",
+          "mage",
+          "knight",
+          "knight",
+          "archer",
+          "hunter",
+          "paladin"
+        ],
+        "outcome": "clear",
+        "sec": 134.9,
+        "kills": 89,
+        "up": 39,
+        "bought": 11,
+        "rescueTaps": 13,
+        "spells": 6
+      },
+      {
+        "i": 62,
+        "p": 5,
+        "stage": 6,
+        "cap": 18,
+        "team": [
+          "mage",
+          "knight",
+          "hunter",
+          "nun",
+          "nun",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 127.55,
+        "kills": 85,
+        "up": 27.5,
+        "bought": 8,
+        "rescueTaps": 67,
+        "spells": 6
+      },
+      {
+        "i": 63,
+        "p": 5,
+        "stage": 6,
+        "cap": 18,
+        "team": [
+          "archer",
+          "barbarian",
+          "druid",
+          "shaman",
+          "druid"
+        ],
+        "outcome": "over",
+        "sec": 120.75,
+        "kills": 69,
+        "up": 29,
+        "bought": 6,
+        "rescueTaps": 67,
+        "spells": 5
+      },
+      {
+        "i": 64,
+        "p": 5,
+        "stage": 6,
+        "cap": 18,
+        "team": [
+          "archer",
+          "knight",
+          "archer",
+          "shaman",
+          "paladin",
+          "shaman"
+        ],
+        "outcome": "clear",
+        "sec": 164.75,
+        "kills": 100,
+        "up": 57,
+        "bought": 6,
+        "rescueTaps": 0,
+        "spells": 7
+      },
+      {
+        "i": 65,
+        "p": 5,
+        "stage": 7,
+        "cap": 18,
+        "team": [
+          "knight",
+          "warlock",
+          "shaman",
+          "druid",
+          "warlock"
+        ],
+        "outcome": "over",
+        "sec": 173.1,
+        "kills": 108,
+        "up": 34,
+        "bought": 10,
+        "rescueTaps": 114,
+        "spells": 9
+      },
+      {
+        "i": 66,
+        "p": 5,
+        "stage": 7,
+        "cap": 20,
+        "team": [
+          "mage",
+          "hunter",
+          "shaman",
+          "nun",
+          "paladin",
+          "priest"
+        ],
+        "outcome": "over",
+        "sec": 168.25,
+        "kills": 108,
+        "up": 47,
+        "bought": 6,
+        "rescueTaps": 117,
+        "spells": 9
+      },
+      {
+        "i": 67,
+        "p": 5,
+        "stage": 7,
+        "cap": 20,
+        "team": [
+          "archer",
+          "hunter",
+          "shaman",
+          "warlock",
+          "shaman",
+          "warlock"
+        ],
+        "outcome": "clear",
+        "sec": 151,
+        "kills": 109,
+        "up": 53.5,
+        "bought": 7,
+        "rescueTaps": 0,
+        "spells": 8
+      },
+      {
+        "i": 68,
+        "p": 5,
+        "stage": 8,
+        "cap": 22,
+        "team": [
+          "archer",
+          "hunter",
+          "shaman",
+          "priest",
+          "nun",
+          "paladin"
+        ],
+        "outcome": "over",
+        "sec": 159.8,
+        "kills": 49,
+        "up": 15,
+        "bought": 9,
+        "rescueTaps": 79,
+        "spells": 15
+      },
+      {
+        "i": 69,
+        "p": 5,
+        "stage": 8,
+        "cap": 22,
+        "team": [
+          "knight",
+          "archer",
+          "beastmaster",
+          "beastmaster",
+          "beastmaster",
+          "beastmaster"
+        ],
+        "outcome": "over",
+        "sec": 100.9,
+        "kills": 38,
+        "up": 15,
+        "bought": 2,
+        "rescueTaps": 124,
+        "spells": 9
+      },
+      {
+        "i": 70,
+        "p": 5,
+        "stage": 8,
+        "cap": 22,
+        "team": [
+          "knight",
+          "beastmaster",
+          "beastmaster",
+          "beastmaster",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 87.7,
+        "kills": 25,
+        "up": 7,
+        "bought": 2,
+        "rescueTaps": 70,
+        "spells": 8
+      },
+      {
+        "i": 71,
+        "p": 5,
+        "stage": 8,
+        "cap": 22,
+        "team": [
+          "archer",
+          "paladin",
+          "paladin",
+          "paladin",
+          "paladin",
+          "dragonkin"
+        ],
+        "outcome": "over",
+        "sec": 113.45,
+        "kills": 43,
+        "up": 16.5,
+        "bought": 1,
+        "rescueTaps": 155,
+        "spells": 11
+      },
+      {
+        "i": 72,
+        "p": 5,
+        "stage": 8,
+        "cap": 22,
+        "team": [
+          "archer",
+          "shaman",
+          "beastmaster",
+          "beastmaster",
+          "necromancer"
+        ],
+        "outcome": "over",
+        "sec": 143.55,
+        "kills": 72,
+        "up": 32,
+        "bought": 2,
+        "rescueTaps": 86,
+        "spells": 13
+      },
+      {
+        "i": 73,
+        "p": 5,
+        "stage": 8,
+        "cap": 22,
+        "team": [
+          "mage",
+          "druid",
+          "warlock",
+          "priest",
+          "paladin",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 106.45,
+        "kills": 47,
+        "up": 18,
+        "bought": 3,
+        "rescueTaps": 96,
+        "spells": 10
+      },
+      {
+        "i": 74,
+        "p": 5,
+        "stage": 8,
+        "cap": 22,
+        "team": [
+          "mage",
+          "shaman",
+          "beastmaster",
+          "necromancer",
+          "beastmaster"
+        ],
+        "outcome": "clear",
+        "sec": 224.85,
+        "kills": 118,
+        "up": 62,
+        "bought": 3,
+        "rescueTaps": 74,
+        "spells": 20
+      },
+      {
+        "i": 75,
+        "p": 5,
+        "stage": 9,
+        "cap": 22,
+        "team": [
+          "archer",
+          "hunter",
+          "shaman",
+          "druid",
+          "shaman",
+          "dragonkin"
+        ],
+        "outcome": "clear",
+        "sec": 175.05,
+        "kills": 127,
+        "up": 47,
+        "bought": 2,
+        "rescueTaps": 0,
+        "spells": 9
+      },
+      {
+        "i": 76,
+        "p": 5,
+        "stage": 10,
+        "cap": 22,
+        "team": [
+          "knight",
+          "barbarian",
+          "druid",
+          "priest",
+          "nun",
+          "nun"
+        ],
+        "outcome": "over",
+        "sec": 109.7,
+        "kills": 53,
+        "up": 17.5,
+        "bought": 0,
+        "rescueTaps": 91,
+        "spells": 10
+      },
+      {
+        "i": 77,
+        "p": 5,
+        "stage": 10,
+        "cap": 22,
+        "team": [
+          "mage",
+          "paladin",
+          "paladin",
+          "nun",
+          "beastmaster",
+          "beastmaster"
+        ],
+        "outcome": "over",
+        "sec": 136.65,
+        "kills": 72,
+        "up": 23.5,
+        "bought": 0,
+        "rescueTaps": 101,
+        "spells": 12
+      },
+      {
+        "i": 78,
+        "p": 5,
+        "stage": 10,
+        "cap": 24,
+        "team": [
+          "archer",
+          "archer",
+          "mage",
+          "knight",
+          "knight",
+          "druid",
+          "shaman",
+          "warlock",
+          "beastmaster"
+        ],
+        "outcome": "champion",
+        "sec": 222.95,
+        "kills": 142,
+        "up": 67,
+        "bought": 11,
+        "rescueTaps": 30,
+        "spells": 16
+      }
+    ],
+    "final": {
+      "stage": 10,
+      "resets": 5,
+      "highestClear": 10,
+      "up": 139.75,
+      "shards": 5
+    }
+  }
+]
