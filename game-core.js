@@ -43,7 +43,8 @@ function clearShopStock(){if(state.testMode||SKILLS?.sandboxActive?.())return;tr
 const {view,resize,render}=window.FWGameRenderer.create({canvas,ctx,state,ENCOUNTERS,TUNING,clamp,cfg,chargeSeconds,isOriginalHero});
 const ACTIONS=window.FWBattleActions.create({state,owns:id=>!!SKILLS?.has(id),equipped:()=>SKILLS?.spellLoadout()||[],hitEnemy,healHero,ring:visualRing,log});
 const BOSSES=window.FWBossAbilities.create({state,heroList:()=>state.heroes.filter(h=>h.hp>0),hitHero,hitTower:applyTowerDamage,spawnGenerated,ring:visualRing,beam:visualBeam,scale:signatureScale,arenaRadius:e=>Math.hypot(view.worldW/2+Math.abs(e.x),view.worldH/2+Math.abs(e.y))+.01,log});
-const TOWER_FIRE=window.FWTowerFire.create({canvas,ctx,view,state,config:BALANCE.towerFire,hitEnemy,addEffect,intercept:(x,y)=>{if(state.mode==='battle'&&state.paused)return true;if(Math.abs(x)>view.worldW/2||Math.abs(y)>view.worldH/2)return true;const handled=ACTIONS.pointer(x,y);if(handled)updateUI();return handled;},aimBlocked:()=>!!state.spellArmed||(state.mode==='battle'&&state.paused),previewRadius:()=>state.spellArmed?ACTIONS.values(state.spellArmed).radius:0});
+canvas.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||state.mode!=='battle'||!window.FWCampaignUI)return;const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;const x=((e.clientX-r.left)/r.width*view.w-view.w/2)/view.scale,y=((e.clientY-r.top)/r.height*view.h-view.h/2)/view.scale;const h=state.heroes.find(a=>!a.summonKind&&(a.hp>0||a.capture)&&Math.hypot(a.x-x,a.y-y)<.65);if(h)window.FWCampaignUI.inspect(h.id)});
+const TOWER_FIRE=window.FWTowerFire.create({canvas,ctx,view,state,config:BALANCE.towerFire,hitEnemy,addEffect,intercept:(x,y)=>{if(state.mode==='battle'&&state.paused)return true;if(Math.abs(x)>view.worldW/2||Math.abs(y)>view.worldH/2)return true;const hit=state.heroes.find(h=>!h.summonKind&&(h.hp>0||h.capture)&&Math.hypot(h.x-x,h.y-y)<.65);if(hit)window.FWCampaignUI?.inspect(hit.id);const handled=ACTIONS.pointer(x,y);if(handled)updateUI();return handled;},aimBlocked:()=>!!state.spellArmed||(state.mode==='battle'&&state.paused),previewRadius:()=>state.spellArmed?ACTIONS.values(state.spellArmed).radius:0});
 function rand(a,b){return a+Math.random()*(b-a)}
 function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
 function chooseHero(packIndex=0){const pool=PACKS[packIndex].pool;return HERO_MAP[pool[Math.floor(Math.random()*pool.length)]]}
@@ -549,7 +550,7 @@ function tick(now){
  if(!window.FWCampaignUI||state.mode!=='prep'){render(now/1000);TOWER_FIRE.draw()}requestAnimationFrame(tick);
 }
 const {updateUI:refreshBaseUI,showBattleReport,waveStatus,rollShop,offeredPacks,selectedStock}=window.FWGameUI.create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,nextSpawnInterval,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY});
-function updateUI(){refreshBaseUI();refreshActionsUI();refreshEndlessUI();window.FWCampaignUI?.sync(state,id=>{if(ACTIONS.press(id)){updateUI();return true}return false},abandonAttempt)}
+function updateUI(){refreshBaseUI();refreshActionsUI();refreshEndlessUI();window.FWCampaignUI?.sync(state,id=>{if(ACTIONS.press(id)){updateUI();return true}return false},abandonAttempt,()=>{if(SKILLS?.newGame()){window.FWCampaignUI?.resetAppearanceHistory?.();updateUI()}},view,()=>{if(state.mode==='battle'){state.paused=false;updateUI()}})}
 function refreshActionsUI(){
  const a=ACTIONS.snapshot(),prep=state.mode==='prep',battle=state.mode==='battle',panel=$('battleActions');
  if(!panel)return;panel.hidden=!(a.known.length&&(prep||battle)||battle&&a.captures.length);
@@ -582,7 +583,7 @@ function startStage(){if(state.endlessHub)return;if(state.endlessWave&&state.mod
  if(state.testMode){if(window.FWCampaignUI){window.FWCampaignUI.prepareField();resize()}for(const id of state.testQueue)createHero(HERO_MAP[id]);state.testQueue=[]}
  else{
   if(!state.bought){log('Purchase at least one hero offer before starting.');return;}
-  const plan=M.resolve(state.merchantShop,SKILLS.merchantState().pity);
+  window.FWCampaignUI?.beforeDeploy();const plan=M.resolve(state.merchantShop,SKILLS.merchantState().pity);
   if(!SKILLS.commitMerchant(state.merchantAttemptId,plan)){log('This merchant transaction was already committed.');return;}
   clearShopStock();
   if(window.FWCampaignUI){window.FWCampaignUI.prepareField();resize()}
