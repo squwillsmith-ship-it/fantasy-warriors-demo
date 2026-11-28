@@ -8,9 +8,10 @@ import assert from 'node:assert/strict';
 const root=fileURLToPath(new URL('../../',import.meta.url));
 const spec=JSON.parse(await readFile(new URL('manifesto-1.16.json',import.meta.url),'utf8'));
 const args=Object.fromEntries(process.argv.slice(2).map(a=>{const i=a.indexOf('=');if(!a.startsWith('--')||i<0)throw Error('Use --key=value');return [a.slice(2,i),a.slice(i+1)]}));
-const allowed=new Set(['profile','stages','team','seeds','seed','max-seconds','chunk','output','check']);
+const allowed=new Set(['profile','stages','team','seeds','seed','max-seconds','chunk','output','check','prestige','first-attempt']);
 for(const k of Object.keys(args))if(!allowed.has(k))throw Error('Unknown argument '+k);
 const integer=(s,min,max,name)=>{const n=Number(s);if(!Number.isInteger(n)||n<min||n>max)throw Error('Invalid '+name);return n};
+const prestige=integer(args.prestige??'0',0,100,'prestige'),firstAttempt=args['first-attempt']==='true';
 const profile=args.profile??'live';assert(['live','candidate'].includes(profile));
 const stages=(args.stages??'1,2,10').split(',').map(x=>integer(x,1,10,'stage'));
 const team=(args.team??'knight:2,archer:1,mage:1').split(',').map(t=>{const [id,c='1']=t.split(':');assert(spec.engineCompatibleProfile.heroes.some(h=>h.id===id),'unknown hero '+id);return{id,count:integer(c,1,40,'count')}});
@@ -60,10 +61,10 @@ try{
    },{seed:runSeed});
    await page.goto(url,{waitUntil:'load'});
    await page.waitForFunction(()=>!!window.__FW_LAB_API__&&!!window.__FW_TEST__,null,{polling:50,timeout:10000});
-   const row=await page.evaluate(({stage,team,max,stepChunk,profile})=>{
+   const row=await page.evaluate(({stage,team,max,stepChunk,profile,prestige,firstAttempt})=>{
     const api=window.__FW_LAB_API__,test=window.__FW_TEST__;
     const check=(v,m)=>{if(!v)throw Error(m)};
-    check(api.prepare(),'prepare failed');check(api.setStage(stage),'setStage failed');check(api.clearQueue(),'clearQueue failed');
+    check(api.prepare(),'prepare failed');check(api.setStage(stage),'setStage failed');check(api.setPrestige(prestige,!firstAttempt),'setPrestige failed');check(api.clearQueue(),'clearQueue failed');
     for(const h of team)check(api.queueHero(h.id,h.count),'queue failed '+h.id);
     check(api.start(),'start failed');
     let s=api.snapshot(),budget=0;
@@ -74,7 +75,7 @@ try{
     check(Number.isFinite(s.towerHP)&&Number.isFinite(s.elapsed),'nonfinite outcome');
     check(['battle','clear','over','champion'].includes(s.mode),'unexpected mode '+s.mode);
     return {stage,profile:usedProfile,outcome:s.mode==='clear'||s.mode==='champion'?'win':s.mode==='over'?'loss':'timeout',seconds:s.elapsed,towerHP:s.towerHP,kills:s.kills,regularSpawned:s.regularSpawned,regularTotal:s.regularTotal,heroesAlive:s.heroesAlive,heroesTotal:s.heroesTotal,specialCasts:s.specialCasts,bossKilled:s.bossKilled,report:s.report};
-   },{stage,team,max,stepChunk,profile});
+   },{stage,team,max,stepChunk,profile,prestige,firstAttempt});
    assert.deepEqual(errors,[],'browser errors');return {...row,seed:runSeed,team};
   }finally{await context.close()}
  }
@@ -84,7 +85,7 @@ try{
  assert.equal(signature(a),signature(b),'same seed differs between 1s and requested step batches');
  for(const stage of stages)for(let i=0;i<n;i++){const r=await run(stage,(seed+i)>>>0,chunk);results.push(r);console.log(JSON.stringify({stage,seed:r.seed,outcome:r.outcome,seconds:r.seconds,kills:r.kills,towerHP:r.towerHP}));}
  const summary=stages.map(stage=>{const rows=results.filter(x=>x.stage===stage);return{stage,n:rows.length,wins:rows.filter(x=>x.outcome==='win').length,losses:rows.filter(x=>x.outcome==='loss').length,timeouts:rows.filter(x=>x.outcome==='timeout').length,meanSeconds:rows.reduce((s,x)=>s+x.seconds,0)/rows.length,meanKills:rows.reduce((s,x)=>s+x.kills,0)/rows.length}});
- const output={kind:'actual-demo-engine-fixed-team',profile,manifestoVersion:spec.manifestoVersion,chunk,seed,team,limitations:spec.compatibility,determinismCheck:'passed',summary,results};
+ const output={kind:'actual-demo-engine-fixed-team',profile,manifestoVersion:spec.manifestoVersion,prestige,firstAttempt,chunk,seed,team,limitations:spec.compatibility,determinismCheck:'passed',summary,results};
  if(args.output)await writeFile(args.output,JSON.stringify(output,null,2)+'\n');
  console.log(JSON.stringify(summary,null,2));
 }finally{if(browser)await browser.close();await new Promise(ok=>server.close(ok))}
