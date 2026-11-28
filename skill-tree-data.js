@@ -2428,7 +2428,7 @@ window.FW_SKILL_DATA={
       "name": "Small Treasury",
       "cost": 1,
       "prerequisites": "ROOT",
-      "effect": "Economy | +1 permanent maximum attempt coin."
+      "effect": "Economy | +2 permanent maximum attempt coins."
     },
     {
       "id": "R-E02",
@@ -2449,7 +2449,7 @@ window.FW_SKILL_DATA={
       "name": "Deep Treasury",
       "cost": 3,
       "prerequisites": "R-E01",
-      "effect": "Economy | +1 additional permanent maximum attempt coin."
+      "effect": "Economy | +2 additional permanent maximum attempt coins."
     },
     {
       "id": "R-E05",
@@ -2662,7 +2662,7 @@ window.FW_SKILL_DATA={
     },
     "R-E01": {
       "kind": "coins",
-      "amount": 1,
+      "amount": 2,
       "key": null
     },
     "R-E02": {
@@ -2677,7 +2677,7 @@ window.FW_SKILL_DATA={
     },
     "R-E04": {
       "kind": "coins",
-      "amount": 1,
+      "amount": 2,
       "key": null
     },
     "R-E05": {
