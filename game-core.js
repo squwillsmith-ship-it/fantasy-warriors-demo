@@ -11,8 +11,8 @@ const encounter=()=>ENCOUNTERS[Math.max(0,Math.min(9,state.stage-1))];
 const cfg=(h)=>TUNING.heroes[h.base.id];
 const heroTune=(h,key)=>cfg(h)?.special?.[key];
 const chargeSeconds=h=>cfg(h)?.special.chargeSeconds??TUNING.shared.specialChargeSeconds;
-const acquireRadius=h=>cfg(h)?.acquisitionRange??TUNING.shared.acquisitionRange;
-const guardRadius=h=>cfg(h)?.towerGuardRadius??TUNING.shared.towerGuardRadius;
+const acquireRadius=h=>cfg(h)?.acquisitionRange??(state.testMode?TUNING.shared.acquisitionRange:Math.max(TUNING.shared.acquisitionRange,Math.hypot(view.worldW,view.worldH)));
+const guardRadius=h=>cfg(h)?.towerGuardRadius??(state.testMode?TUNING.shared.towerGuardRadius:Math.max(TUNING.shared.towerGuardRadius,Math.hypot(view.worldW/2,view.worldH/2)));
 const isOriginalHero=h=>Boolean(TUNING.heroes[h.base.id]);
 const $=id=>document.getElementById(id);
 const canvas=$('arena'),ctx=canvas.getContext('2d',{alpha:false});
@@ -193,7 +193,7 @@ function activeOriginalHeroes(){return state.heroes.filter(h=>h.hp>0&&isOriginal
 function enemyNear(h,r){let best=null,d=r*r;for(const e of state.enemies){if(e.hp<=0||e.ethereal&&!(e.vulnerableUntil>state.elapsed))continue;const sq=(e.x-h.x)**2+(e.y-h.y)**2;if(sq<=d){d=sq;best=e}}return best}
 function nearestAllowedEnemy(h){let choice=null,dist=acquireRadius(h)**2;for(const e of state.enemies){if(e.hp<=0||e.ethereal&&!(e.vulnerableUntil>state.elapsed))continue;const ds=(h.x-e.x)**2+(h.y-e.y)**2;if(ds>dist)continue;if(Math.hypot(e.x,e.y)>guardRadius(h)+Math.max(0.5,h.base.range))continue;choice=e;dist=ds}return choice}
 function signalSpecial(h,label,r=.9){state.abilityCasts++;h.casts++;h.abilityStatus='active';addEffect({kind:'label',x:h.x,y:h.y-.55,text:label,color:'#fff3bd',life:1.2,maxLife:1.2});visualRing(h.x,h.y,r,h.base.color);log(h.base.name+' used '+label+'!')}
-function castSpecial(h){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return false;const enemy=SKILLFX?SKILLFX.specialTarget(h,enemyNear(h,Math.max(acquireRadius(h),h.base.range,5))):enemyNear(h,Math.max(acquireRadius(h),h.base.range,5));const otherAllies=activeOriginalHeroes().filter(a=>Math.hypot(a.x-h.x,a.y-h.y)<=(spec.shieldRadius??spec.blessingRadius??3));const duration=(n)=>state.elapsed+n;
+function castSpecial(h){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return false;const enemy=SKILLFX?SKILLFX.specialTarget(h,enemyNear(h,Math.max(cfg(h)?.acquisitionRange??TUNING.shared.acquisitionRange,h.base.range,5))):enemyNear(h,Math.max(cfg(h)?.acquisitionRange??TUNING.shared.acquisitionRange,h.base.range,5));const otherAllies=activeOriginalHeroes().filter(a=>Math.hypot(a.x-h.x,a.y-h.y)<=(spec.shieldRadius??spec.blessingRadius??3));const duration=(n)=>state.elapsed+n;
  switch(h.base.id){
  case 'knight':if(!enemy||Math.hypot(enemy.x-h.x,enemy.y-h.y)>2.3)return false;for(const e of enemiesInRadius(h.x,h.y,spec.bashRadius)){e.stunnedUntil=duration(e.boss?Math.min(.5,spec.bashStunSeconds):spec.bashStunSeconds);if(owns('O-1-K-B3'))hitEnemy(e,timedDamage(h,h.base.damage*.5),h.base.color,h.base.id,h.id)}if(owns('O-1-K-B5'))h.bashStrikes=2;if(owns('O-1-K-B3'))finishDamagingSpecial(h);if(owns('R-KNI-D'))grantShield(h,h.maxHp*.15,4);if(owns('V2-KNI-02')&&(h.casts+1)%3===0)for(const a of activeOriginalHeroes())if(a!==h)a.bannerUntil=state.elapsed+5;signalSpecial(h,'Shield Bash',spec.bashRadius);break;
  case 'archer':if(!enemy)return false;{const targets=enemiesInRadius(enemy.x,enemy.y,spec.volleyRadius).sort((a,b)=>Math.hypot(a.x-enemy.x,a.y-enemy.y)-Math.hypot(b.x-enemy.x,b.y-enemy.y)||a.id-b.id).slice(0,spec.volleyArrowCount);for(const e of targets){const d=timedDamage(h,spec.volleyDamage*h.skinMultiplier*(owns('O-1-A-B5')&&Math.random()<critChance()?2:1)*(owns('V2-ARC-01')&&Object.entries(e.directHits||{}).some(([owner,t])=>owner!==String(h.id)&&state.elapsed-t<=2)?1.5:1));hitEnemy(e,d,h.base.color,h.base.id,h.id);if(owns('O-1-A-B4'))applyStatus(e,h,'volleyBleed',d*.5,3)}for(let i=0;i<spec.volleyArrowCount;i++){const angle=2*Math.PI*i/spec.volleyArrowCount,r=.25+(i%3)*.33;addEffect({kind:'bolt',x1:h.x,y1:h.y,x2:enemy.x+Math.cos(angle)*r,y2:enemy.y+Math.sin(angle)*r,color:'#a5e1b5',life:.45,maxLife:.45})}visualRing(enemy.x,enemy.y,spec.volleyRadius,'#8acaab')}finishDamagingSpecial(h);signalSpecial(h,'Arrow Volley');break;
@@ -387,7 +387,7 @@ function heroCombatGoal(h,e,isBear=false){
  const range=effectiveRange(h,e,isBear),dist=Math.hypot(e.x-h.x,e.y-h.y);
  if(dist<=range)return null;
  // Approach only until in range. No orbiting, slot juggling or defensive kiting.
- const gap=Math.max(actorRadius(h)+actorRadius(e)+.06,range-.10);
+ const gap=Math.min(range-.025,Math.max(actorRadius(h)+actorRadius(e)+.06,range-.15));
  const dx=(h.x-e.x)/Math.max(.01,dist),dy=(h.y-e.y)/Math.max(.01,dist);
  let x=e.x+dx*gap,y=e.y+dy*gap;
  const limit=guardRadius(h)-.035,length=Math.hypot(x,y);
