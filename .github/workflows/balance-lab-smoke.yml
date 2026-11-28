@@ -5,6 +5,7 @@ on:
     paths:
       - 'tools/balance/**'
       - 'merchant.js'
+      - 'skins.js'
       - 'battle-actions.js'
       - 'prestige-enemies.js'
       - 'tower-fire.js'
@@ -18,6 +19,7 @@ on:
     paths:
       - 'tools/balance/**'
       - 'merchant.js'
+      - 'skins.js'
       - 'battle-actions.js'
       - 'prestige-enemies.js'
       - 'tower-fire.js'
@@ -48,6 +50,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run check
       - run: node merchant.test.mjs
+      - run: node skins.test.mjs
       - run: node battle-actions.test.mjs
       - run: node prestige-enemies.test.mjs
       - run: node merchant-integration.test.mjs
