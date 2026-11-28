@@ -3297,6 +3297,111 @@ window.FW_SKILL_DATA={
       "kind": "frenzyBonus",
       "amount": 0.35,
       "key": "barbarian"
+    },
+    "O-5-G2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-G2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-G2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-G4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-K-A2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-K-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-K-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-K-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-K-B3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-K-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-A-A2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-A-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-A-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-A-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-A-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-MG-A2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-MG-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-MG-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-MG-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-MG-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-1-MG-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
     }
   }
 };
