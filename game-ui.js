@@ -36,11 +36,12 @@ function updateWaveTracker(){
 function battleSummary(){
  const alive=state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length;
  const minutes=Math.floor(state.elapsed/60),seconds=String(Math.floor(state.elapsed%60)).padStart(2,'0');
- return {time:minutes+':'+seconds,kills:state.kills,total:totalCount(),up:Number((state.upEarned||0).toFixed(2)),shards:state.shardsEarned||0,drops:state.upDrops||0,casts:state.abilityCasts||0,heroesAlive:alive,heroesStarted:state.deployedHeroes||0,towerHp:Math.max(0,Number(state.towerHp.toFixed(1))),test:state.testMode};
+ return {time:minutes+':'+seconds,kills:state.kills,total:totalCount(),up:Number((state.upEarned||0).toFixed(2)),minimumTopup:state.attemptProgressTopup||0,shards:state.shardsEarned||0,drops:state.upDrops||0,casts:state.abilityCasts||0,heroesAlive:alive,heroesStarted:state.deployedHeroes||0,towerHp:Math.max(0,Number(state.towerHp.toFixed(1))),test:state.testMode};
 }
 function showBattleReport(){
  const data=battleSummary();state.lastReport=data;
  const rows=[['Time',data.time],['Defeated',data.kills+' / '+data.total],['UP earned',data.test?'TEST':String(data.up)],['Shards earned',data.test?'TEST':String(data.shards)],['Hero survivors',data.heroesAlive+' / '+data.heroesStarted],['Special casts',String(data.casts)],['Tower HP',String(data.towerHp)]];
+ if(!data.test&&data.minimumTopup>0)rows.splice(3,0,['Progress guarantee (included)','+'+data.minimumTopup+' UP']);
  refs.battleReport.replaceChildren(...rows.map(([name,value])=>{const div=document.createElement('div'),small=document.createElement('span'),strong=document.createElement('b');small.textContent=name;strong.textContent=value;div.append(small,strong);return div;}));
  refs.battleReport.hidden=false;
 }
