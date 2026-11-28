@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0e1724" />
 <title>Fantasy Warriors — Demo 1.0.14 · Tower Fire & New Waves</title>
-<link rel="stylesheet" href="skill-tree.css?v=1.16-merchant-dev">
-<link rel="stylesheet" href="game.css?v=1.16-merchant-dev">
-<link rel="stylesheet" href="quick-stats.css?v=1.16-merchant-dev">
+<link rel="stylesheet" href="skill-tree.css?v=1.16-actions-dev">
+<link rel="stylesheet" href="game.css?v=1.16-actions-dev">
+<link rel="stylesheet" href="quick-stats.css?v=1.16-actions-dev">
 </head>
 <body>
 <div class="shell">
@@ -34,7 +34,7 @@
         <div class="wave-meter" aria-hidden="true"><div id="bossHPMeter"></div></div>
       </div>
     </div>
-    <div class="canvas-wrap"><canvas id="arena" role="img" aria-label="Top-down battlefield showing the tower, allied heroes and approaching enemies"></canvas></div>
+    <div id="battleActions" hidden style="padding:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;background:#182532;color:#f7e6be"><select id="spellEquip0" aria-label="Equip spell one" hidden></select><select id="spellEquip1" aria-label="Equip spell two" hidden></select><button type="button" class="btn compact" id="spellCast0" hidden></button><button type="button" class="btn compact" id="spellCast1" hidden></button><button type="button" class="btn compact" id="spellCancel" hidden>Cancel spell</button><small id="spellHelp"></small><small id="captureStatus" aria-live="polite"></small></div><style>#battleActions[hidden],#battleActions [hidden]{display:none!important}</style><div class="canvas-wrap"><canvas id="arena" role="img" aria-label="Top-down battlefield showing the tower, allied heroes and approaching enemies"></canvas></div>
     <div class="arena-caption"><span id="captionLeft">Heroes defend near the tower</span><span id="captionRight">Move mouse or tap to aim · tower fires every 3s</span></div>
     <div class="battle-message hidden" id="messageOverlay" aria-live="polite"><div class="message-box"><div class="message-symbol" id="messageSymbol">✦</div><h2 id="messageTitle">Stage clear</h2><p id="messageText"></p><div id="battleReport" class="battle-report" hidden aria-label="This stage battle report"></div><button class="btn" id="messageButton">Continue</button></div></div>
   </main>
@@ -92,17 +92,18 @@
   <div class="fw-body"><div class="fw-pane" id="skillPane"></div><section class="fw-detail" id="skillDetails" aria-live="polite"></section></div>
  </div>
 </div>
-<script src="balance-config.js?v=1.16-merchant-dev"></script>
+<script src="balance-config.js?v=1.16-actions-dev"></script>
 <script src="merchant.js?v=1.16-dev"></script>
-<script src="skill-tree-data.js?v=1.16-merchant-dev"></script>
-<script src="skill-tree.js?v=1.16-merchant-dev"></script>
-<script src="skill-tree-effects.js?v=1.16-merchant-dev"></script>
-<script src="game-data.js?v=1.16-merchant-dev"></script>
-<script src="game-arcade.js?v=1.16-merchant-dev"></script>
-<script src="quick-stats.js?v=1.16-merchant-dev"></script>
-<script src="game-render.js?v=1.16-merchant-dev"></script>
-<script src="game-ui.js?v=1.16-merchant-dev"></script>
-<script src="tower-fire.js?v=1.16-merchant-dev"></script>
-<script src="game-core.js?v=1.16-merchant-dev"></script>
+<script src="skill-tree-data.js?v=1.16-actions-dev"></script>
+<script src="skill-tree.js?v=1.16-actions-dev"></script>
+<script src="skill-tree-effects.js?v=1.16-actions-dev"></script>
+<script src="game-data.js?v=1.16-actions-dev"></script>
+<script src="game-arcade.js?v=1.16-actions-dev"></script>
+<script src="quick-stats.js?v=1.16-actions-dev"></script>
+<script src="game-render.js?v=1.16-actions-dev"></script>
+<script src="game-ui.js?v=1.16-actions-dev"></script>
+<script src="tower-fire.js?v=1.16-actions-dev"></script>
+<script src="battle-actions.js?v=1.16-actions-dev"></script>
+<script src="game-core.js?v=1.16-actions-dev"></script>
 </body>
 </html>
