@@ -1,7 +1,7 @@
 /* Live campaign presentation: no independent combat, economy or save state. */
 (function(){'use strict';
 const $=id=>document.getElementById(id), E=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e};
-let installed=false,screen='menu',previousMode=null,live=null,ui={},selected=null,rosterKey='',mapKey='';
+let installed=false,screen='menu',previousMode=null,live=null,ui={},selected=null,lastCapture=null,rosterKey='',mapKey='';
 const active=s=>s&&s.mode!=='prep';
 function choosePage(page){
  if(!live||active(live))return;
@@ -24,7 +24,7 @@ function install(){
  shop.append(merchantHeader,merchant,prepSpells,encounter,pool);
  dev.append(test,quest,tree,log);
  const deployment=E('div','fw-live-deployment');deployment.hidden=true;deployment.setAttribute('role','status');field.append(deployment);
- const battleControls=E('div','fw-live-battle-controls');battleControls.append($('pauseButton'),E('small',null,'Aim with mouse or tap · rescue downed heroes on the field.'));
+ const battleControls=E('div','fw-live-battle-controls');const abandon=btn('Abandon attempt',()=>ui.abandon?.());battleControls.append($('pauseButton'),abandon,E('small',null,'Aim with mouse or tap · rescue downed heroes on the field.'));
  field.append(battleControls);
  const roster=E('div','fw-live-roster'),portrait=E('div','fw-live-portrait'),rosterButtons=E('div','fw-live-roster-buttons'),glyph=E('div','fw-live-emblem'),heroName=E('h3'),heroDetail=E('p'),health=E('progress'),rescue=btn('Rescue',()=>{if(selected!=null)ui.press?.(selected)});
  health.max=100;health.value=0;portrait.append(glyph,heroName,heroDetail,health,rescue);roster.append(E('h2',null,'Heroes in battle'),rosterButtons,portrait);
@@ -34,7 +34,7 @@ function install(){
  const buttons={};for(const [page,label] of [['menu','Menu'],['map','Realm'],['shop','Merchant'],['dev','Testing & log']]){buttons[page]=btn(label,()=>choosePage(page));nav.append(buttons[page])}
  buttons.tree=btn('Upgrades',()=>skill('skillTreeTab'));buttons.collection=btn('Collection',()=>skill('skillSkinsTab'));nav.append(buttons.tree,buttons.collection);
  pages.append(menu,map,shop,dev);shell.insertBefore(nav,layout);shell.insertBefore(pages,layout);
- ui={...ui,shell,layout,field,side,menu,map,shop,dev,buttons,mapInfo,regions,mapActions,battleControls,deployment,roster,rosterButtons,portrait,glyph,heroName,heroDetail,health,rescue,prepSpells,battleActions,canvasWrap,test,merchant};
+ ui={...ui,shell,layout,field,side,menu,map,shop,dev,buttons,mapInfo,regions,mapActions,battleControls,abandon,deployment,roster,rosterButtons,portrait,glyph,heroName,heroDetail,health,rescue,prepSpells,battleActions,canvasWrap,test,merchant};
  shell.classList.add('fw-live');document.body.classList.add('fw-live-body');installed=true;return true;
 }
 function renderMap(){
@@ -50,7 +50,7 @@ function renderMap(){
 }
 function renderRoster(){
  const list=live.heroes.filter(h=>!h.summonKind&&(h.hp>0||h.capture));
- if(live.selectedCapture!=null&&list.some(h=>h.id===live.selectedCapture&&h.capture))selected=live.selectedCapture;
+ if(live.selectedCapture!==lastCapture&&live.selectedCapture!=null&&list.some(h=>h.id===live.selectedCapture&&h.capture))selected=live.selectedCapture;lastCapture=live.selectedCapture;
  if(!list.some(h=>h.id===selected))selected=list[0]?.id??null;
  const key=list.map(h=>h.id+':'+(h.capture?'capture':'active')+':'+h.skin?.id).join('|')+'/'+selected;
  if(key!==rosterKey){rosterKey=key;ui.rosterButtons.replaceChildren(...list.map(h=>{const b=btn(h.base.glyph+' '+h.base.name,()=>{selected=h.id;rosterKey='';renderRoster()});b.setAttribute('aria-pressed',String(h.id===selected));return b}))}
@@ -68,14 +68,14 @@ function paint(){
  for(const k of ['menu','map','shop','dev'])ui[k].hidden=screen!==k;
  ui.layout.hidden=!combat;ui.side.hidden=!combat;
  for(const [k,b] of Object.entries(ui.buttons)){b.disabled=!!combat;b.setAttribute('aria-current',k===screen?'page':'false')}
- if(combat){if(ui.battleActions.parentElement!==ui.field)ui.field.insertBefore(ui.battleActions,ui.canvasWrap);renderRoster()}
+ if(combat){ui.abandon.disabled=live.mode!=='battle';if(ui.battleActions.parentElement!==ui.field)ui.field.insertBefore(ui.battleActions,ui.canvasWrap);renderRoster()}
  else {if(ui.battleActions.parentElement!==ui.prepSpells)ui.prepSpells.append(ui.battleActions);renderMap()}
  // In testing, keep the actual controls available instead of making a second test state.
  if(!combat&&live.testMode&&screen==='shop')ui.shop.append(ui.test);else if(ui.test.parentElement!==ui.dev)ui.dev.prepend(ui.test);
 }
-function sync(state,press){
- live=state;ui.press=press;if(!installed&&!install())return;
- if(previousMode&&previousMode!=='prep'&&state.mode==='prep'){screen=previousMode==='clear'||previousMode==='champion'?'map':'shop';selected=null}
+function sync(state,press,abandon){
+ live=state;ui.press=press;ui.abandon=abandon;if(!installed&&!install())return;
+ if(previousMode&&previousMode!=='prep'&&state.mode==='prep'){screen=previousMode==='clear'||previousMode==='champion'?'map':'shop';selected=null;lastCapture=null}
  const began=state.mode==='battle'&&previousMode!=='battle';previousMode=state.mode;paint();
  if(began){ui.deployment.replaceChildren(...state.heroes.filter(h=>!h.summonKind).map(h=>{const x=E('span','fw-live-dealt',h.base.glyph+' '+h.base.name+' · '+(h.skin?.rarity||h.base.rarity));x.style.borderColor=h.skin?.trim||h.base.color;return x}));ui.deployment.hidden=!ui.deployment.children.length;ui.deployment.classList.remove('dealing');void ui.deployment.offsetWidth;ui.deployment.classList.add('dealing')}else if(state.mode!=='battle'||state.elapsed>2.3)ui.deployment.hidden=true;
 }
