@@ -77,3 +77,34 @@ assert.equal(dt.current().heroes.find(h=>h.id===victim.id).rescues,2);
 dt.advance(1.1);dt.damageHero(victim.id,1e6,captor.id);assert.equal(dt.actions().captures.find(c=>c.hero===victim.id).required,0);
 assert(dt.rescue(victim.id));assert.equal(dt.current().heroes.find(h=>h.id===victim.id).hp,0);
 console.log('Real-core spell and capture integration passed.');
+
+const e=boot(true),el=e.window.__FW_LAB_API__,et=e.window.__FW_TEST__;
+el.prepare();el.setStage(2);el.setPrestige(5,true);el.setTowerHP(100000);
+const pre=e.window.FWSkillTree.debug(),sequence=[],seen=new Set();let actualMutants=0,actualElites=0;
+el.start();assert.equal(et.prestige().plan.eliteQuota,9);assert.equal(et.prestige().plan.mutationQuota,2);assert(et.prestige().plan.faction);
+for(let t=0;t<6000&&el.snapshot().mode==='battle';t++){
+ et.advance(.25);
+ const live=et.current().enemies.filter(x=>x.hp>0);assert(live.filter(x=>x.boss).length<=1,'only one boss active');
+ for(const enemy of live){
+  if(!seen.has(enemy.id)){seen.add(enemy.id);if(enemy.mutated)actualMutants++;if(enemy.elite)actualElites++;if(enemy.boss)sequence.push(enemy.faction?enemy.name:'stage boss')}
+  et.defeatEnemy(enemy.id);
+ }
+}
+assert.equal(el.snapshot().mode,'clear','scripted invasion clear');
+assert.equal(sequence.join('|'),'Legion Champion|Legion Sorcerer|Legion Executioner|stage boss');
+assert.equal(actualMutants,2);assert.equal(actualElites,9);assert.equal(et.prestige().factionDefeated,3);assert.equal(et.prestige().scheduledDefeated,56);assert.equal(el.snapshot().kills,60);
+assert.equal(e.window.FWSkillTree.debug().shards,pre.shards,'test rewards excluded');
+el.prepare();el.setStage(2);el.setPrestige(5,false);el.start();assert.equal(et.prestige().plan.eliteQuota,0);assert.equal(et.prestige().plan.mutationQuota,0);assert.equal(et.prestige().plan.faction,false);
+console.log('Full scripted prestige-5 invasion: '+sequence.join(' → ')+'; 56 scheduled + 4 bosses; testing rewards excluded.');
+// Verify the real saved reward accounting in a committed non-test attempt.
+const normalKey='fantasy-warriors-skilltree-1.1';storage.clear();
+storage.set(normalKey,JSON.stringify({treeSchema:2,up:0,shards:0,resets:5,campaignStage:2,highestClear:1,runHighest:1,runWins:1,gateways:[],attemptedStages:[2],nodes:[],legacyNodes:[]}));
+const n=boot(false),ns=n.window.FWSkillTree;n.get('buyButton').fire('click');n.get('stageButton').fire('click');
+assert.equal(n.window.__FW_DEMO__.snapshot().mode,'battle');
+const gain=ns.recordKill('knight',false,{scheduled:true,mutated:true,rewardId:'mutation-test'});
+assert.equal(ns.shards(),1);assert.equal(ns.recordKill('knight',false,{scheduled:true,mutated:true,rewardId:'mutation-test'}),0);assert.equal(ns.shards(),1);
+assert.equal(ns.recordKill(null,false,{scheduled:false,faction:true,rewardId:'legion-test'}),2);assert.equal(ns.shards(),2);assert.equal(ns.recordKill(null,false,{scheduled:false,faction:true,rewardId:'legion-test'}),0);assert.equal(ns.shards(),2);
+assert.equal(ns.debug().kills.knight,1,'faction does not grant class credit');
+ns.stealCoin();ns.stealCoin();assert.equal(ns.applyTheft('test-shop',3,2),1);assert.equal(ns.applyTheft('test-shop',3,2),1);assert.equal(ns.applyTheft('other-shop',3,2),0);
+const recovered=boot(false).window.FWSkillTree;assert.equal(recovered.shards(),2);assert.equal(recovered.debug().kills.knight,1);
+console.log('Persistent mutation/faction rewards, duplicate prevention, class credit and theft floor passed.');
