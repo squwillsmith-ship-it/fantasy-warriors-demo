@@ -185,7 +185,7 @@ function draw(){labels();const pane=$('skillPane');if(!pane||!$('skillModal')?.c
  if(window.FWPrototypeArt){pane.querySelectorAll('[data-select-node]').forEach(b=>b.addEventListener('click',()=>showNode(b.dataset.selectNode)));const legacy=pane.querySelector('.fw-legacy-grid');if(legacy)requestAnimationFrame(()=>drawLinks(legacy))}
  pane.querySelectorAll('[data-buy]').forEach(b=>b.addEventListener('click',()=>purchase(b.dataset.buy)));pane.querySelectorAll('[data-gateway]').forEach(b=>b.addEventListener('click',()=>gateway(+b.dataset.gateway)));
 }
-function newGame(){if(!available()||sandbox)return false;p=fresh();save();api.restart();recalc();draw();return true}
+function newGame(){if(!api||api.state.mode!=='prep'||api.state.testMode||sandbox)return false;try{localStorage.setItem(K+'-before-new-game',JSON.stringify(p))}catch{}p=fresh();save();api.restart();recalc();draw();return true}
 function backupPayload(){return {game:'Fantasy Warriors',kind:'skilltree-save',schema:2,state:JSON.parse(JSON.stringify(sandbox||p))}}
 function normalizeBackup(raw){const b=JSON.parse(raw);if(b.game!=='Fantasy Warriors'||b.kind!=='skilltree-save'||![1,2].includes(b.schema)||!b.state)throw Error('Incompatible backup');return normalize(b.state)}
 function download(){const url=URL.createObjectURL(new Blob([JSON.stringify(backupPayload(),null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='Fantasy_Warriors_Save.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
