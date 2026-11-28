@@ -225,3 +225,26 @@ try{
  l.window.__FW_LAB_API__.prepare();l.window.__FW_LAB_API__.queueHero('knight',1);l.window.__FW_LAB_API__.start();const labUP=ls.points();lf.lose();assert.equal(ls.points(),labUP,'lab mode excluded');
  console.log('Attempt progression guarantee: zero/one/high UP defeats, report, reload, duplicate and lab exclusions passed.');
 }finally{sources[coreIndex]=unmodifiedCore}
+
+// AI regression: run the real engine, without random wave spawns, using a
+// fixture injected only in this test harness (never shipped in the game).
+storage.clear();
+const aiIndex=files.indexOf('game-core.js'),originalAI=sources[aiIndex];
+sources[aiIndex]=originalAI.replace('window.__FW_TEST__={','window.__FW_AI_FIXTURE__={state,selectHeroTarget,idlePatrol,legalActorPosition};window.__FW_TEST__={');
+try{
+ const a=boot(true),lab=a.window.__FW_LAB_API__,test=a.window.__FW_TEST__,fx=a.window.__FW_AI_FIXTURE__,st=fx.state;
+ const setup=id=>{lab.prepare();lab.queueHero(id,1);lab.start();st.regularSpawned=999999;st.enemies=[];const h=st.heroes[0];Object.assign(h,{x:3,y:0,vx:0,vy:0,anchorX:3,anchorY:0,initialSpawnRadius:3,targetId:null,idleCenter:null,idleGoal:null,charge:0,cooldown:0});return h};
+ const spawn=(x,y,hp=10000)=>{test.enemy(x,y,hp,0);return st.enemies.at(-1)};
+ let h=setup('knight'),e=spawn(3.9,0);test.advance(.55);assert.equal(h.targetId,e.id,'first target acquired');assert(e.hp<e.maxHp,'knight began fighting');const other=spawn(3,.78);const initial=e.hp;
+ for(let i=0;i<48;i++){test.advance(.05);assert.equal(h.targetId,e.id,'knight must never leave live reachable opponent for closer one');}
+ assert(e.hp<initial,'knight continues dealing damage to locked opponent');assert.equal(other.hp,other.maxHp,'new nearby opponent does not steal basic attacks');
+ e.hp=0;test.advance(.1);assert.equal(h.targetId,other.id,'acquire next opponent only after first dies');
+ other.hp=0;test.advance(.1);const start={x:h.x,y:h.y};let walked=0,last={...start};for(let i=0;i<160;i++){test.advance(.05);walked+=Math.hypot(h.x-last.x,h.y-last.y);last={x:h.x,y:h.y};assert(Math.hypot(h.x-start.x,h.y-start.y)<1.35,'idle patrol stays local');assert(fx.legalActorPosition(h,h.x,h.y),'idle patrol respects tower and guard');}assert(walked>1,'knight moves when idle');
+ h=setup('archer');e=spawn(4.8,0);test.advance(.55);const pos=[h.x,h.y];const closer=spawn(3,.85);for(let i=0;i<40;i++){test.advance(.05);assert.equal(h.targetId,e.id,'ranged retains target');assert(Math.hypot(h.x-pos[0],h.y-pos[1])<.001,'ranged holds position in range');}
+ e.hp=0;closer.hp=0;test.advance(.1);const archerStart=[h.x,h.y];test.advance(1.5);assert(Math.hypot(h.x-archerStart[0],h.y-archerStart[1])>.25,'ranged patrols only when idle');
+ h=setup('knight');e=spawn(3.9,0);test.advance(.1);e.x=12;const backup=spawn(3,.9);test.advance(.1);assert.equal(h.targetId,backup.id,'unreachable target releases instead of getting stuck on leash');
+ h=setup('knight');e=spawn(3.9,0);test.advance(.1);e.ethereal=true;e.vulnerableUntil=0;const alternate=spawn(3,.8);test.advance(.75);assert.equal(h.targetId,e.id,'temporary invulnerability does not break lock');e.vulnerableUntil=st.elapsed+2;test.advance(.75);assert.equal(h.targetId,e.id,'same target after vulnerability returns');
+ for(const id of a.window.FW_SKILL_DATA.heroes){h=setup(id);const x=h.x,y=h.y;test.advance(1.5);assert(Math.hypot(h.x-x,h.y-y)>.2,id+' moves when unengaged');assert(Math.hypot(h.x-x,h.y-y)<1.3,id+' stays local');}
+ h=setup('knight');h.rootedUntil=st.elapsed+3;const rooted=[h.x,h.y];test.advance(1);assert.equal(h.x,rooted[0]);assert.equal(h.y,rooted[1]);
+ console.log('AI: persistent melee/ranged locks, target death and unreachable releases, Wraith lock, local patrols for all 15 classes, and root priority passed.');
+}finally{sources[aiIndex]=originalAI}
