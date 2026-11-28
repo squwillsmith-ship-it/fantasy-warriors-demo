@@ -17,7 +17,7 @@ function install(){
  const merchant=$('shopTitle').closest('.panel'),test=$('testingPanel'),quest=$('questPanel'),pool=$('odds').closest('.panel'),encounter=$('encounterName').closest('.panel'),tree=$('openSkillTree').closest('.panel'),log=$('events').closest('.panel');
  const nav=E('nav','fw-live-nav'),pages=E('div','fw-live-pages'),menu=E('section','fw-live-menu'),map=E('section','fw-live-map'),shop=E('section','fw-live-shop'),dev=E('section','fw-live-dev');
  const titleArt=canvas(320,180,'fw-pixel-background'),title=E('h2',null,'Fantasy Warriors'),lead=E('p',null,'A KINGDOM UNDER SIEGE'),menuBody=E('div','fw-title-body');
- art.title(titleArt);menuBody.append(lead,title,btn('Continue campaign',()=>choosePage('map')),btn('New Game',()=>{if(confirm('Start a fresh campaign? Export a backup first. This clears current progression.'))ui.newGame?.()}),btn('Settings',()=>settings()),btn('Save & backup',()=>skill('skillBackupTab')));menu.append(titleArt,menuBody,E('small','fw-art-label','PLACEHOLDER PIXEL ART'));
+ art.title(titleArt);if(window.FWInterimAssets?.title)document.documentElement.style.setProperty('--fw-recruit-pack','url('+window.FWInterimAssets.title+')');menuBody.append(lead,title,btn('Continue campaign',()=>choosePage('map')),btn('New Game',()=>{if(confirm('Start a fresh campaign? Export a backup first. This clears current progression.'))ui.newGame?.()}),btn('Settings',()=>settings()),btn('Save & backup',()=>skill('skillBackupTab')));menu.append(titleArt,menuBody,E('small','fw-art-label','INTERIM ART · NOT FINAL'));
  const settings=()=>{const d=E('dialog','fw-settings');const h=E('h2',null,'Settings');d.append(h,E('p',null,'Sound and final artwork are not yet implemented.'),btn('Save & backup',()=>{d.close();skill('skillBackupTab')}),btn('Testing tools',()=>{d.close();choosePage('dev')}),btn('Close',()=>d.close()));document.body.append(d);d.addEventListener('close',()=>d.remove(),{once:true});d.showModal()};
  const mapTitle=E('h2',null,'The Realm'),mapInfo=E('p','fw-live-map-info'),regions=E('div','fw-live-regions'),mapActions=E('div','fw-live-actions');
  mapActions.append(btn('Prepare attempt',()=>choosePage('shop')),btn('Skill tree',()=>skill('skillTreeTab')),btn('Legacy & prestige',()=>skill('skillLegacyTab')),btn('Hero collection',()=>skill('skillSkinsTab')),btn('Settings',settings));const mapHeader=E('header','fw-screen-head'),mapArt=canvas(320,180,'fw-pixel-background');mapHeader.append(btn('‹ Menu',()=>choosePage('menu')),mapTitle,mapInfo);regions.append(mapArt);map.append(mapHeader,regions,mapActions);
@@ -27,7 +27,7 @@ function install(){
  dev.append(btn('‹ Map',()=>choosePage('map')),test,quest,tree,log);
  const deployment=E('div','fw-live-deployment');deployment.hidden=true;deployment.setAttribute('role','status');$('arena').parentElement.append(deployment);
  const battleControls=$('liveBattleControls'),abandon=$('abandonButton'),speed=btn('1×',()=>{ui.changeSpeed?.();speed.textContent=(live.playbackSpeed||1)+'×'});abandon.addEventListener('click',()=>ui.abandon?.());battleControls.prepend(speed);const hud=E('div','fw-pixel-hud'),hp=E('b'),earned=E('b'),meter=E('progress');meter.max=100;hud.append(hp,meter,earned);field.prepend(hud);
- const roster=E('div','fw-live-roster'),portrait=E('div','fw-live-portrait'),rosterButtons=E('div','fw-live-roster-buttons'),glyph=canvas(72,96,'fw-portrait-art'),heroName=E('h3'),heroDetail=E('p'),health=E('progress'),rescue=btn('Rescue',()=>{if(selected!=null)ui.press?.(selected)});
+ const roster=E('div','fw-live-roster'),portrait=E('div','fw-live-portrait'),rosterButtons=E('div','fw-live-roster-buttons'),glyph=canvas(144,192,'fw-portrait-art'),heroName=E('h3'),heroDetail=E('p'),health=E('progress'),rescue=btn('Rescue',()=>{if(selected!=null)ui.press?.(selected)});
  health.max=100;health.value=0;portrait.append(glyph,heroName,heroDetail,health,rescue);roster.append(E('small','fw-portrait-heading','HERO INSPECTION'),portrait,rosterButtons);
  // Formation summary belongs to the old merchant diagnostics; the live portrait is the combat view.
  side.append(roster);
@@ -94,7 +94,7 @@ function deal(state){
 }
 function showcase(novel,finish,generation){
  if(generation!==dealGeneration||live.mode!=='battle')return;if(!novel.length){finish();return}
- const h=novel.shift(),card=E('div','fw-discovery-card'),pic=canvas(72,96,'fw-portrait-art');
+ const h=novel.shift(),card=E('div','fw-discovery-card'),pic=canvas(144,192,'fw-portrait-art');
  art.portrait(pic,h.base.id,h.skin?.key==='default'?'Base':h.skin?.rarity,0,false,true,h.skin?.color);card.style.borderColor=h.skin?.trim||h.base.color;card.append(E('small',null,'DISCOVERY'),pic,E('h3',null,h.base.name),E('p',null,h.skin?.name+' · '+h.skin?.rarity));ui.deployment.replaceChildren(card);
  dealTimer=setTimeout(()=>showcase(novel,finish,generation),1500)
 

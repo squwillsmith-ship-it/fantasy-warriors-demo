@@ -1,0 +1,66 @@
+/* Temporary navy-and-antique-gold art theme; all controls remain native, live and accessible. */
+body.fw-live-body{background:#101522;color:#eee1ca;font-family:Georgia,serif}
+.fw-live{background:#141a28;color:#eee1ca}
+.fw-live h2,.fw-live h3,.fw-live h4,body.fw-live-body #skillModal h2,body.fw-live-body #skillModal h3{font-family:Georgia,serif;letter-spacing:.035em;color:#f0d8a8}
+.fw-live .btn,body.fw-live-body #skillModal button{border-radius:0;border:1px solid #94764b;background:#283040;color:#ead8b9;box-shadow:inset 0 0 0 2px #161c29,0 2px 0 #0d111a;font-family:Georgia,serif;font-weight:600;text-shadow:0 1px #111725}
+.fw-live .btn:not(:disabled):hover,body.fw-live-body #skillModal button:not(:disabled):hover{border-color:#efcb85;background:#3e3b3c}
+.fw-live .btn:not(:disabled):focus-visible,body.fw-live-body #skillModal button:focus-visible{outline:2px solid #f4d492;outline-offset:2px}
+.fw-live .btn:disabled{opacity:.55}
+.fw-live .btn.primary,.fw-live #buyButton,.fw-live #stageButton:not(:disabled),body.fw-live-body #skillModal .fw-action:not(:disabled){background:#c69c58;color:#191a24;border-color:#f2d59a;box-shadow:inset 0 0 0 2px #a57d42,0 2px #10131d;text-shadow:none}
+.fw-live .fw-live-menu{border:2px solid #a48250;min-height:calc(100dvh - 6px);background:#151923}
+.fw-title-body{width:36%;min-width:240px;gap:14px;background:#151923db;border-right:1px solid #a48250;padding:clamp(16px,3vw,46px)}
+.fw-title-body h2{font-size:clamp(27px,5.2vw,78px);text-shadow:2px 3px #080d18;color:#f1dcb4;line-height:.95;word-spacing:100vw}
+.fw-title-body p{font-size:clamp(9px,1.1vw,14px);letter-spacing:.16em;color:#e1b56e}
+.fw-title-body .btn{font-size:clamp(13px,1.65vw,22px);min-height:44px;width:100%;max-width:300px;padding:7px 12px}
+.fw-title-body .btn:first-of-type{border-color:#e5bd78;background:#463a2c;color:#f8e5b9;box-shadow:inset 0 0 0 2px #211d22}
+.fw-title-body:before{content:'✦';font-size:25px;color:#d9b06e;line-height:1}
+.fw-art-label{background:#101522d9;color:#dfc7a2}
+.fw-screen-head,.fw-live .fw-live-actions,.fw-live-merchant-banner,.fw-pixel-hud{background:#192231;border-color:#a48250;color:#eedcc0}
+.fw-screen-head{border-top:1px solid #a48250}
+.fw-live-regions{background:#101926;border:1px solid #a48250}
+.fw-live .fw-live-region{background:#111925cc;border:1px solid #886b49;border-radius:0;padding:3px 5px;max-width:clamp(72px,12vw,140px);box-shadow:0 2px 2px #070b13;color:#f2dec0;line-height:1.15;min-width:50px}
+.fw-live .fw-live-region[data-state=current]{border-color:#ffe0a0;box-shadow:0 0 0 2px #a37a42,0 0 10px #f2b96199;background:#362e2b}
+.fw-live .fw-live-region .fw-region-mark{background:#252b38;border:1px solid #ad8954;color:#dfbc76;font-size:20px}
+.fw-live .fw-live-region small{font-size:8px;color:#e2c99e}
+.fw-live .fw-live-region[data-state=cleared]{opacity:.9;border-color:#84975d}
+.fw-live-shop{background:#151c29;border:1px solid #92754d}
+.fw-merchant-art{border:1px solid #c09b61;background:#332a28;box-shadow:inset 0 0 0 2px #131923}
+.fw-merchant-art .fw-pixel-background{object-fit:cover;object-position:center}
+.fw-merchant-art p{background:#111827df;color:#e8cfaa;font-style:italic}
+.fw-live-shop>.panel{background:#1a2230;color:#e5d2b0;border:1px solid #7d694c;padding:9px}
+.fw-live-shop #packOfferButtons{background:#141b28;border:1px solid #98774e;box-shadow:inset 0 0 0 2px #0e131f}
+.fw-live-shop #packOfferButtons button{border-color:#8e7653;background:#222b3d!important;color:#e9d5b0;min-height:120px}
+.fw-live-shop #packOfferButtons button[style*="border-color"]{border-color:#f5d692!important;box-shadow:inset 0 0 0 2px #d5ab66,0 0 7px #b19a6566}
+.fw-live-shop #packOfferButtons button:before{width:min(90%,128px);height:clamp(54px,10dvh,90px);border:1px solid #a78453;background:#30364a;box-shadow:inset 0 0 0 2px #1b202d;color:#efc77a;font-size:30px}
+.fw-live-shop #packOfferButtons button[data-shop-pack="0"]:before{content:'';background-image:var(--fw-recruit-pack);background-position:center;background-size:cover}
+.fw-live-shop #packOfferButtons button[data-shop-pack="1"]:before{content:'➶';background:#344735}
+.fw-live-shop #packOfferButtons button[data-shop-pack="2"]:before{content:'✚';background:#4d445a}
+.fw-live-shop #packOfferButtons button[data-shop-pack="3"]:before{content:'☾';background:#493a5b}
+.fw-live-shop #packOfferButtons button[data-shop-pack="4"]:before{content:'♛';background:#623d32}
+.fw-combat .battleground{background:#101623;border:1px solid #a48250!important}
+.fw-live.fw-combat #arena{box-shadow:0 0 0 1px #9c7a4c}
+.fw-live.fw-combat .fw-live-roster{background:#192130;color:#e6d3b0;border-left:2px solid #ae8a56}
+.fw-portrait-heading{font-size:12px;letter-spacing:.08em;color:#eac479}
+.fw-portrait-art{border:1px solid #c9a469;box-shadow:0 0 0 2px #141b29;object-fit:contain}
+.fw-live-roster progress,.fw-pixel-hud progress{accent-color:#95b16e}
+.fw-live #liveBattleControls{background:#18202d;border-top:1px solid #a48250}
+.fw-live.fw-combat .wave-tracker{background:#192130;color:#d9c6a6}
+body.fw-live-body #skillModal .fw-shell{background:#141b29;border:2px solid #9e7d4b;color:#e9d5b0}
+body.fw-live-body #skillModal .fw-head,body.fw-live-body #skillModal .fw-controls{background:#1b2434;border-color:#97794e}
+body.fw-live-body #skillModal .fw-pane{background:radial-gradient(ellipse at 45% 0%,#242d3e,#121926 70%);color:#e2d0b0}
+body.fw-live-body #skillModal .fw-tab.selected{background:#c69c58;color:#171a23;border-color:#e8c486;text-shadow:none}
+.fw-tree-world .fw-tier,.fw-live-tree-lane{background:#171e2bca;border-color:#7d694f}
+.fw-tier-header{background:#283145;border-bottom:1px solid #b38c54}
+.fw-graph-anchor{background:#273043;color:#e7c488;border-color:#97764d}
+.fw-graph-node{background:#252e3d!important;border:1px solid #a38558!important;box-shadow:inset 0 0 0 2px #111826!important}
+.fw-graph-node.ready{border-color:#f0c97c!important;color:#f9e1b6}
+.fw-graph-node.owned{background:#293a35!important;border-color:#8ba66f!important}
+.fw-graph-node.locked{border:1px dashed #68717c!important;color:#b9b6b0}
+.fw-node-shape{color:#eac479}.fw-tree-toolbar{background:#1a2232;border-bottom:1px solid #856b48}
+.fw-hero-card{background:#192233;box-shadow:inset 0 0 0 2px #101725;color:#efdab6}
+.fw-hero-card canvas{border:1px solid #826a45;box-shadow:0 2px #0b1018}
+.fw-card-pool{border-bottom:1px solid #746046;padding-bottom:7px}
+.fw-loot-chest{background:#493752;border-color:#c39b60}
+.fw-discovery-card{background:#192232f5;box-shadow:4px 4px #0b1018;min-width:130px}
+@media(max-width:740px) and (orientation:portrait){.fw-title-body{width:70%;min-width:0;gap:10px;padding:16px;background:#151923e0}.fw-title-body h2{font-size:clamp(26px,7vw,48px)}.fw-live .fw-live-region{max-width:70px;font-size:9px;padding:2px;min-width:30px}.fw-live .fw-live-region .fw-region-mark{width:24px;height:24px;font-size:14px}}
+@media(orientation:landscape) and (max-height:520px){.fw-title-body{min-width:220px;width:37%;padding:10px 17px;gap:5px}.fw-title-body:before{font-size:17px}.fw-title-body h2{font-size:clamp(25px,5vw,48px)}.fw-title-body .btn{min-height:33px;font-size:13px;padding:3px 8px}.fw-live-shop #packOfferButtons button{min-height:68px;font-size:10px}.fw-live-shop #packOfferButtons button:before{height:34px;width:min(90%,90px);font-size:18px}.fw-live-shop>.panel{padding:3px 5px}.fw-live .fw-live-region{font-size:9px;padding:2px}.fw-live .fw-live-region .fw-region-mark{width:23px;height:23px;font-size:13px}.fw-portrait-heading{font-size:10px}.fw-live .btn{font-size:11px}}
