@@ -29,3 +29,9 @@ jobs:
       - run: node campaign-ui.test.mjs
         env:
           FW_BROWSER: ${{ matrix.browser }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ui-evidence-${{ matrix.browser }}
+          path: tools/balance/ui-evidence/
+          if-no-files-found: ignore
