@@ -128,7 +128,7 @@ function rollShop(){
  state.merchantAttemptId=(globalThis.crypto?.randomUUID?.()||Date.now()+'-'+Math.random());
  state.selectedSlot=0;state.shopCacheKey='';return state.shopOffers;
 }
-function ensureShopStock(){if(!state.merchantShop||!Array.isArray(state.shopOffers)||!state.shopOffers.length)rollShop();}
+function ensureShopStock(){if(!state.merchantShop||!Array.isArray(state.shopOffers)||!state.shopOffers.length||(state.mode==='prep'&&state.bought===0&&state.shopOffers.length!==state.shopSlots))rollShop();}
 
 function offeredPacks(){ensureShopStock();return state.shopOffers;}
 function selectedStock(){
