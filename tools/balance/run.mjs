@@ -12,7 +12,7 @@ const allowed=new Set(['profile','stages','team','seeds','seed','max-seconds','c
 for(const k of Object.keys(args))if(!allowed.has(k))throw Error('Unknown argument '+k);
 const integer=(s,min,max,name)=>{const n=Number(s);if(!Number.isInteger(n)||n<min||n>max)throw Error('Invalid '+name);return n};
 const prestige=integer(args.prestige??'0',0,100,'prestige'),firstAttempt=args['first-attempt']==='true';
-const profile=args.profile??'live';assert(['live','candidate'].includes(profile));
+const profile=args.profile??'live';assert(['live','candidate','historical'].includes(profile));
 const stages=(args.stages??'1,2,10').split(',').map(x=>integer(x,1,10,'stage'));
 const team=(args.team??'knight:2,archer:1,mage:1').split(',').map(t=>{const [id,c='1']=t.split(':');assert(spec.engineCompatibleProfile.heroes.some(h=>h.id===id),'unknown hero '+id);return{id,count:integer(c,1,40,'count')}});
 assert(team.reduce((s,h)=>s+h.count,0)<=80,'max 80 heroes');
@@ -32,14 +32,10 @@ const server=createServer(async(req,res)=>{try{
  if(path!==root&&!path.startsWith(root.endsWith(sep)?root:root+sep)){res.writeHead(403).end();return}
  const ext=extname(path);if(!mime[ext]){res.writeHead(404).end();return}
  let data=await readFile(path,'utf8');
- // Candidate adapter is injected ONLY into this local lab HTTP response. Public
- // balance-config.js stays unchanged. Validation still uses the old schema.
- if(profile==='candidate'&&path===resolve(root,'balance-config.js')){
-  data+='\nwindow.FWBalance.profile='+JSON.stringify(spec.engineCompatibleProfile)+';\nwindow.FWBalance.validate(window.FWBalance.profile);\n';
- }
- if(profile==='candidate'&&path===resolve(root,'game-data.js')){
-  const from='chargeSeconds:null';assert(data.includes(from),'runtime adapter drift');
-  data=data.replace(from,'chargeSeconds:ABILITIES[core.id].chargeSeconds??null');
+ // The development default is the selected numerical profile. Historical mode
+ // swaps only numerical records, not the current encounter/skill mechanics.
+ if(profile==='historical'&&path===resolve(root,'balance-config.js')){
+  data+='\nwindow.FWBalance.profile=JSON.parse(JSON.stringify(window.FWBalance.profiles.historical));\nwindow.FWBalance.validate(window.FWBalance.profile);\n';
  }
  res.writeHead(200,{'Content-Type':mime[ext],'Cache-Control':'no-store'}).end(data);
  }catch(e){res.writeHead(500).end(String(e))}
@@ -70,7 +66,7 @@ try{
     let s=api.snapshot(),budget=0;
     check(s.mode==='battle','did not enter battle');
     const usedProfile=window.__FW_DEMO__.snapshot().balanceProfile;
-    if(profile==='candidate')check(usedProfile==='fw-lab-v1.16.0-compatible','candidate was not applied');
+    if(profile==='candidate'||profile==='live')check(usedProfile==='fw-combat-v1.16.0','selected profile was not applied');if(profile==='historical')check(usedProfile==='fw-live-v1.5.0-core','historical profile was not applied');
     while(s.mode==='battle'&&budget<max){const dt=Math.min(stepChunk,max-budget);check(test.advance(dt),'advance failed');budget+=dt;s=api.snapshot();}
     check(Number.isFinite(s.towerHP)&&Number.isFinite(s.elapsed),'nonfinite outcome');
     check(['battle','clear','over','champion'].includes(s.mode),'unexpected mode '+s.mode);
