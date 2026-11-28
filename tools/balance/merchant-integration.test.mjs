@@ -131,3 +131,27 @@ try{
  assert.equal(zs.buySkinBox(),false,'no purchases during combat');
  console.log('Skin collection integration: exact refunds, persisted protection, prestige preservation and Epic unit deployment passed.');
 }finally{Math.random=oldRandom}
+
+storage.clear();
+const combatBuild=boot(true),cl=combatBuild.window.__FW_LAB_API__,ct=combatBuild.window.__FW_TEST__,cb=combatBuild.window.FWBalance.profile;
+assert.equal(cb.profileId,'fw-combat-v1.16.0');
+assert.equal(cb.stages[0].basic.hp,7);assert.equal(cb.stages[0].boss.hp,95);
+assert.equal(cb.stages[9].boss.phases.map(x=>x.hp).join(','),'390,455,545');
+assert.equal(combatBuild.window.FWGameData.TUNING.heroes.paladin.special.chargeSeconds,12);
+assert.equal(combatBuild.window.FWGameData.TUNING.heroes.mage.special.chainDamage,4.8);
+for(const stage of [1,10]){
+ cl.prepare();cl.setStage(stage);cl.setPrestige(0,false);cl.setTowerHP(100000);cl.start();
+ let phases=[],kids=0,seen=new Set();
+ for(let i=0;i<3000&&cl.snapshot().mode==='battle';i++){
+  ct.advance(.25);
+  for(const enemy of ct.current().enemies.filter(e=>e.hp>0)){
+   const key=enemy.id+':'+enemy.phase;
+   if(!seen.has(key)){seen.add(key);if(enemy.boss)phases.push(enemy.maxHp);if(enemy.generated)kids++}
+   ct.defeatEnemy(enemy.id);
+  }
+ }
+ assert.equal(cl.snapshot().mode,'clear');
+ if(stage===1){assert.equal(phases.join(','),'95');assert.equal(kids,4);assert.equal(cl.snapshot().kills,49);}
+ else{assert.equal(phases.join(','),'390,455,545');assert.equal(cl.snapshot().kills,139);}
+}
+console.log('Active combat profile and real-core King Slime split / Eldritch three-phase transitions passed.');
