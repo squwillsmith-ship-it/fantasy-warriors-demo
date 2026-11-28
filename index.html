@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0e1724" />
 <title>Fantasy Warriors — v1.19 Demo</title>
-<link rel="stylesheet" href="skill-tree.css?v=1.19-pursuit-1">
-<link rel="stylesheet" href="game.css?v=1.19-pursuit-1">
-<link rel="stylesheet" href="quick-stats.css?v=1.19-pursuit-1">
-<link rel="stylesheet" href="campaign-ui.css?v=1.19-pursuit-1">
-<link rel="stylesheet" href="interim-art.css?v=1.19-pursuit-1">
+<link rel="stylesheet" href="skill-tree.css?v=1.19-pursuit-2">
+<link rel="stylesheet" href="game.css?v=1.19-pursuit-2">
+<link rel="stylesheet" href="quick-stats.css?v=1.19-pursuit-2">
+<link rel="stylesheet" href="campaign-ui.css?v=1.19-pursuit-2">
+<link rel="stylesheet" href="interim-art.css?v=1.19-pursuit-2">
 </head>
 <body>
 <div class="shell">
@@ -69,7 +69,7 @@
       <div class="section-top"><div><div class="kicker">Developer tools · separate from normal shop</div><h2>Testing Shop</h2></div><span class="kicker" id="testingStatus">OFF</span></div>
       <p class="shop-note">Free access to all 15 heroes. Test battles do not advance your normal stage.</p>
       <button class="btn secondary" id="testingToggle" aria-pressed="false">Enable testing mode</button>
-      <div id="testingControls" class="hidden"><div class="tuning-box"><div class="small-label">Demo-only tuning · applies immediately</div><div class="tuning-fields"><label>Acquire radius <input id="acquireTune" type="number" inputmode="decimal" min="1" max="30" step=".5" value="15"></label><label>Tower guard <input id="guardTune" type="number" inputmode="decimal" min="2" max="10" step=".5" value="5"></label><label>Charge seconds <input id="chargeTune" type="number" inputmode="decimal" min="1" max="60" step="1" value="10"></label></div><div class="tiny-note">Hero-specific ability parameters are editable in the game tuning object. All values are temporary tests.</div></div><div class="tuning-box"><label class="tiny-note">Test encounter (does not change campaign progress) <select id="testStage" aria-label="Test stage"></select></label><label>Test prestige <input id="testPrestige" type="number" min="0" max="100" step="1" value="0"></label><label><input id="testFirstAttempt" type="checkbox"> First-ever stage protection</label></div><div class="test-badge">⚒ TEST MODE · 0 COINS · ALL HEROES UNLOCKED</div><div class="test-grid" id="testingGrid"></div><div class="button-row"><button class="btn secondary compact" id="clearTestQueue">Clear test heroes</button><span class="test-queue" id="testQueueCount">0 queued</span></div></div>
+      <div id="testingControls" class="hidden"><div class="tuning-box"><div class="small-label">Demo-only tuning · applies immediately</div><div class="tuning-fields"><small>Detection: half the battlefield diagonal · no tower guard</small><label>Charge seconds <input id="chargeTune" type="number" inputmode="decimal" min="1" max="60" step="1" value="10"></label></div><div class="tiny-note">Hero-specific ability parameters are editable in the game tuning object. All values are temporary tests.</div></div><div class="tuning-box"><label class="tiny-note">Test encounter (does not change campaign progress) <select id="testStage" aria-label="Test stage"></select></label><label>Test prestige <input id="testPrestige" type="number" min="0" max="100" step="1" value="0"></label><label><input id="testFirstAttempt" type="checkbox"> First-ever stage protection</label></div><div class="test-badge">⚒ TEST MODE · 0 COINS · ALL HEROES UNLOCKED</div><div class="test-grid" id="testingGrid"></div><div class="button-row"><button class="btn secondary compact" id="clearTestQueue">Clear test heroes</button><span class="test-queue" id="testQueueCount">0 queued</span></div></div>
     </div>
     <div class="panel"><div class="section-top"><h2>Hero Pack Pools</h2><span class="kicker">1 hero draw</span></div><p class="shop-note">Five pack pools with weighted class draws and duplicate protection.</p><div class="odds" id="odds"></div><hr class="divider"><div class="small-label">Pack progression</div><div id="packProgress" class="pack-progress"></div></div>
     <div class="panel encounter-panel"><div class="section-top"><h2>Encounter</h2><span class="kicker" id="encounterApproval">STAGE 1 OF 10</span></div><div class="encounter-name" id="encounterName">Slime Pits</div><p class="shop-note" id="encounterUnits">Slime → King Slime</p><p class="tiny-note">Live encounter rules and combat statistics use the v1.16 profile.</p></div>
@@ -94,26 +94,26 @@
   <div class="fw-body"><div class="fw-pane" id="skillPane"></div><section class="fw-detail" id="skillDetails" aria-live="polite"></section></div>
  </div>
 </div>
-<script src="balance-config.js?v=1.19-pursuit-1"></script>
-<script src="merchant.js?v=1.19-pursuit-1"></script>
-<script src="skins.js?v=1.19-pursuit-1"></script>
-<script src="skill-tree-data.js?v=1.19-pursuit-1"></script>
-<script src="endless.js?v=1.19-pursuit-1"></script>
-<script src="skill-tree.js?v=1.19-pursuit-1"></script>
-<script src="skill-tree-effects.js?v=1.19-pursuit-1"></script>
-<script src="game-data.js?v=1.19-pursuit-1"></script>
-<script src="game-arcade.js?v=1.19-pursuit-1"></script>
-<script src="quick-stats.js?v=1.19-pursuit-1"></script>
-<script src="game-render.js?v=1.19-pursuit-1"></script>
-<script src="game-ui.js?v=1.19-pursuit-1"></script>
-<script src="tower-fire.js?v=1.19-pursuit-1"></script>
-<script src="battle-actions.js?v=1.19-pursuit-1"></script>
-<script src="prestige-enemies.js?v=1.19-pursuit-1"></script>
-<script src="boss-abilities.js?v=1.19-pursuit-1"></script>
-<script src="prototype-art.js?v=1.19-pursuit-1"></script>
-<script src="fw-interim-assets.js?v=1.19-pursuit-1"></script>
-<script src="interim-art.js?v=1.19-pursuit-1"></script>
-<script src="campaign-ui.js?v=1.19-pursuit-1"></script>
-<script src="game-core.js?v=1.19-pursuit-1"></script>
+<script src="balance-config.js?v=1.19-pursuit-2"></script>
+<script src="merchant.js?v=1.19-pursuit-2"></script>
+<script src="skins.js?v=1.19-pursuit-2"></script>
+<script src="skill-tree-data.js?v=1.19-pursuit-2"></script>
+<script src="endless.js?v=1.19-pursuit-2"></script>
+<script src="skill-tree.js?v=1.19-pursuit-2"></script>
+<script src="skill-tree-effects.js?v=1.19-pursuit-2"></script>
+<script src="game-data.js?v=1.19-pursuit-2"></script>
+<script src="game-arcade.js?v=1.19-pursuit-2"></script>
+<script src="quick-stats.js?v=1.19-pursuit-2"></script>
+<script src="game-render.js?v=1.19-pursuit-2"></script>
+<script src="game-ui.js?v=1.19-pursuit-2"></script>
+<script src="tower-fire.js?v=1.19-pursuit-2"></script>
+<script src="battle-actions.js?v=1.19-pursuit-2"></script>
+<script src="prestige-enemies.js?v=1.19-pursuit-2"></script>
+<script src="boss-abilities.js?v=1.19-pursuit-2"></script>
+<script src="prototype-art.js?v=1.19-pursuit-2"></script>
+<script src="fw-interim-assets.js?v=1.19-pursuit-2"></script>
+<script src="interim-art.js?v=1.19-pursuit-2"></script>
+<script src="campaign-ui.js?v=1.19-pursuit-2"></script>
+<script src="game-core.js?v=1.19-pursuit-2"></script>
 </body>
 </html>
