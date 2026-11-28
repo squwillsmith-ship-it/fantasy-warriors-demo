@@ -15,10 +15,10 @@ function waveStatus(){
  const preparing=state.mode==='prep'||state.mode==='opening',finished=['clear','champion','over'].includes(state.mode);
  let phase='WAVE PREPARATION',next='Buy packs and start the stage';
  if(state.mode==='battle'){
-   if(boss){phase=boss.faction?'HOLLOW LEGION '+state.factionSpawned+'/3':state.stage===10?'ELDRITCH PHASE '+boss.phase+'/3':'BOSS FIGHT';next=(boss.name||encounter().boss)+' has arrived';}
+   if(boss){phase=boss.faction?'HOLLOW LEGION '+state.factionSpawned+'/3':boss.stage===10?'ELDRITCH PHASE '+boss.phase+'/3':'BOSS FIGHT';next=(boss.name||encounter().boss)+' has arrived';}
    else if(unspawned){const p=state.regularSpawned/total;phase=p<.30?'OPENING WAVE':p<.85?'ESCALATING WAVE':'FINAL RUSH';next='Next '+encounter().minion+': '+Math.max(0,nextSpawnInterval()-state.spawnClock).toFixed(1)+'s · '+unspawned+' left';}
    else if(live){phase=state.bossRewardPending?'KING SLIME SPLIT':'CLEAR THE WAVE';next=live+' '+encounter().minion+' remaining on field';}
-   else{const faction=state.wavePlan?.faction&&state.factionSpawned<3;phase=faction?'LEGION INCOMING':'BOSS INCOMING';next=(faction?window.FWPrestigeEnemies.factionNames[state.factionSpawned]:encounter().boss)+' in '+Math.max(0,BOSS_AFTER_CLEAR_DELAY-state.bossWaitClock).toFixed(1)+'s';}
+   else{const faction=state.wavePlan?.faction&&state.factionSpawned<3;phase=faction?'LEGION INCOMING':'BOSS INCOMING';next=(faction?window.FWPrestigeEnemies.factionNames[state.factionSpawned]:(state.endlessWave?ENCOUNTERS[window.FWEndless.wave(state.endlessWave).boss-1]?.boss||'Wave complete':encounter().boss))+' in '+Math.max(0,BOSS_AFTER_CLEAR_DELAY-state.bossWaitClock).toFixed(1)+'s';}
    if(state.paused)phase='PAUSED · '+phase;
  } else if(finished){phase=state.mode==='over'?'STAGE FAILED':'STAGE COMPLETE';next=state.mode==='over'?'Retry when ready':'Wave resolved';}
  return {total,dead,live,unspawned,boss,phase,next,progress:total?dead/total:0,up:state.upEarned||0};
