@@ -14,7 +14,7 @@ const dataset={
       "status": "live",
       "manifestoVersion": "1.16.0",
       "lastReviewed": "2026-11-29",
-      "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required. Reward pacing: 8 scheduled kills per UP; +0.5 elite UP. Late prestige scheduled UP scaling 0.8 at P4 and 0.65 at P5+; boss and floor retained. Hero rebalance: lower Archer basic and Volley; improve frontline survival/damage and Legendary Dragonkin. Target ranged kill advantage <=3x in pooled campaigns. | Spreadsheet balance import 2026-11-29; 17 changed numeric fields. | Eight spreadsheet stat changes and one starting shop slot.",
+      "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required. Reward pacing: 5 scheduled kills per UP; +0.5 elite UP. Late prestige scheduled UP scaling 0.8 at P4 and 0.65 at P5+; boss and floor retained. Hero rebalance: lower Archer basic and Volley; improve frontline survival/damage and Legendary Dragonkin. Target ranged kill advantage <=3x in pooled campaigns. | Spreadsheet balance import 2026-11-29; 17 changed numeric fields. | Eight spreadsheet stat changes and one starting shop slot.",
       "heroes": [
         {
           "id": "knight",
@@ -592,8 +592,8 @@ const dataset={
         "minionUPChance": 0.1,
         "bossUP": 5,
         "startingTowerHP": 100,
-        "minionUPMode": "deterministic-eight",
-        "eligibleKillsPerUP": 8,
+        "minionUPMode": "deterministic-five",
+        "eligibleKillsPerUP": 5,
         "eliteKillUP": 0.5,
         "scheduledUPByPrestige": [
           1,
@@ -2371,7 +2371,7 @@ function validate(profile){
  }
  for(const key of ['damage','cooldownSeconds','projectileSpeed','projectileRadius'])finite(profile.towerFire?.[key],.01,10000,'towerFire.'+key);
  finite(profile.economy.eligibleKillsPerUP,1,1000,'UP cadence');
- if(!Number.isInteger(profile.economy.eligibleKillsPerUP)||!['deterministic-six','deterministic-eight'].includes(profile.economy.minionUPMode))error('UP mode');
+ if(!Number.isInteger(profile.economy.eligibleKillsPerUP)||!['deterministic-five','deterministic-six','deterministic-eight'].includes(profile.economy.minionUPMode))error('UP mode');
  finite(profile.economy.eliteKillUP,0,1000,'elite UP');
  if(profile.economy.scheduledUPByPrestige!==undefined){const factors=profile.economy.scheduledUPByPrestige;if(!Array.isArray(factors)||factors.length!==6)error('prestige UP scaling');for(const n of factors)finite(n,.01,1,'prestige UP factor');}
  for(const key of ['openingFraction','middleEndFraction','openingStart','openingEnd','middleEnd','finalInterval'])finite(profile.spawn.wavePhases?.[key],.01,30,'wave.'+key);
