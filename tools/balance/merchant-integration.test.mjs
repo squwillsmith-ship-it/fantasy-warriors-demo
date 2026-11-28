@@ -195,3 +195,33 @@ endless.get('endlessEnter').fire('click');assert.equal(es.endlessState().session
 endless.get('endlessRetire').fire('click');assert.equal(es.endlessState().session,null);assert.equal(es.debug().runHighest,10);
 assert(es.prestige());assert.equal(es.debug().runHighest,0);assert.equal(es.shards(),27);assert(es.endlessState().discovered);assert(!es.endlessState().available);
 console.log('Endless persistent session, intermission stock, active reload abandonment, duplicate reward, retirement and capped prestige passed.');
+
+
+// Guaranteed progress on resolved attempts (no extra payout on abandonment or lab battles).
+storage.clear();
+const coreIndex=files.indexOf('game-core.js'), unmodifiedCore=sources[coreIndex];
+sources[coreIndex]=unmodifiedCore.replace('window.__FW_TEST__={','window.__FW_PROGRESS_FIXTURE__={state,lose:()=>{state.towerHp=0;gameOver()}};window.__FW_TEST__={');
+try{
+ const a=boot(false),sk=a.window.FWSkillTree,fx=a.window.__FW_PROGRESS_FIXTURE__;
+ assert.equal(sk.finishAttempt(false),0,'preparation has no reward');
+ a.get('buyButton').fire('click');a.get('stageButton').fire('click');
+ assert.equal(fx.state.kills,0);fx.lose();
+ assert.equal(sk.points(),2,'zero-kill defeat grants two UP');
+ assert.equal(fx.state.lastReport.up,2);assert.equal(fx.state.lastReport.minimumTopup,2);
+ assert.equal(sk.finishAttempt(false),0,'duplicate completion excluded');
+ assert.equal(boot(false).window.FWSkillTree.points(),2,'reward survives reload');
+ const b=boot(false),bs=b.window.FWSkillTree,bf=b.window.__FW_PROGRESS_FIXTURE__;
+ b.get('buyButton').fire('click');b.get('stageButton').fire('click');
+ for(let i=0;i<6;i++)bf.state.upEarned+=bs.recordKill(null,false,{scheduled:true,rewardId:'progress-'+i});
+ bf.lose();assert.equal(bs.points(),4,'one earned UP topped up to two, not added');
+ assert.equal(bf.state.lastReport.minimumTopup,1);assert.equal(bf.state.lastReport.up,2);
+ const c=boot(false),cs=c.window.FWSkillTree,cf=c.window.__FW_PROGRESS_FIXTURE__;
+ c.get('buyButton').fire('click');c.get('stageButton').fire('click');
+ for(let i=0;i<18;i++)cf.state.upEarned+=cs.recordKill(null,false,{scheduled:true,rewardId:'progress-high-'+i});
+ cf.lose();assert.equal(cs.points(),7);assert.equal(cf.state.lastReport.minimumTopup,0);assert.equal(cf.state.lastReport.up,3);
+ const d=boot(false),ds=d.window.FWSkillTree;
+ d.get('buyButton').fire('click');d.get('stageButton').fire('click');assert.equal(boot(false).window.FWSkillTree.points(),7,'abandoned battle does not get floor');
+ const l=boot(true),ls=l.window.FWSkillTree,lf=l.window.__FW_PROGRESS_FIXTURE__;
+ l.window.__FW_LAB_API__.prepare();l.window.__FW_LAB_API__.queueHero('knight',1);l.window.__FW_LAB_API__.start();const labUP=ls.points();lf.lose();assert.equal(ls.points(),labUP,'lab mode excluded');
+ console.log('Attempt progression guarantee: zero/one/high UP defeats, report, reload, duplicate and lab exclusions passed.');
+}finally{sources[coreIndex]=unmodifiedCore}
