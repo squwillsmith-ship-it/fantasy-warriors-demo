@@ -620,14 +620,14 @@ window.FW_SKILL_DATA={
       "name": "Razor Daggers",
       "cost": 3,
       "prerequisites": "T2-R-GATE",
-      "effect": "+45% basic damage."
+      "effect": "+60% basic damage."
     },
     {
       "id": "O-2-R-A2",
       "name": "Poisoned Steel",
       "cost": 3,
       "prerequisites": "O-2-R-A1",
-      "effect": "Each dagger hit applies poison equal to 20% basic damage over 3s, initially max 3 stacks per owner per enemy."
+      "effect": "Each dagger hit applies poison equal to 35% basic damage over 4s, initially max 3 stacks per owner per enemy."
     },
     {
       "id": "O-2-R-A3",
@@ -639,14 +639,14 @@ window.FW_SKILL_DATA={
     {
       "id": "O-2-R-A4",
       "name": "Potent Venom",
-      "cost": 5,
+      "cost": 4,
       "prerequisites": "O-2-R-A3",
       "effect": "Poison cap increases from 3 to 6."
     },
     {
       "id": "O-2-R-A5",
       "name": "Toxic Overload",
-      "cost": 6,
+      "cost": 5,
       "prerequisites": "O-2-R-A4",
       "effect": "Dagger hit on enemy already at six own stacks consumes them and deals their remaining poison damage +50% immediately."
     },
@@ -732,14 +732,14 @@ window.FW_SKILL_DATA={
       "name": "Stronger Aegis",
       "cost": 4,
       "prerequisites": "O-3-P-B1",
-      "effect": "+50% shield absorption."
+      "effect": "+35% shield absorption."
     },
     {
       "id": "O-3-P-B3",
       "name": "Sacred Restoration",
       "cost": 5,
       "prerequisites": "O-3-P-B2",
-      "effect": "Aegis additionally heals recipients 10% of their max HP."
+      "effect": "Aegis additionally heals recipients 7.5% of their max HP."
     },
     {
       "id": "O-3-P-B4",
@@ -865,21 +865,21 @@ window.FW_SKILL_DATA={
       "name": "Hallowed Vitality",
       "cost": 4,
       "prerequisites": "T3-PR-GATE",
-      "effect": "+40% max HP."
+      "effect": "+60% max HP."
     },
     {
       "id": "O-3-PR-B2",
       "name": "Greater Courage",
       "cost": 4,
       "prerequisites": "O-3-PR-B1",
-      "effect": "+50% of base Blessing damage bonus."
+      "effect": "+75% of base Blessing damage bonus."
     },
     {
       "id": "O-3-PR-B3",
       "name": "Enduring Faith",
       "cost": 5,
       "prerequisites": "O-3-PR-B2",
-      "effect": "+40% Blessing duration."
+      "effect": "+60% Blessing duration."
     },
     {
       "id": "O-3-PR-B4",
@@ -891,7 +891,7 @@ window.FW_SKILL_DATA={
     {
       "id": "O-3-PR-B5",
       "name": "Divine Ascension",
-      "cost": 8,
+      "cost": 6,
       "prerequisites": "O-3-PR-B4",
       "effect": "Blessed heroes gain 10 percentage points timed special charge after every third personal qualifying kill."
     },
@@ -1005,35 +1005,35 @@ window.FW_SKILL_DATA={
       "name": "Ironwood Skin",
       "cost": 5,
       "prerequisites": "T4-D-GATE",
-      "effect": "+50% max HP in both forms."
+      "effect": "+75% max HP in both forms."
     },
     {
       "id": "O-4-D-B2",
       "name": "Savage Claws",
       "cost": 5,
       "prerequisites": "O-4-D-B1",
-      "effect": "+50% Bear Form basic damage."
+      "effect": "+100% Bear Form basic damage."
     },
     {
       "id": "O-4-D-B3",
       "name": "Primal Endurance",
-      "cost": 6,
+      "cost": 5,
       "prerequisites": "O-4-D-B2",
       "effect": "+40% Bear Form duration."
     },
     {
       "id": "O-4-D-B4",
       "name": "Predator's Fury",
-      "cost": 8,
+      "cost": 7,
       "prerequisites": "O-4-D-B3",
-      "effect": "Bear claws heal 15% actual damage dealt."
+      "effect": "Bear claws heal 25% actual damage dealt."
     },
     {
       "id": "O-4-D-B5",
       "name": "Ancient Guardian",
-      "cost": 10,
+      "cost": 8,
       "prerequisites": "O-4-D-B4",
-      "effect": "Bear Form grants 30% damage reduction and releases Vine Wave every third claw attack; benefits from purchased nature upgrades but cannot create extra waves or charge transformation."
+      "effect": "Bear Form grants 40% damage reduction and releases Vine Wave every third claw attack; benefits from purchased nature upgrades but cannot create extra waves or charge transformation."
     },
     {
       "id": "O-4-W-A1",
@@ -1215,33 +1215,33 @@ window.FW_SKILL_DATA={
       "name": "Reinforced Bones",
       "cost": 6,
       "prerequisites": "T5-NE-GATE",
-      "effect": "+50% undead max HP."
+      "effect": "+75% undead max HP."
     },
     {
       "id": "O-5-NE-B2",
       "name": "Grave Weapons",
       "cost": 6,
       "prerequisites": "O-5-NE-B1",
-      "effect": "+50% undead basic damage."
+      "effect": "+75% undead basic damage."
     },
     {
       "id": "O-5-NE-B3",
       "name": "Eternal Servants",
       "cost": 8,
       "prerequisites": "O-5-NE-B2",
-      "effect": "+50% undead lifetime."
+      "effect": "+75% undead lifetime."
     },
     {
       "id": "O-5-NE-B4",
       "name": "Death Knight",
-      "cost": 9,
+      "cost": 8,
       "prerequisites": "O-5-NE-B3",
       "effect": "Every fifth qualifying summon is Death Knight instead, additional +100% base HP and damage; uses normal summon slot."
     },
     {
       "id": "O-5-NE-B5",
       "name": "Undead Legion",
-      "cost": 10,
+      "cost": 9,
       "prerequisites": "O-5-NE-B4",
       "effect": "Maximum active undead +50% rounded up; +25% undead attack rate."
     },
@@ -2962,7 +2962,7 @@ window.FW_SKILL_DATA={
     },
     "O-2-R-A1": {
       "kind": "damage",
-      "amount": 0.45,
+      "amount": 0.6,
       "key": "rogue"
     },
     "O-2-R-A3": {
@@ -3022,7 +3022,7 @@ window.FW_SKILL_DATA={
     },
     "O-3-PR-B1": {
       "kind": "hp",
-      "amount": 0.4,
+      "amount": 0.6,
       "key": "priest"
     },
     "O-4-S-A1": {
@@ -3042,7 +3042,7 @@ window.FW_SKILL_DATA={
     },
     "O-4-D-B1": {
       "kind": "hp",
-      "amount": 0.5,
+      "amount": 0.75,
       "key": "druid"
     },
     "O-4-W-A1": {
@@ -3209,13 +3209,13 @@ window.FW_SKILL_DATA={
     },
     "O-3-PR-B2": {
       "kind": "special",
-      "amount": 0.5,
+      "amount": 0.75,
       "key": "priest",
       "field": "blessingDamageBonus"
     },
     "O-3-PR-B3": {
       "kind": "special",
-      "amount": 0.4,
+      "amount": 0.6,
       "key": "priest",
       "field": "blessingDurationSeconds"
     },
@@ -3233,7 +3233,7 @@ window.FW_SKILL_DATA={
     },
     "O-5-NE-B3": {
       "kind": "special",
-      "amount": 0.5,
+      "amount": 0.75,
       "key": "necromancer",
       "field": "undeadLifetimeSeconds"
     },
@@ -3255,12 +3255,12 @@ window.FW_SKILL_DATA={
     },
     "O-5-NE-B1": {
       "kind": "summonHP",
-      "amount": 0.5,
+      "amount": 0.75,
       "key": "undead"
     },
     "O-5-NE-B2": {
       "kind": "summonDamage",
-      "amount": 0.5,
+      "amount": 0.75,
       "key": "undead"
     },
     "O-2-B-A5": {
@@ -3280,7 +3280,7 @@ window.FW_SKILL_DATA={
     },
     "O-4-D-B2": {
       "kind": "bearDamage",
-      "amount": 0.5,
+      "amount": 1,
       "key": "druid"
     },
     "O-5-NE-A2": {
