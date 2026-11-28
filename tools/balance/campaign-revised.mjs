@@ -37,7 +37,7 @@ function run(seed,candidate,maxAttempts=40){
    }}
    sim.advance(.25);
   }
-  const outcome=s.mode;result.push({i:i+1,p,stage,cap,team,outcome,sec:Math.round(s.elapsed*100)/100,kills:s.kills,up:Math.round((sk.points()-startUP)*100)/100,bought:purchases.length,rescueTaps,spells:spellCasts});
+  const outcome=s.mode;const earned=Math.round((sk.points()-startUP)*100)/100;if(['clear','over','champion'].includes(outcome)&&earned<2)throw Error('Zero/insufficient progression: seed '+seed+' stage '+stage+' attempt '+(i+1)+' earned '+earned);result.push({i:i+1,p,stage,cap,team,outcome,sec:Math.round(s.elapsed*100)/100,kills:s.kills,up:earned,minimumTopup:s.attemptProgressTopup||0,bought:purchases.length,rescueTaps,spells:spellCasts});
   if(outcome==='champion'||outcome==='battle')break;
   if(outcome==='clear'){fails=0;b.get('messageButton').fire('click')}
   else if(outcome==='over'){fails++;b.get('messageButton').fire('click');if(fails>=4&&sk.debug().runWins>0&&p<5){sk.prestige();fails=0}}
