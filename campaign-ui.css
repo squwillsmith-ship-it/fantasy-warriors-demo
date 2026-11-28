@@ -59,3 +59,20 @@ body.fw-live-body{padding:0 max(6px,env(safe-area-inset-right)) 0 max(6px,env(sa
 .fw-dealing #pauseButton{pointer-events:none;opacity:.5}.fw-dealing .fw-live-deployment[hidden]{display:none!important}
 
 .fw-live-coin-label{margin-left:auto;color:#d7b977}.fw-pixel-hud{display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:#222228;border-bottom:2px solid #55555f;padding:4px 6px;color:#e6dcc7;font-size:12px;flex:none}.fw-pixel-hud progress{width:clamp(55px,15vw,130px);accent-color:#75965b}.fw-pixel-hud b:last-child{margin-left:auto;color:#d7b977}.fw-live.fw-combat .battle-head{display:none}.fw-live.fw-combat .wave-tracker{font-size:10px}.fw-portrait-art{animation:fw-idle .8s steps(2) infinite alternate}.fw-portrait-art.fw-restrained{animation:fw-struggle .35s steps(2) infinite alternate}@keyframes fw-idle{to{transform:translateY(-1px)}}@keyframes fw-struggle{to{transform:translateX(2px)}}.fw-dealing #liveBattleControls button:first-child{pointer-events:none;opacity:.5}
+
+/* Visual evidence follow-up: keep the core merchant actions in the short landscape viewport. */
+.fw-live-shop #formation,.fw-live-shop .small-label:has(#formationCount){display:none}
+.fw-live-shop .fw-live-merchant-banner{grid-column:1/-1}
+@media(orientation:landscape) and (max-height:520px){
+ .fw-live-shop{gap:5px;padding:5px;grid-template-rows:auto minmax(0,1fr);min-height:100dvh}
+ .fw-live-shop>.panel{padding:3px 5px}
+ .fw-live-shop .section-top,.fw-live-shop .shop-note,.fw-live-shop .coin-refill-note,.fw-live-shop hr.divider{display:none}
+ .fw-live-shop #packOfferButtons{padding:4px;gap:5px;margin-bottom:4px!important;border-bottom-width:4px}
+ .fw-live-shop #packOfferButtons button{min-height:68px;padding:3px;font-size:10px;gap:3px}
+ .fw-live-shop #packOfferButtons button:before{width:25px;height:32px;border-width:3px;font-size:15px}
+ .fw-live-shop #rotateShop,.fw-live-shop #reserveShop{min-height:32px;padding:3px 5px;margin:3px 0!important}
+ .fw-live-shop #buyButton,.fw-live-shop #stageButton{min-height:38px;padding:4px 6px;margin:3px 0}
+ .fw-live-shop .button-row{margin:3px 0;gap:4px}
+ .fw-live-shop .fw-merchant-art{min-height:0}
+ .fw-live-shop .fw-merchant-art p{font-size:10px;padding:4px;margin:4px}
+}
