@@ -45,7 +45,7 @@ function renderMap(){
  ui.mapInfo.textContent=p.resets+' prestiges · '+p.up.toFixed(2)+' UP · '+p.shards.toFixed(2)+' Shards · '+(live.endlessHub?'Campaign complete':live.endlessWave?'Endless wave '+live.endlessWave:'Stage '+live.stage+' / 10');
  const count=live.endlessHub||live.endlessWave?10:Math.min(10,Math.max(1,live.stage));art.map(ui.mapArt,count);ui.regions.replaceChildren(ui.mapArt,...data.slice(0,count).map((r,i)=>{
   const n=i+1,cleared=p.runClears.includes(n),current=!live.endlessWave&&!live.endlessHub&&live.stage===n;
-  const b=btn('',()=>choosePage('shop'));b.classList.add('fw-live-region');const p=art.coords[i];b.style.left=p[0]+'%';b.style.top=p[1]+'%';b.append(E('span','fw-region-mark',icons[i]),E('b',null,r.name),E('small',null,current?'CURRENT':cleared?'CLEARED':'DISCOVERED'));b.disabled=!current;b.dataset.state=current?'current':cleared?'cleared':'locked';return b;
+  const b=btn('',()=>choosePage('shop'));b.classList.add('fw-live-region');const pos=art.coords[i];b.style.left=pos[0]+'%';b.style.top=pos[1]+'%';b.append(E('span','fw-region-mark',icons[i]),E('b',null,r.name),E('small',null,current?'CURRENT':cleared?'CLEARED':'DISCOVERED'));b.disabled=!current;b.dataset.state=current?'current':cleared?'cleared':'locked';return b;
  }));
  ui.mapActions.firstElementChild.textContent=live.endlessHub?'Endless & progression':live.endlessWave?'Prepare Endless wave':'Prepare attempt';
 }
