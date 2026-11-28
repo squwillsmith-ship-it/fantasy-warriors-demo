@@ -64,3 +64,31 @@ body.fw-live-body #skillModal .fw-tab.selected{background:#c69c58;color:#171a23;
 .fw-discovery-card{background:#192232f5;box-shadow:4px 4px #0b1018;min-width:130px}
 @media(max-width:740px) and (orientation:portrait){.fw-title-body{width:70%;min-width:0;gap:10px;padding:16px;background:#151923e0}.fw-title-body h2{font-size:clamp(26px,7vw,48px)}.fw-live .fw-live-region{max-width:70px;font-size:9px;padding:2px;min-width:30px}.fw-live .fw-live-region .fw-region-mark{width:24px;height:24px;font-size:14px}}
 @media(orientation:landscape) and (max-height:520px){.fw-title-body{min-width:220px;width:37%;padding:10px 17px;gap:5px}.fw-title-body:before{font-size:17px}.fw-title-body h2{font-size:clamp(25px,5vw,48px)}.fw-title-body .btn{min-height:33px;font-size:13px;padding:3px 8px}.fw-live-shop #packOfferButtons button{min-height:68px;font-size:10px}.fw-live-shop #packOfferButtons button:before{height:34px;width:min(90%,90px);font-size:18px}.fw-live-shop>.panel{padding:3px 5px}.fw-live .fw-live-region{font-size:9px;padding:2px}.fw-live .fw-live-region .fw-region-mark{width:23px;height:23px;font-size:13px}.fw-portrait-heading{font-size:10px}.fw-live .btn{font-size:11px}}
+
+/* v1.19: landscape game viewport, with proportional independent art panels. */
+body.fw-live-body{padding:0 env(safe-area-inset-right) 0 env(safe-area-inset-left);overflow-x:hidden}
+.fw-live[data-screen=menu],.fw-live[data-screen=map]{height:100vh;height:100dvh;min-height:0;overflow:hidden}
+.fw-live[data-screen=menu] .fw-live-pages,.fw-live[data-screen=map] .fw-live-pages{min-height:0;flex:1}
+.fw-live .fw-live-menu,.fw-live .fw-live-map{height:100%;min-height:0}
+.fw-live .fw-live-menu{display:flex;flex-direction:row;align-items:stretch;gap:0}
+.fw-live-menu>.fw-pixel-background{inset:0 0 0 auto;width:62%;height:100%;object-fit:cover;object-position:center}
+.fw-live .fw-title-body{width:38%;min-width:0;min-height:0;height:100%;flex:none;container-type:inline-size;background:#151923;gap:clamp(3px,1.6dvh,15px);padding:clamp(8px,2.8dvh,32px) clamp(8px,2vw,30px);overflow:hidden}
+.fw-live .fw-title-body h2{font-size:clamp(15px,min(12.6cqw,10.7dvh),72px);word-spacing:normal;letter-spacing:.01em;line-height:1.02;margin:0;width:100%;max-width:100%}
+.fw-title-body h2 span{display:block;white-space:nowrap}
+.fw-live .fw-title-body p{font-size:clamp(8px,min(3.7cqw,2.5dvh),14px);margin:0;letter-spacing:.09em}
+.fw-live .fw-title-body:before{font-size:clamp(11px,4dvh,25px)}
+.fw-live .fw-title-body .btn{width:100%;max-width:none;min-height:clamp(24px,8.2dvh,52px);font-size:clamp(10px,min(5.5cqw,3.8dvh),21px);padding:3px 8px;line-height:1.15;flex:none}
+.fw-live .fw-art-label{font-size:clamp(8px,2.5dvh,13px);max-width:60%}
+.fw-live .fw-map-frame{flex:1;min-height:0;min-width:0;container-type:size;display:grid;place-items:center;background:#101926}
+.fw-live .fw-live-regions{min-height:0;flex:none;width:min(100cqw,213.69863cqh);height:min(46.794872cqw,100cqh);aspect-ratio:780/365;max-width:100%;max-height:100%;border:0}
+.fw-live-regions>.fw-pixel-background{object-fit:contain}
+.fw-live-map>.fw-screen-head,.fw-live-map>.fw-live-actions{flex:none}
+.fw-live.fw-combat{height:100vh;height:100dvh;box-sizing:border-box}
+.fw-rotation-gate:not([open]){display:none}
+.fw-rotation-gate[open]{position:fixed;inset:0;margin:0;width:100%;height:100%;max-width:none;max-height:none;border:0;background:#101522;color:#f0d8a8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;font-family:Georgia,serif}
+.fw-rotation-gate::backdrop{background:#101522}
+.fw-rotation-gate h2{font-size:clamp(22px,7vw,38px);margin:0}
+.fw-rotation-gate p{font-size:16px;max-width:30ch;line-height:1.5;margin:0;color:#d5c5aa}
+.fw-rotate-device{font-size:64px;border:2px solid #a48250;border-radius:9px;width:62px;height:100px;display:grid;place-items:center;transform:rotate(-20deg);color:#d7b977}
+body.fw-orientation-blocked{overflow:hidden}
+@media(orientation:landscape) and (max-height:320px){.fw-live .fw-title-body{gap:3px;padding:5px 12px}.fw-live .fw-title-body:before{font-size:12px}.fw-live .fw-title-body .btn{min-height:26px}.fw-live .fw-screen-head{padding:3px 6px}.fw-live .fw-live-actions{padding:3px 5px;gap:4px}.fw-live .fw-live-actions button{min-height:28px;padding:3px 5px}.fw-live .fw-live-map-info{font-size:10px}.fw-live .fw-live-map h2{font-size:17px}}
