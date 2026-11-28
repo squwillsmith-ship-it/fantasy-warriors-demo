@@ -9,6 +9,7 @@ const nodeMap=Object.fromEntries(data.nodes.map(n=>[n.id,n]));
 const classIds=[['knight','archer','mage'],['hunter','barbarian','rogue'],['paladin','nun','priest'],['shaman','druid','warlock'],['beastmaster','necromancer','dragonkin']];
 const gatePrices=[...BALANCE.skill.tierGatewayUP];
 const BASE_MAX_COINS=BALANCE.economy.startingCoinMax,COINS_PER_CLASS_GATE=BALANCE.economy.coinsPerClassGate;
+const merchantNodes=window.FWMerchant.data.nodes,merchantMap=Object.fromEntries(merchantNodes.map(n=>[n.id,n]));
 const legacyPerks=[
  {key:'vitality',name:'Ancestral Vitality',icon:'♥',description:'Permanent +8% base hero HP per rank.',max:6,cost:1},
  {key:'strength',name:'Ancestral Arms',icon:'⚔',description:'Permanent +8% basic hero damage per rank.',max:6,cost:1},
@@ -17,7 +18,7 @@ const legacyPerks=[
  {key:'merchant',name:'Market Charter',icon:'▤',description:'Permanent +1 shop offer slot per rank.',max:3,cost:3}
 ];
 const K=document.body.classList.contains('lab-mode')?'fantasy-warriors-lab-skilltree-1.1':'fantasy-warriors-skilltree-1.1';
-const defaultSave=()=>({up:0,upRemainder:0,nodes:[],kills:{},packOpens:{},highestClear:0,runHighest:0,runWins:0,campaignStage:1,tierWins:{},gateways:[],resets:0,shards:0,legacy:{},stats:{},purchaseCosts:{},grandfatheredGates:[],gateRulesVersion:2,eligibleKillRemainder:0,attemptedStages:[]}); 
+const defaultSave=()=>({up:0,upRemainder:0,nodes:[],kills:{},packOpens:{},highestClear:0,runHighest:0,runWins:0,campaignStage:1,tierWins:{},gateways:[],resets:0,shards:0,legacy:{},stats:{},purchaseCosts:{},grandfatheredGates:[],gateRulesVersion:2,eligibleKillRemainder:0,attemptedStages:[],merchantNodes:[],merchantPity:[0,0,0,0,0],merchantCommit:null,merchantCommission:null,discoveredHeroes:[]}); 
 function load(){try{const p=JSON.parse(localStorage.getItem(K));if(p&&Array.isArray(p.nodes)){const migrated=Object.assign(defaultSave(),p);migrated.upRemainder=0; // retired five-kills-to-one-UP counter
  if(!Number.isInteger(p.campaignStage))migrated.campaignStage=Math.max(1,Math.min(10,1+Number(p.runHighest||0)));
  // Previously completed 5-kill Archer/Mage gates are grandfathered; existing coin rewards cannot be lost.
@@ -30,7 +31,10 @@ function load(){try{const p=JSON.parse(localStorage.getItem(K));if(p&&Array.isAr
  if(!migrated.purchaseCosts||typeof migrated.purchaseCosts!=='object')migrated.purchaseCosts={};
  migrated.eligibleKillRemainder=Number.isInteger(migrated.eligibleKillRemainder)&&migrated.eligibleKillRemainder>=0&&migrated.eligibleKillRemainder<6?migrated.eligibleKillRemainder:0;
  migrated.attemptedStages=Array.isArray(migrated.attemptedStages)?[...new Set(migrated.attemptedStages.filter(n=>Number.isInteger(n)&&n>=1&&n<=10))]:[];
+ migrated.merchantNodes=Array.isArray(migrated.merchantNodes)?[...new Set(migrated.merchantNodes.filter(id=>merchantMap[id]))]:[];migrated.merchantPity=validPity(migrated.merchantPity);migrated.discoveredHeroes=validDiscovery(migrated.discoveredHeroes);migrated.merchantCommission=migrated.discoveredHeroes.includes(migrated.merchantCommission)?migrated.merchantCommission:null;
  return migrated;}}catch(e){}return defaultSave();}
+function validPity(a){return Array.isArray(a)&&a.length===5&&a.every(x=>Number.isInteger(x)&&x>=0&&x<=7)?a.slice():[0,0,0,0,0]}
+function validDiscovery(a){return Array.isArray(a)?[...new Set(a.filter(id=>classIds.flat().includes(id)))]:[]}
 let p=load(),api=null,active='tree',selected='T1-ROOT',initial=null,initialSpecials=null,initialSummons=null,sandboxSaved=null,sandboxGame=null;
 const $=id=>document.getElementById(id);
 const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -102,8 +106,8 @@ function recalc(){
  else api.state.towerHp=Math.min(api.state.towerMax,api.state.towerHp);
  const completedQuests=data.nodes.filter(node=>node.kind==='gate'&&has(node)).length;
  const cap=BASE_MAX_COINS+COINS_PER_CLASS_GATE*completedQuests+(generalBonus(1,'G04')?4:0)+(generalBonus(2,'G04')?3:0)+(generalBonus(4,'G05')?4:0)+(generalBonus(5,'G05')?5:0)+2*rank('treasury');
- api.state.coinMax=cap;api.state.shopSlots=3+(generalBonus(1,'G05')?1:0)+(generalBonus(2,'G05')?1:0)+(generalBonus(3,'G05')?1:0)+rank('merchant');
- if(api.state.mode==='prep'&&api.state.bought===0&&api.state.coins===previousMax)api.state.coins=cap;
+ api.state.coinMax=Math.min(40,cap);api.state.shopSlots=Math.min(6,3+(generalBonus(1,'G05')?1:0)+(generalBonus(2,'G05')?1:0)+(generalBonus(3,'G05')?1:0)+rank('merchant')+(p.merchantNodes.includes('R-M01')?1:0)+(p.merchantNodes.includes('R-M18')?1:0));
+ if(api.state.mode==='prep'&&api.state.bought===0&&api.state.coins===previousMax)api.state.coins=api.state.coinMax;
  for(const h of api.heroes){
   const orig=initial[h.id],t=h.pack+1,heroIdx=classIds[t-1].indexOf(h.id),code=heroCode(t,heroIdx);
   const path='T'+t+'-'+code+'-S';
@@ -244,9 +248,9 @@ function renderSandbox(){
 function notify(){if($('skillModal')?.classList.contains('active'))draw();updateLabels();}
 function prestige(){
  if(!api||api.state.mode!=='prep'||api.state.testMode||sandboxSaved||p.runWins===0)return;
- const reward=Math.max(1,Math.floor(Math.max(1,p.runHighest||0)/2));
+ const reward=Math.max(1,Math.floor(Math.pow(1.35,Math.max(1,p.runHighest||0)-1)+.5));
  if(!confirm('Prestige for '+reward+' permanent Legacy Shards? Stages, ordinary upgrades, class kill quests, coin-cap quest rewards and pack tiers all reset. Permanent Legacy perks remain.'))return;
- p.resets++;p.shards+=reward;p.up=0;p.upRemainder=0;p.eligibleKillRemainder=0;p.nodes=[];p.purchaseCosts={};p.tierWins={};p.kills={};p.grandfatheredGates=[];p.packOpens={};p.gateways=[];p.runWins=0;p.runHighest=0;p.campaignStage=1;
+ p.resets++;p.shards+=reward;p.up=0;p.upRemainder=0;p.eligibleKillRemainder=0;p.nodes=[];p.purchaseCosts={};p.tierWins={};p.kills={};p.grandfatheredGates=[];p.packOpens={};p.gateways=[];p.runWins=0;p.runHighest=0;p.campaignStage=1;p.merchantPity=[0,0,0,0,0];p.merchantCommit=null;
  save();api.restart();recalc();draw();updateLabels();api.log('Prestige '+p.resets+': +'+reward+' permanent Shards. Class quests and pack tiers reset; Legacy perks retained.');
 }
 function buyLegacy(key){if(!api||api.state.mode!=='prep'||api.state.testMode||sandboxSaved)return;const def=legacyPerks.find(x=>x.key===key);if(!def)return;const level=rank(key),cost=def.cost+level;if(level>=def.max||p.shards<cost)return;p.shards-=cost;p.legacy[key]=level+1;save();recalc();draw();updateLabels();}
@@ -288,12 +292,30 @@ function details(){
  '<button class="fw-action" type="button" id="skillBuy" '+(!check.ok||!api||api.state.mode!=='prep'||api.state.testMode?'disabled':'')+'>'+(status==='owned'?'✓ Already unlocked':check.ok?'Unlock · '+check.cost+' UP':escapeHTML(check.reason))+'</button>';
  $('skillBuy').addEventListener('click',()=>purchase(n.id));
 }
+function merchantState(){return {flags:[...p.merchantNodes],pity:validPity(p.merchantPity),lastCommit:p.merchantCommit,commission:p.merchantCommission,discovered:validDiscovery(p.discoveredHeroes)}}
+function commitMerchant(id,plan){
+ if(!api||api.state.testMode||typeof id!=='string'||p.merchantCommit===id)return false;
+ p.merchantPity=validPity(plan.pity);p.merchantCommit=id;
+ p.discoveredHeroes=validDiscovery([...p.discoveredHeroes,...plan.heroes]);
+ for(let i=0;i<5;i++)p.packOpens[i]=(p.packOpens[i]||0)+(plan.packOpens[i]||0);
+ save();updateLabels();return true;
+}
+function buyMerchant(id){
+ const n=merchantMap[id];if(!n||!api||api.state.mode!=='prep'||api.state.testMode||sandboxSaved||api.state.bought>0||p.merchantNodes.includes(id)||p.shards<n.cost||!(n.prerequisites==='ROOT'||p.merchantNodes.includes(n.prerequisites)))return false;
+ p.shards-=n.cost;p.merchantNodes.push(id);save();recalc();draw();updateLabels();return true;
+}
+function setCommission(id){
+ if(!p.merchantNodes.includes('R-M20')||!api||api.state.mode!=='prep'||api.state.testMode||sandboxSaved)return false;
+ if(id&&!p.discoveredHeroes.includes(id))return false;p.merchantCommission=id||null;save();return true;
+}
 function renderLegacy(){
- const pane=$('skillPane');if(!pane)return;const reward=Math.max(1,Math.floor(Math.max(1,p.runHighest||0)/2));
+ const pane=$('skillPane');if(!pane)return;const reward=Math.max(1,Math.floor(Math.pow(1.35,Math.max(1,p.runHighest||0)-1)+.5));
  pane.innerHTML='<div class="fw-legacy-intro"><h3>Permanent Legacy Tree</h3><p>Voluntary resets earn Legacy Shards. Permanent upgrades survive future resets. The source design leaves exact amounts and scope open; these are adjustable test values.</p><div class="fw-legacy-balance">◈ '+p.shards+' Shards · '+p.resets+' resets</div><button type="button" class="fw-action" id="fwPrestige" '+(!api||api.state.mode!=='prep'||api.state.testMode||p.runWins===0||sandboxSaved?'disabled':'')+'>⟲ Prestige reset · earn '+reward+' Shards</button></div>'+
  '<div class="fw-legacy-list">'+legacyPerks.map(x=>{const level=rank(x.key),price=x.cost+level;return '<div class="fw-perk"><div class="fw-perk-icon">'+x.icon+'</div><div class="fw-perk-body"><b>'+escapeHTML(x.name)+'</b><small>'+escapeHTML(x.description)+'</small><span>Rank '+level+'/'+x.max+'</span></div><button type="button" data-perk="'+x.key+'" '+(level>=x.max||p.shards<price||api.state.mode!=='prep'||api.state.testMode||sandboxSaved?'disabled':'')+'>'+(level>=x.max?'MAX':price+' ◈')+'</button></div>'}).join('')+'</div>'+
  '<div class="fw-legacy-foot">Permanent older-class evolution branches are an approved direction but their exact nodes and abilities are not specified; no invented classes are added.</div>';
- $('fwPrestige').addEventListener('click',prestige);pane.querySelectorAll('[data-perk]').forEach(b=>b.addEventListener('click',()=>buyLegacy(b.dataset.perk)));
+ pane.insertAdjacentHTML('beforeend','<div class="fw-legacy-intro"><h3>Merchant upgrades</h3><p>New one-time merchant nodes. Benefits apply at the next restock. Legacy rank migration is pending.</p></div><div class="fw-legacy-list">'+merchantNodes.filter(n=>p.merchantNodes.includes(n.id)||n.prerequisites==='ROOT'||p.merchantNodes.includes(n.prerequisites)).map(n=>'<div class="fw-perk"><div class="fw-perk-body"><b>'+escapeHTML(n.name)+'</b><small>'+escapeHTML(n.effect.split(' | ').at(-1))+'</small></div><button type="button" data-merchant="'+n.id+'" '+(p.merchantNodes.includes(n.id)||p.shards<n.cost||!api||api.state.mode!=='prep'||api.state.testMode||sandboxSaved||api.state.bought>0?'disabled':'')+'>'+(p.merchantNodes.includes(n.id)?'OWNED':n.cost+' ◈')+'</button></div>').join('')+'</div>');
+ if(p.merchantNodes.includes('R-M20')){pane.insertAdjacentHTML('beforeend','<label>Next restock commission <select id="fwCommission"><option value="">None</option>'+p.discoveredHeroes.map(id=>'<option value="'+id+'" '+(id===p.merchantCommission?'selected':'')+'>'+escapeHTML(window.FWMerchant.data.heroes.find(h=>h.id===id).name)+'</option>').join('')+'</select></label>');$('fwCommission').addEventListener('change',e=>setCommission(e.target.value));}
+ $('fwPrestige').addEventListener('click',prestige);pane.querySelectorAll('[data-perk]').forEach(b=>b.addEventListener('click',()=>buyLegacy(b.dataset.perk)));pane.querySelectorAll('[data-merchant]').forEach(b=>b.addEventListener('click',()=>buyMerchant(b.dataset.merchant)));
 }
 
 function backupPayload(){return {game:'Fantasy Warriors',kind:'skilltree-save',schema:1,build:'1.0',exportedAt:new Date().toISOString(),state:JSON.parse(JSON.stringify(sandboxSaved||p))};}
@@ -331,6 +353,7 @@ function normalizeBackup(raw){
  }
  clean.grandfatheredGates=(source.grandfatheredGates||[]).filter(id=>id==='T1-A-GATE'||id==='T1-MG-GATE');
  clean.gateRulesVersion=2;
+ clean.merchantNodes=Array.isArray(source.merchantNodes)?[...new Set(source.merchantNodes)]:[];if(clean.merchantNodes.some(id=>!merchantMap[id]||!(merchantMap[id].prerequisites==='ROOT'||clean.merchantNodes.includes(merchantMap[id].prerequisites))))throw Error('Invalid merchant unlock ledger');clean.merchantPity=validPity(source.merchantPity);clean.discoveredHeroes=validDiscovery(source.discoveredHeroes);clean.merchantCommission=clean.discoveredHeroes.includes(source.merchantCommission)?source.merchantCommission:null;clean.merchantCommit=typeof source.merchantCommit==='string'?source.merchantCommit:null;
  // For old exported backups, preserve pre-1.3.2 gate completion credit.
  if(source.gateRulesVersion!==2){
   if((clean.kills.archer||0)>=5&&!clean.grandfatheredGates.includes('T1-A-GATE'))clean.grandfatheredGates.push('T1-A-GATE');
@@ -400,7 +423,7 @@ function connect(opts){
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('skillModal').classList.contains('active')){$('skillModal').hidden=true;$('skillModal').classList.remove('active')}});
  updateLabels();
 }
-window.FWSkillTree={connect,has:owns,isTierOpen,questProgress,startSandbox,resetSandboxTree,endSandbox,sandboxActive:()=>!!sandboxSaved,points:()=>p.up,shards:()=>p.shards,shopSlots:()=>api?.state.shopSlots||3,recordKill,markStageAttempt,recordPack,recordWin,prestige,recalc,notify,rate:specialRate,
+window.FWSkillTree={merchantState,commitMerchant,buyMerchant,setCommission,connect,has:owns,isTierOpen,questProgress,startSandbox,resetSandboxTree,endSandbox,sandboxActive:()=>!!sandboxSaved,points:()=>p.up,shards:()=>p.shards,shopSlots:()=>api?.state.shopSlots||3,recordKill,markStageAttempt,recordPack,recordWin,prestige,recalc,notify,rate:specialRate,
  debug:()=>JSON.parse(JSON.stringify(p)),purchase,nodes:data.nodes,showQuest,backupPayload,normalizeBackup,checkpointStage,markRestart,resumeStage, 
  heroBonus:(h,e)=>{
   let extra=1;
