@@ -14,7 +14,7 @@ const dataset={
       "status": "live",
       "manifestoVersion": "1.16.0",
       "lastReviewed": "2026-11-29",
-      "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required. Reward pacing: 8 scheduled kills per UP; +0.5 elite UP. Late prestige scheduled UP scaling 0.8 at P4 and 0.65 at P5+; boss and floor retained. Hero rebalance: lower Archer basic and Volley; improve frontline survival/damage and Legendary Dragonkin. Target ranged kill advantage <=3x in pooled campaigns. | Spreadsheet balance import 2026-11-29; 17 changed numeric fields.",
+      "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required. Reward pacing: 8 scheduled kills per UP; +0.5 elite UP. Late prestige scheduled UP scaling 0.8 at P4 and 0.65 at P5+; boss and floor retained. Hero rebalance: lower Archer basic and Volley; improve frontline survival/damage and Legendary Dragonkin. Target ranged kill advantage <=3x in pooled campaigns. | Spreadsheet balance import 2026-11-29; 17 changed numeric fields. | Eight spreadsheet stat changes and one starting shop slot.",
       "heroes": [
         {
           "id": "knight",
@@ -40,7 +40,7 @@ const dataset={
           "damage": 2.5,
           "speed": 0.5,
           "walk": 1.85,
-          "range": 6,
+          "range": 5,
           "role": "Straight Arrow",
           "glyph": "➶"
         },
@@ -50,11 +50,11 @@ const dataset={
           "pack": 0,
           "rarity": "Legendary",
           "color": "#ffc770",
-          "hp": 14,
-          "damage": 4.2,
+          "hp": 10,
+          "damage": 3,
           "speed": 0.3,
           "walk": 1.8,
-          "range": 5,
+          "range": 4,
           "role": "Explosive Fireball",
           "glyph": "✦"
         },
@@ -602,7 +602,8 @@ const dataset={
           1,
           0.8,
           0.65
-        ]
+        ],
+        "startingShopSlots": 1
       },
       "skill": {
         "costs": {
@@ -850,9 +851,9 @@ const dataset={
           "slots": 48,
           "basic": {
             "hp": 7,
-            "damage": 3,
-            "speed": 1,
-            "attackPeriod": 1,
+            "damage": 3.5,
+            "speed": 1.2,
+            "attackPeriod": 0.8,
             "firstDelay": 0.65
           },
           "elite": {
@@ -864,7 +865,7 @@ const dataset={
             "firstDelay": 0.65
           },
           "boss": {
-            "hp": 200,
+            "hp": 400,
             "damage": 7,
             "speed": 1,
             "attackPeriod": 2
