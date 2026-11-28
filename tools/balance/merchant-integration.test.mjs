@@ -155,3 +155,43 @@ for(const stage of [1,10]){
  else{assert.equal(phases.join(','),'390,455,545');assert.equal(cl.snapshot().kills,139);}
 }
 console.log('Active combat profile and real-core King Slime split / Eldritch three-phase transitions passed.');
+
+storage.clear();
+const ew=boot(true),elab=ew.window.__FW_LAB_API__,etest=ew.window.__FW_TEST__,E=ew.window.FWEndless;
+for(const wave of [1,5,10,50]){
+ elab.prepare();elab.setPrestige(5,true);assert(elab.setEndlessWave(wave));elab.setTowerHP(100000);elab.start();
+ const plan=E.wave(wave),seen=new Set(),bosses=[];let scheduled=0;
+ for(let i=0;i<3000&&elab.snapshot().mode==='battle';i++){
+  etest.advance(.25);
+  for(const e of etest.current().enemies.filter(e=>e.hp>0)){
+   const k=e.id+':'+e.phase;if(!seen.has(k)){seen.add(k);if(e.boss)bosses.push(e);else if(!e.generated)scheduled++}
+   etest.defeatEnemy(e.id);
+  }
+ }
+ assert.equal(elab.snapshot().mode,'clear','Endless scripted clear '+wave);
+ assert.equal(scheduled,plan.slots);
+ assert.equal(bosses.filter(e=>e.faction).length,E.invasion(wave,5)?3:0);
+ assert.equal(bosses.filter(e=>!e.faction).length,wave===50?3:plan.boss?1:0);
+ if(wave===5)assert(Math.abs(bosses[0].maxHp-E.boss(ew.window.FWBalance.profile.stages,1).hp*plan.hp*1.08**5)<1e-6);
+ if(wave===50)assert(Math.abs(bosses.filter(e=>!e.faction).reduce((n,e)=>n+e.maxHp,0)-700*plan.hp*1.08**5)<1e-6);
+}
+console.log('Scripted Endless waves 1/5/10/50: minion-only, King Slime, invasion, three phases passed.');
+storage.clear();
+storage.set(normalKey,JSON.stringify({treeSchema:2,up:100,shards:10,resets:5,campaignStage:10,runHighest:10,highestClear:10,runWins:10,runClears:[1,2,3,4,5,6,7,8,9,10],attemptedStages:[1,2,3,4,5,6,7,8,9,10],nodes:[],legacyNodes:[],discoveredHeroes:['knight']}));
+let endless=boot(false),es=endless.window.FWSkillTree,ex=endless.window.__FW_TEST__;
+assert(ex.endless().hub);endless.get('endlessEnter').fire('click');assert.equal(ex.endless().wave,1);
+assert.equal(es.purchase('R-G01'),false);assert.equal(es.buySkinBox(),false);
+endless.get('buyButton').fire('click');const stock=JSON.stringify(endless.window.__FW_DEMO__.snapshot().shopOffers);
+endless.get('endlessExit').fire('click');assert(ex.endless().hub);
+endless=boot(false);es=endless.window.FWSkillTree;ex=endless.window.__FW_TEST__;assert(ex.endless().hub);endless.get('endlessResume').fire('click');
+assert.equal(JSON.stringify(endless.window.__FW_DEMO__.snapshot().shopOffers),stock);
+endless.get('stageButton').fire('click');assert.equal(es.endlessState().session.phase,'battle');
+es.recordKill('knight',false,{scheduled:true,mutated:true,rewardId:'endless-mutant'});
+es.recordKill(null,true,{scheduled:false,rewardId:'endless-boss'});
+assert.equal(es.shards(),12);assert.equal(es.recordKill(null,true,{scheduled:false,rewardId:'endless-boss'}),0);
+endless=boot(false);es=endless.window.FWSkillTree;ex=endless.window.__FW_TEST__;
+assert(ex.endless().hub);assert.equal(es.endlessState().session,null);assert.equal(es.endlessState().last.wave,1);assert.equal(es.shards(),12);
+endless.get('endlessEnter').fire('click');assert.equal(es.endlessState().session.wave,1);
+endless.get('endlessRetire').fire('click');assert.equal(es.endlessState().session,null);assert.equal(es.debug().runHighest,10);
+assert(es.prestige());assert.equal(es.debug().runHighest,0);assert.equal(es.shards(),27);assert(es.endlessState().discovered);assert(!es.endlessState().available);
+console.log('Endless persistent session, intermission stock, active reload abandonment, duplicate reward, retirement and capped prestige passed.');
