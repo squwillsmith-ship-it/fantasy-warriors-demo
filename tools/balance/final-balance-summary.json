@@ -1,0 +1,194 @@
+{
+  "summary": [
+    {
+      "seed": 271146,
+      "policy": "live",
+      "config": "previous",
+      "attempts": 86,
+      "campaign": 83,
+      "defeats": 55,
+      "resets": 5,
+      "highestClear": 10,
+      "minUP": 2,
+      "endlessCleared": 2,
+      "stage8": 1,
+      "meanPurchases": 3.819277108433735
+    },
+    {
+      "seed": 271147,
+      "policy": "live-merchant-casual",
+      "config": "previous",
+      "attempts": 114,
+      "campaign": 107,
+      "defeats": 82,
+      "resets": 5,
+      "highestClear": 10,
+      "minUP": 2,
+      "endlessCleared": 6,
+      "stage8": 18,
+      "meanPurchases": 3.3271028037383177
+    },
+    {
+      "seed": 271148,
+      "policy": "live-passive",
+      "config": "previous",
+      "attempts": 116,
+      "campaign": 110,
+      "defeats": 87,
+      "resets": 5,
+      "highestClear": 10,
+      "minUP": 2,
+      "endlessCleared": 5,
+      "stage8": 20,
+      "meanPurchases": 3.2
+    },
+    {
+      "seed": 271148,
+      "policy": "wraith-passive",
+      "config": "final",
+      "attempts": 105,
+      "campaign": 101,
+      "defeats": 78,
+      "resets": 5,
+      "highestClear": 10,
+      "minUP": 2,
+      "endlessCleared": 3,
+      "stage8": 10,
+      "meanPurchases": 3.4158415841584158
+    },
+    {
+      "seed": 271147,
+      "policy": "wraith-merchant-casual",
+      "config": "final",
+      "attempts": 106,
+      "campaign": 100,
+      "defeats": 75,
+      "resets": 5,
+      "highestClear": 10,
+      "minUP": 2,
+      "endlessCleared": 5,
+      "stage8": 12,
+      "meanPurchases": 3.3
+    },
+    {
+      "seed": 271149,
+      "policy": "live",
+      "config": "final",
+      "attempts": 87,
+      "campaign": 86,
+      "defeats": 59,
+      "resets": 5,
+      "highestClear": 10,
+      "minUP": 2,
+      "endlessCleared": 0,
+      "stage8": 3,
+      "meanPurchases": 3.744186046511628
+    }
+  ],
+  "total": 614,
+  "defeats": 436,
+  "finalAttempts": 298,
+  "finalDefeats": 212,
+  "pooledHeroRates": [
+    {
+      "id": "necromancer",
+      "kills": 854,
+      "deployments": 43,
+      "rate": 19.86046511627907
+    },
+    {
+      "id": "shaman",
+      "kills": 975,
+      "deployments": 55,
+      "rate": 17.727272727272727
+    },
+    {
+      "id": "mage",
+      "kills": 2241,
+      "deployments": 139,
+      "rate": 16.12230215827338
+    },
+    {
+      "id": "warlock",
+      "kills": 499,
+      "deployments": 31,
+      "rate": 16.096774193548388
+    },
+    {
+      "id": "hunter",
+      "kills": 2357,
+      "deployments": 160,
+      "rate": 14.73125
+    },
+    {
+      "id": "dragonkin",
+      "kills": 279,
+      "deployments": 20,
+      "rate": 13.95
+    },
+    {
+      "id": "archer",
+      "kills": 3279,
+      "deployments": 252,
+      "rate": 13.011904761904763
+    },
+    {
+      "id": "beastmaster",
+      "kills": 632,
+      "deployments": 61,
+      "rate": 10.360655737704919
+    },
+    {
+      "id": "druid",
+      "kills": 392,
+      "deployments": 44,
+      "rate": 8.909090909090908
+    },
+    {
+      "id": "paladin",
+      "kills": 536,
+      "deployments": 62,
+      "rate": 8.64516129032258
+    },
+    {
+      "id": "priest",
+      "kills": 389,
+      "deployments": 49,
+      "rate": 7.938775510204081
+    },
+    {
+      "id": "barbarian",
+      "kills": 619,
+      "deployments": 82,
+      "rate": 7.548780487804878
+    },
+    {
+      "id": "rogue",
+      "kills": 617,
+      "deployments": 82,
+      "rate": 7.524390243902439
+    },
+    {
+      "id": "nun",
+      "kills": 628,
+      "deployments": 90,
+      "rate": 6.977777777777778
+    },
+    {
+      "id": "knight",
+      "kills": 2650,
+      "deployments": 389,
+      "rate": 6.812339331619537
+    }
+  ],
+  "pooledHeroSpread": 2.915366388767003,
+  "meanPurchases": 3.4738675958188154,
+  "medianWinSeconds": 129.75,
+  "medianDefeatSeconds": 95.05,
+  "meanCampaignHours": 2.9639583333333333,
+  "assertions": {
+    "pure": 43612,
+    "integration": 498,
+    "priorTree": 27508
+  }
+}
