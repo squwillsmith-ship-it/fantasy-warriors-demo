@@ -1,5 +1,7 @@
 # Fantasy Warriors — Playable Demo
 
+> **Development branch balance-v1.16 — integration checkpoint:** the real v1.16 engine now drives the title/menu, campaign map, merchant, battle HUD, deployed hero inspection/rescue, spell controls, 228 ordinary / 120 Legacy nodes, collection, backups and Endless. The public main branch remains Build 1.0.14. The new interface uses placeholder glyph art, a simple region grid and a nonblocking deployment reveal; the separate mock UI is not the authoritative game. See `tools/balance/campaign-ui.test.mjs` for browser smoke coverage. Mock engine integration and UI navigation checks passed; Chromium and physical-device release verification remain pending. No balance numbers were changed by this integration; the production field uses a 3:2 aspect ratio matching the existing mock combat fixture.
+
 **Current playable build: 1.0.14** · **Current design manifesto: v1.5.0** · 23 November 2026
 
 **Implemented v1.5.0 foundations:** automatically firing player-aimed tower projectiles; 48–138 scheduled enemies with stage-specific base HP/damage/speed and faster three-phase waves; guaranteed UP per six scheduled enemy kills (remainder persists through attempts); King Slime split, Mushroom Man death spores and Eldritch Horror's three health phases.
