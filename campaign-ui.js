@@ -5,7 +5,7 @@ let installed=false,screen='menu',previousMode=null,live=null,ui={},selected=nul
 const active=s=>s&&s.mode!=='prep';
 function choosePage(page){
  if(!live||active(live))return;
- screen=page;paint();
+ screen=page;paint();window.scrollTo?.(0,0);
 }
 function btn(label,fn){const b=E('button','btn secondary compact',label);b.type='button';b.addEventListener('click',fn);return b}
 function skill(tab){if(active(live))return;$('openSkillTree').click();$(tab).click()}
@@ -75,9 +75,9 @@ function paint(){
 }
 function sync(state,press,abandon){
  live=state;ui.press=press;ui.abandon=abandon;if(!installed&&!install())return;
- if(previousMode&&previousMode!=='prep'&&state.mode==='prep'){screen=previousMode==='clear'||previousMode==='champion'?'map':'shop';selected=null;lastCapture=null}
+ if(previousMode&&previousMode!=='prep'&&state.mode==='prep'){screen=previousMode==='clear'||previousMode==='champion'?'map':'shop';selected=null;lastCapture=null;window.scrollTo?.(0,0)}
  const began=state.mode==='battle'&&previousMode!=='battle';previousMode=state.mode;paint();
- if(began){ui.deployment.replaceChildren(...state.heroes.filter(h=>!h.summonKind).map(h=>{const x=E('span','fw-live-dealt',h.base.glyph+' '+h.base.name+' · '+(h.skin?.rarity||h.base.rarity));x.style.borderColor=h.skin?.trim||h.base.color;return x}));ui.deployment.hidden=!ui.deployment.children.length;ui.deployment.classList.remove('dealing');void ui.deployment.offsetWidth;ui.deployment.classList.add('dealing')}else if(state.mode!=='battle'||state.elapsed>2.3)ui.deployment.hidden=true;
+ if(began){window.scrollTo?.(0,0);ui.deployment.replaceChildren(...state.heroes.filter(h=>!h.summonKind).map(h=>{const x=E('span','fw-live-dealt',h.base.glyph+' '+h.base.name+' · '+(h.skin?.rarity||h.base.rarity));x.style.borderColor=h.skin?.trim||h.base.color;return x}));ui.deployment.hidden=!ui.deployment.children.length;ui.deployment.classList.remove('dealing');void ui.deployment.offsetWidth;ui.deployment.classList.add('dealing')}else if(state.mode!=='battle'||state.elapsed>2.3)ui.deployment.hidden=true;
 }
 function prepareField(){if(!installed)return;ui.layout.hidden=false;ui.side.hidden=false;ui.shell.dataset.screen='battle';}
 window.FWCampaignUI={sync,prepareField};
