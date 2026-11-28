@@ -9,7 +9,8 @@ window.FWTowerFire={
   const radius=cfg.projectileRadius;
   if(!state.towerAim)state.towerAim={x:0,y:-5};
   if(!state.towerShots)state.towerShots=[];
-  let clock=0,serial=0;
+  let clock=0,serial=0,cycles=0;
+  const tuning=()=>window.FWSkillTree?.tower?.()||{damage:cfg.damage,cooldownSeconds:cfg.cooldownSeconds,pierce:0,splash:0,twin:0,overload:false};
   const px=x=>view.w/2+x*view.scale, py=y=>view.h/2+y*view.scale;
   function aim(clientX,clientY){
    const rect=canvas.getBoundingClientRect();
@@ -23,28 +24,30 @@ window.FWTowerFire={
   function fire(){
    const dx=state.towerAim.x,dy=state.towerAim.y,len=Math.hypot(dx,dy)||1;
    const vx=dx/len,vy=dy/len;
-   state.towerShots.push({id:++serial,x:vx*.95,y:vy*.95,vx,vy,damage:cfg.damage,travel:0});
+   const t=tuning(),damage=t.damage*(t.overload&&++cycles%5===0?2:1);if(!t.overload)cycles++;
+   const bolt=(offset,scale)=>state.towerShots.push({id:++serial,x:vx*.95-vy*offset,y:vy*.95+vx*offset,vx,vy,damage:damage*scale,travel:0,remaining:t.pierce+1,hitIds:new Set(),splashIds:new Set(),splash:t.splash});bolt(0,1);if(t.twin>0)bolt(.22,t.twin);
    addEffect({kind:'pulse',x:0,y:0,radius:.55,color:'#ffe19b',life:.15,maxLife:.15});
   }
   function step(dt){
    if(state.mode!=='battle'||state.paused)return;
    clock+=dt;
-   while(clock>=cfg.cooldownSeconds){clock-=cfg.cooldownSeconds;fire();}
+   const cooldown=tuning().cooldownSeconds;while(clock>=cooldown){clock-=cooldown;fire();}
    for(let i=state.towerShots.length-1;i>=0;i--){
     const b=state.towerShots[i],oldX=b.x,oldY=b.y,dist=cfg.projectileSpeed*dt;
     b.x+=b.vx*dist;b.y+=b.vy*dist;b.travel+=dist;
     let chosen=null,nearest=Infinity;
     for(const e of state.enemies){
-     if(e.hp<=0)continue;
+     if(e.hp<=0||b.hitIds.has(e.id))continue;
      const dx=b.x-oldX,dy=b.y-oldY,denom=dx*dx+dy*dy||1;
      const t=Math.max(0,Math.min(1,((e.x-oldX)*dx+(e.y-oldY)*dy)/denom));
      const x=oldX+dx*t,y=oldY+dy*t;
      if(Math.hypot(e.x-x,e.y-y)<=radius+(e.radius||.35)&&t<nearest){nearest=t;chosen=e;}
     }
     if(chosen){
-     hitEnemy(chosen,b.damage,'#ffdfa1',null);
+     b.hitIds.add(chosen.id);hitEnemy(chosen,b.damage,'#ffdfa1',null);
+     if(b.splash>0)for(const e of state.enemies){if(e!==chosen&&e.hp>0&&!b.splashIds.has(e.id)&&Math.hypot(e.x-chosen.x,e.y-chosen.y)<=.9){b.splashIds.add(e.id);hitEnemy(e,b.damage*b.splash,'#ffdfa1',null)}}
      addEffect({kind:'pulse',x:chosen.x,y:chosen.y,radius:.38,color:'#fbd48d',life:.20,maxLife:.20});
-     state.towerShots.splice(i,1);
+     if(--b.remaining<=0)state.towerShots.splice(i,1);
     }else if(b.travel>Math.max(view.worldW,view.worldH)+5||Math.abs(b.x)>view.worldW/2+1||Math.abs(b.y)>view.worldH/2+1){
      state.towerShots.splice(i,1);
     }
@@ -65,7 +68,7 @@ window.FWTowerFire={
     }
    }
   }
-  function reset(){clock=0;state.towerShots=[];}
+  function reset(){clock=0;cycles=0;state.towerShots=[];}
   return {step,draw,reset,fire,aim,config:cfg};
  }
 };
