@@ -41,7 +41,7 @@ function clearShopStock(){if(state.testMode||SKILLS?.sandboxActive?.())return;tr
 
 const {view,resize,render}=window.FWGameRenderer.create({canvas,ctx,state,ENCOUNTERS,TUNING,clamp,cfg,chargeSeconds,isOriginalHero});
 const ACTIONS=window.FWBattleActions.create({state,owns:id=>!!SKILLS?.has(id),equipped:()=>SKILLS?.spellLoadout()||[],hitEnemy,healHero,ring:visualRing,log});
-const TOWER_FIRE=window.FWTowerFire.create({canvas,ctx,view,state,config:BALANCE.towerFire,hitEnemy,addEffect,intercept:(x,y)=>{if(state.mode==='battle'&&state.paused)return true;const handled=ACTIONS.pointer(x,y);if(handled)updateUI();return handled;},aimBlocked:()=>!!state.spellArmed||(state.mode==='battle'&&state.paused)});
+const TOWER_FIRE=window.FWTowerFire.create({canvas,ctx,view,state,config:BALANCE.towerFire,hitEnemy,addEffect,intercept:(x,y)=>{if(state.mode==='battle'&&state.paused)return true;if(Math.abs(x)>view.worldW/2||Math.abs(y)>view.worldH/2)return true;const handled=ACTIONS.pointer(x,y);if(handled)updateUI();return handled;},aimBlocked:()=>!!state.spellArmed||(state.mode==='battle'&&state.paused),previewRadius:()=>state.spellArmed?ACTIONS.values(state.spellArmed).radius:0});
 function rand(a,b){return a+Math.random()*(b-a)}
 function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
 function chooseHero(packIndex=0){const pool=PACKS[packIndex].pool;return HERO_MAP[pool[Math.floor(Math.random()*pool.length)]]}
@@ -155,7 +155,7 @@ function perHeroKill(e){if(e.boss||!e.scheduled)return;const h=state.heroes.find
 function burning(e){return !!e.treeStatuses?.some(a=>a.kind==='burn'&&a.remaining>0)}
 function critChance(){return owns('O-1-A-A4')?.35:owns('O-1-A-A2')?.20:0}
 function enemiesInRadius(x,y,r){const rr=r*r;return state.enemies.filter(e=>e.hp>0&&(e.x-x)**2+(e.y-y)**2<=rr)}
-function pushEnemy(e,fromX,fromY,dist){const dx=e.x-fromX,dy=e.y-fromY,len=Math.max(.01,Math.hypot(dx,dy));e.x=clamp(e.x+dx/len*dist,-view.worldW/2+.8,view.worldW/2-.8);e.y=clamp(e.y+dy/len*dist,-view.worldH/2+.8,view.worldH/2-.8)}
+function pushEnemy(e,fromX,fromY,dist){if(e.capturing)return;const dx=e.x-fromX,dy=e.y-fromY,len=Math.max(.01,Math.hypot(dx,dy));e.x=clamp(e.x+dx/len*dist,-view.worldW/2+.8,view.worldW/2-.8);e.y=clamp(e.y+dy/len*dist,-view.worldH/2+.8,view.worldH/2-.8)}
 function pointSegmentDistance(x,y,ax,ay,bx,by){const vx=bx-ax,vy=by-ay;const t=clamp(((x-ax)*vx+(y-ay)*vy)/(vx*vx+vy*vy||1),0,1);return Math.hypot(x-ax-t*vx,y-ay-t*vy)}
 // Numerical secondary effects are temporary demonstrations. Only the basic-attack concepts are approved.
 function hitHero(h,d,source){
@@ -307,7 +307,7 @@ function resolveActorCollisions(){
    const angle=((a.id*37+b.id*53)%360)*Math.PI/180,nx=dist>.001?dx/dist:Math.cos(angle),ny=dist>.001?dy/dist:Math.sin(angle),push=Math.min(.23,(desired-dist)*.53);
    const weightA=a.boss?.34:1,weightB=b.boss?.34:1,shareA=weightA/(weightA+weightB),shareB=weightB/(weightA+weightB);
    const ax=a.x-nx*push*shareA*2,ay=a.y-ny*push*shareA*2,bx=b.x+nx*push*shareB*2,by=b.y+ny*push*shareB*2;
-   if(legalActorPosition(a,ax,ay)){a.x=ax;a.y=ay}if(legalActorPosition(b,bx,by)){b.x=bx;b.y=by}
+   if(!a.capturing&&legalActorPosition(a,ax,ay)){a.x=ax;a.y=ay}if(!b.capturing&&legalActorPosition(b,bx,by)){b.x=bx;b.y=by}
   }
  }
  state.combatTelemetry.overlaps=overlaps;
