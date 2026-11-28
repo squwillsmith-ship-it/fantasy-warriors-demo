@@ -23,3 +23,20 @@ check(i>=0,'non-anchor exists');check(M.reserve(shop,i),'reserve');const reserve
 check(M.reroll(shop,40,random)===40,'free reroll');check(JSON.stringify(shop.offers[0])===anchor,'anchor preserved');check(JSON.stringify(shop.offers[i])===reserved,'reservation preserved');
 check(M.buy(shop,i,40)!==null,'purchase reserved');const sold=JSON.stringify(shop.offers[i]);M.reroll(shop,40,random);check(JSON.stringify(shop.offers[i])===sold,'sold remains locked');
 console.log(checks+' merchant assertions passed');
+
+// Curated Shelf is distinct from individual contract/commission anchors.
+check(M.data.nodes.find(n=>n.id==='R-M19').cost===4,'curated price');
+for(let k=0;k<200;k++){
+ const stock=M.roll({tiers:[0,1,2,3,4],slots:6,flags,commission:'dragonkin'},random);
+ const curated=stock.offers.find(o=>o.anchor==='curated');
+ check(stock.offers.length===6,'curated does not increase capacity');
+ check(curated&&curated.qty>1,'curated independently guarantees bulk with commission');
+ check(stock.offers.some(o=>o.anchor==='commission'&&o.heroId==='dragonkin'),'commission preserved');
+ const before=JSON.stringify(curated);M.reroll(stock,40,random);
+ check(JSON.stringify(stock.offers.find(o=>o.anchor==='curated'))===before,'curated anchor preserved');
+}
+const onlyIndividual=M.roll({tiers:[0,1],slots:6,flags:['R-M01','R-M10','R-M11','R-M18','R-M19']},random);
+check(onlyIndividual.offers.some(o=>o.anchor==='curated'&&o.type==='individual'),'individual-only curated fallback');
+const locked=M.roll({tiers:[0,1],slots:6,flags:['R-M01','R-M18','R-M19']},random);
+check(!locked.offers.some(o=>o.type!=='standard'),'curated never bypasses locked products');
+console.log(checks+' merchant assertions passed (including curated regressions)');
