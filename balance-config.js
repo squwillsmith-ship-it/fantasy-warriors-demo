@@ -13,8 +13,8 @@ const dataset={
       "schemaVersion": 1,
       "status": "live",
       "manifestoVersion": "1.16.0",
-      "lastReviewed": "2026-11-28",
-      "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required. Reward pacing: 8 scheduled kills per UP; +0.5 elite UP. Late prestige scheduled UP scaling 0.8 at P4 and 0.65 at P5+; boss and floor retained. Hero rebalance: lower Archer basic and Volley; improve frontline survival/damage and Legendary Dragonkin. Target ranged kill advantage <=3x in pooled campaigns.",
+      "lastReviewed": "2026-11-29",
+      "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required. Reward pacing: 8 scheduled kills per UP; +0.5 elite UP. Late prestige scheduled UP scaling 0.8 at P4 and 0.65 at P5+; boss and floor retained. Hero rebalance: lower Archer basic and Volley; improve frontline survival/damage and Legendary Dragonkin. Target ranged kill advantage <=3x in pooled campaigns. | Spreadsheet balance import 2026-11-29; 17 changed numeric fields.",
       "heroes": [
         {
           "id": "knight",
@@ -22,9 +22,9 @@ const dataset={
           "pack": 0,
           "rarity": "Common",
           "color": "#b9c6d0",
-          "hp": 43,
+          "hp": 35,
           "damage": 5.2,
-          "speed": 0.75,
+          "speed": 0.5,
           "walk": 1.78,
           "range": 1,
           "role": "Sword Strike",
@@ -38,7 +38,7 @@ const dataset={
           "color": "#8acaab",
           "hp": 12,
           "damage": 2.5,
-          "speed": 0.6,
+          "speed": 0.5,
           "walk": 1.85,
           "range": 6,
           "role": "Straight Arrow",
@@ -52,7 +52,7 @@ const dataset={
           "color": "#ffc770",
           "hp": 14,
           "damage": 4.2,
-          "speed": 0.55,
+          "speed": 0.3,
           "walk": 1.8,
           "range": 5,
           "role": "Explosive Fireball",
@@ -435,22 +435,22 @@ const dataset={
           "bashRadius": 1.25,
           "bashStunSeconds": 1.5,
           "bashDamage": 0,
-          "chargeSeconds": 10
+          "chargeSeconds": 15
         },
         "archer": {
           "name": "Arrow Volley",
           "trigger": "autoCharge",
           "volleyArrowCount": 3,
-          "volleyRadius": 1.35,
+          "volleyRadius": 5,
           "volleyDamage": 3.2,
-          "chargeSeconds": 10
+          "chargeSeconds": 15
         },
         "mage": {
           "name": "Chain Bolt",
           "trigger": "autoCharge",
-          "chainJumpCount": 4,
-          "chainJumpRange": 2.4,
-          "chainDamage": 4.8
+          "chainJumpCount": 3,
+          "chainJumpRange": 2,
+          "chainDamage": 3
         },
         "hunter": {
           "name": "Tripwire Trap",
@@ -819,9 +819,9 @@ const dataset={
           "T2-H-GATE": 30,
           "T2-B-GATE": 35,
           "T2-R-GATE": 40,
-          "T3-P-GATE": 40,
-          "T3-N-GATE": 40,
-          "T3-PR-GATE": 45,
+          "T3-P-GATE": 50,
+          "T3-N-GATE": 55,
+          "T3-PR-GATE": 60,
           "T4-S-GATE": 50,
           "T4-D-GATE": 55,
           "T4-W-GATE": 60,
@@ -851,7 +851,7 @@ const dataset={
           "basic": {
             "hp": 7,
             "damage": 3,
-            "speed": 0.85,
+            "speed": 1,
             "attackPeriod": 1,
             "firstDelay": 0.65
           },
@@ -864,10 +864,10 @@ const dataset={
             "firstDelay": 0.65
           },
           "boss": {
-            "hp": 95,
+            "hp": 200,
             "damage": 7,
-            "speed": 0.55,
-            "attackPeriod": 1.5
+            "speed": 1,
+            "attackPeriod": 2
           },
           "status": "lab-candidate",
           "abilitiesStatus": "existing runtime only"
