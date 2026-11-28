@@ -4267,6 +4267,21 @@ window.FW_SKILL_DATA={
       "kind": "combat",
       "amount": 0,
       "key": null
+    },
+    "V2-HUN-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-HUN-C": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-E10": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
     }
   }
 };
