@@ -449,7 +449,14 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  for(const e of [...state.enemies]){if(e.hp<=0||e.capturing)continue;if(e.stunnedUntil>state.elapsed)continue;const busy=enemySpecial(e,dt);if(state.mode!=='battle')return;if(busy)continue;
   let hero=null,closest=TUNING.shared.enemyHeroDetection**2;for(const h of state.heroes){if(h.hp<=0||h.invisibleUntil>state.elapsed)continue;const d=(h.x-e.x)**2+(h.y-e.y)**2;if(d<=closest){hero=h;closest=d}}
   let totem=null,totemDist=Infinity;for(const p of state.totems){const sq=(p.x-e.x)**2+(p.y-e.y)**2;if(sq<=p.radius*p.radius&&sq<totemDist){totem=p;totemDist=sq}}
-  const target=totem||hero||towerApproach(e);const dist=Math.hypot(target.x-e.x,target.y-e.y);e.attackingTower=!totem&&!hero&&dist<1.5;
+  const wraithReach=hero?actorRadius(e)+actorRadius(hero)+.22:.34;
+  // A Wraith blocked against the tower must be able to complete a normal attack wind-up.
+  // Only use the tower fallback after three seconds without a reachable target at its edge.
+  const atTowerEdge=e.ethereal&&nearTower(e.x,e.y,actorRadius(e)+.40),heroReachable=hero&&Math.hypot(hero.x-e.x,hero.y-e.y)<=wraithReach;
+  e.wraithBlockedTime=atTowerEdge&&!totem&&!heroReachable?(e.wraithBlockedTime||0)+dt:0;
+  const wraithTowerFallback=atTowerEdge&&e.wraithBlockedTime>=3;
+  if(wraithTowerFallback)hero=null;
+  const target=totem||hero||towerApproach(e);const dist=wraithTowerFallback?0:Math.hypot(target.x-e.x,target.y-e.y);e.attackingTower=!totem&&!hero&&dist<1.5;
   const reach=totem?actorRadius(e)+.35:hero?(e.faction&&e.factionIndex===1?3.5:(e.stage===4&&!e.elite&&!e.boss)?3:(e.stage===7&&!e.elite&&!e.boss)?3.5:actorRadius(e)+actorRadius(hero)+.22):.34;
   if(hero&&!totem&&!e.boss&&!e.elite&&!e.generated&&e.stage===6&&dist>reach&&dist<=2.5&&!(e.dashReady>state.elapsed)){const len=Math.min(2,Math.max(0,dist-reach+.02)),x=e.x+(hero.x-e.x)/dist*len,y=e.y+(hero.y-e.y)/dist*len;if(legalActorPosition(e,x,y)&&!nearTower((e.x+x)/2,(e.y+y)/2,e.radius)){e.x=x;e.y=y;e.dashReady=state.elapsed+5;e.inAttackRange=true;e.cooldown=e.attackPeriod;hitHero(hero,e.damage,e);visualRing(x,y,.5,'#f2c892');continue}}
   if(dist<=reach){
