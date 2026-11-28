@@ -1,0 +1,31 @@
+name: Campaign browser compatibility
+on:
+  push:
+    branches: [balance-v1.16]
+    paths: ['*.js','*.css','index.html','tools/balance/campaign-ui.test.mjs','.github/workflows/campaign-compatibility.yml']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    defaults:
+      run:
+        working-directory: tools/balance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - run: node campaign-ui.test.mjs
+        env:
+          FW_BROWSER: ${{ matrix.browser }}
