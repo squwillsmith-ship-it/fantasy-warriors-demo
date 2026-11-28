@@ -531,9 +531,9 @@ function tick(now){
  state.lastTime=now;
  const lab=document.body.classList.contains('lab-mode');
  const multiplier=lab?clamp(Number(window.__FW_LAB_SPEED__)||1,.25,100):1;
- const simulated=dt*multiplier;
+ const simulated=dt*(lab?multiplier:(state.playbackSpeed||1));
  if(state.mode==='battle'&&!state.paused){
-  if(lab){
+  if(lab||(state.playbackSpeed||1)>1){
    let remaining=simulated,steps=0;
    while(remaining>1e-7&&state.mode==='battle'&&steps<160){
     const slice=Math.min(.05,remaining);
@@ -543,14 +543,14 @@ function tick(now){
   }else step(dt);
  }
  for(let i=state.effects.length-1;i>=0;i--){
-  if(state.mode!=='battle'||!state.paused)state.effects[i].life-=lab?simulated:dt;
+  if(state.mode!=='battle'||!state.paused)state.effects[i].life-=simulated;
   if(state.effects[i].life<=0)state.effects.splice(i,1);
  }
  // The campaign hides the battlefield outside battle/results. Do not paint an invisible canvas.
  if(!window.FWCampaignUI||state.mode!=='prep'){render(now/1000);TOWER_FIRE.draw()}requestAnimationFrame(tick);
 }
 const {updateUI:refreshBaseUI,showBattleReport,waveStatus,rollShop,offeredPacks,selectedStock}=window.FWGameUI.create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,nextSpawnInterval,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY});
-function updateUI(){refreshBaseUI();refreshActionsUI();refreshEndlessUI();window.FWCampaignUI?.sync(state,id=>{if(ACTIONS.press(id)){updateUI();return true}return false},abandonAttempt,()=>{if(SKILLS?.newGame()){window.FWCampaignUI?.resetAppearanceHistory?.();updateUI()}},view,()=>{if(state.mode==='battle'){state.paused=!!document.hidden;updateUI()}})}
+function updateUI(){refreshBaseUI();refreshActionsUI();refreshEndlessUI();window.FWCampaignUI?.sync(state,id=>{if(ACTIONS.press(id)){updateUI();return true}return false},abandonAttempt,()=>{if(SKILLS?.newGame()){window.FWCampaignUI?.resetAppearanceHistory?.();updateUI()}},view,()=>{if(state.mode==='battle'){state.paused=!!document.hidden;updateUI()}},()=>{if(state.mode==='battle'){state.playbackSpeed=state.playbackSpeed===1?2:state.playbackSpeed===2?4:1;updateUI()}})}
 function refreshActionsUI(){
  const a=ACTIONS.snapshot(),prep=state.mode==='prep',battle=state.mode==='battle',panel=$('battleActions');
  if(!panel)return;panel.hidden=!(a.known.length&&(prep||battle)||battle&&a.captures.length);
@@ -575,7 +575,7 @@ function revealPack(){if(state.mode!=='opening'||!state.pendingPack)return;
  else{for(const hero of state.openedHeroes)createHero(hero);if(SKILLS)SKILLS.recordPack(state.currentRevealPack);state.packsToOpen--;state.openedHeroes=null;state.pendingPack=false;if(state.packsToOpen>0)openNextPack();else{refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');beginBattle()}updateUI()}
 }
 
-function beginBattle(){ACTIONS.reset();BOSSES.reset();state.necroRoundRobin=0;SKILLS?.startAttempt();state.wavePlan=wavePlan();state.firstEncounterProtected=state.wavePlan.protectedAttempt;if(!state.endlessWave)SKILLS?.markStageAttempt(state.stage);state.factionSpawned=0;state.factionDefeated=0;state.scheduledDefeated=0;state.shardsEarned=0;state.enemyZones=[];state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.bossRewardPending=false;state.bossWaitClock=0;state.enemies=[];TOWER_FIRE.reset();state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.towerShield=0;state.lastTowerShield=false;state.combatTelemetry={overlaps:0,targetSwitches:0,blocked:0};state.deployedHeroes=state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length;state.upEarned=0;state.upDrops=0;state.lastReport=null;refs.battleReport.hidden=true;log('Stage '+state.stage+' · '+encounter().name+' — '+regularCount()+' '+encounter().minion+' units and '+encounter().boss+'.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
+function beginBattle(){ACTIONS.reset();BOSSES.reset();state.necroRoundRobin=0;SKILLS?.startAttempt();state.wavePlan=wavePlan();state.firstEncounterProtected=state.wavePlan.protectedAttempt;if(!state.endlessWave)SKILLS?.markStageAttempt(state.stage);state.factionSpawned=0;state.factionDefeated=0;state.scheduledDefeated=0;state.shardsEarned=0;state.enemyZones=[];state.mode='battle';state.paused=false;state.playbackSpeed=1;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.bossRewardPending=false;state.bossWaitClock=0;state.enemies=[];TOWER_FIRE.reset();state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.towerShield=0;state.lastTowerShield=false;state.combatTelemetry={overlaps:0,targetSwitches:0,blocked:0};state.deployedHeroes=state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length;state.upEarned=0;state.upDrops=0;state.lastReport=null;refs.battleReport.hidden=true;log('Stage '+state.stage+' · '+encounter().name+' — '+regularCount()+' '+encounter().minion+' units and '+encounter().boss+'.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
 function resetPreparation(restoreTower=true){ACTIONS.reset();BOSSES.reset();state.wavePlan=null;state.factionSpawned=0;state.factionDefeated=0;state.scheduledDefeated=0;state.shardsEarned=0;state.enemyZones=[];state.coins=state.coinMax;if(restoreTower)state.towerHp=state.towerMax||100;state.mode='prep';state.paused=false;state.bought=0;state.packQueue=[];state.packsToOpen=0;state.testQueue=[];state.heroes=[];state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.bossRewardPending=false;state.elapsed=0;state.spawnClock=0;state.bossWaitClock=0;state.uiClock=0;TOWER_FIRE.reset();state.upEarned=0;state.upDrops=0;state.deployedHeroes=0;state.lastReport=null;state.bossRewardPending=false;refs.battleReport.hidden=true;state.pendingPack=false;state.openedHeroes=null;refs.overlay.classList.add('hidden');if(SKILLS)SKILLS.recalc();state.coins=state.coinMax;rollShop();if(!initialising)applyShopTheft();updateUI();saveShopStock()}
 function startStage(){if(state.endlessHub)return;if(state.endlessWave&&state.mode==='clear'){if(state.testMode){state.endlessWave++;state.stage=E.wave(state.endlessWave).family;resetPreparation()}else prepareEndless();return}if(state.mode==='clear'){if(!state.testMode)state.stage++;resetPreparation(true);if(SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);log((state.testMode?'Test preparation':'Stage '+state.stage+' preparation')+' has begun.');updateUI();return}
  if(state.mode!=='prep')return;
