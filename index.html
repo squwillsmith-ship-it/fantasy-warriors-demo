@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0e1724" />
 <title>Fantasy Warriors — Demo 1.0.14 · Tower Fire & New Waves</title>
-<link rel="stylesheet" href="skill-tree.css?v=1.0.14">
-<link rel="stylesheet" href="game.css?v=1.0.14">
-<link rel="stylesheet" href="quick-stats.css?v=1.0.14">
+<link rel="stylesheet" href="skill-tree.css?v=1.16-merchant-dev">
+<link rel="stylesheet" href="game.css?v=1.16-merchant-dev">
+<link rel="stylesheet" href="quick-stats.css?v=1.16-merchant-dev">
 </head>
 <body>
 <div class="shell">
@@ -43,7 +43,7 @@
       <div class="section-top"><div><div class="kicker">Between stages</div><h2 id="shopTitle">Hero Pack Shop</h2></div><span style="font-size:20px;color:#c8ab7c">✧</span></div>
       <p class="shop-note" id="shopDescription">Recruit Packs contain 1 random hero each. Packs open when combat starts.</p>
       <div class="pack-promo"><div class="pack-small" aria-hidden="true"><span>✦</span></div><div><div class="pack-name">Recruit Pack</div><div class="pack-sub">1 hero per standard pack · finite stock</div><div class="pack-count" id="packCount">0 Recruit Packs held · 2 coins each</div></div></div>
-      <div id="packOfferButtons" class="button-row" style="flex-wrap:wrap;margin:0 0 8px"></div><button class="btn secondary compact" id="rotateShop" type="button" disabled style="margin:0 0 9px">↻ Rerolls: future permanent upgrade</button><div class="shop-slots" id="liveShopSlots" aria-label="Shop offer slots"><div class="shop-slot available"><span>✦ Slot 1</span><strong>Recruit Pack · 1 hero draw each</strong></div><div class="shop-slot available"><span>✦ Slot 2</span><strong>Random pack stock</strong></div><div class="shop-slot available"><span>✦ Slot 3</span><strong>Random pack stock</strong></div></div>
+      <div id="packOfferButtons" class="button-row" style="flex-wrap:wrap;margin:0 0 8px"></div><button class="btn secondary compact" id="rotateShop" type="button" disabled style="margin:0 0 9px">↻ Rerolls: future permanent upgrade</button><button id="reserveShop" type="button" class="btn secondary compact" disabled>Reserve selected offer</button><div class="shop-slots" id="liveShopSlots" aria-label="Shop offer slots"><div class="shop-slot available"><span>✦ Slot 1</span><strong>Recruit Pack · 1 hero draw each</strong></div><div class="shop-slot available"><span>✦ Slot 2</span><strong>Random pack stock</strong></div><div class="shop-slot available"><span>✦ Slot 3</span><strong>Random pack stock</strong></div></div>
       <button class="btn" id="buyButton">◈ Buy Recruit Pack · 2 coins</button>
       <div class="coin-refill-note">✦ Your round budget refills after every attempt. <span id="coinCapNote">Upgrade coin capacity via the skill tree.</span></div>
       <div class="button-row"><button class="btn secondary" id="stageButton">⚔ Start Stage 1</button><button class="btn secondary compact" id="pauseButton" aria-label="Pause or resume combat" disabled>Ⅱ Pause</button></div>
@@ -92,16 +92,17 @@
   <div class="fw-body"><div class="fw-pane" id="skillPane"></div><section class="fw-detail" id="skillDetails" aria-live="polite"></section></div>
  </div>
 </div>
-<script src="balance-config.js?v=1.0.14"></script>
-<script src="skill-tree-data.js?v=1.0.14"></script>
-<script src="skill-tree.js?v=1.0.14"></script>
-<script src="skill-tree-effects.js?v=1.0.14"></script>
-<script src="game-data.js?v=1.0.14"></script>
-<script src="game-arcade.js?v=1.0.14"></script>
-<script src="quick-stats.js?v=1.0.14"></script>
-<script src="game-render.js?v=1.0.14"></script>
-<script src="game-ui.js?v=1.0.14"></script>
-<script src="tower-fire.js?v=1.0.14"></script>
-<script src="game-core.js?v=1.0.14"></script>
+<script src="balance-config.js?v=1.16-merchant-dev"></script>
+<script src="merchant.js?v=1.16-dev"></script>
+<script src="skill-tree-data.js?v=1.16-merchant-dev"></script>
+<script src="skill-tree.js?v=1.16-merchant-dev"></script>
+<script src="skill-tree-effects.js?v=1.16-merchant-dev"></script>
+<script src="game-data.js?v=1.16-merchant-dev"></script>
+<script src="game-arcade.js?v=1.16-merchant-dev"></script>
+<script src="quick-stats.js?v=1.16-merchant-dev"></script>
+<script src="game-render.js?v=1.16-merchant-dev"></script>
+<script src="game-ui.js?v=1.16-merchant-dev"></script>
+<script src="tower-fire.js?v=1.16-merchant-dev"></script>
+<script src="game-core.js?v=1.16-merchant-dev"></script>
 </body>
 </html>
