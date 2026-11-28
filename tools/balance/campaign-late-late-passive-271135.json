@@ -1,0 +1,297 @@
+{
+  "seed": 271135,
+  "candidate": "late-passive",
+  "result": [
+    {
+      "i": 1,
+      "p": 0,
+      "stage": 1,
+      "endless": 0,
+      "cap": 2,
+      "team": [
+        "archer"
+      ],
+      "outcome": "over",
+      "sec": 56.25,
+      "kills": 13,
+      "up": 2,
+      "minimumTopup": 1,
+      "bought": 0,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 2,
+      "p": 0,
+      "stage": 1,
+      "endless": 0,
+      "cap": 4,
+      "team": [
+        "knight",
+        "archer"
+      ],
+      "outcome": "over",
+      "sec": 82.55,
+      "kills": 27,
+      "up": 4,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 3,
+      "p": 0,
+      "stage": 1,
+      "endless": 0,
+      "cap": 8,
+      "team": [
+        "knight",
+        "knight",
+        "knight"
+      ],
+      "outcome": "over",
+      "sec": 64,
+      "kills": 22,
+      "up": 2,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 4,
+      "p": 0,
+      "stage": 1,
+      "endless": 0,
+      "cap": 8,
+      "team": [
+        "archer",
+        "mage",
+        "knight"
+      ],
+      "outcome": "clear",
+      "sec": 90,
+      "kills": 49,
+      "up": 11,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 5,
+      "p": 0,
+      "stage": 2,
+      "endless": 0,
+      "cap": 10,
+      "team": [
+        "knight",
+        "archer",
+        "knight"
+      ],
+      "outcome": "over",
+      "sec": 65.9,
+      "kills": 20,
+      "up": 3,
+      "minimumTopup": 0,
+      "bought": 0,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 6,
+      "p": 0,
+      "stage": 2,
+      "endless": 0,
+      "cap": 10,
+      "team": [
+        "archer",
+        "hunter",
+        "barbarian"
+      ],
+      "outcome": "over",
+      "sec": 89.5,
+      "kills": 37,
+      "up": 4,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 7,
+      "p": 0,
+      "stage": 2,
+      "endless": 0,
+      "cap": 10,
+      "team": [
+        "knight",
+        "knight",
+        "hunter",
+        "rogue"
+      ],
+      "outcome": "over",
+      "sec": 74.8,
+      "kills": 31,
+      "up": 4,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 8,
+      "p": 0,
+      "stage": 2,
+      "endless": 0,
+      "cap": 10,
+      "team": [
+        "mage",
+        "mage",
+        "rogue",
+        "hunter"
+      ],
+      "outcome": "clear",
+      "sec": 112.2,
+      "kills": 57,
+      "up": 12,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 9,
+      "p": 0,
+      "stage": 3,
+      "endless": 0,
+      "cap": 12,
+      "team": [
+        "archer",
+        "knight",
+        "rogue",
+        "rogue"
+      ],
+      "outcome": "over",
+      "sec": 156.9,
+      "kills": 84,
+      "up": 11,
+      "minimumTopup": 0,
+      "bought": 5,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 10,
+      "p": 0,
+      "stage": 3,
+      "endless": 0,
+      "cap": 12,
+      "team": [
+        "knight",
+        "mage",
+        "barbarian",
+        "hunter"
+      ],
+      "outcome": "clear",
+      "sec": 125.7,
+      "kills": 85,
+      "up": 15,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 11,
+      "p": 0,
+      "stage": 4,
+      "endless": 0,
+      "cap": 12,
+      "team": [
+        "archer",
+        "archer",
+        "hunter",
+        "hunter"
+      ],
+      "outcome": "clear",
+      "sec": 113.35,
+      "kills": 77,
+      "up": 15,
+      "minimumTopup": 0,
+      "bought": 7,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 12,
+      "p": 0,
+      "stage": 5,
+      "endless": 0,
+      "cap": 12,
+      "team": [
+        "mage",
+        "archer",
+        "mage",
+        "hunter"
+      ],
+      "outcome": "battle",
+      "sec": 900,
+      "kills": 84,
+      "up": 10,
+      "minimumTopup": 0,
+      "bought": 5,
+      "rescueTaps": 0,
+      "spells": 0
+    }
+  ],
+  "heroStats": {
+    "archer": {
+      "deployments": 9,
+      "kills": 206,
+      "winDeployments": 3
+    },
+    "knight": {
+      "deployments": 11,
+      "kills": 65,
+      "winDeployments": 2
+    },
+    "mage": {
+      "deployments": 6,
+      "kills": 131,
+      "winDeployments": 4
+    },
+    "hunter": {
+      "deployments": 7,
+      "kills": 128,
+      "winDeployments": 4
+    },
+    "barbarian": {
+      "deployments": 2,
+      "kills": 14,
+      "winDeployments": 1
+    },
+    "rogue": {
+      "deployments": 4,
+      "kills": 24,
+      "winDeployments": 1
+    }
+  },
+  "endless": {
+    "deepest": 0,
+    "available": false,
+    "discovered": false,
+    "session": null,
+    "best": null,
+    "last": null,
+    "byPrestige": {}
+  },
+  "final": {
+    "stage": 5,
+    "resets": 0,
+    "highestClear": 4,
+    "up": 10,
+    "shards": 0
+  }
+}
