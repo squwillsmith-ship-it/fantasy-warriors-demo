@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0e1724" />
 <title>Fantasy Warriors — v1.19 Demo</title>
-<link rel="stylesheet" href="skill-tree.css?v=1.19-pursuit-2">
-<link rel="stylesheet" href="game.css?v=1.19-pursuit-2">
-<link rel="stylesheet" href="quick-stats.css?v=1.19-pursuit-2">
-<link rel="stylesheet" href="campaign-ui.css?v=1.19-pursuit-2">
-<link rel="stylesheet" href="interim-art.css?v=1.19-pursuit-2">
+<link rel="stylesheet" href="skill-tree.css?v=1.19-shop-1">
+<link rel="stylesheet" href="game.css?v=1.19-shop-1">
+<link rel="stylesheet" href="quick-stats.css?v=1.19-shop-1">
+<link rel="stylesheet" href="campaign-ui.css?v=1.19-shop-1">
+<link rel="stylesheet" href="interim-art.css?v=1.19-shop-1">
 </head>
 <body>
 <div class="shell">
@@ -45,7 +45,7 @@
       <div class="section-top"><div><div class="kicker">Between stages</div><h2 id="shopTitle">Hero Pack Shop</h2></div><span style="font-size:20px;color:#c8ab7c">✧</span></div>
       <p class="shop-note" id="shopDescription">Purchase finite merchant offers. Heroes deploy when combat starts.</p>
       <div class="pack-promo"><div class="pack-small" aria-hidden="true"><span>✦</span></div><div><div class="pack-name">Recruit Pack</div><div class="pack-sub">1 hero per standard pack · finite stock</div><div class="pack-count" id="packCount">0 Recruit Packs held · 2 coins each</div></div></div>
-      <div id="packOfferButtons" class="button-row" style="flex-wrap:wrap;margin:0 0 8px"></div><button class="btn secondary compact" id="rotateShop" type="button" disabled style="margin:0 0 9px">↻ Rerolls</button><button id="reserveShop" type="button" class="btn secondary compact" disabled>Reserve selected offer</button><div class="shop-slots" id="liveShopSlots" aria-label="Shop offer slots"><div class="shop-slot available"><span>✦ Slot 1</span><strong>Recruit Pack · 1 hero draw each</strong></div><div class="shop-slot available"><span>✦ Slot 2</span><strong>Random pack stock</strong></div><div class="shop-slot available"><span>✦ Slot 3</span><strong>Random pack stock</strong></div></div>
+      <div id="packOfferButtons" class="button-row" style="flex-wrap:wrap;margin:0 0 8px"></div><button class="btn secondary compact" id="rotateShop" type="button" disabled style="margin:0 0 9px">↻ Rerolls</button><button id="reserveShop" type="button" class="btn secondary compact" disabled>Reserve selected offer</button><div class="shop-slots" id="liveShopSlots" aria-label="Shop offer slots"><div class="shop-slot available"><span>✦ Slot 1</span><strong>Recruit Pack · 1 hero draw each</strong></div></div>
       <button class="btn" id="buyButton">◈ Buy Recruit Pack · 2 coins</button>
       <div class="coin-refill-note">✦ Your round budget refills after every attempt. <span id="coinCapNote">Upgrade coin capacity via the skill tree.</span></div>
       <section id="endlessPanel" hidden><p id="endlessInfo"></p><div class="button-row"><button class="btn" id="endlessEnter" hidden>Start Endless Run</button><button class="btn" id="endlessResume" hidden>Resume Endless</button><button class="btn secondary" id="endlessExit" hidden>Save &amp; Exit</button><button class="btn secondary" id="endlessRetire" hidden>Retire run</button><button class="btn secondary" id="endlessHub" hidden>Return to progression</button></div></section><style>#endlessPanel[hidden],#endlessPanel [hidden]{display:none!important}</style><div class="button-row"><button class="btn secondary" id="stageButton">⚔ Start Stage 1</button></div>
@@ -94,26 +94,26 @@
   <div class="fw-body"><div class="fw-pane" id="skillPane"></div><section class="fw-detail" id="skillDetails" aria-live="polite"></section></div>
  </div>
 </div>
-<script src="balance-config.js?v=1.19-pursuit-2"></script>
-<script src="merchant.js?v=1.19-pursuit-2"></script>
-<script src="skins.js?v=1.19-pursuit-2"></script>
-<script src="skill-tree-data.js?v=1.19-pursuit-2"></script>
-<script src="endless.js?v=1.19-pursuit-2"></script>
-<script src="skill-tree.js?v=1.19-pursuit-2"></script>
-<script src="skill-tree-effects.js?v=1.19-pursuit-2"></script>
-<script src="game-data.js?v=1.19-pursuit-2"></script>
-<script src="game-arcade.js?v=1.19-pursuit-2"></script>
-<script src="quick-stats.js?v=1.19-pursuit-2"></script>
-<script src="game-render.js?v=1.19-pursuit-2"></script>
-<script src="game-ui.js?v=1.19-pursuit-2"></script>
-<script src="tower-fire.js?v=1.19-pursuit-2"></script>
-<script src="battle-actions.js?v=1.19-pursuit-2"></script>
-<script src="prestige-enemies.js?v=1.19-pursuit-2"></script>
-<script src="boss-abilities.js?v=1.19-pursuit-2"></script>
-<script src="prototype-art.js?v=1.19-pursuit-2"></script>
-<script src="fw-interim-assets.js?v=1.19-pursuit-2"></script>
-<script src="interim-art.js?v=1.19-pursuit-2"></script>
-<script src="campaign-ui.js?v=1.19-pursuit-2"></script>
-<script src="game-core.js?v=1.19-pursuit-2"></script>
+<script src="balance-config.js?v=1.19-shop-1"></script>
+<script src="merchant.js?v=1.19-shop-1"></script>
+<script src="skins.js?v=1.19-shop-1"></script>
+<script src="skill-tree-data.js?v=1.19-shop-1"></script>
+<script src="endless.js?v=1.19-shop-1"></script>
+<script src="skill-tree.js?v=1.19-shop-1"></script>
+<script src="skill-tree-effects.js?v=1.19-shop-1"></script>
+<script src="game-data.js?v=1.19-shop-1"></script>
+<script src="game-arcade.js?v=1.19-shop-1"></script>
+<script src="quick-stats.js?v=1.19-shop-1"></script>
+<script src="game-render.js?v=1.19-shop-1"></script>
+<script src="game-ui.js?v=1.19-shop-1"></script>
+<script src="tower-fire.js?v=1.19-shop-1"></script>
+<script src="battle-actions.js?v=1.19-shop-1"></script>
+<script src="prestige-enemies.js?v=1.19-shop-1"></script>
+<script src="boss-abilities.js?v=1.19-shop-1"></script>
+<script src="prototype-art.js?v=1.19-shop-1"></script>
+<script src="fw-interim-assets.js?v=1.19-shop-1"></script>
+<script src="interim-art.js?v=1.19-shop-1"></script>
+<script src="campaign-ui.js?v=1.19-shop-1"></script>
+<script src="game-core.js?v=1.19-shop-1"></script>
 </body>
 </html>
