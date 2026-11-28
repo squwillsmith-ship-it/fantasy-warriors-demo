@@ -1,0 +1,1087 @@
+[
+  {
+    "id": "priest",
+    "tier": 3,
+    "stage": 6,
+    "mode": "none",
+    "seed": 271140,
+    "bought": [],
+    "cost": 0,
+    "start": [
+      {
+        "hp": 25,
+        "damage": 7,
+        "rate": 0.75
+      },
+      {
+        "hp": 25,
+        "damage": 7,
+        "rate": 0.75
+      }
+    ],
+    "seconds": 29.80000000000029,
+    "outcome": "over",
+    "kills": 5,
+    "towerHP": 0,
+    "aliveSeconds": 26.25,
+    "damage": 38.69350000000001,
+    "teamDamage": 133.48000000000002,
+    "lethal": 2,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 51.99999999999999,
+    "casts": 4
+  },
+  {
+    "id": "priest",
+    "tier": 3,
+    "stage": 6,
+    "mode": "A",
+    "seed": 271140,
+    "bought": [
+      "O-3-PR-A1",
+      "O-3-PR-A2",
+      "O-3-PR-A3",
+      "O-3-PR-A4",
+      "O-3-PR-A5"
+    ],
+    "cost": 27,
+    "start": [
+      {
+        "hp": 25,
+        "damage": 9.8,
+        "rate": 0.9
+      },
+      {
+        "hp": 25,
+        "damage": 9.8,
+        "rate": 0.9
+      }
+    ],
+    "seconds": 53.79999999999908,
+    "outcome": "over",
+    "kills": 19,
+    "towerHP": 0,
+    "aliveSeconds": 83.5,
+    "damage": 275.0329166666669,
+    "teamDamage": 448.39866666666694,
+    "lethal": 15,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 53.99999999999999,
+    "casts": 14
+  },
+  {
+    "id": "priest",
+    "tier": 3,
+    "stage": 6,
+    "mode": "B",
+    "seed": 271140,
+    "bought": [
+      "O-3-PR-B1",
+      "O-3-PR-B2",
+      "O-3-PR-B3",
+      "O-3-PR-B4",
+      "O-3-PR-B5"
+    ],
+    "cost": 27,
+    "start": [
+      {
+        "hp": 33,
+        "damage": 7,
+        "rate": 0.75
+      },
+      {
+        "hp": 33,
+        "damage": 7,
+        "rate": 0.75
+      }
+    ],
+    "seconds": 40.04999999999986,
+    "outcome": "over",
+    "kills": 10,
+    "towerHP": 0,
+    "aliveSeconds": 41.75,
+    "damage": 77.38125000000001,
+    "teamDamage": 233.48833333333337,
+    "lethal": 5,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 70,
+    "casts": 7
+  },
+  {
+    "id": "priest",
+    "tier": 3,
+    "stage": 6,
+    "mode": "AB",
+    "seed": 271140,
+    "bought": [
+      "O-3-PR-A1",
+      "O-3-PR-A2",
+      "O-3-PR-A3",
+      "O-3-PR-A4",
+      "O-3-PR-A5",
+      "O-3-PR-B1",
+      "O-3-PR-B2",
+      "O-3-PR-B3",
+      "O-3-PR-B4",
+      "O-3-PR-B5"
+    ],
+    "cost": 54,
+    "start": [
+      {
+        "hp": 33,
+        "damage": 9.8,
+        "rate": 0.9
+      },
+      {
+        "hp": 33,
+        "damage": 9.8,
+        "rate": 0.9
+      }
+    ],
+    "seconds": 62.1999999999986,
+    "outcome": "over",
+    "kills": 25,
+    "towerHP": 0,
+    "aliveSeconds": 105.5,
+    "damage": 341.9681458333338,
+    "teamDamage": 596.6750000000004,
+    "lethal": 19,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 70,
+    "casts": 19
+  },
+  {
+    "id": "shaman",
+    "tier": 4,
+    "stage": 7,
+    "mode": "none",
+    "seed": 271140,
+    "bought": [],
+    "cost": 0,
+    "start": [
+      {
+        "hp": 30,
+        "damage": 9,
+        "rate": 0.75
+      },
+      {
+        "hp": 30,
+        "damage": 9,
+        "rate": 0.75
+      }
+    ],
+    "seconds": 65.74999999999841,
+    "outcome": "over",
+    "kills": 25,
+    "towerHP": 0,
+    "aliveSeconds": 107.5,
+    "damage": 316.66627200000005,
+    "teamDamage": 504.66480000000007,
+    "lethal": 16,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 60,
+    "casts": 16
+  },
+  {
+    "id": "shaman",
+    "tier": 4,
+    "stage": 7,
+    "mode": "A",
+    "seed": 271140,
+    "bought": [
+      "O-4-S-A1",
+      "O-4-S-A2",
+      "O-4-S-A3",
+      "O-4-S-A4",
+      "O-4-S-A5"
+    ],
+    "cost": 34,
+    "start": [
+      {
+        "hp": 30,
+        "damage": 12,
+        "rate": 0.75
+      },
+      {
+        "hp": 30,
+        "damage": 12,
+        "rate": 0.75
+      }
+    ],
+    "seconds": 89.99999999999703,
+    "outcome": "battle",
+    "kills": 49,
+    "towerHP": 100,
+    "aliveSeconds": 177,
+    "damage": 742.6445040000003,
+    "teamDamage": 1000.1588160000006,
+    "lethal": 37,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 30,
+    "casts": 32
+  },
+  {
+    "id": "shaman",
+    "tier": 4,
+    "stage": 7,
+    "mode": "B",
+    "seed": 271140,
+    "bought": [
+      "O-4-S-B1",
+      "O-4-S-B2",
+      "O-4-S-B3",
+      "O-4-S-B4",
+      "O-4-S-B5"
+    ],
+    "cost": 34,
+    "start": [
+      {
+        "hp": 38,
+        "damage": 9,
+        "rate": 0.75
+      },
+      {
+        "hp": 38,
+        "damage": 9,
+        "rate": 0.75
+      }
+    ],
+    "seconds": 89.99999999999703,
+    "outcome": "battle",
+    "kills": 48,
+    "towerHP": 100,
+    "aliveSeconds": 177.25,
+    "damage": 686.1256800000002,
+    "teamDamage": 966.9534240000004,
+    "lethal": 40,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 39,
+    "casts": 26
+  },
+  {
+    "id": "shaman",
+    "tier": 4,
+    "stage": 7,
+    "mode": "AB",
+    "seed": 271140,
+    "bought": [
+      "O-4-S-A1",
+      "O-4-S-A2",
+      "O-4-S-A3",
+      "O-4-S-A4",
+      "O-4-S-A5",
+      "O-4-S-B1",
+      "O-4-S-B2",
+      "O-4-S-B3",
+      "O-4-S-B4",
+      "O-4-S-B5"
+    ],
+    "cost": 68,
+    "start": [
+      {
+        "hp": 38,
+        "damage": 12,
+        "rate": 0.75
+      },
+      {
+        "hp": 38,
+        "damage": 12,
+        "rate": 0.75
+      }
+    ],
+    "seconds": 89.99999999999703,
+    "outcome": "battle",
+    "kills": 50,
+    "towerHP": 100,
+    "aliveSeconds": 180,
+    "damage": 781.969896,
+    "teamDamage": 1010.2896000000001,
+    "lethal": 38,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 37.2559824,
+    "casts": 32
+  },
+  {
+    "id": "druid",
+    "tier": 4,
+    "stage": 7,
+    "mode": "none",
+    "seed": 271140,
+    "bought": [],
+    "cost": 0,
+    "start": [
+      {
+        "hp": 39,
+        "damage": 8.7,
+        "rate": 0.8125
+      },
+      {
+        "hp": 39,
+        "damage": 8.7,
+        "rate": 0.8125
+      }
+    ],
+    "seconds": 41.34999999999979,
+    "outcome": "over",
+    "kills": 9,
+    "towerHP": 0,
+    "aliveSeconds": 53.25,
+    "damage": 93.82156800000001,
+    "teamDamage": 178.39852800000003,
+    "lethal": 4,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 79,
+    "casts": 8
+  },
+  {
+    "id": "druid",
+    "tier": 4,
+    "stage": 7,
+    "mode": "A",
+    "seed": 271140,
+    "bought": [
+      "O-4-D-A1",
+      "O-4-D-A2",
+      "O-4-D-A3",
+      "O-4-D-A4",
+      "O-4-D-A5"
+    ],
+    "cost": 34,
+    "start": [
+      {
+        "hp": 39,
+        "damage": 11.6,
+        "rate": 0.8125
+      },
+      {
+        "hp": 39,
+        "damage": 11.6,
+        "rate": 0.8125
+      }
+    ],
+    "seconds": 56.899999999998904,
+    "outcome": "over",
+    "kills": 19,
+    "towerHP": 0,
+    "aliveSeconds": 83.5,
+    "damage": 234.44861300000017,
+    "teamDamage": 383.2524480000002,
+    "lethal": 14,
+    "healing": 13.649999999999999,
+    "shield": 0,
+    "damageTaken": 95.64999999999999,
+    "casts": 12
+  },
+  {
+    "id": "druid",
+    "tier": 4,
+    "stage": 7,
+    "mode": "B",
+    "seed": 271140,
+    "bought": [
+      "O-4-D-B1",
+      "O-4-D-B2",
+      "O-4-D-B3",
+      "O-4-D-B4",
+      "O-4-D-B5"
+    ],
+    "cost": 34,
+    "start": [
+      {
+        "hp": 52,
+        "damage": 8.7,
+        "rate": 0.8125
+      },
+      {
+        "hp": 52,
+        "damage": 8.7,
+        "rate": 0.8125
+      }
+    ],
+    "seconds": 41.54999999999978,
+    "outcome": "over",
+    "kills": 10,
+    "towerHP": 0,
+    "aliveSeconds": 57,
+    "damage": 83.19696000000002,
+    "teamDamage": 205.098528,
+    "lethal": 5,
+    "healing": 0.9443088000000003,
+    "shield": 0,
+    "damageTaken": 104.94430880000002,
+    "casts": 8
+  },
+  {
+    "id": "druid",
+    "tier": 4,
+    "stage": 7,
+    "mode": "AB",
+    "seed": 271140,
+    "bought": [
+      "O-4-D-A1",
+      "O-4-D-A2",
+      "O-4-D-A3",
+      "O-4-D-A4",
+      "O-4-D-A5",
+      "O-4-D-B1",
+      "O-4-D-B2",
+      "O-4-D-B3",
+      "O-4-D-B4",
+      "O-4-D-B5"
+    ],
+    "cost": 68,
+    "start": [
+      {
+        "hp": 52,
+        "damage": 11.6,
+        "rate": 0.8125
+      },
+      {
+        "hp": 52,
+        "damage": 11.6,
+        "rate": 0.8125
+      }
+    ],
+    "seconds": 49.34999999999933,
+    "outcome": "over",
+    "kills": 14,
+    "towerHP": 0,
+    "aliveSeconds": 68.5,
+    "damage": 194.42165300000005,
+    "teamDamage": 308.21548800000005,
+    "lethal": 9,
+    "healing": 18.0663088,
+    "shield": 0,
+    "damageTaken": 125.06630879999999,
+    "casts": 11
+  },
+  {
+    "id": "warlock",
+    "tier": 4,
+    "stage": 7,
+    "mode": "none",
+    "seed": 271140,
+    "bought": [],
+    "cost": 0,
+    "start": [
+      {
+        "hp": 28.5,
+        "damage": 11.4,
+        "rate": 0.625
+      },
+      {
+        "hp": 28.5,
+        "damage": 11.4,
+        "rate": 0.625
+      }
+    ],
+    "seconds": 59.99999999999873,
+    "outcome": "over",
+    "kills": 22,
+    "towerHP": 0,
+    "aliveSeconds": 100,
+    "damage": 339.001664,
+    "teamDamage": 454.818624,
+    "lethal": 17,
+    "healing": 22.643088000000006,
+    "shield": 0,
+    "damageTaken": 80.643088,
+    "casts": 14
+  },
+  {
+    "id": "warlock",
+    "tier": 4,
+    "stage": 7,
+    "mode": "A",
+    "seed": 271140,
+    "bought": [
+      "O-4-W-A1",
+      "O-4-W-A2",
+      "O-4-W-A3",
+      "O-4-W-A4",
+      "O-4-W-A5"
+    ],
+    "cost": 34,
+    "start": [
+      {
+        "hp": 28.5,
+        "damage": 15.2,
+        "rate": 0.625
+      },
+      {
+        "hp": 28.5,
+        "damage": 15.2,
+        "rate": 0.625
+      }
+    ],
+    "seconds": 89.99999999999703,
+    "outcome": "battle",
+    "kills": 50,
+    "towerHP": 100,
+    "aliveSeconds": 179,
+    "damage": 864.6172480000001,
+    "teamDamage": 1004.7696000000001,
+    "lethal": 44,
+    "healing": 48.24208,
+    "shield": 0,
+    "damageTaken": 101.24208000000003,
+    "casts": 23
+  },
+  {
+    "id": "warlock",
+    "tier": 4,
+    "stage": 7,
+    "mode": "B",
+    "seed": 271140,
+    "bought": [
+      "O-4-W-B1",
+      "O-4-W-B2",
+      "O-4-W-B3",
+      "O-4-W-B4",
+      "O-4-W-B5"
+    ],
+    "cost": 34,
+    "start": [
+      {
+        "hp": 36.1,
+        "damage": 11.4,
+        "rate": 0.625
+      },
+      {
+        "hp": 36.1,
+        "damage": 11.4,
+        "rate": 0.625
+      }
+    ],
+    "seconds": 75.39999999999786,
+    "outcome": "over",
+    "kills": 32,
+    "towerHP": 0,
+    "aliveSeconds": 130.75,
+    "damage": 535.8509760000001,
+    "teamDamage": 687.2125440000001,
+    "lethal": 28,
+    "healing": 30.70848000000001,
+    "shield": 0,
+    "damageTaken": 103.90848000000004,
+    "casts": 19
+  },
+  {
+    "id": "warlock",
+    "tier": 4,
+    "stage": 7,
+    "mode": "AB",
+    "seed": 271140,
+    "bought": [
+      "O-4-W-A1",
+      "O-4-W-A2",
+      "O-4-W-A3",
+      "O-4-W-A4",
+      "O-4-W-A5",
+      "O-4-W-B1",
+      "O-4-W-B2",
+      "O-4-W-B3",
+      "O-4-W-B4",
+      "O-4-W-B5"
+    ],
+    "cost": 68,
+    "start": [
+      {
+        "hp": 36.1,
+        "damage": 15.2,
+        "rate": 0.625
+      },
+      {
+        "hp": 36.1,
+        "damage": 15.2,
+        "rate": 0.625
+      }
+    ],
+    "seconds": 89.99999999999703,
+    "outcome": "battle",
+    "kills": 50,
+    "towerHP": 100,
+    "aliveSeconds": 179.5,
+    "damage": 883.2742080000002,
+    "teamDamage": 1028.7696,
+    "lethal": 49,
+    "healing": 70.24387200000001,
+    "shield": 0,
+    "damageTaken": 119.47264000000006,
+    "casts": 26
+  },
+  {
+    "id": "beastmaster",
+    "tier": 5,
+    "stage": 9,
+    "mode": "none",
+    "seed": 271140,
+    "bought": [],
+    "cost": 0,
+    "start": [
+      {
+        "hp": 63,
+        "damage": 9.9,
+        "rate": 0.75
+      },
+      {
+        "hp": 63,
+        "damage": 9.9,
+        "rate": 0.75
+      }
+    ],
+    "seconds": 34.65000000000017,
+    "outcome": "over",
+    "kills": 5,
+    "towerHP": 0,
+    "aliveSeconds": 36.25,
+    "damage": 78.58738176000003,
+    "teamDamage": 244.16845440000003,
+    "lethal": 2,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 127,
+    "casts": 7
+  },
+  {
+    "id": "beastmaster",
+    "tier": 5,
+    "stage": 9,
+    "mode": "A",
+    "seed": 271140,
+    "bought": [
+      "O-5-BM-A1",
+      "O-5-BM-A2",
+      "O-5-BM-A3",
+      "O-5-BM-A4",
+      "O-5-BM-A5"
+    ],
+    "cost": 39,
+    "start": [
+      {
+        "hp": 63,
+        "damage": 13.2,
+        "rate": 0.9
+      },
+      {
+        "hp": 63,
+        "damage": 13.2,
+        "rate": 0.9
+      }
+    ],
+    "seconds": 34.45000000000018,
+    "outcome": "over",
+    "kills": 6,
+    "towerHP": 0,
+    "aliveSeconds": 39.25,
+    "damage": 128.98738176000003,
+    "teamDamage": 277.6421452800001,
+    "lethal": 2,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 126,
+    "casts": 7
+  },
+  {
+    "id": "beastmaster",
+    "tier": 5,
+    "stage": 9,
+    "mode": "B",
+    "seed": 271140,
+    "bought": [
+      "O-5-BM-B1",
+      "O-5-BM-B2",
+      "O-5-BM-B3",
+      "O-5-BM-B4",
+      "O-5-BM-B5"
+    ],
+    "cost": 39,
+    "start": [
+      {
+        "hp": 63,
+        "damage": 9.9,
+        "rate": 0.75
+      },
+      {
+        "hp": 63,
+        "damage": 9.9,
+        "rate": 0.75
+      }
+    ],
+    "seconds": 55.34999999999899,
+    "outcome": "over",
+    "kills": 18,
+    "towerHP": 0,
+    "aliveSeconds": 90.25,
+    "damage": 504.5590540800002,
+    "teamDamage": 676.6864358400002,
+    "lethal": 16,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 128.00000000000006,
+    "casts": 16
+  },
+  {
+    "id": "beastmaster",
+    "tier": 5,
+    "stage": 9,
+    "mode": "AB",
+    "seed": 271140,
+    "bought": [
+      "O-5-BM-A1",
+      "O-5-BM-A2",
+      "O-5-BM-A3",
+      "O-5-BM-A4",
+      "O-5-BM-A5",
+      "O-5-BM-B1",
+      "O-5-BM-B2",
+      "O-5-BM-B3",
+      "O-5-BM-B4",
+      "O-5-BM-B5"
+    ],
+    "cost": 78,
+    "start": [
+      {
+        "hp": 63,
+        "damage": 13.2,
+        "rate": 0.9
+      },
+      {
+        "hp": 63,
+        "damage": 13.2,
+        "rate": 0.9
+      }
+    ],
+    "seconds": 89.99999999999703,
+    "outcome": "battle",
+    "kills": 43,
+    "towerHP": 100,
+    "aliveSeconds": 164,
+    "damage": 1352.1065625600004,
+    "teamDamage": 1671.0287078400006,
+    "lethal": 37,
+    "healing": 41.15905996799999,
+    "shield": 0,
+    "damageTaken": 134.28507891200002,
+    "casts": 34
+  },
+  {
+    "id": "necromancer",
+    "tier": 5,
+    "stage": 9,
+    "mode": "none",
+    "seed": 271140,
+    "bought": [],
+    "cost": 0,
+    "start": [
+      {
+        "hp": 34.5,
+        "damage": 12.6,
+        "rate": 0.625
+      },
+      {
+        "hp": 34.5,
+        "damage": 12.6,
+        "rate": 0.625
+      }
+    ],
+    "seconds": 67.89999999999829,
+    "outcome": "over",
+    "kills": 25,
+    "towerHP": 0,
+    "aliveSeconds": 124.5,
+    "damage": 694.3753632000002,
+    "teamDamage": 955.0797720000002,
+    "lethal": 15,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 71,
+    "casts": 33
+  },
+  {
+    "id": "necromancer",
+    "tier": 5,
+    "stage": 9,
+    "mode": "A",
+    "seed": 271140,
+    "bought": [
+      "O-5-NE-A1",
+      "O-5-NE-A2",
+      "O-5-NE-A3",
+      "O-5-NE-A4",
+      "O-5-NE-A5"
+    ],
+    "cost": 39,
+    "start": [
+      {
+        "hp": 34.5,
+        "damage": 16.8,
+        "rate": 0.625
+      },
+      {
+        "hp": 34.5,
+        "damage": 16.8,
+        "rate": 0.625
+      }
+    ],
+    "seconds": 89.99999999999703,
+    "outcome": "battle",
+    "kills": 48,
+    "towerHP": 100,
+    "aliveSeconds": 180,
+    "damage": 1455.8147169600065,
+    "teamDamage": 1851.0724622400069,
+    "lethal": 42,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 12.244400640000002,
+    "casts": 63
+  },
+  {
+    "id": "necromancer",
+    "tier": 5,
+    "stage": 9,
+    "mode": "B",
+    "seed": 271140,
+    "bought": [
+      "O-5-NE-B1",
+      "O-5-NE-B2",
+      "O-5-NE-B3",
+      "O-5-NE-B4",
+      "O-5-NE-B5"
+    ],
+    "cost": 39,
+    "start": [
+      {
+        "hp": 34.5,
+        "damage": 12.6,
+        "rate": 0.625
+      },
+      {
+        "hp": 34.5,
+        "damage": 12.6,
+        "rate": 0.625
+      }
+    ],
+    "seconds": 77.84999999999772,
+    "outcome": "over",
+    "kills": 32,
+    "towerHP": 0,
+    "aliveSeconds": 137,
+    "damage": 889.840008479999,
+    "teamDamage": 1259.190608159999,
+    "lethal": 21,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 71,
+    "casts": 43
+  },
+  {
+    "id": "necromancer",
+    "tier": 5,
+    "stage": 9,
+    "mode": "AB",
+    "seed": 271140,
+    "bought": [
+      "O-5-NE-A1",
+      "O-5-NE-A2",
+      "O-5-NE-A3",
+      "O-5-NE-A4",
+      "O-5-NE-A5",
+      "O-5-NE-B1",
+      "O-5-NE-B2",
+      "O-5-NE-B3",
+      "O-5-NE-B4",
+      "O-5-NE-B5"
+    ],
+    "cost": 78,
+    "start": [
+      {
+        "hp": 34.5,
+        "damage": 16.8,
+        "rate": 0.625
+      },
+      {
+        "hp": 34.5,
+        "damage": 16.8,
+        "rate": 0.625
+      }
+    ],
+    "seconds": 89.99999999999703,
+    "outcome": "battle",
+    "kills": 48,
+    "towerHP": 100,
+    "aliveSeconds": 180,
+    "damage": 1420.3334352000024,
+    "teamDamage": 1830.2971622400028,
+    "lethal": 40,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 12.244400640000002,
+    "casts": 63
+  },
+  {
+    "id": "dragonkin",
+    "tier": 5,
+    "stage": 9,
+    "mode": "none",
+    "seed": 271140,
+    "bought": [],
+    "cost": 0,
+    "start": [
+      {
+        "hp": 162,
+        "damage": 24,
+        "rate": 0.6
+      },
+      {
+        "hp": 162,
+        "damage": 24,
+        "rate": 0.6
+      }
+    ],
+    "seconds": 54.39999999999905,
+    "outcome": "over",
+    "kills": 16,
+    "towerHP": 0,
+    "aliveSeconds": 69.5,
+    "damage": 394.9105996800001,
+    "teamDamage": 641.5990540800001,
+    "lethal": 11,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 324,
+    "casts": 11
+  },
+  {
+    "id": "dragonkin",
+    "tier": 5,
+    "stage": 9,
+    "mode": "A",
+    "seed": 271140,
+    "bought": [
+      "O-5-DR-A1",
+      "O-5-DR-A2",
+      "O-5-DR-A3",
+      "O-5-DR-A4",
+      "O-5-DR-A5"
+    ],
+    "cost": 39,
+    "start": [
+      {
+        "hp": 216,
+        "damage": 32,
+        "rate": 0.6
+      },
+      {
+        "hp": 216,
+        "damage": 32,
+        "rate": 0.6
+      }
+    ],
+    "seconds": 59.99999999999873,
+    "outcome": "over",
+    "kills": 25,
+    "towerHP": 0,
+    "aliveSeconds": 120,
+    "damage": 804.8015569066667,
+    "teamDamage": 967.3422720000001,
+    "lethal": 23,
+    "healing": 43.2,
+    "shield": 0,
+    "damageTaken": 323.25217689600004,
+    "casts": 15
+  },
+  {
+    "id": "dragonkin",
+    "tier": 5,
+    "stage": 9,
+    "mode": "B",
+    "seed": 271140,
+    "bought": [
+      "O-5-DR-B1",
+      "O-5-DR-B2",
+      "O-5-DR-B3",
+      "O-5-DR-B4",
+      "O-5-DR-B5"
+    ],
+    "cost": 39,
+    "start": [
+      {
+        "hp": 162,
+        "damage": 24,
+        "rate": 0.6
+      },
+      {
+        "hp": 162,
+        "damage": 24,
+        "rate": 0.6
+      }
+    ],
+    "seconds": 84.99999999999731,
+    "outcome": "over",
+    "kills": 37,
+    "towerHP": 0,
+    "aliveSeconds": 143,
+    "damage": 1146.8281672800003,
+    "teamDamage": 1421.4665625600005,
+    "lethal": 31,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 325.99999999999994,
+    "casts": 24
+  },
+  {
+    "id": "dragonkin",
+    "tier": 5,
+    "stage": 9,
+    "mode": "AB",
+    "seed": 271140,
+    "bought": [
+      "O-5-DR-A1",
+      "O-5-DR-A2",
+      "O-5-DR-A3",
+      "O-5-DR-A4",
+      "O-5-DR-A5",
+      "O-5-DR-B1",
+      "O-5-DR-B2",
+      "O-5-DR-B3",
+      "O-5-DR-B4",
+      "O-5-DR-B5"
+    ],
+    "cost": 78,
+    "start": [
+      {
+        "hp": 216,
+        "damage": 32,
+        "rate": 0.6
+      },
+      {
+        "hp": 216,
+        "damage": 32,
+        "rate": 0.6
+      }
+    ],
+    "seconds": 89.99999999999703,
+    "outcome": "battle",
+    "kills": 45,
+    "towerHP": 81.63339904,
+    "aliveSeconds": 180,
+    "damage": 1425.9612669599996,
+    "teamDamage": 1705.2160895999998,
+    "lethal": 42,
+    "healing": 0,
+    "shield": 0,
+    "damageTaken": 235.092492288,
+    "casts": 29
+  }
+]
