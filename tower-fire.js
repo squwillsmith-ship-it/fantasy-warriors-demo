@@ -3,7 +3,7 @@
    damage enemies directly: the tower fires on its own cooldown and bolts travel physically. */
 (function(){'use strict';
 window.FWTowerFire={
- create({canvas,ctx,view,state,config,hitEnemy,addEffect}){
+ create({canvas,ctx,view,state,config,hitEnemy,addEffect,intercept=()=>false,aimBlocked=()=>false}){
   const cfg={...config};
   if(!cfg||!Number.isFinite(cfg.projectileSpeed)||cfg.projectileSpeed<=0)throw Error('Missing tower-fire config');
   const radius=cfg.projectileRadius;
@@ -19,8 +19,8 @@ window.FWTowerFire={
    state.towerAim={x:Math.max(-view.worldW/2,Math.min(view.worldW/2,(x-view.w/2)/view.scale)),
                     y:Math.max(-view.worldH/2,Math.min(view.worldH/2,(y-view.h/2)/view.scale))};
   }
-  canvas.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')aim(e.clientX,e.clientY)});
-  canvas.addEventListener('pointerdown',e=>{aim(e.clientX,e.clientY)});
+  canvas.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'&&!aimBlocked())aim(e.clientX,e.clientY)});
+  canvas.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;const x=((e.clientX-rect.left)/rect.width*view.w-view.w/2)/view.scale,y=((e.clientY-rect.top)/rect.height*view.h-view.h/2)/view.scale;if(intercept(x,y)){e.preventDefault?.();return}if(!aimBlocked())aim(e.clientX,e.clientY)});
   function fire(){
    const dx=state.towerAim.x,dy=state.towerAim.y,len=Math.hypot(dx,dy)||1;
    const vx=dx/len,vy=dy/len;
