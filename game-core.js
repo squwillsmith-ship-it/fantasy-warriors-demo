@@ -100,29 +100,32 @@ function spawnEnemy(boss,kind='basic',at=null){
 // Walk speed comes from each hero’s approved STATS entry, not a universal speed.
 const TOWER_BLOCK=1.36;     // tower half-width + hero safety margin (map units)
 const CORNER_DIST=1.73;     // navigation corners outside tower footprint
-function insideTower(x,y){return Math.abs(x)<TOWER_BLOCK&&Math.abs(y)<TOWER_BLOCK}
-function segmentHitsTower(ax,ay,bx,by){
+function insideTower(x,y,block=TOWER_BLOCK){return Math.abs(x)<block&&Math.abs(y)<block}
+function segmentHitsTower(ax,ay,bx,by,block=TOWER_BLOCK){
  let near=0,far=1;const vx=bx-ax,vy=by-ay;
  for(const [origin,delta] of [[ax,vx],[ay,vy]]){
-  if(Math.abs(delta)<1e-8){if(origin<=-TOWER_BLOCK||origin>=TOWER_BLOCK)return false;continue}
-  const lo=(-TOWER_BLOCK-origin)/delta,hi=(TOWER_BLOCK-origin)/delta;
+  if(Math.abs(delta)<1e-8){if(origin<=-block||origin>=block)return false;continue}
+  const lo=(-block-origin)/delta,hi=(block-origin)/delta;
   near=Math.max(near,Math.min(lo,hi));far=Math.min(far,Math.max(lo,hi));
   if(far<near)return false;
  }
  return near<far&&far>0&&near<1;
 }
-function safeGoal(x,y){
- if(!insideTower(x,y))return{x,y};
+function safeGoal(x,y,block=TOWER_BLOCK){
+ if(!insideTower(x,y,block))return{x,y};
  // All actors must route toward a safe exterior point at the tower boundary;
  // find the nearest exterior position for approaching heroes.
- const edge=CORNER_DIST+.02;
+ const edge=block+.04;
  if(Math.abs(x)>Math.abs(y))return{x:Math.sign(x||1)*edge,y};
  return{x,y:Math.sign(y||1)*edge};
 }
-function heroWaypoint(x,y,gx,gy){
- const dest=safeGoal(gx,gy);
- if(!segmentHitsTower(x,y,dest.x,dest.y))return dest;
- const c=CORNER_DIST;
+function heroWaypoint(x,y,gx,gy,block=TOWER_BLOCK){
+ const dest=safeGoal(gx,gy,block);
+ // The physical rounded corner may legally contain an actor inside its conservative navigation square.
+ // Move outward first rather than attempting an impossible visibility-graph connection.
+ if(insideTower(x,y,block))return safeGoal(x,y,block);
+ if(!segmentHitsTower(x,y,dest.x,dest.y,block))return dest;
+ const c=block+.37;
  const pts=[{x,y},dest,{x:-c,y:-c},{x:c,y:-c},{x:c,y:c},{x:-c,y:c}];
  const dist=Array(6).fill(Infinity),prev=Array(6).fill(-1),used=Array(6).fill(false);dist[0]=0;
  for(let i=0;i<6;i++){
@@ -130,7 +133,7 @@ function heroWaypoint(x,y,gx,gy){
   if(u<0||!Number.isFinite(dist[u]))break;
   if(u===1)break;used[u]=true;
   for(let v=1;v<6;v++){
-   if(v===u||used[v]||segmentHitsTower(pts[u].x,pts[u].y,pts[v].x,pts[v].y))continue;
+   if(v===u||used[v]||segmentHitsTower(pts[u].x,pts[u].y,pts[v].x,pts[v].y,block))continue;
    const next=dist[u]+Math.hypot(pts[v].x-pts[u].x,pts[v].y-pts[u].y);
    if(next<dist[v]){dist[v]=next;prev[v]=u}
   }
@@ -288,7 +291,7 @@ function legalActorPosition(a,x,y){
 }
 function brake(a,dt){a.vx=(a.vx||0)*Math.max(0,1-dt*10);a.vy=(a.vy||0)*Math.max(0,1-dt*10)}
 function steerActor(a,pt,dt,speed,guarded=false){
- const wp=heroWaypoint(a.x,a.y,pt.x,pt.y),dx=wp.x-a.x,dy=wp.y-a.y,d=Math.hypot(dx,dy);
+ const wp=heroWaypoint(a.x,a.y,pt.x,pt.y,Math.max(TOWER_BLOCK,1+actorRadius(a)+.045)),dx=wp.x-a.x,dy=wp.y-a.y,d=Math.hypot(dx,dy);
  if(d<.04){brake(a,dt);return}
  const cap=Math.min(speed,Math.sqrt(Math.max(0,d)*8.5));
  let vx=dx/d*cap,vy=dy/d*cap;
