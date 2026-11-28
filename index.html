@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="skill-tree.css?v=1.16-endless-dev">
 <link rel="stylesheet" href="game.css?v=1.16-endless-dev">
 <link rel="stylesheet" href="quick-stats.css?v=1.16-endless-dev">
-<link rel="stylesheet" href="campaign-ui.css?v=1.16-compat-1">
+<link rel="stylesheet" href="campaign-ui.css?v=1.16-qa-2">
 </head>
 <body>
 <div class="shell">
@@ -35,7 +35,7 @@
         <div class="wave-meter" aria-hidden="true"><div id="bossHPMeter"></div></div>
       </div>
     </div>
-    <div id="battleActions" hidden style="padding:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;background:#182532;color:#f7e6be"><select id="spellEquip0" aria-label="Equip spell one" hidden></select><select id="spellEquip1" aria-label="Equip spell two" hidden></select><button type="button" class="btn compact" id="spellCast0" hidden></button><button type="button" class="btn compact" id="spellCast1" hidden></button><button type="button" class="btn compact" id="spellCancel" hidden>Cancel spell</button><small id="spellHelp"></small><small id="captureStatus" aria-live="polite"></small></div><style>#battleActions[hidden],#battleActions [hidden]{display:none!important}</style><div class="canvas-wrap"><canvas id="arena" role="img" aria-label="Top-down battlefield showing the tower, allied heroes and approaching enemies"></canvas></div>
+    <div id="battleActions" hidden style="padding:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;background:#182532;color:#f7e6be"><select id="spellEquip0" aria-label="Equip spell one" hidden></select><select id="spellEquip1" aria-label="Equip spell two" hidden></select><button type="button" class="btn compact" id="spellCast0" hidden></button><button type="button" class="btn compact" id="spellCast1" hidden></button><button type="button" class="btn compact" id="spellCancel" hidden>Cancel spell</button><small id="spellHelp"></small><small id="captureStatus" aria-live="polite"></small></div><style>#battleActions[hidden],#battleActions [hidden]{display:none!important}</style><div id="liveBattleControls" class="fw-live-battle-controls"><button class="btn secondary compact" id="pauseButton" aria-label="Pause or resume combat" disabled>Ⅱ Pause</button><button class="btn danger compact" id="abandonButton" type="button">Abandon attempt</button><small>Aim with mouse or tap · rescue downed heroes on the field.</small></div><div class="canvas-wrap"><canvas id="arena" role="img" aria-label="Top-down battlefield showing the tower, allied heroes and approaching enemies"></canvas></div>
     <div class="arena-caption"><span id="captionLeft">Heroes defend the tower</span><span id="captionRight">Move mouse or tap to aim</span></div>
     <div class="battle-message hidden" id="messageOverlay" aria-live="polite"><div class="message-box"><div class="message-symbol" id="messageSymbol">✦</div><h2 id="messageTitle">Stage clear</h2><p id="messageText"></p><div id="battleReport" class="battle-report" hidden aria-label="This stage battle report"></div><button class="btn" id="messageButton">Continue</button><button class="btn secondary" id="endlessOverlayExit" hidden>Return to progression</button></div></div>
   </main>
@@ -47,7 +47,7 @@
       <div id="packOfferButtons" class="button-row" style="flex-wrap:wrap;margin:0 0 8px"></div><button class="btn secondary compact" id="rotateShop" type="button" disabled style="margin:0 0 9px">↻ Rerolls</button><button id="reserveShop" type="button" class="btn secondary compact" disabled>Reserve selected offer</button><div class="shop-slots" id="liveShopSlots" aria-label="Shop offer slots"><div class="shop-slot available"><span>✦ Slot 1</span><strong>Recruit Pack · 1 hero draw each</strong></div><div class="shop-slot available"><span>✦ Slot 2</span><strong>Random pack stock</strong></div><div class="shop-slot available"><span>✦ Slot 3</span><strong>Random pack stock</strong></div></div>
       <button class="btn" id="buyButton">◈ Buy Recruit Pack · 2 coins</button>
       <div class="coin-refill-note">✦ Your round budget refills after every attempt. <span id="coinCapNote">Upgrade coin capacity via the skill tree.</span></div>
-      <section id="endlessPanel" hidden><p id="endlessInfo"></p><div class="button-row"><button class="btn" id="endlessEnter" hidden>Start Endless Run</button><button class="btn" id="endlessResume" hidden>Resume Endless</button><button class="btn secondary" id="endlessExit" hidden>Save &amp; Exit</button><button class="btn secondary" id="endlessRetire" hidden>Retire run</button><button class="btn secondary" id="endlessHub" hidden>Return to progression</button></div></section><style>#endlessPanel[hidden],#endlessPanel [hidden]{display:none!important}</style><div class="button-row"><button class="btn secondary" id="stageButton">⚔ Start Stage 1</button><button class="btn secondary compact" id="pauseButton" aria-label="Pause or resume combat" disabled>Ⅱ Pause</button></div>
+      <section id="endlessPanel" hidden><p id="endlessInfo"></p><div class="button-row"><button class="btn" id="endlessEnter" hidden>Start Endless Run</button><button class="btn" id="endlessResume" hidden>Resume Endless</button><button class="btn secondary" id="endlessExit" hidden>Save &amp; Exit</button><button class="btn secondary" id="endlessRetire" hidden>Retire run</button><button class="btn secondary" id="endlessHub" hidden>Return to progression</button></div></section><style>#endlessPanel[hidden],#endlessPanel [hidden]{display:none!important}</style><div class="button-row"><button class="btn secondary" id="stageButton">⚔ Start Stage 1</button></div>
       <div class="button-row"><button class="btn danger compact" id="restartButton">↻ Restart run</button></div>
       <hr class="divider">
       <div class="small-label"><span>Stage heroes · ability meter</span><span id="formationCount">0 heroes</span></div>
@@ -98,18 +98,18 @@
 <script src="skins.js?v=1.16-endless-dev"></script>
 <script src="skill-tree-data.js?v=1.16-endless-dev"></script>
 <script src="endless.js?v=1.16-endless-dev"></script>
-<script src="skill-tree.js?v=1.16-compat-1"></script>
+<script src="skill-tree.js?v=1.16-qa-2"></script>
 <script src="skill-tree-effects.js?v=1.16-endless-dev"></script>
 <script src="game-data.js?v=1.16-endless-dev"></script>
 <script src="game-arcade.js?v=1.16-endless-dev"></script>
 <script src="quick-stats.js?v=1.16-endless-dev"></script>
 <script src="game-render.js?v=1.16-endless-dev"></script>
-<script src="game-ui.js?v=1.16-compat-1"></script>
+<script src="game-ui.js?v=1.16-qa-2"></script>
 <script src="tower-fire.js?v=1.16-endless-dev"></script>
 <script src="battle-actions.js?v=1.16-endless-dev"></script>
 <script src="prestige-enemies.js?v=1.16-endless-dev"></script>
 <script src="boss-abilities.js?v=1.16-endless-dev"></script>
-<script src="campaign-ui.js?v=1.16-compat-1"></script>
-<script src="game-core.js?v=1.16-compat-1"></script>
+<script src="campaign-ui.js?v=1.16-qa-2"></script>
+<script src="game-core.js?v=1.16-qa-2"></script>
 </body>
 </html>
