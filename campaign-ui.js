@@ -23,6 +23,7 @@ function install(){
  const prepSpells=E('div','fw-live-prep-spells');
  shop.append(merchantHeader,merchant,prepSpells,encounter,pool);
  dev.append(test,quest,tree,log);
+ const deployment=E('div','fw-live-deployment');deployment.hidden=true;deployment.setAttribute('role','status');field.append(deployment);
  const battleControls=E('div','fw-live-battle-controls');battleControls.append($('pauseButton'),E('small',null,'Aim with mouse or tap · rescue downed heroes on the field.'));
  field.append(battleControls);
  const roster=E('div','fw-live-roster'),portrait=E('div','fw-live-portrait'),rosterButtons=E('div','fw-live-roster-buttons'),glyph=E('div','fw-live-emblem'),heroName=E('h3'),heroDetail=E('p'),health=E('progress'),rescue=btn('Rescue',()=>{if(selected!=null)ui.press?.(selected)});
@@ -33,7 +34,7 @@ function install(){
  const buttons={};for(const [page,label] of [['menu','Menu'],['map','Realm'],['shop','Merchant'],['dev','Testing & log']]){buttons[page]=btn(label,()=>choosePage(page));nav.append(buttons[page])}
  buttons.tree=btn('Upgrades',()=>skill('skillTreeTab'));buttons.collection=btn('Collection',()=>skill('skillSkinsTab'));nav.append(buttons.tree,buttons.collection);
  pages.append(menu,map,shop,dev);shell.insertBefore(nav,layout);shell.insertBefore(pages,layout);
- ui={...ui,shell,layout,field,side,menu,map,shop,dev,buttons,mapInfo,regions,mapActions,battleControls,roster,rosterButtons,portrait,glyph,heroName,heroDetail,health,rescue,prepSpells,battleActions,canvasWrap,test,merchant};
+ ui={...ui,shell,layout,field,side,menu,map,shop,dev,buttons,mapInfo,regions,mapActions,battleControls,deployment,roster,rosterButtons,portrait,glyph,heroName,heroDetail,health,rescue,prepSpells,battleActions,canvasWrap,test,merchant};
  shell.classList.add('fw-live');document.body.classList.add('fw-live-body');installed=true;return true;
 }
 function renderMap(){
@@ -75,7 +76,9 @@ function paint(){
 function sync(state,press){
  live=state;ui.press=press;if(!installed&&!install())return;
  if(previousMode&&previousMode!=='prep'&&state.mode==='prep'){screen=previousMode==='clear'||previousMode==='champion'?'map':'shop';selected=null}
- previousMode=state.mode;paint();
+ const began=state.mode==='battle'&&previousMode!=='battle';previousMode=state.mode;paint();
+ if(began){ui.deployment.replaceChildren(...state.heroes.filter(h=>!h.summonKind).map(h=>{const x=E('span','fw-live-dealt',h.base.glyph+' '+h.base.name+' · '+(h.skin?.rarity||h.base.rarity));x.style.borderColor=h.skin?.trim||h.base.color;return x}));ui.deployment.hidden=!ui.deployment.children.length;ui.deployment.classList.remove('dealing');void ui.deployment.offsetWidth;ui.deployment.classList.add('dealing')}else if(state.mode!=='battle'||state.elapsed>2.3)ui.deployment.hidden=true;
 }
-window.FWCampaignUI={sync};
+function prepareField(){if(!installed)return;ui.layout.hidden=false;ui.side.hidden=false;ui.shell.dataset.screen='battle';}
+window.FWCampaignUI={sync,prepareField};
 })();
