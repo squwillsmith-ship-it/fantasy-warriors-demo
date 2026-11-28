@@ -2,11 +2,11 @@
 
 > **Development branch balance-v1.16 — integration checkpoint:** the real v1.16 engine now drives the title/menu, campaign map, merchant, battle HUD, deployed hero inspection/rescue, spell controls, 228 ordinary / 120 Legacy nodes, collection, backups and Endless. The public main branch remains Build 1.0.14. The new interface uses placeholder glyph art, a simple region grid and a nonblocking deployment reveal; the separate mock UI is not the authoritative game. See `tools/balance/campaign-ui.test.mjs` for browser smoke coverage. Mock engine integration and UI navigation checks passed; Chromium and physical-device release verification remain pending. No balance numbers were changed by this integration; the production field uses a 3:2 aspect ratio matching the existing mock combat fixture.
 
-**Current playable build: 1.0.14** · **Current design manifesto: v1.5.0** · 23 November 2026
+**Public playable design: v1.16.0** · **UI integration candidate: v1.16.0 / UI 0.2** · 28 November 2026
 
 **Implemented v1.5.0 foundations:** automatically firing player-aimed tower projectiles; 48–138 scheduled enemies with stage-specific base HP/damage/speed and faster three-phase waves; guaranteed UP per six scheduled enemy kills (remainder persists through attempts); King Slime split, Mushroom Man death spores and Eldritch Horror's three health phases.
 
-**Still pending:** prestige-unlocked elite spawn schedules and their ten signature abilities, most remaining boss/basic-enemy special attacks, new Tower Armaments tree branches, later targeted spells and full-engine balance verification. The v1.5.0 figures are first-pass tuning values, not verified stage-clear-time results.
+**Historical v1.5 notes below** are retained for context; current gameplay rules are governed by the v1.16 manifesto and runtime profile.
 
 A browser-based tower-defence prototype for testing pack-drawn heroes, automatic combat, waves, upgrades and persistent progression.
 

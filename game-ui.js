@@ -109,7 +109,7 @@ function updateUI(){
  refs.buy.disabled=state.mode!=='prep'||!pack||state.coins<pack.price||state.testMode;
  refs.buy.textContent=state.testMode?'Testing mode · free hero picker':state.mode==='prep'?(pack?(state.coins<pack.price?'Need '+pack.price+' coins':'◈ Buy '+pack.name+' · '+pack.price+' coins'):'All shop slots sold out'):'Shop closed during combat';
  refs.start.disabled=state.mode!=='prep'&&state.mode!=='clear';
- refs.start.textContent=state.mode==='prep'?'⚔ Start Stage '+state.stage:state.mode==='clear'?(state.testMode?'↻ Return to test prep':'➜ Prepare Stage '+(state.stage+1)):state.mode==='opening'?'✦ Opening packs':state.mode==='battle'?'⚔ Stage in progress':'↻ Retry Stage '+state.stage;
+ refs.start.textContent=state.mode==='prep'?(window.FWCampaignUI?'Enter Battle ›':'⚔ Start Stage '+state.stage):state.mode==='clear'?(state.testMode?'↻ Return to test prep':'➜ Prepare Stage '+(state.stage+1)):state.mode==='opening'?'✦ Opening packs':state.mode==='battle'?'⚔ Stage in progress':'↻ Retry Stage '+state.stage;
  refs.pause.disabled=state.mode!=='battle';refs.pause.textContent=state.paused?'▶ Resume':'Ⅱ Pause';
  refs.phase.textContent=state.mode==='prep'?(state.testMode?'TEST PREPARATION':'PREPARATION'):state.mode==='opening'?'PACK OPENING':state.mode==='battle'?(state.paused?'PAUSED':state.testMode?'TEST BATTLE':'IN BATTLE'):state.mode==='clear'?'STAGE CLEARED':state.mode==='champion'?'CAMPAIGN COMPLETE':'TOWER FALLEN';
  refs.dot.className='dot '+(state.mode==='battle'?'fighting':state.mode==='clear'?'finished':'');
