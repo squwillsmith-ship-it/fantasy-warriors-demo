@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0e1724" />
 <title>Fantasy Warriors — Demo 1.0.14 · Tower Fire & New Waves</title>
-<link rel="stylesheet" href="skill-tree.css?v=1.16-combat-dev">
-<link rel="stylesheet" href="game.css?v=1.16-combat-dev">
-<link rel="stylesheet" href="quick-stats.css?v=1.16-combat-dev">
+<link rel="stylesheet" href="skill-tree.css?v=1.16-endless-dev">
+<link rel="stylesheet" href="game.css?v=1.16-endless-dev">
+<link rel="stylesheet" href="quick-stats.css?v=1.16-endless-dev">
 </head>
 <body>
 <div class="shell">
@@ -46,7 +46,7 @@
       <div id="packOfferButtons" class="button-row" style="flex-wrap:wrap;margin:0 0 8px"></div><button class="btn secondary compact" id="rotateShop" type="button" disabled style="margin:0 0 9px">↻ Rerolls: future permanent upgrade</button><button id="reserveShop" type="button" class="btn secondary compact" disabled>Reserve selected offer</button><div class="shop-slots" id="liveShopSlots" aria-label="Shop offer slots"><div class="shop-slot available"><span>✦ Slot 1</span><strong>Recruit Pack · 1 hero draw each</strong></div><div class="shop-slot available"><span>✦ Slot 2</span><strong>Random pack stock</strong></div><div class="shop-slot available"><span>✦ Slot 3</span><strong>Random pack stock</strong></div></div>
       <button class="btn" id="buyButton">◈ Buy Recruit Pack · 2 coins</button>
       <div class="coin-refill-note">✦ Your round budget refills after every attempt. <span id="coinCapNote">Upgrade coin capacity via the skill tree.</span></div>
-      <div class="button-row"><button class="btn secondary" id="stageButton">⚔ Start Stage 1</button><button class="btn secondary compact" id="pauseButton" aria-label="Pause or resume combat" disabled>Ⅱ Pause</button></div>
+      <section id="endlessPanel" hidden><p id="endlessInfo"></p><div class="button-row"><button class="btn" id="endlessEnter" hidden>Start Endless Run</button><button class="btn" id="endlessResume" hidden>Resume Endless</button><button class="btn secondary" id="endlessExit" hidden>Save &amp; Exit</button><button class="btn secondary" id="endlessRetire" hidden>Retire run</button><button class="btn secondary" id="endlessHub" hidden>Return to progression</button></div></section><style>#endlessPanel[hidden],#endlessPanel [hidden]{display:none!important}</style><div class="button-row"><button class="btn secondary" id="stageButton">⚔ Start Stage 1</button><button class="btn secondary compact" id="pauseButton" aria-label="Pause or resume combat" disabled>Ⅱ Pause</button></div>
       <div class="button-row"><button class="btn danger compact" id="restartButton">↻ Restart run</button></div>
       <hr class="divider">
       <div class="small-label"><span>Stage heroes · ability meter</span><span id="formationCount">0 heroes</span></div>
@@ -92,21 +92,22 @@
   <div class="fw-body"><div class="fw-pane" id="skillPane"></div><section class="fw-detail" id="skillDetails" aria-live="polite"></section></div>
  </div>
 </div>
-<script src="balance-config.js?v=1.16-combat-dev"></script>
+<script src="balance-config.js?v=1.16-endless-dev"></script>
 <script src="merchant.js?v=1.16-dev"></script>
-<script src="skins.js?v=1.16-combat-dev"></script>
-<script src="skill-tree-data.js?v=1.16-combat-dev"></script>
-<script src="skill-tree.js?v=1.16-combat-dev"></script>
-<script src="skill-tree-effects.js?v=1.16-combat-dev"></script>
-<script src="game-data.js?v=1.16-combat-dev"></script>
-<script src="game-arcade.js?v=1.16-combat-dev"></script>
-<script src="quick-stats.js?v=1.16-combat-dev"></script>
-<script src="game-render.js?v=1.16-combat-dev"></script>
-<script src="game-ui.js?v=1.16-combat-dev"></script>
-<script src="tower-fire.js?v=1.16-combat-dev"></script>
-<script src="battle-actions.js?v=1.16-combat-dev"></script>
-<script src="prestige-enemies.js?v=1.16-combat-dev"></script>
-<script src="boss-abilities.js?v=1.16-combat-dev"></script>
-<script src="game-core.js?v=1.16-combat-dev"></script>
+<script src="skins.js?v=1.16-endless-dev"></script>
+<script src="skill-tree-data.js?v=1.16-endless-dev"></script>
+<script src="endless.js?v=1.16-endless-dev"></script>
+<script src="skill-tree.js?v=1.16-endless-dev"></script>
+<script src="skill-tree-effects.js?v=1.16-endless-dev"></script>
+<script src="game-data.js?v=1.16-endless-dev"></script>
+<script src="game-arcade.js?v=1.16-endless-dev"></script>
+<script src="quick-stats.js?v=1.16-endless-dev"></script>
+<script src="game-render.js?v=1.16-endless-dev"></script>
+<script src="game-ui.js?v=1.16-endless-dev"></script>
+<script src="tower-fire.js?v=1.16-endless-dev"></script>
+<script src="battle-actions.js?v=1.16-endless-dev"></script>
+<script src="prestige-enemies.js?v=1.16-endless-dev"></script>
+<script src="boss-abilities.js?v=1.16-endless-dev"></script>
+<script src="game-core.js?v=1.16-endless-dev"></script>
 </body>
 </html>
