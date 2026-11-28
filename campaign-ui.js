@@ -21,12 +21,12 @@ function install(){
  const settings=()=>{const d=E('dialog','fw-settings');const h=E('h2',null,'Settings');d.append(h,E('p',null,'Sound and final artwork are not yet implemented.'),btn('Save & backup',()=>{d.close();skill('skillBackupTab')}),btn('Testing tools',()=>{d.close();choosePage('dev')}),btn('Close',()=>d.close()));document.body.append(d);d.addEventListener('close',()=>d.remove(),{once:true});d.showModal()};
  const mapTitle=E('h2',null,'The Realm'),mapInfo=E('p','fw-live-map-info'),regions=E('div','fw-live-regions'),mapActions=E('div','fw-live-actions');
  mapActions.append(btn('Prepare attempt',()=>choosePage('shop')),btn('Skill tree',()=>skill('skillTreeTab')),btn('Legacy & prestige',()=>skill('skillLegacyTab')),btn('Hero collection',()=>skill('skillSkinsTab')),btn('Settings',settings));const mapHeader=E('header','fw-screen-head'),mapArt=canvas(320,180,'fw-pixel-background');mapHeader.append(btn('‹ Menu',()=>choosePage('menu')),mapTitle,mapInfo);regions.append(mapArt);map.append(mapHeader,regions,mapActions);
- const merchantHeader=E('div','fw-live-merchant-banner');merchantHeader.append(E('span','fw-live-emblem','✦'),E('div',null,'The Merchant · finite stock'));
+ const merchantHeader=E('div','fw-live-merchant-banner'),coinLabel=E('b','fw-live-coin-label');merchantHeader.append(E('span','fw-live-emblem','✦'),E('div',null,'The Merchant · finite stock'),coinLabel);
  const prepSpells=E('div','fw-live-prep-spells');
  const stall=E('div','fw-merchant-art'),merchantArt=canvas(96,116,'fw-pixel-background');art.merchant(merchantArt);stall.append(merchantArt,E('p',null,'“Stock is limited, traveller. Choose wisely.”'));merchantHeader.prepend(btn('‹ Map',()=>choosePage('map')));shop.append(merchantHeader,stall,merchant,prepSpells,encounter,pool);
- dev.append(test,quest,tree,log);
+ dev.append(btn('‹ Map',()=>choosePage('map')),test,quest,tree,log);
  const deployment=E('div','fw-live-deployment');deployment.hidden=true;deployment.setAttribute('role','status');$('arena').parentElement.append(deployment);
- const battleControls=$('liveBattleControls'),abandon=$('abandonButton');abandon.addEventListener('click',()=>ui.abandon?.());
+ const battleControls=$('liveBattleControls'),abandon=$('abandonButton'),speed=btn('1×',()=>{ui.speed?.();speed.textContent=(live.playbackSpeed||1)+'×'});abandon.addEventListener('click',()=>ui.abandon?.());battleControls.prepend(speed);const hud=E('div','fw-pixel-hud'),hp=E('b'),earned=E('b'),meter=E('progress');meter.max=100;hud.append(hp,meter,earned);field.prepend(hud);
  const roster=E('div','fw-live-roster'),portrait=E('div','fw-live-portrait'),rosterButtons=E('div','fw-live-roster-buttons'),glyph=canvas(72,96,'fw-portrait-art'),heroName=E('h3'),heroDetail=E('p'),health=E('progress'),rescue=btn('Rescue',()=>{if(selected!=null)ui.press?.(selected)});
  health.max=100;health.value=0;portrait.append(glyph,heroName,heroDetail,health,rescue);roster.append(E('small','fw-portrait-heading','HERO INSPECTION'),portrait,rosterButtons);
  const formation=$('formation');roster.append(formation);roster.append($('formationCount'));side.append(roster);
@@ -35,7 +35,7 @@ function install(){
  const buttons={};for(const [page,label] of [['menu','Menu'],['map','Realm'],['shop','Merchant'],['dev','Testing & log']]){buttons[page]=btn(label,()=>choosePage(page));nav.append(buttons[page])}
  buttons.tree=btn('Upgrades',()=>skill('skillTreeTab'));buttons.collection=btn('Collection',()=>skill('skillSkinsTab'));nav.append(buttons.tree,buttons.collection);
  pages.append(menu,map,shop,dev);shell.insertBefore(nav,layout);shell.insertBefore(pages,layout);
- ui={...ui,shell,layout,field,side,menu,map,shop,dev,buttons,mapInfo,regions,mapArt,mapActions,battleControls,abandon,deployment,roster,rosterButtons,portrait,glyph,heroName,heroDetail,health,rescue,prepSpells,battleActions,canvasWrap,test,merchant};
+ ui={...ui,shell,layout,field,side,menu,map,shop,dev,buttons,mapInfo,regions,mapArt,mapActions,coinLabel,hud,hp,earned,meter,speed,battleControls,abandon,deployment,roster,rosterButtons,portrait,glyph,heroName,heroDetail,health,rescue,prepSpells,battleActions,canvasWrap,test,merchant};
  shell.classList.add('fw-live');document.body.classList.add('fw-live-body');installed=true;return true;
 }
 function renderMap(){
@@ -57,7 +57,7 @@ function renderRoster(){
  if(key!==rosterKey){rosterKey=key;ui.rosterButtons.replaceChildren(...list.map(h=>{const b=btn(h.base.glyph+' '+h.base.name,()=>{selected=h.id;rosterKey='';renderRoster()});b.setAttribute('aria-pressed',String(h.id===selected));return b}))}
  const h=list.find(h=>h.id===selected);ui.portrait.hidden=!h;
  if(!h){ui.rescue.hidden=true;return}
- const damage=h.capture||h.hp/h.maxHp<=.33?2:h.hp/h.maxHp<=.66?1:0;const pk=[h.id,h.skin?.id,damage,!!h.capture].join(':');if(pk!==portraitKey){portraitKey=pk;art.portrait(ui.glyph,h.base.id,h.skin?.key==='default'?'Base':h.skin?.rarity,damage,!!h.capture,true,h.skin?.color);ui.glyph.style.borderColor=h.skin?.trim||h.base.color}ui.heroName.textContent=h.base.name+' · '+(h.skin?.rarity||h.base.rarity);
+ const damage=h.capture||h.hp/h.maxHp<=.33?2:h.hp/h.maxHp<=.66?1:0;const pk=[h.id,h.skin?.id,damage,!!h.capture].join(':');if(pk!==portraitKey){portraitKey=pk;art.portrait(ui.glyph,h.base.id,h.skin?.key==='default'?'Base':h.skin?.rarity,damage,!!h.capture,true,h.skin?.color);ui.glyph.style.borderColor=h.skin?.trim||h.base.color;ui.glyph.classList.toggle('fw-restrained',!!h.capture)}ui.heroName.textContent=h.base.name+' · '+(h.skin?.rarity||h.base.rarity);
  const c=h.capture;
  ui.heroDetail.textContent=c?(c.required?'Capture · '+Math.floor(c.progress)+' / '+c.required+' rescue taps':'Capture · no rescues remaining')+' · '+Math.max(0,c.expires-live.elapsed).toFixed(1)+'s':Math.ceil(h.hp)+' / '+h.maxHp+' HP · '+(h.skin?.name||'Base skin')+' · '+h.base.role;
  ui.health.value=c?(c.required?100*c.progress/c.required:0):100*Math.max(0,h.hp)/Math.max(1,h.maxHp);
@@ -69,13 +69,13 @@ function paint(){
  for(const k of ['menu','map','shop','dev'])ui[k].hidden=screen!==k;
  ui.layout.hidden=!combat;ui.side.hidden=!combat;ui.shell.classList.toggle('fw-combat',combat);
  for(const [k,b] of Object.entries(ui.buttons)){b.disabled=!!combat;b.setAttribute('aria-current',k===screen?'page':'false')}
- ui.battleControls.hidden=!combat||live.mode!=='battle';if(combat){ui.abandon.disabled=live.mode!=='battle';if(ui.battleActions.parentElement!==ui.field)ui.field.insertBefore(ui.battleActions,ui.canvasWrap);renderRoster()}
+ ui.coinLabel.textContent='◈ '+live.coins+' / '+live.coinMax;ui.hp.textContent='♜ '+Math.ceil(live.towerHp)+' / '+(live.towerMax||100);ui.meter.value=100*live.towerHp/(live.towerMax||100);ui.earned.textContent='✦ '+Number(live.upEarned||0).toFixed(2)+' UP';ui.speed.textContent=(live.playbackSpeed||1)+'×';ui.battleControls.hidden=!combat||live.mode!=='battle';if(combat){ui.abandon.disabled=live.mode!=='battle';if(ui.battleActions.parentElement!==ui.field)ui.field.insertBefore(ui.battleActions,ui.canvasWrap);renderRoster()}
  else {if(ui.battleActions.parentElement!==ui.prepSpells)ui.prepSpells.append(ui.battleActions);renderMap()}
  // In testing, keep the actual controls available instead of making a second test state.
  if(!combat&&live.testMode&&screen==='shop')ui.shop.append(ui.test);else if(ui.test.parentElement!==ui.dev)ui.dev.prepend(ui.test);
 }
-function sync(state,press,abandon,newGame,view,resume){
- live=state;ui.press=press;ui.abandon=abandon;ui.newGame=newGame;ui.view=view;ui.resume=resume;if(!installed&&!install())return;
+function sync(state,press,abandon,newGame,view,resume,speed){
+ live=state;ui.press=press;ui.abandon=abandon;ui.newGame=newGame;ui.view=view;ui.resume=resume;ui.speed=speed;if(!installed&&!install())return;
  if(previousMode&&previousMode!=='prep'&&state.mode==='prep'){screen=previousMode==='clear'||previousMode==='champion'?'map':'shop';selected=null;lastCapture=null;window.scrollTo?.(0,0)}
  const began=state.mode==='battle'&&previousMode!=='battle';previousMode=state.mode;paint();
  if(began){window.scrollTo?.(0,0);if(!state.testMode)deal(state)}
