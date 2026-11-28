@@ -3,13 +3,13 @@
    damage enemies directly: the tower fires on its own cooldown and bolts travel physically. */
 (function(){'use strict';
 window.FWTowerFire={
- create({canvas,ctx,view,state,config,hitEnemy,addEffect,intercept=()=>false,aimBlocked=()=>false}){
+ create({canvas,ctx,view,state,config,hitEnemy,addEffect,intercept=()=>false,aimBlocked=()=>false,previewRadius=()=>0}){
   const cfg={...config};
   if(!cfg||!Number.isFinite(cfg.projectileSpeed)||cfg.projectileSpeed<=0)throw Error('Missing tower-fire config');
   const radius=cfg.projectileRadius;
   if(!state.towerAim)state.towerAim={x:0,y:-5};
   if(!state.towerShots)state.towerShots=[];
-  let clock=0,serial=0,cycles=0;
+  let clock=0,serial=0,cycles=0,preview=null;
   const tuning=()=>window.FWSkillTree?.tower?.()||{damage:cfg.damage,cooldownSeconds:cfg.cooldownSeconds,pierce:0,splash:0,twin:0,overload:false};
   const px=x=>view.w/2+x*view.scale, py=y=>view.h/2+y*view.scale;
   function aim(clientX,clientY){
@@ -19,7 +19,7 @@ window.FWTowerFire={
    state.towerAim={x:Math.max(-view.worldW/2,Math.min(view.worldW/2,(x-view.w/2)/view.scale)),
                     y:Math.max(-view.worldH/2,Math.min(view.worldH/2,(y-view.h/2)/view.scale))};
   }
-  canvas.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'&&!aimBlocked())aim(e.clientX,e.clientY)});
+  canvas.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){if(!aimBlocked()){preview=null;aim(e.clientX,e.clientY)}else{const rect=canvas.getBoundingClientRect();if(rect.width&&rect.height)preview={x:(e.clientX-rect.left)/rect.width*view.w,y:(e.clientY-rect.top)/rect.height*view.h}}}});
   canvas.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;const x=((e.clientX-rect.left)/rect.width*view.w-view.w/2)/view.scale,y=((e.clientY-rect.top)/rect.height*view.h-view.h/2)/view.scale;if(intercept(x,y)){e.preventDefault?.();return}if(!aimBlocked())aim(e.clientX,e.clientY)});
   function fire(){
    const dx=state.towerAim.x,dy=state.towerAim.y,len=Math.hypot(dx,dy)||1;
@@ -60,7 +60,7 @@ window.FWTowerFire={
      ctx.save();ctx.shadowColor='#ffbd67';ctx.shadowBlur=11;
      ctx.fillStyle='#ffedbd';ctx.beginPath();ctx.arc(x,y,Math.max(3,radius*view.scale*.75),0,Math.PI*2);ctx.fill();ctx.restore();
     }
-    if(!state.paused){
+    if(!state.paused&&previewRadius()>0){if(preview){ctx.save();ctx.strokeStyle='#d8edff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(preview.x,preview.y,previewRadius()*view.scale,0,Math.PI*2);ctx.stroke();ctx.restore()}}else if(!state.paused){
      const x=px(state.towerAim.x),y=py(state.towerAim.y),r=Math.max(8,view.scale*.28);
      ctx.save();ctx.strokeStyle='#ffefbcaa';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
      ctx.moveTo(x-r-5,y);ctx.lineTo(x-r+4,y);ctx.moveTo(x+r-4,y);ctx.lineTo(x+r+5,y);
@@ -68,7 +68,7 @@ window.FWTowerFire={
     }
    }
   }
-  function reset(){clock=0;cycles=0;state.towerShots=[];}
+  function reset(){clock=0;cycles=0;preview=null;state.towerShots=[];}
   return {step,draw,reset,fire,aim,config:cfg};
  }
 };
