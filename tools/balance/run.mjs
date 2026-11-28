@@ -20,8 +20,15 @@ assert(team.reduce((s,h)=>s+h.count,0)<=80,'max 80 heroes');
 const n=integer(args.seeds??'5',1,10000,'seeds'),seed=integer(args.seed??'271128',0,4294967295,'seed'),max=integer(args['max-seconds']??'480',1,3600,'max-seconds'),chunk=integer(args.chunk??'10',1,60,'chunk');
 const nodes=[...spec.target.ordinaryNodes,...spec.target.legacyNodes];
 assert.equal(nodes.length,348);assert.equal(new Set(nodes.map(x=>x.id)).size,348);
-assert.equal(spec.target.ordinaryNodes.reduce((s,x)=>s+x.cost,0),1342);
-assert.equal(spec.target.legacyNodes.reduce((s,x)=>s+x.cost,0),570);
+// v1.16 audited catalogue totals, validated against the actual runtime as well.
+assert.equal(spec.target.ordinaryNodes.reduce((s,x)=>s+x.cost,0),1332);
+assert.equal(spec.target.legacyNodes.reduce((s,x)=>s+x.cost,0),566);
+const runtime={};
+new Function('window',await readFile(resolve(root,'skill-tree-data.js'),'utf8'))(runtime);
+for(const [target,actual] of [[spec.target.ordinaryNodes,runtime.FW_SKILL_DATA.ordinary],[spec.target.legacyNodes,runtime.FW_SKILL_DATA.legacy]]){
+ assert.equal(target.length,actual.length);
+ assert.deepEqual(target.map(n=>[n.id,n.cost]).sort(),actual.map(n=>[n.id,n.cost]).sort(),'manifesto/runtime catalogue cost mismatch');
+}
 assert.equal(spec.engineCompatibleProfile.stages.length,10);
 assert.equal(spec.engineCompatibleProfile.heroes.length,15);
 for(const p of spec.target.packs)assert(Math.abs(p.weights.reduce((s,x)=>s+x,0)-1)<1e-9);
