@@ -123,10 +123,21 @@ function exitEndless(){if(p.endless?.phase!=='prep')return false;p.endless.exite
 function resumeEndless(){if(p.endless?.phase!=='prep')return false;p.endless.exited=false;save();return true}
 function endEndless(reason){if(!p.endless)return false;const e=p.endless;if(e.phase==='battle')e.seconds+=e.activeSeconds||0;e.activeSeconds=0;e.reason=reason;p.endlessLast={...e};saveBest(e);p.endless=null;save();return true}
 function finishEndless(won){const e=p.endless;if(!e||e.phase!=='battle'||api.state.testMode)return false;e.seconds+=api.state.elapsed;e.activeSeconds=0;if(won){e.completed=e.wave;saveBest(e);e.wave++;e.phase='prep';e.attempt=null;e.exited=false;save();return true}e.phase='ended';return endEndless('Tower defeated')}
-function recordWin(stage){if(!api||api.state.testMode)return;if(!p.runClears.includes(stage)){p.runClears.push(stage);if(has('R-E06'))credit(1)}p.campaignStage=Math.min(10,stage+1);p.runWins++;p.highestClear=Math.max(p.highestClear,stage);p.runHighest=Math.max(p.runHighest,stage);save();labels()}
-function startAttempt(){if(!api)return;if(!api.state.testMode){p.rewardAttempt=api.state.merchantAttemptId;p.rewardIds=[];api.state.rewardAttempt=p.rewardAttempt;save();}api.state.treeStartUP=p.up;api.state.treeStartCoins=api.state.coins;api.state.treeScheduledKills=0;api.state.treeOutcomePaid=false}
+function recordWin(stage){if(!api||api.state.testMode)return;if(!p.runClears.includes(stage)){p.runClears.push(stage);if(has('R-E06')){credit(1);api.state.upEarned=Math.round(((api.state.upEarned||0)+1)*100)/100}}p.campaignStage=Math.min(10,stage+1);p.runWins++;p.highestClear=Math.max(p.highestClear,stage);p.runHighest=Math.max(p.runHighest,stage);save();labels()}
+function startAttempt(){if(!api)return;if(!api.state.testMode){p.rewardAttempt=api.state.merchantAttemptId;p.rewardIds=[];api.state.rewardAttempt=p.rewardAttempt;save();}api.state.treeStartUP=p.up;api.state.treeStartCoins=api.state.coins;api.state.treeScheduledKills=0;api.state.treeOutcomePaid=false;api.state.attemptProgressTopup=0}
 function scheduledKill(){if(api)api.state.treeScheduledKills=(api.state.treeScheduledKills||0)+1}
-function finishAttempt(won){if(!api||api.state.testMode||api.state.treeOutcomePaid)return;api.state.treeOutcomePaid=true;let bonus=0;if(!won&&!api.state.endlessWave&&api.state.stage===1&&api.state.kills>0&&p.up-api.state.treeStartUP<1)bonus+=1-(p.up-api.state.treeStartUP);if(has('R-E08')&&api.state.treeScheduledKills>=6)bonus+=Math.min(2,Math.floor(api.state.treeStartUP*.1));if(won&&has('R-E11'))bonus+=Math.min(2,Math.floor(api.state.treeStartCoins/2));credit(bonus);if(p.endless?.phase==='battle')p.endless.up+=bonus;save();labels()}
+function finishAttempt(won){
+ if(!api||api.state.testMode||api.state.mode!=='battle'||api.state.treeOutcomePaid)return 0;
+ const state=api.state;state.treeOutcomePaid=true;let bonus=0;
+ if(has('R-E08')&&state.treeScheduledKills>=6)bonus+=Math.min(2,Math.floor(state.treeStartUP*.1));
+ if(won&&has('R-E11'))bonus+=Math.min(2,Math.floor(state.treeStartCoins/2));
+ // A resolved battle always advances the player: top up, never add a flat farming bonus.
+ const topup=Math.max(0,Math.round((2-(p.up-state.treeStartUP)-bonus)*100)/100);
+ bonus+=topup;state.attemptProgressTopup=topup;credit(bonus);
+ state.upEarned=Math.round(((state.upEarned||0)+bonus)*100)/100;
+ if(topup>0)api.log('Attempt progression: +'+topup+' UP (minimum 2 UP per completed battle).');
+ if(p.endless?.phase==='battle')p.endless.up+=bonus;save();labels();return bonus
+}
 function checkpointStage(stage){if(!api||api.state.testMode||p.endless||p.runHighest===10)return;p.campaignStage=Math.max(1,Math.min(10,stage));save()}
 function markRestart(){if(p.endless||p.runHighest===10)return false;p.campaignStage=1;save();return true}
 function resumeStage(){if(api&&api.state.mode==='prep'&&!api.state.testMode){if(p.endless?.phase==='battle')endEndless('Active battle abandoned on reload');api.state.stage=p.campaignStage;api.refresh?.()}}
