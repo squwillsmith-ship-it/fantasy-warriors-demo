@@ -1,0 +1,842 @@
+{
+  "current": [
+    {
+      "case": "Opening",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 2500,
+      "unused": 0,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 0,
+      "zero": 0,
+      "top": 2500,
+      "category": {
+        "standard": 2500
+      },
+      "offerCategory": {
+        "standard": 7500
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 1,
+      "meanUnused": 0,
+      "meanNewest": 1
+    },
+    {
+      "case": "Opening",
+      "policy": "tier",
+      "n": 2500,
+      "units": 2500,
+      "unused": 0,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 0,
+      "zero": 0,
+      "top": 2500,
+      "category": {
+        "standard": 2500
+      },
+      "offerCategory": {
+        "standard": 7500
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 1,
+      "meanUnused": 0,
+      "meanNewest": 1
+    },
+    {
+      "case": "Early prestige",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 8384,
+      "unused": 2863,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 2179,
+      "zero": 0,
+      "top": 4379,
+      "category": {
+        "standard": 5927,
+        "individual": 2457
+      },
+      "offerCategory": {
+        "standard": 6958,
+        "individual": 3042
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 3.3536,
+      "meanUnused": 1.1452,
+      "meanNewest": 1.7516
+    },
+    {
+      "case": "Early prestige",
+      "policy": "tier",
+      "n": 2500,
+      "units": 8356,
+      "unused": 1439,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 2217,
+      "zero": 0,
+      "top": 5816,
+      "category": {
+        "standard": 5661,
+        "individual": 2695
+      },
+      "offerCategory": {
+        "standard": 6925,
+        "individual": 3075
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 3.3424,
+      "meanUnused": 0.5756,
+      "meanNewest": 2.3264
+    },
+    {
+      "case": "Mid campaign",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 13160,
+      "unused": 3955,
+      "bulkStock": 1444,
+      "bulkBuy": 1444,
+      "advanced": 2473,
+      "zero": 0,
+      "top": 5311,
+      "category": {
+        "standard": 6622,
+        "box": 1526,
+        "individual": 1960
+      },
+      "offerCategory": {
+        "standard": 8174,
+        "box": 1797,
+        "individual": 2529
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 5.264,
+      "meanUnused": 1.582,
+      "meanNewest": 2.1244
+    },
+    {
+      "case": "Mid campaign",
+      "policy": "tier",
+      "n": 2500,
+      "units": 13189,
+      "unused": 1896,
+      "bulkStock": 1464,
+      "bulkBuy": 1464,
+      "advanced": 2498,
+      "zero": 0,
+      "top": 6526,
+      "category": {
+        "standard": 6419,
+        "box": 1595,
+        "individual": 1985
+      },
+      "offerCategory": {
+        "standard": 8200,
+        "box": 1826,
+        "individual": 2474
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 5.2756,
+      "meanUnused": 0.7584,
+      "meanNewest": 2.6104
+    },
+    {
+      "case": "Late campaign",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 16701,
+      "unused": 9306,
+      "bulkStock": 1308,
+      "bulkBuy": 1308,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 5546,
+      "category": {
+        "standard": 8455,
+        "individual": 3599,
+        "golden": 497,
+        "box": 1052
+      },
+      "offerCategory": {
+        "standard": 9157,
+        "individual": 4202,
+        "box": 1130,
+        "golden": 511
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 6.6804,
+      "meanUnused": 3.7224,
+      "meanNewest": 2.2184
+    },
+    {
+      "case": "Late campaign",
+      "policy": "tier",
+      "n": 2500,
+      "units": 16710,
+      "unused": 7382,
+      "bulkStock": 1327,
+      "bulkBuy": 1327,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 6305,
+      "category": {
+        "standard": 8282,
+        "individual": 3664,
+        "golden": 516,
+        "box": 1072
+      },
+      "offerCategory": {
+        "standard": 9132,
+        "individual": 4215,
+        "box": 1117,
+        "golden": 536
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 6.684,
+      "meanUnused": 2.9528,
+      "meanNewest": 2.522
+    },
+    {
+      "case": "Full merchant",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 20283,
+      "unused": 23063,
+      "bulkStock": 1934,
+      "bulkBuy": 1934,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 8940,
+      "category": {
+        "standard": 7935,
+        "individual": 3916,
+        "box": 1136,
+        "golden": 557,
+        "mixed": 361,
+        "double": 533,
+        "triple": 305
+      },
+      "offerCategory": {
+        "standard": 7957,
+        "individual": 4147,
+        "box": 1137,
+        "golden": 558,
+        "mixed": 361,
+        "double": 533,
+        "triple": 307
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 8.1132,
+      "meanUnused": 9.2252,
+      "meanNewest": 3.576
+    },
+    {
+      "case": "Full merchant",
+      "policy": "tier",
+      "n": 2500,
+      "units": 20128,
+      "unused": 23239,
+      "bulkStock": 1891,
+      "bulkBuy": 1891,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 8926,
+      "category": {
+        "standard": 7912,
+        "individual": 4052,
+        "box": 1102,
+        "golden": 510,
+        "mixed": 376,
+        "double": 517,
+        "triple": 298
+      },
+      "offerCategory": {
+        "standard": 8035,
+        "individual": 4155,
+        "box": 1103,
+        "golden": 511,
+        "mixed": 376,
+        "double": 518,
+        "triple": 302
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 8.0512,
+      "meanUnused": 9.2956,
+      "meanNewest": 3.5704
+    }
+  ],
+  "curated": [
+    {
+      "case": "Opening",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 2500,
+      "unused": 0,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 0,
+      "zero": 0,
+      "top": 2500,
+      "category": {
+        "standard": 2500
+      },
+      "offerCategory": {
+        "standard": 7500
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 1,
+      "meanUnused": 0,
+      "meanNewest": 1
+    },
+    {
+      "case": "Opening",
+      "policy": "tier",
+      "n": 2500,
+      "units": 2500,
+      "unused": 0,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 0,
+      "zero": 0,
+      "top": 2500,
+      "category": {
+        "standard": 2500
+      },
+      "offerCategory": {
+        "standard": 7500
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 1,
+      "meanUnused": 0,
+      "meanNewest": 1
+    },
+    {
+      "case": "Early prestige",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 8384,
+      "unused": 2863,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 2179,
+      "zero": 0,
+      "top": 4379,
+      "category": {
+        "standard": 5927,
+        "individual": 2457
+      },
+      "offerCategory": {
+        "standard": 6958,
+        "individual": 3042
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 3.3536,
+      "meanUnused": 1.1452,
+      "meanNewest": 1.7516
+    },
+    {
+      "case": "Early prestige",
+      "policy": "tier",
+      "n": 2500,
+      "units": 8356,
+      "unused": 1439,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 2217,
+      "zero": 0,
+      "top": 5816,
+      "category": {
+        "standard": 5661,
+        "individual": 2695
+      },
+      "offerCategory": {
+        "standard": 6925,
+        "individual": 3075
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 3.3424,
+      "meanUnused": 0.5756,
+      "meanNewest": 2.3264
+    },
+    {
+      "case": "Mid campaign",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 13160,
+      "unused": 3955,
+      "bulkStock": 1444,
+      "bulkBuy": 1444,
+      "advanced": 2473,
+      "zero": 0,
+      "top": 5311,
+      "category": {
+        "standard": 6622,
+        "box": 1526,
+        "individual": 1960
+      },
+      "offerCategory": {
+        "standard": 8174,
+        "box": 1797,
+        "individual": 2529
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 5.264,
+      "meanUnused": 1.582,
+      "meanNewest": 2.1244
+    },
+    {
+      "case": "Mid campaign",
+      "policy": "tier",
+      "n": 2500,
+      "units": 13189,
+      "unused": 1896,
+      "bulkStock": 1464,
+      "bulkBuy": 1464,
+      "advanced": 2498,
+      "zero": 0,
+      "top": 6526,
+      "category": {
+        "standard": 6419,
+        "box": 1595,
+        "individual": 1985
+      },
+      "offerCategory": {
+        "standard": 8200,
+        "box": 1826,
+        "individual": 2474
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 5.2756,
+      "meanUnused": 0.7584,
+      "meanNewest": 2.6104
+    },
+    {
+      "case": "Late campaign",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 18481,
+      "unused": 5292,
+      "bulkStock": 2500,
+      "bulkBuy": 2500,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 5123,
+      "category": {
+        "standard": 6282,
+        "box": 2195,
+        "individual": 2371,
+        "golden": 1081
+      },
+      "offerCategory": {
+        "standard": 7839,
+        "individual": 3601,
+        "box": 2433,
+        "golden": 1127
+      },
+      "curated": 2500,
+      "curatedBuy": 2420,
+      "meanUnits": 7.3924,
+      "meanUnused": 2.1168,
+      "meanNewest": 2.0492
+    },
+    {
+      "case": "Late campaign",
+      "policy": "tier",
+      "n": 2500,
+      "units": 18420,
+      "unused": 1920,
+      "bulkStock": 2500,
+      "bulkBuy": 2500,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 6762,
+      "category": {
+        "standard": 6014,
+        "box": 2242,
+        "individual": 2476,
+        "golden": 1068
+      },
+      "offerCategory": {
+        "standard": 7811,
+        "individual": 3642,
+        "box": 2410,
+        "golden": 1137
+      },
+      "curated": 2500,
+      "curatedBuy": 2418,
+      "meanUnits": 7.368,
+      "meanUnused": 0.768,
+      "meanNewest": 2.7048
+    },
+    {
+      "case": "Full merchant",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 22502,
+      "unused": 17010,
+      "bulkStock": 2500,
+      "bulkBuy": 2500,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 9190,
+      "category": {
+        "standard": 7004,
+        "individual": 3128,
+        "triple": 490,
+        "double": 800,
+        "golden": 794,
+        "box": 1706,
+        "mixed": 589
+      },
+      "offerCategory": {
+        "standard": 7048,
+        "individual": 3558,
+        "triple": 498,
+        "double": 804,
+        "golden": 795,
+        "box": 1708,
+        "mixed": 589
+      },
+      "curated": 2500,
+      "curatedBuy": 2495,
+      "meanUnits": 9.0008,
+      "meanUnused": 6.804,
+      "meanNewest": 3.676
+    },
+    {
+      "case": "Full merchant",
+      "policy": "tier",
+      "n": 2500,
+      "units": 22372,
+      "unused": 16104,
+      "bulkStock": 2500,
+      "bulkBuy": 2500,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 9599,
+      "category": {
+        "standard": 6835,
+        "individual": 3422,
+        "triple": 416,
+        "double": 795,
+        "golden": 784,
+        "box": 1707,
+        "mixed": 573
+      },
+      "offerCategory": {
+        "standard": 7070,
+        "individual": 3647,
+        "triple": 417,
+        "double": 800,
+        "golden": 786,
+        "box": 1707,
+        "mixed": 573
+      },
+      "curated": 2500,
+      "curatedBuy": 2498,
+      "meanUnits": 8.9488,
+      "meanUnused": 6.4416,
+      "meanNewest": 3.8396
+    }
+  ],
+  "bulk": [
+    {
+      "case": "Opening",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 2500,
+      "unused": 0,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 0,
+      "zero": 0,
+      "top": 2500,
+      "category": {
+        "standard": 2500
+      },
+      "offerCategory": {
+        "standard": 7500
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 1,
+      "meanUnused": 0,
+      "meanNewest": 1
+    },
+    {
+      "case": "Opening",
+      "policy": "tier",
+      "n": 2500,
+      "units": 2500,
+      "unused": 0,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 0,
+      "zero": 0,
+      "top": 2500,
+      "category": {
+        "standard": 2500
+      },
+      "offerCategory": {
+        "standard": 7500
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 1,
+      "meanUnused": 0,
+      "meanNewest": 1
+    },
+    {
+      "case": "Early prestige",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 8384,
+      "unused": 2863,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 2179,
+      "zero": 0,
+      "top": 4379,
+      "category": {
+        "standard": 5927,
+        "individual": 2457
+      },
+      "offerCategory": {
+        "standard": 6958,
+        "individual": 3042
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 3.3536,
+      "meanUnused": 1.1452,
+      "meanNewest": 1.7516
+    },
+    {
+      "case": "Early prestige",
+      "policy": "tier",
+      "n": 2500,
+      "units": 8356,
+      "unused": 1439,
+      "bulkStock": 0,
+      "bulkBuy": 0,
+      "advanced": 2217,
+      "zero": 0,
+      "top": 5816,
+      "category": {
+        "standard": 5661,
+        "individual": 2695
+      },
+      "offerCategory": {
+        "standard": 6925,
+        "individual": 3075
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 3.3424,
+      "meanUnused": 0.5756,
+      "meanNewest": 2.3264
+    },
+    {
+      "case": "Mid campaign",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 13338,
+      "unused": 3859,
+      "bulkStock": 1620,
+      "bulkBuy": 1620,
+      "advanced": 2468,
+      "zero": 0,
+      "top": 5201,
+      "category": {
+        "standard": 6272,
+        "box": 1739,
+        "individual": 1849
+      },
+      "offerCategory": {
+        "standard": 7882,
+        "box": 2148,
+        "individual": 2470
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 5.3352,
+      "meanUnused": 1.5436,
+      "meanNewest": 2.0804
+    },
+    {
+      "case": "Mid campaign",
+      "policy": "tier",
+      "n": 2500,
+      "units": 13392,
+      "unused": 1700,
+      "bulkStock": 1660,
+      "bulkBuy": 1660,
+      "advanced": 2498,
+      "zero": 0,
+      "top": 6414,
+      "category": {
+        "standard": 5984,
+        "box": 1874,
+        "individual": 1786
+      },
+      "offerCategory": {
+        "standard": 7930,
+        "box": 2186,
+        "individual": 2384
+      },
+      "curated": 0,
+      "curatedBuy": 0,
+      "meanUnits": 5.3568,
+      "meanUnused": 0.68,
+      "meanNewest": 2.5656
+    },
+    {
+      "case": "Late campaign",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 18712,
+      "unused": 4876,
+      "bulkStock": 2500,
+      "bulkBuy": 2500,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 4911,
+      "category": {
+        "standard": 5722,
+        "box": 2263,
+        "individual": 2277,
+        "golden": 1308
+      },
+      "offerCategory": {
+        "standard": 7425,
+        "individual": 3575,
+        "box": 2615,
+        "golden": 1385
+      },
+      "curated": 2500,
+      "curatedBuy": 2398,
+      "meanUnits": 7.4848,
+      "meanUnused": 1.9504,
+      "meanNewest": 1.9644
+    },
+    {
+      "case": "Late campaign",
+      "policy": "tier",
+      "n": 2500,
+      "units": 18691,
+      "unused": 1766,
+      "bulkStock": 2500,
+      "bulkBuy": 2500,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 6376,
+      "category": {
+        "standard": 5423,
+        "box": 2432,
+        "individual": 2234,
+        "golden": 1246
+      },
+      "offerCategory": {
+        "standard": 7366,
+        "individual": 3624,
+        "box": 2648,
+        "golden": 1362
+      },
+      "curated": 2500,
+      "curatedBuy": 2404,
+      "meanUnits": 7.4764,
+      "meanUnused": 0.7064,
+      "meanNewest": 2.5504
+    },
+    {
+      "case": "Full merchant",
+      "policy": "quantity",
+      "n": 2500,
+      "units": 23075,
+      "unused": 15008,
+      "bulkStock": 2500,
+      "bulkBuy": 2500,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 9470,
+      "category": {
+        "standard": 6540,
+        "individual": 3000,
+        "triple": 413,
+        "double": 753,
+        "golden": 978,
+        "box": 2053,
+        "mixed": 555
+      },
+      "offerCategory": {
+        "standard": 6629,
+        "individual": 3596,
+        "triple": 421,
+        "double": 758,
+        "golden": 980,
+        "box": 2061,
+        "mixed": 555
+      },
+      "curated": 2500,
+      "curatedBuy": 2493,
+      "meanUnits": 9.23,
+      "meanUnused": 6.0032,
+      "meanNewest": 3.788
+    },
+    {
+      "case": "Full merchant",
+      "policy": "tier",
+      "n": 2500,
+      "units": 23157,
+      "unused": 13717,
+      "bulkStock": 2500,
+      "bulkBuy": 2500,
+      "advanced": 2500,
+      "zero": 0,
+      "top": 9695,
+      "category": {
+        "standard": 6279,
+        "individual": 3253,
+        "triple": 455,
+        "double": 762,
+        "golden": 956,
+        "box": 2072,
+        "mixed": 518
+      },
+      "offerCategory": {
+        "standard": 6604,
+        "individual": 3620,
+        "triple": 460,
+        "double": 765,
+        "golden": 959,
+        "box": 2074,
+        "mixed": 518
+      },
+      "curated": 2500,
+      "curatedBuy": 2496,
+      "meanUnits": 9.2628,
+      "meanUnused": 5.4868,
+      "meanNewest": 3.878
+    }
+  ]
+}

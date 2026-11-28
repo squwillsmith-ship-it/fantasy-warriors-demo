@@ -1,0 +1,13 @@
+{
+  "name": "fantasy-warriors-balance",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node run.mjs --check=true",
+    "smoke": "node run.mjs --stages=1 --seeds=2 --max-seconds=180",
+    "candidate": "node run.mjs --profile=candidate --stages=1,2,10 --seeds=5 --output=candidate.json"
+  },
+  "devDependencies": {
+    "playwright": "1.58.2"
+  }
+}

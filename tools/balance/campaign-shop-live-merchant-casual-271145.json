@@ -1,0 +1,7171 @@
+{
+  "seed": 271145,
+  "candidate": "live-merchant-casual",
+  "result": [
+    {
+      "i": 1,
+      "p": 0,
+      "stage": 1,
+      "endless": 0,
+      "cap": 2,
+      "team": [
+        "archer"
+      ],
+      "shop": {
+        "slots": 3,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 46.45,
+      "kills": 9,
+      "up": 2,
+      "minimumTopup": 1,
+      "bought": 0,
+      "rescueTaps": 5,
+      "spells": 0
+    },
+    {
+      "i": 2,
+      "p": 0,
+      "stage": 1,
+      "endless": 0,
+      "cap": 2,
+      "team": [
+        "archer"
+      ],
+      "shop": {
+        "slots": 3,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 47.3,
+      "kills": 12,
+      "up": 2,
+      "minimumTopup": 1,
+      "bought": 1,
+      "rescueTaps": 5,
+      "spells": 0
+    },
+    {
+      "i": 3,
+      "p": 0,
+      "stage": 1,
+      "endless": 0,
+      "cap": 4,
+      "team": [
+        "archer",
+        "archer"
+      ],
+      "shop": {
+        "slots": 3,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 99.65,
+      "kills": 49,
+      "up": 11,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 3,
+      "spells": 0
+    },
+    {
+      "i": 4,
+      "p": 0,
+      "stage": 2,
+      "endless": 0,
+      "cap": 4,
+      "team": [
+        "knight",
+        "archer"
+      ],
+      "shop": {
+        "slots": 3,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 55.2,
+      "kills": 17,
+      "up": 2,
+      "minimumTopup": 0,
+      "bought": 0,
+      "rescueTaps": 9,
+      "spells": 0
+    },
+    {
+      "i": 5,
+      "p": 0,
+      "stage": 2,
+      "endless": 0,
+      "cap": 6,
+      "team": [
+        "archer",
+        "rogue"
+      ],
+      "shop": {
+        "slots": 3,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 62.6,
+      "kills": 22,
+      "up": 3,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 13,
+      "spells": 0
+    },
+    {
+      "i": 6,
+      "p": 0,
+      "stage": 2,
+      "endless": 0,
+      "cap": 6,
+      "team": [
+        "mage",
+        "knight"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": false,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 53.7,
+      "kills": 15,
+      "up": 2,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 10,
+      "spells": 0
+    },
+    {
+      "i": 7,
+      "p": 0,
+      "stage": 2,
+      "endless": 0,
+      "cap": 6,
+      "team": [
+        "knight",
+        "archer"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": false,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 55.85,
+      "kills": 18,
+      "up": 2,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 7,
+      "spells": 0
+    },
+    {
+      "i": 8,
+      "p": 1,
+      "stage": 1,
+      "endless": 0,
+      "cap": 4,
+      "team": [
+        "archer",
+        "knight"
+      ],
+      "shop": {
+        "slots": 3,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 60.6,
+      "kills": 17,
+      "up": 2,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 10,
+      "spells": 0
+    },
+    {
+      "i": 9,
+      "p": 1,
+      "stage": 1,
+      "endless": 0,
+      "cap": 6,
+      "team": [
+        "knight",
+        "knight",
+        "knight"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 72.35,
+      "kills": 29,
+      "up": 3,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 17,
+      "spells": 0
+    },
+    {
+      "i": 10,
+      "p": 1,
+      "stage": 1,
+      "endless": 0,
+      "cap": 6,
+      "team": [
+        "knight",
+        "knight",
+        "mage"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 93.45,
+      "kills": 46,
+      "up": 6.5,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 9,
+      "spells": 0
+    },
+    {
+      "i": 11,
+      "p": 1,
+      "stage": 1,
+      "endless": 0,
+      "cap": 10,
+      "team": [
+        "knight",
+        "knight",
+        "mage",
+        "knight",
+        "archer"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 95.6,
+      "kills": 49,
+      "up": 12,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 12,
+      "p": 1,
+      "stage": 2,
+      "endless": 0,
+      "cap": 12,
+      "team": [
+        "archer",
+        "archer",
+        "knight",
+        "archer",
+        "archer"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 112.85,
+      "kills": 57,
+      "up": 13,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 17,
+      "spells": 0
+    },
+    {
+      "i": 13,
+      "p": 1,
+      "stage": 3,
+      "endless": 0,
+      "cap": 12,
+      "team": [
+        "mage",
+        "hunter",
+        "hunter",
+        "rogue"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 140.55,
+      "kills": 85,
+      "up": 16,
+      "minimumTopup": 0,
+      "bought": 6,
+      "rescueTaps": 2,
+      "spells": 0
+    },
+    {
+      "i": 14,
+      "p": 1,
+      "stage": 4,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "knight",
+        "archer",
+        "hunter",
+        "hunter",
+        "hunter"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 137.65,
+      "kills": 76,
+      "up": 9,
+      "minimumTopup": 0,
+      "bought": 6,
+      "rescueTaps": 16,
+      "spells": 0
+    },
+    {
+      "i": 15,
+      "p": 1,
+      "stage": 4,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "knight",
+        "knight",
+        "knight",
+        "barbarian",
+        "barbarian"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 77.15,
+      "kills": 32,
+      "up": 4,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 19,
+      "spells": 0
+    },
+    {
+      "i": 16,
+      "p": 1,
+      "stage": 4,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "mage",
+        "knight",
+        "hunter",
+        "rogue",
+        "hunter"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 137.95,
+      "kills": 76,
+      "up": 10,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 20,
+      "spells": 0
+    },
+    {
+      "i": 17,
+      "p": 1,
+      "stage": 4,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "knight",
+        "barbarian",
+        "hunter",
+        "hunter",
+        "hunter"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 141.1,
+      "kills": 76,
+      "up": 9,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 18,
+      "spells": 0
+    },
+    {
+      "i": 18,
+      "p": 2,
+      "stage": 1,
+      "endless": 0,
+      "cap": 6,
+      "team": [
+        "archer",
+        "archer",
+        "mage"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 67.65,
+      "kills": 29,
+      "up": 3.5,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 7,
+      "spells": 0
+    },
+    {
+      "i": 19,
+      "p": 2,
+      "stage": 1,
+      "endless": 0,
+      "cap": 8,
+      "team": [
+        "archer",
+        "archer",
+        "knight",
+        "archer"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 73.35,
+      "kills": 32,
+      "up": 4.5,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 16,
+      "spells": 0
+    },
+    {
+      "i": 20,
+      "p": 2,
+      "stage": 1,
+      "endless": 0,
+      "cap": 10,
+      "team": [
+        "knight",
+        "knight",
+        "archer",
+        "archer",
+        "knight"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 75.95,
+      "kills": 32,
+      "up": 4.5,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 27,
+      "spells": 0
+    },
+    {
+      "i": 21,
+      "p": 2,
+      "stage": 1,
+      "endless": 0,
+      "cap": 12,
+      "team": [
+        "knight",
+        "archer",
+        "knight",
+        "archer",
+        "mage"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 81.45,
+      "kills": 39,
+      "up": 6,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 19,
+      "spells": 0
+    },
+    {
+      "i": 22,
+      "p": 2,
+      "stage": 1,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "knight",
+        "archer",
+        "knight",
+        "mage",
+        "knight"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 5,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 97,
+      "kills": 49,
+      "up": 12.5,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 5,
+      "spells": 0
+    },
+    {
+      "i": 23,
+      "p": 2,
+      "stage": 2,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "archer",
+        "mage",
+        "mage",
+        "knight",
+        "archer"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 4,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 98.95,
+      "kills": 57,
+      "up": 14,
+      "minimumTopup": 0,
+      "bought": 5,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 24,
+      "p": 2,
+      "stage": 3,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "knight",
+        "knight",
+        "archer",
+        "rogue",
+        "rogue"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 4,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 1
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 139.1,
+      "kills": 85,
+      "up": 17.5,
+      "minimumTopup": 0,
+      "bought": 6,
+      "rescueTaps": 8,
+      "spells": 0
+    },
+    {
+      "i": 25,
+      "p": 2,
+      "stage": 4,
+      "endless": 0,
+      "cap": 16,
+      "team": [
+        "knight",
+        "knight",
+        "barbarian",
+        "hunter",
+        "hunter"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 5,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 86.85,
+      "kills": 42,
+      "up": 5.5,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 16,
+      "spells": 3
+    },
+    {
+      "i": 26,
+      "p": 2,
+      "stage": 4,
+      "endless": 0,
+      "cap": 16,
+      "team": [
+        "archer",
+        "archer",
+        "knight",
+        "priest",
+        "paladin"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 118.1,
+      "kills": 73,
+      "up": 10.5,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 22,
+      "spells": 5
+    },
+    {
+      "i": 27,
+      "p": 2,
+      "stage": 4,
+      "endless": 0,
+      "cap": 16,
+      "team": [
+        "mage",
+        "mage",
+        "nun",
+        "paladin",
+        "rogue"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 109.75,
+      "kills": 63,
+      "up": 9,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 26,
+      "spells": 4
+    },
+    {
+      "i": 28,
+      "p": 2,
+      "stage": 4,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "knight",
+        "archer",
+        "hunter",
+        "priest",
+        "nun"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 4,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 96.75,
+      "kills": 51,
+      "up": 6.5,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 23,
+      "spells": 4
+    },
+    {
+      "i": 29,
+      "p": 3,
+      "stage": 1,
+      "endless": 0,
+      "cap": 6,
+      "team": [
+        "knight",
+        "knight",
+        "mage"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": "advanced",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 60.15,
+      "kills": 21,
+      "up": 2.5,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 10,
+      "spells": 0
+    },
+    {
+      "i": 30,
+      "p": 3,
+      "stage": 1,
+      "endless": 0,
+      "cap": 8,
+      "team": [
+        "archer",
+        "archer",
+        "knight",
+        "knight"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 67.5,
+      "kills": 29,
+      "up": 4.5,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 17,
+      "spells": 0
+    },
+    {
+      "i": 31,
+      "p": 3,
+      "stage": 1,
+      "endless": 0,
+      "cap": 12,
+      "team": [
+        "knight",
+        "archer",
+        "archer",
+        "mage"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 5,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 65.05,
+      "kills": 26,
+      "up": 3,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 18,
+      "spells": 0
+    },
+    {
+      "i": 32,
+      "p": 3,
+      "stage": 1,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "archer",
+        "archer",
+        "archer",
+        "mage"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 5,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 81.2,
+      "kills": 41,
+      "up": 6.5,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 14,
+      "spells": 0
+    },
+    {
+      "i": 33,
+      "p": 3,
+      "stage": 1,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "knight",
+        "knight",
+        "archer",
+        "knight",
+        "archer"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 6,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 71.2,
+      "kills": 28,
+      "up": 4.5,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 17,
+      "spells": 0
+    },
+    {
+      "i": 34,
+      "p": 3,
+      "stage": 1,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "mage",
+        "knight",
+        "mage",
+        "knight",
+        "archer"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 6,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 101.95,
+      "kills": 49,
+      "up": 13,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 13,
+      "spells": 0
+    },
+    {
+      "i": 35,
+      "p": 3,
+      "stage": 2,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "archer",
+        "knight",
+        "archer",
+        "archer",
+        "knight"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 6,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 125.05,
+      "kills": 57,
+      "up": 14,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 22,
+      "spells": 0
+    },
+    {
+      "i": 36,
+      "p": 3,
+      "stage": 3,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "knight",
+        "archer",
+        "mage",
+        "hunter",
+        "hunter"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 138.7,
+      "kills": 85,
+      "up": 18,
+      "minimumTopup": 0,
+      "bought": 6,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 37,
+      "p": 3,
+      "stage": 4,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "archer",
+        "hunter",
+        "hunter",
+        "hunter",
+        "hunter"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 6,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 100.9,
+      "kills": 61,
+      "up": 10,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 16,
+      "spells": 4
+    },
+    {
+      "i": 38,
+      "p": 3,
+      "stage": 4,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "knight",
+        "mage",
+        "archer",
+        "nun",
+        "nun"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 5,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 91.7,
+      "kills": 44,
+      "up": 5.5,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 22,
+      "spells": 4
+    },
+    {
+      "i": 39,
+      "p": 3,
+      "stage": 4,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "knight",
+        "barbarian",
+        "paladin",
+        "priest",
+        "nun"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 82.2,
+      "kills": 33,
+      "up": 4.5,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 19,
+      "spells": 3
+    },
+    {
+      "i": 40,
+      "p": 3,
+      "stage": 4,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "mage",
+        "hunter",
+        "barbarian",
+        "rogue",
+        "priest"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 5,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 102.4,
+      "kills": 61,
+      "up": 9.5,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 19,
+      "spells": 4
+    },
+    {
+      "i": 41,
+      "p": 4,
+      "stage": 1,
+      "endless": 0,
+      "cap": 6,
+      "team": [
+        "archer",
+        "archer",
+        "archer"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 57.65,
+      "kills": 18,
+      "up": 2,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 13,
+      "spells": 0
+    },
+    {
+      "i": 42,
+      "p": 4,
+      "stage": 1,
+      "endless": 0,
+      "cap": 8,
+      "team": [
+        "archer",
+        "knight",
+        "mage",
+        "mage"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 68.95,
+      "kills": 31,
+      "up": 4,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 15,
+      "spells": 0
+    },
+    {
+      "i": 43,
+      "p": 4,
+      "stage": 1,
+      "endless": 0,
+      "cap": 12,
+      "team": [
+        "knight",
+        "archer",
+        "knight",
+        "mage",
+        "knight",
+        "mage"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 73.85,
+      "kills": 34,
+      "up": 4.4,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 21,
+      "spells": 0
+    },
+    {
+      "i": 44,
+      "p": 4,
+      "stage": 1,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "knight",
+        "knight",
+        "archer",
+        "archer",
+        "knight",
+        "knight"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 4,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 83.2,
+      "kills": 39,
+      "up": 4.8,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 21,
+      "spells": 0
+    },
+    {
+      "i": 45,
+      "p": 4,
+      "stage": 1,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "archer",
+        "knight",
+        "mage",
+        "archer",
+        "knight",
+        "knight",
+        "knight"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": "advanced",
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 1
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 92.1,
+      "kills": 49,
+      "up": 11.4,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 10,
+      "spells": 0
+    },
+    {
+      "i": 46,
+      "p": 4,
+      "stage": 2,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "archer",
+        "archer",
+        "mage",
+        "knight",
+        "knight",
+        "archer",
+        "mage"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": false,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11"
+        ],
+        "rerolls": 1
+      },
+      "outcome": "clear",
+      "sec": 90.3,
+      "kills": 57,
+      "up": 12.6,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 47,
+      "p": 4,
+      "stage": 3,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "knight",
+        "hunter",
+        "archer",
+        "hunter",
+        "rogue",
+        "barbarian"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": false,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 1,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 8
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11"
+        ],
+        "rerolls": 1
+      },
+      "outcome": "clear",
+      "sec": 130.45,
+      "kills": 85,
+      "up": 15.8,
+      "minimumTopup": 0,
+      "bought": 6,
+      "rescueTaps": 11,
+      "spells": 0
+    },
+    {
+      "i": 48,
+      "p": 4,
+      "stage": 4,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "mage",
+        "archer",
+        "mage",
+        "mage",
+        "hunter",
+        "hunter",
+        "barbarian"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 3
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 134.2,
+      "kills": 76,
+      "up": 10.8,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 25,
+      "spells": 5
+    },
+    {
+      "i": 49,
+      "p": 4,
+      "stage": 4,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "knight",
+        "hunter",
+        "barbarian",
+        "nun",
+        "nun"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 4,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11"
+        ],
+        "rerolls": 1
+      },
+      "outcome": "over",
+      "sec": 77.75,
+      "kills": 33,
+      "up": 3.6,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 18,
+      "spells": 3
+    },
+    {
+      "i": 50,
+      "p": 4,
+      "stage": 4,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "mage",
+        "nun",
+        "priest",
+        "nun",
+        "nun"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 3
+          },
+          {
+            "type": "box",
+            "tier": 2,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 82.25,
+      "kills": 38,
+      "up": 4.8,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 23,
+      "spells": 3
+    },
+    {
+      "i": 51,
+      "p": 4,
+      "stage": 4,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "mage",
+        "priest",
+        "paladin",
+        "priest",
+        "priest"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11"
+        ],
+        "rerolls": 1
+      },
+      "outcome": "over",
+      "sec": 79.25,
+      "kills": 36,
+      "up": 4.4,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 16,
+      "spells": 3
+    },
+    {
+      "i": 52,
+      "p": 5,
+      "stage": 1,
+      "endless": 0,
+      "cap": 6,
+      "team": [
+        "archer",
+        "knight",
+        "archer"
+      ],
+      "shop": {
+        "slots": 4,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": false,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 49.15,
+      "kills": 13,
+      "up": 2,
+      "minimumTopup": 1.19,
+      "bought": 3,
+      "rescueTaps": 13,
+      "spells": 0
+    },
+    {
+      "i": 53,
+      "p": 5,
+      "stage": 1,
+      "endless": 0,
+      "cap": 6,
+      "team": [
+        "knight",
+        "knight",
+        "knight",
+        "knight"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": false,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 62.7,
+      "kills": 18,
+      "up": 2,
+      "minimumTopup": 0.38,
+      "bought": 2,
+      "rescueTaps": 8,
+      "spells": 0
+    },
+    {
+      "i": 54,
+      "p": 5,
+      "stage": 1,
+      "endless": 0,
+      "cap": 8,
+      "team": [
+        "knight",
+        "knight",
+        "mage",
+        "knight",
+        "knight"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 70.75,
+      "kills": 33,
+      "up": 5.28,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 18,
+      "spells": 0
+    },
+    {
+      "i": 55,
+      "p": 5,
+      "stage": 1,
+      "endless": 0,
+      "cap": 10,
+      "team": [
+        "knight",
+        "knight",
+        "knight",
+        "archer",
+        "knight"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 1
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18"
+        ],
+        "rerolls": 1
+      },
+      "outcome": "over",
+      "sec": 64.6,
+      "kills": 25,
+      "up": 2.84,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 19,
+      "spells": 0
+    },
+    {
+      "i": 56,
+      "p": 5,
+      "stage": 1,
+      "endless": 0,
+      "cap": 12,
+      "team": [
+        "knight",
+        "archer",
+        "archer",
+        "mage",
+        "knight",
+        "archer"
+      ],
+      "shop": {
+        "slots": 5,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 94.9,
+      "kills": 49,
+      "up": 13.57,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 9,
+      "spells": 0
+    },
+    {
+      "i": 57,
+      "p": 5,
+      "stage": 2,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "knight",
+        "knight",
+        "knight",
+        "knight",
+        "mage",
+        "knight",
+        "archer",
+        "archer",
+        "mage"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 130.15,
+      "kills": 60,
+      "up": 19.97,
+      "minimumTopup": 0,
+      "bought": 6,
+      "rescueTaps": 7,
+      "spells": 0
+    },
+    {
+      "i": 58,
+      "p": 5,
+      "stage": 3,
+      "endless": 0,
+      "cap": 14,
+      "team": [
+        "archer",
+        "mage",
+        "hunter",
+        "hunter",
+        "barbarian"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 1
+      },
+      "outcome": "over",
+      "sec": 149.35,
+      "kills": 84,
+      "up": 11.79,
+      "minimumTopup": 0,
+      "bought": 11,
+      "rescueTaps": 18,
+      "spells": 0
+    },
+    {
+      "i": 59,
+      "p": 5,
+      "stage": 3,
+      "endless": 0,
+      "cap": 16,
+      "team": [
+        "mage",
+        "hunter",
+        "hunter",
+        "hunter",
+        "rogue"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 4,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 1,
+            "qty": 3,
+            "sold": false,
+            "anchor": "curated",
+            "price": 8
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 141.7,
+      "kills": 85,
+      "up": 19.26,
+      "minimumTopup": 0,
+      "bought": 5,
+      "rescueTaps": 0,
+      "spells": 0
+    },
+    {
+      "i": 60,
+      "p": 5,
+      "stage": 4,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "archer",
+        "hunter",
+        "knight",
+        "archer",
+        "mage",
+        "knight",
+        "hunter",
+        "hunter"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 3
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 142.25,
+      "kills": 80,
+      "up": 22.82,
+      "minimumTopup": 0,
+      "bought": 5,
+      "rescueTaps": 7,
+      "spells": 5
+    },
+    {
+      "i": 61,
+      "p": 5,
+      "stage": 5,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "knight",
+        "knight",
+        "knight",
+        "knight",
+        "mage",
+        "barbarian",
+        "paladin"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 145.15,
+      "kills": 88,
+      "up": 10.77,
+      "minimumTopup": 0,
+      "bought": 7,
+      "rescueTaps": 21,
+      "spells": 6
+    },
+    {
+      "i": 62,
+      "p": 5,
+      "stage": 5,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "knight",
+        "hunter",
+        "barbarian",
+        "hunter",
+        "nun",
+        "priest"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 5
+          },
+          {
+            "type": "box",
+            "tier": 1,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 8
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 102.05,
+      "kills": 54,
+      "up": 8.32,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 22,
+      "spells": 4
+    },
+    {
+      "i": 63,
+      "p": 5,
+      "stage": 5,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "mage",
+        "knight",
+        "hunter",
+        "priest",
+        "paladin",
+        "nun"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 1
+          },
+          {
+            "type": "box",
+            "tier": 2,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "box",
+            "tier": 2,
+            "qty": 3,
+            "sold": false,
+            "anchor": null,
+            "price": 11
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 110.7,
+      "kills": 65,
+      "up": 9.8,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 22,
+      "spells": 4
+    },
+    {
+      "i": 64,
+      "p": 5,
+      "stage": 5,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "knight",
+        "archer",
+        "nun",
+        "nun",
+        "nun",
+        "paladin"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 2,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 114.65,
+      "kills": 72,
+      "up": 10.77,
+      "minimumTopup": 0,
+      "bought": 5,
+      "rescueTaps": 15,
+      "spells": 4
+    },
+    {
+      "i": 65,
+      "p": 5,
+      "stage": 5,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "mage",
+        "hunter",
+        "hunter",
+        "rogue",
+        "hunter",
+        "hunter",
+        "paladin"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 1,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 8
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 123.35,
+      "kills": 82,
+      "up": 12.72,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 22,
+      "spells": 5
+    },
+    {
+      "i": 66,
+      "p": 5,
+      "stage": 5,
+      "endless": 0,
+      "cap": 18,
+      "team": [
+        "knight",
+        "knight",
+        "hunter",
+        "barbarian",
+        "hunter",
+        "hunter",
+        "priest"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 1
+          },
+          {
+            "type": "box",
+            "tier": 1,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 8
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 156.6,
+      "kills": 88,
+      "up": 14.66,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 24,
+      "spells": 6
+    },
+    {
+      "i": 67,
+      "p": 5,
+      "stage": 5,
+      "endless": 0,
+      "cap": 20,
+      "team": [
+        "archer",
+        "archer",
+        "archer",
+        "rogue",
+        "rogue",
+        "hunter",
+        "priest"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 1,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 8
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 156.3,
+      "kills": 88,
+      "up": 14.68,
+      "minimumTopup": 0,
+      "bought": 5,
+      "rescueTaps": 31,
+      "spells": 6
+    },
+    {
+      "i": 68,
+      "p": 5,
+      "stage": 5,
+      "endless": 0,
+      "cap": 20,
+      "team": [
+        "archer",
+        "hunter",
+        "barbarian",
+        "nun",
+        "nun",
+        "nun"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 2,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 115.7,
+      "kills": 74,
+      "up": 11.73,
+      "minimumTopup": 0,
+      "bought": 5,
+      "rescueTaps": 21,
+      "spells": 4
+    },
+    {
+      "i": 69,
+      "p": 5,
+      "stage": 5,
+      "endless": 0,
+      "cap": 22,
+      "team": [
+        "knight",
+        "archer",
+        "hunter",
+        "hunter",
+        "hunter",
+        "nun",
+        "nun",
+        "priest"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 2,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 1,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 8
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 143.5,
+      "kills": 89,
+      "up": 22.19,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 4,
+      "spells": 5
+    },
+    {
+      "i": 70,
+      "p": 5,
+      "stage": 6,
+      "endless": 0,
+      "cap": 22,
+      "team": [
+        "archer",
+        "hunter",
+        "barbarian",
+        "barbarian",
+        "nun",
+        "nun",
+        "nun"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 1,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 8
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 147.95,
+      "kills": 97,
+      "up": 25.24,
+      "minimumTopup": 0,
+      "bought": 5,
+      "rescueTaps": 7,
+      "spells": 6
+    },
+    {
+      "i": 71,
+      "p": 5,
+      "stage": 7,
+      "endless": 0,
+      "cap": 22,
+      "team": [
+        "mage",
+        "barbarian",
+        "shaman",
+        "shaman",
+        "shaman",
+        "druid"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 171.6,
+      "kills": 108,
+      "up": 19.73,
+      "minimumTopup": 0,
+      "bought": 5,
+      "rescueTaps": 21,
+      "spells": 6
+    },
+    {
+      "i": 72,
+      "p": 5,
+      "stage": 7,
+      "endless": 0,
+      "cap": 24,
+      "team": [
+        "mage",
+        "shaman",
+        "warlock",
+        "shaman",
+        "warlock",
+        "warlock",
+        "druid"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 3,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 5
+          },
+          {
+            "type": "box",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 154.45,
+      "kills": 109,
+      "up": 32.12,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 7,
+      "spells": 6
+    },
+    {
+      "i": 73,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 24,
+      "team": [
+        "knight",
+        "shaman",
+        "shaman",
+        "druid",
+        "druid",
+        "priest",
+        "nun"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 5
+          },
+          {
+            "type": "box",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 154.4,
+      "kills": 97,
+      "up": 18.75,
+      "minimumTopup": 0,
+      "bought": 7,
+      "rescueTaps": 22,
+      "spells": 10
+    },
+    {
+      "i": 74,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 24,
+      "team": [
+        "mage",
+        "barbarian",
+        "shaman",
+        "druid",
+        "warlock",
+        "necromancer",
+        "paladin"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 125.35,
+      "kills": 67,
+      "up": 13.79,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 21,
+      "spells": 8
+    },
+    {
+      "i": 75,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 26,
+      "team": [
+        "archer",
+        "rogue",
+        "druid",
+        "shaman",
+        "druid",
+        "beastmaster",
+        "beastmaster"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 90.15,
+      "kills": 35,
+      "up": 7.41,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 25,
+      "spells": 7
+    },
+    {
+      "i": 76,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 26,
+      "team": [
+        "mage",
+        "beastmaster",
+        "dragonkin",
+        "beastmaster",
+        "nun",
+        "beastmaster"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 4,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 5
+          },
+          {
+            "type": "box",
+            "tier": 4,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 14
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 123.65,
+      "kills": 64,
+      "up": 13.79,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 16,
+      "spells": 8
+    },
+    {
+      "i": 77,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 26,
+      "team": [
+        "archer",
+        "mage",
+        "knight",
+        "knight",
+        "priest",
+        "beastmaster",
+        "druid",
+        "nun"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 149.95,
+      "kills": 87,
+      "up": 20.21,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 30,
+      "spells": 10
+    },
+    {
+      "i": 78,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 26,
+      "team": [
+        "knight",
+        "druid",
+        "warlock",
+        "druid",
+        "nun",
+        "beastmaster",
+        "beastmaster"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 0,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 5
+          },
+          {
+            "type": "box",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 4,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 101.85,
+      "kills": 38,
+      "up": 7.39,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 28,
+      "spells": 7
+    },
+    {
+      "i": 79,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 30,
+      "team": [
+        "archer",
+        "hunter",
+        "druid",
+        "warlock",
+        "druid",
+        "beastmaster",
+        "beastmaster",
+        "beastmaster"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 91.85,
+      "kills": 39,
+      "up": 8.39,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 31,
+      "spells": 7
+    },
+    {
+      "i": 80,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 30,
+      "team": [
+        "archer",
+        "archer",
+        "dragonkin",
+        "beastmaster",
+        "necromancer",
+        "beastmaster",
+        "necromancer"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 2,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 6
+          },
+          {
+            "type": "box",
+            "tier": 4,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 14
+          },
+          {
+            "type": "individual",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 2
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 108.4,
+      "kills": 50,
+      "up": 10.34,
+      "minimumTopup": 0,
+      "bought": 1,
+      "rescueTaps": 29,
+      "spells": 7
+    },
+    {
+      "i": 81,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 32,
+      "team": [
+        "knight",
+        "nun",
+        "priest",
+        "priest",
+        "necromancer",
+        "necromancer",
+        "warlock"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 5,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 5
+          },
+          {
+            "type": "box",
+            "tier": 2,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "individual",
+            "tier": 4,
+            "qty": 1,
+            "sold": false,
+            "anchor": null,
+            "price": 7
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 128.85,
+      "kills": 68,
+      "up": 16.24,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 22,
+      "spells": 9
+    },
+    {
+      "i": 82,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 32,
+      "team": [
+        "knight",
+        "barbarian",
+        "beastmaster",
+        "necromancer",
+        "dragonkin",
+        "dragonkin",
+        "shaman",
+        "druid"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 3
+          },
+          {
+            "type": "box",
+            "tier": 4,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 14
+          },
+          {
+            "type": "individual",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "individual",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 149.35,
+      "kills": 79,
+      "up": 18.22,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 18,
+      "spells": 9
+    },
+    {
+      "i": 83,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 34,
+      "team": [
+        "mage",
+        "archer",
+        "knight",
+        "archer",
+        "druid",
+        "beastmaster",
+        "dragonkin",
+        "beastmaster",
+        "necromancer",
+        "shaman"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 1,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 4,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 14
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 141.75,
+      "kills": 75,
+      "up": 17.23,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 20,
+      "spells": 7
+    },
+    {
+      "i": 84,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 34,
+      "team": [
+        "archer",
+        "druid",
+        "shaman",
+        "druid",
+        "necromancer",
+        "beastmaster",
+        "necromancer",
+        "paladin"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 130.65,
+      "kills": 72,
+      "up": 15.78,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 28,
+      "spells": 8
+    },
+    {
+      "i": 85,
+      "p": 5,
+      "stage": 8,
+      "endless": 0,
+      "cap": 34,
+      "team": [
+        "mage",
+        "warlock",
+        "druid",
+        "druid",
+        "shaman",
+        "warlock",
+        "necromancer",
+        "paladin"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 5,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "box",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 394.45,
+      "kills": 118,
+      "up": 38.14,
+      "minimumTopup": 0,
+      "bought": 2,
+      "rescueTaps": 5,
+      "spells": 18
+    },
+    {
+      "i": 86,
+      "p": 5,
+      "stage": 9,
+      "endless": 0,
+      "cap": 34,
+      "team": [
+        "knight",
+        "rogue",
+        "hunter",
+        "barbarian",
+        "druid",
+        "necromancer",
+        "dragonkin",
+        "necromancer"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 5,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 6
+          },
+          {
+            "type": "box",
+            "tier": 1,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 8
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03",
+          "R-M15"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 188.75,
+      "kills": 127,
+      "up": 32.18,
+      "minimumTopup": 0,
+      "bought": 7,
+      "rescueTaps": 9,
+      "spells": 10
+    },
+    {
+      "i": 87,
+      "p": 5,
+      "stage": 10,
+      "endless": 0,
+      "cap": 36,
+      "team": [
+        "archer",
+        "shaman",
+        "druid",
+        "warlock",
+        "shaman",
+        "priest",
+        "paladin",
+        "paladin",
+        "beastmaster"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 3,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 4,
+            "qty": 1,
+            "sold": false,
+            "anchor": "contract",
+            "price": 5
+          },
+          {
+            "type": "box",
+            "tier": 2,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "golden",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": null,
+            "price": 12
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03",
+          "R-M15"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "champion",
+      "sec": 201.2,
+      "kills": 139,
+      "up": 33.15,
+      "minimumTopup": 0,
+      "bought": 6,
+      "rescueTaps": 0,
+      "spells": 8
+    },
+    {
+      "i": 88,
+      "p": 5,
+      "stage": 1,
+      "endless": 1,
+      "cap": 38,
+      "team": [
+        "mage",
+        "shaman",
+        "druid",
+        "druid",
+        "shaman",
+        "necromancer",
+        "rogue",
+        "beastmaster"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 9,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 3
+          },
+          {
+            "type": "box",
+            "tier": 3,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "individual",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03",
+          "R-M15"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 115.75,
+      "kills": 100,
+      "up": 23.64,
+      "minimumTopup": 0,
+      "bought": 7,
+      "rescueTaps": 5,
+      "spells": 5
+    },
+    {
+      "i": 89,
+      "p": 5,
+      "stage": 2,
+      "endless": 2,
+      "cap": 38,
+      "team": [
+        "mage",
+        "rogue",
+        "druid",
+        "beastmaster",
+        "beastmaster",
+        "necromancer",
+        "dragonkin",
+        "paladin"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 6,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 2,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 4
+          },
+          {
+            "type": "golden",
+            "tier": 4,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 15
+          },
+          {
+            "type": "standard",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 3
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03",
+          "R-M15"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 97.4,
+      "kills": 82,
+      "up": 17.72,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 7,
+      "spells": 6
+    },
+    {
+      "i": 90,
+      "p": 5,
+      "stage": 3,
+      "endless": 3,
+      "cap": 38,
+      "team": [
+        "archer",
+        "knight",
+        "archer",
+        "knight",
+        "beastmaster",
+        "necromancer",
+        "beastmaster",
+        "beastmaster"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 12,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 5
+          },
+          {
+            "type": "box",
+            "tier": 0,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03",
+          "R-M15"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "clear",
+      "sec": 134.45,
+      "kills": 120,
+      "up": 28.54,
+      "minimumTopup": 0,
+      "bought": 3,
+      "rescueTaps": 7,
+      "spells": 9
+    },
+    {
+      "i": 91,
+      "p": 5,
+      "stage": 4,
+      "endless": 4,
+      "cap": 38,
+      "team": [
+        "knight",
+        "hunter",
+        "warlock",
+        "paladin",
+        "nun",
+        "nun",
+        "necromancer",
+        "dragonkin"
+      ],
+      "shop": {
+        "slots": 6,
+        "remaining": 10,
+        "offers": [
+          {
+            "type": "standard",
+            "tier": 0,
+            "qty": 1,
+            "sold": true,
+            "anchor": "recruit",
+            "price": 1
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": "newest",
+            "price": 5
+          },
+          {
+            "type": "individual",
+            "tier": 1,
+            "qty": 1,
+            "sold": true,
+            "anchor": "contract",
+            "price": 2
+          },
+          {
+            "type": "box",
+            "tier": 2,
+            "qty": 3,
+            "sold": true,
+            "anchor": "curated",
+            "price": 11
+          },
+          {
+            "type": "standard",
+            "tier": 4,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 5
+          },
+          {
+            "type": "standard",
+            "tier": 3,
+            "qty": 1,
+            "sold": true,
+            "anchor": null,
+            "price": 4
+          }
+        ],
+        "flags": [
+          "R-M01",
+          "R-M10",
+          "R-M07",
+          "R-M14",
+          "R-M02",
+          "R-M11",
+          "R-M18",
+          "R-M19",
+          "R-M03",
+          "R-M15"
+        ],
+        "rerolls": 0
+      },
+      "outcome": "over",
+      "sec": 88.95,
+      "kills": 52,
+      "up": 11.83,
+      "minimumTopup": 0,
+      "bought": 4,
+      "rescueTaps": 31,
+      "spells": 7
+    }
+  ],
+  "heroStats": {
+    "archer": {
+      "deployments": 89,
+      "kills": 977,
+      "winDeployments": 34
+    },
+    "knight": {
+      "deployments": 109,
+      "kills": 618,
+      "winDeployments": 35
+    },
+    "rogue": {
+      "deployments": 16,
+      "kills": 100,
+      "winDeployments": 8
+    },
+    "mage": {
+      "deployments": 51,
+      "kills": 734,
+      "winDeployments": 20
+    },
+    "hunter": {
+      "deployments": 52,
+      "kills": 789,
+      "winDeployments": 17
+    },
+    "barbarian": {
+      "deployments": 20,
+      "kills": 139,
+      "winDeployments": 4
+    },
+    "priest": {
+      "deployments": 18,
+      "kills": 136,
+      "winDeployments": 2
+    },
+    "paladin": {
+      "deployments": 15,
+      "kills": 123,
+      "winDeployments": 4
+    },
+    "nun": {
+      "deployments": 30,
+      "kills": 193,
+      "winDeployments": 5
+    },
+    "shaman": {
+      "deployments": 17,
+      "kills": 267,
+      "winDeployments": 7
+    },
+    "druid": {
+      "deployments": 23,
+      "kills": 185,
+      "winDeployments": 8
+    },
+    "warlock": {
+      "deployments": 11,
+      "kills": 185,
+      "winDeployments": 6
+    },
+    "necromancer": {
+      "deployments": 16,
+      "kills": 230,
+      "winDeployments": 6
+    },
+    "beastmaster": {
+      "deployments": 24,
+      "kills": 172,
+      "winDeployments": 7
+    },
+    "dragonkin": {
+      "deployments": 8,
+      "kills": 84,
+      "winDeployments": 2
+    }
+  },
+  "endless": {
+    "deepest": 4,
+    "available": true,
+    "discovered": true,
+    "session": null,
+    "best": {
+      "wave": 3,
+      "completed": 3,
+      "prestige": 5,
+      "profile": "fw-combat-v1.16.0",
+      "seconds": 347.59999999998854,
+      "kills": 302,
+      "bosses": 0,
+      "up": 69.725,
+      "shards": 6
+    },
+    "last": {
+      "id": "1795871045087-0.42951672547496855",
+      "wave": 4,
+      "completed": 3,
+      "prestige": 5,
+      "profile": "fw-combat-v1.16.0",
+      "seconds": 436.54999999998563,
+      "kills": 354,
+      "bosses": 0,
+      "up": 81.52499999999995,
+      "shards": 7,
+      "phase": "ended",
+      "exited": false,
+      "attempt": "1795871049905-0.019458817783743143",
+      "activeSeconds": 0,
+      "reason": "Tower defeated"
+    },
+    "byPrestige": {
+      "5": {
+        "wave": 3,
+        "completed": 3,
+        "prestige": 5,
+        "profile": "fw-combat-v1.16.0",
+        "seconds": 347.59999999998854,
+        "kills": 302,
+        "bosses": 0,
+        "up": 69.725,
+        "shards": 6
+      }
+    }
+  },
+  "final": {
+    "stage": 4,
+    "resets": 5,
+    "highestClear": 10,
+    "up": 16,
+    "shards": 7
+  }
+}

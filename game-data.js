@@ -4,15 +4,15 @@
 (function(){'use strict';
 const BALANCE=window.FWBalance?.profile;
 if(!BALANCE||window.FWBalance.validate(BALANCE)!==true)throw new Error('Missing/invalid Fantasy Warriors balance profile');
-const HEROES=BALANCE.heroes.map(h=>({...h}));
+const HEROES=BALANCE.heroes.map(h=>({...h,rarity:window.FWMerchant.data.heroes.find(x=>x.id===h.id).rarity}));
 const HEROES_PER_PACK=BALANCE.packs.heroesPerPack;
-const PACKS=BALANCE.packs.definitions.map(p=>({...p,pool:[...p.pool]}));
+const PACKS=window.FWMerchant.data.packs.map(p=>({...p,pool:[...p.pool]}));
 const HERO_MAP=Object.fromEntries(HEROES.map(h=>[h.id,h]));
 const ENCOUNTERS=BALANCE.encounters.map(x=>({...x}));
 const TUNING={shared:{...BALANCE.combat},heroes:{}};
 const ABILITIES=JSON.parse(JSON.stringify(BALANCE.abilities));
 for(const core of HEROES){
- const special={...ABILITIES[core.id],chargeSeconds:null};
+ const special={...ABILITIES[core.id],chargeSeconds:ABILITIES[core.id].chargeSeconds??null};
  TUNING.heroes[core.id]={core,acquisitionRange:null,towerGuardRadius:null,special};
 }
 TUNING.heroes.necromancer.special.beamBaseDamageRate=HERO_MAP.necromancer.damage*HERO_MAP.necromancer.speed;

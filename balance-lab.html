@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0e1724" />
 <title>Fantasy Warriors — Combat Balance Lab</title>
-<link rel="stylesheet" href="skill-tree.css?v=1.0.14">
-<link rel="stylesheet" href="game.css?v=1.0.14">
-<link rel="stylesheet" href="quick-stats.css?v=1.0.14">
-<link rel="stylesheet" href="balance-lab.css?v=1.0.14">
+<link rel="stylesheet" href="skill-tree.css?v=1.16-endless-dev">
+<link rel="stylesheet" href="game.css?v=1.16-endless-dev">
+<link rel="stylesheet" href="quick-stats.css?v=1.16-endless-dev">
+<link rel="stylesheet" href="balance-lab.css?v=1.16-endless-dev">
 </head>
 <body class="lab-mode">
 <div class="shell">
@@ -61,9 +61,9 @@
         <div class="wave-meter" aria-hidden="true"><div id="bossHPMeter"></div></div>
       </div>
     </div>
-    <div class="canvas-wrap"><canvas id="arena" role="img" aria-label="Top-down battlefield showing the tower, allied heroes and approaching enemies"></canvas></div>
+    <div id="battleActions" hidden style="padding:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;background:#182532;color:#f7e6be"><select id="spellEquip0" aria-label="Equip spell one" hidden></select><select id="spellEquip1" aria-label="Equip spell two" hidden></select><button type="button" class="btn compact" id="spellCast0" hidden></button><button type="button" class="btn compact" id="spellCast1" hidden></button><button type="button" class="btn compact" id="spellCancel" hidden>Cancel spell</button><small id="spellHelp"></small><small id="captureStatus" aria-live="polite"></small></div><style>#battleActions[hidden],#battleActions [hidden]{display:none!important}</style><div class="canvas-wrap"><canvas id="arena" role="img" aria-label="Top-down battlefield showing the tower, allied heroes and approaching enemies"></canvas></div>
     <div class="arena-caption"><span id="captionLeft">Heroes defend near the tower</span><span id="captionRight">Drag-free · automatic combat</span></div>
-    <div class="battle-message hidden" id="messageOverlay" aria-live="polite"><div class="message-box"><div class="message-symbol" id="messageSymbol">✦</div><h2 id="messageTitle">Stage clear</h2><p id="messageText"></p><div id="battleReport" class="battle-report" hidden aria-label="This stage battle report"></div><button class="btn" id="messageButton">Continue</button></div></div>
+    <div class="battle-message hidden" id="messageOverlay" aria-live="polite"><div class="message-box"><div class="message-symbol" id="messageSymbol">✦</div><h2 id="messageTitle">Stage clear</h2><p id="messageText"></p><div id="battleReport" class="battle-report" hidden aria-label="This stage battle report"></div><button class="btn" id="messageButton">Continue</button><button class="btn secondary" id="endlessOverlayExit" hidden>Return to progression</button></div></div>
   </main>
 <aside class="lab-panel" aria-label="Balance lab controls">
   <section class="lab-card">
@@ -128,10 +128,10 @@
       <div class="section-top"><div><div class="kicker">Between stages</div><h2 id="shopTitle">Hero Pack Shop</h2></div><span style="font-size:20px;color:#c8ab7c">✧</span></div>
       <p class="shop-note" id="shopDescription">Recruit Packs contain 1 random hero each. Packs open when combat starts.</p>
       <div class="pack-promo"><div class="pack-small" aria-hidden="true"><span>✦</span></div><div><div class="pack-name">Recruit Pack</div><div class="pack-sub">1 hero per pack · repeatable offer</div><div class="pack-count" id="packCount">0 Recruit Packs held · 2 coins each</div></div></div>
-      <div id="packOfferButtons" class="button-row" style="flex-wrap:wrap;margin:0 0 8px"></div><button class="btn secondary compact" id="rotateShop" type="button" style="margin:0 0 9px">↻ Rotate available shop offers</button><div class="shop-slots" id="liveShopSlots" aria-label="Shop offer slots"><div class="shop-slot available"><span>✦ Slot 1</span><strong>Recruit Pack · 1 hero draw each</strong></div><div class="shop-slot locked"><span>♢ Slot 2 · Locked</span><strong>Future offer</strong></div><div class="shop-slot locked"><span>♢ Slot 3 · Locked</span><strong>Future offer</strong></div></div>
+      <div id="packOfferButtons" class="button-row" style="flex-wrap:wrap;margin:0 0 8px"></div><button class="btn secondary compact" id="rotateShop" type="button" style="margin:0 0 9px">↻ Rotate available shop offers</button><button id="reserveShop" type="button" class="btn secondary compact" disabled>Reserve selected offer</button><div class="shop-slots" id="liveShopSlots" aria-label="Shop offer slots"><div class="shop-slot available"><span>✦ Slot 1</span><strong>Recruit Pack · 1 hero draw each</strong></div><div class="shop-slot locked"><span>♢ Slot 2 · Locked</span><strong>Future offer</strong></div><div class="shop-slot locked"><span>♢ Slot 3 · Locked</span><strong>Future offer</strong></div></div>
       <button class="btn" id="buyButton">◈ Buy Recruit Pack · 2 coins</button>
       <div class="coin-refill-note">✦ Your round budget refills after every attempt. <span id="coinCapNote">Upgrade coin capacity via the skill tree.</span></div>
-      <div class="button-row"><button class="btn secondary" id="stageButton">⚔ Start Stage 1</button><button class="btn secondary compact" id="pauseButton" aria-label="Pause or resume combat" disabled>Ⅱ Pause</button></div>
+      <section id="endlessPanel" hidden><p id="endlessInfo"></p><div class="button-row"><button class="btn" id="endlessEnter" hidden>Start Endless Run</button><button class="btn" id="endlessResume" hidden>Resume Endless</button><button class="btn secondary" id="endlessExit" hidden>Save &amp; Exit</button><button class="btn secondary" id="endlessRetire" hidden>Retire run</button><button class="btn secondary" id="endlessHub" hidden>Return to progression</button></div></section><style>#endlessPanel[hidden],#endlessPanel [hidden]{display:none!important}</style><div class="button-row"><button class="btn secondary" id="stageButton">⚔ Start Stage 1</button><button class="btn secondary compact" id="pauseButton" aria-label="Pause or resume combat" disabled>Ⅱ Pause</button></div>
       <div class="button-row"><button class="btn danger compact" id="restartButton">↻ Restart run</button></div>
       <hr class="divider">
       <div class="small-label"><span>Stage heroes · ability meter</span><span id="formationCount">0 heroes</span></div>
@@ -152,11 +152,11 @@
       <div class="section-top"><div><div class="kicker">Developer tools · separate from normal shop</div><h2>Testing Shop</h2></div><span class="kicker" id="testingStatus">OFF</span></div>
       <p class="shop-note">Free access to all 15 heroes. Test battles do not advance your normal stage.</p>
       <button class="btn secondary" id="testingToggle" aria-pressed="false">Enable testing mode</button>
-      <div id="testingControls" class="hidden"><div class="tuning-box"><div class="small-label">Demo-only tuning · applies immediately</div><div class="tuning-fields"><label>Acquire radius <input id="acquireTune" type="number" inputmode="decimal" min="1" max="30" step=".5" value="15"></label><label>Tower guard <input id="guardTune" type="number" inputmode="decimal" min="2" max="10" step=".5" value="5"></label><label>Charge seconds <input id="chargeTune" type="number" inputmode="decimal" min="1" max="60" step="1" value="10"></label></div><div class="tiny-note">Hero-specific ability parameters are editable in the game tuning object. All values are temporary tests.</div></div><div class="tuning-box"><label class="tiny-note">Test encounter (does not change campaign progress) <select id="testStage" aria-label="Test stage"></select></label></div><div class="test-badge">⚒ TEST MODE · 0 COINS · ALL HEROES UNLOCKED</div><div class="test-grid" id="testingGrid"></div><div class="button-row"><button class="btn secondary compact" id="clearTestQueue">Clear test heroes</button><span class="test-queue" id="testQueueCount">0 queued</span></div></div>
+      <div id="testingControls" class="hidden"><div class="tuning-box"><div class="small-label">Demo-only tuning · applies immediately</div><div class="tuning-fields"><label>Acquire radius <input id="acquireTune" type="number" inputmode="decimal" min="1" max="30" step=".5" value="15"></label><label>Tower guard <input id="guardTune" type="number" inputmode="decimal" min="2" max="10" step=".5" value="5"></label><label>Charge seconds <input id="chargeTune" type="number" inputmode="decimal" min="1" max="60" step="1" value="10"></label></div><div class="tiny-note">Hero-specific ability parameters are editable in the game tuning object. All values are temporary tests.</div></div><div class="tuning-box"><label class="tiny-note">Test encounter (does not change campaign progress) <select id="testStage" aria-label="Test stage"></select></label><label>Test prestige <input id="testPrestige" type="number" min="0" max="100" step="1" value="0"></label><label><input id="testFirstAttempt" type="checkbox"> First-ever stage protection</label></div><div class="test-badge">⚒ TEST MODE · 0 COINS · ALL HEROES UNLOCKED</div><div class="test-grid" id="testingGrid"></div><div class="button-row"><button class="btn secondary compact" id="clearTestQueue">Clear test heroes</button><span class="test-queue" id="testQueueCount">0 queued</span></div></div>
     </div>
     <div class="panel"><div class="section-top"><h2>Recruit Pack Pool</h2><span class="kicker">1 hero draw</span></div><p class="shop-note">Knight · Archer · Mage. Demo uses equal draws with possible duplicates; final odds are undecided.</p><div class="odds" id="odds"></div><hr class="divider"><div class="small-label">Pack progression · later offers pending</div><div id="packProgress" class="pack-progress"></div></div>
     <div class="panel encounter-panel"><div class="section-top"><h2>Encounter</h2><span class="kicker" id="encounterApproval">STAGE 1 OF 10</span></div><div class="encounter-name" id="encounterName">Slime Pits</div><p class="shop-note" id="encounterUnits">Slime → King Slime</p><p class="tiny-note">Stage identities follow the manifesto; special boss mechanics and per-enemy tuning are not yet specified.</p></div>
-    <div class="panel" style="border-color:#9c835d"><div class="section-top"><h2>Skill Tree</h2><span class="kicker">205 NODES</span></div><p class="shop-note">Five connected pack tiers, three hero branches in each tier, task-based unlocks and permanent Legacy upgrades.</p><button type="button" class="btn" id="openSkillTree">✧ Open Skill Tree</button><div class="coin-refill-note" id="skillBalance">0 UP · 0 ◈</div></div>
+    <div class="panel" style="border-color:#9c835d"><div class="section-top"><h2>Skill Tree</h2><span class="kicker">228 UPGRADES</span></div><p class="shop-note">Five connected pack tiers, three hero branches in each tier, task-based unlocks and permanent Legacy upgrades.</p><button type="button" class="btn" id="openSkillTree">✧ Open Skill Tree</button><div class="coin-refill-note" id="skillBalance">0 UP · 0 ◈</div></div>
     <div class="panel"><div class="section-top"><h2>Battle Log</h2><span class="kicker">Latest</span></div><ul class="event-log" id="events" aria-live="polite"></ul></div>
   </aside>
 </div>
@@ -170,24 +170,30 @@
  <div class="fw-shell">
   <div class="fw-head"><div><h2>✧ The Skill Tree</h2><small id="skillMeta">Upgrade Points 0 · Legacy Shards 0</small></div><button class="fw-dismiss" type="button" id="closeSkillTree" aria-label="Close skill tree">✕ Close</button></div>
   <div class="fw-controls">
-   <button type="button" class="fw-tab selected" id="skillTreeTab">🌳 Ordinary Tree · 205 nodes</button>
-   <button type="button" class="fw-tab" id="skillLegacyTab">◈ Permanent Legacy</button><button type="button" class="fw-tab" id="skillBackupTab">↓ Save &amp; Backup</button><button type="button" class="fw-tab" id="skillSandboxTab">🧪 Test Reset</button>
+   <button type="button" class="fw-tab selected" id="skillTreeTab">🌳 Ordinary Tree · 228 upgrades</button>
+   <button type="button" class="fw-tab" id="skillLegacyTab">◈ Permanent Legacy</button><button type="button" class="fw-tab" id="skillSkinsTab">✦ Hero Collection</button><button type="button" class="fw-tab" id="skillBackupTab">↓ Save &amp; Backup</button><button type="button" class="fw-tab" id="skillSandboxTab">🧪 Test Reset</button>
    <select id="skillTierJump" aria-label="Jump to skill tree tier"><option value="1">Tier 1 · Recruit</option><option value="2">Tier 2 · Outlaw</option><option value="3">Tier 3 · Devotion</option><option value="4">Tier 4 · Occult</option><option value="5">Tier 5 · Mythic</option></select>
   </div>
   <div class="fw-body"><div class="fw-pane" id="skillPane"></div><section class="fw-detail" id="skillDetails" aria-live="polite"></section></div>
  </div>
 </div>
-<script src="balance-config.js?v=1.0.14"></script>
-<script src="skill-tree-data.js?v=1.0.14"></script>
-<script src="skill-tree.js?v=1.0.14"></script>
-<script src="skill-tree-effects.js?v=1.0.14"></script>
-<script src="game-data.js?v=1.0.14"></script>
-<script src="game-arcade.js?v=1.0.14"></script>
-<script src="quick-stats.js?v=1.0.14"></script>
-<script src="game-render.js?v=1.0.14"></script>
-<script src="game-ui.js?v=1.0.14"></script>
-<script src="tower-fire.js?v=1.0.14"></script>
-<script src="game-core.js?v=1.0.14"></script>
-<script src="balance-lab.js?v=1.0.14"></script>
+<script src="balance-config.js?v=1.16-endless-dev"></script>
+<script src="merchant.js?v=1.16-dev"></script>
+<script src="skins.js?v=1.16-endless-dev"></script>
+<script src="skill-tree-data.js?v=1.16-endless-dev"></script>
+<script src="endless.js?v=1.16-endless-dev"></script>
+<script src="skill-tree.js?v=1.16-endless-dev"></script>
+<script src="skill-tree-effects.js?v=1.16-endless-dev"></script>
+<script src="game-data.js?v=1.16-endless-dev"></script>
+<script src="game-arcade.js?v=1.16-endless-dev"></script>
+<script src="quick-stats.js?v=1.16-endless-dev"></script>
+<script src="game-render.js?v=1.16-endless-dev"></script>
+<script src="game-ui.js?v=1.16-endless-dev"></script>
+<script src="tower-fire.js?v=1.16-endless-dev"></script>
+<script src="battle-actions.js?v=1.16-endless-dev"></script>
+<script src="prestige-enemies.js?v=1.16-endless-dev"></script>
+<script src="boss-abilities.js?v=1.16-endless-dev"></script>
+<script src="game-core.js?v=1.16-endless-dev"></script>
+<script src="balance-lab.js?v=1.16-endless-dev"></script>
 </body>
 </html>

@@ -1,0 +1,3888 @@
+{
+  "schemaVersion": 1,
+  "manifestoVersion": "1.16.0",
+  "status": "development-implemented-balance-frozen-release-qa-pending",
+  "source": {
+    "manifesto": "https://docs.google.com/document/d/1Jg4X-tenlmFmtnbXrM7_f4z1uWIxIY-Ux9uEhomb3-M",
+    "baseCommit": "0b0ff97514c9f3e1524e68f5b6b683635c969248",
+    "archive": "https://docs.google.com/document/d/1eZnZCPs_29hV5pVYuLn1RAN9w1VXx_58g14xIrVPkbs",
+    "auditedDate": "2026-11-28",
+    "developmentBranch": "balance-v1.16"
+  },
+  "compatibility": {
+    "supported": "Development branch implements the current ordinary and Legacy catalogue, weighted finite merchant, combat profile, prestige enemies, tower/spells/capture, skins and Endless. Public main is unchanged.",
+    "notImplemented": [
+      "final production UI integration and browser/mobile release validation"
+    ],
+    "note": "Some structural values remain code-owned; historical skill/cost fields in balance-config.js are compatibility-only. No exhaustive individual behavioral verification or natural high-wave balance claimed."
+  },
+  "engineCompatibleProfile": {
+    "profileId": "fw-combat-v1.16.0",
+    "schemaVersion": 1,
+    "status": "live",
+    "manifestoVersion": "1.16.0",
+    "lastReviewed": "2026-11-28",
+    "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required. Reward pacing: 8 scheduled kills per UP; +0.5 elite UP. Late prestige scheduled UP scaling 0.8 at P4 and 0.65 at P5+; boss and floor retained. Hero rebalance: lower Archer basic and Volley; improve frontline survival/damage and Legendary Dragonkin. Target ranged kill advantage <=3x in pooled campaigns.",
+    "heroes": [
+      {
+        "id": "knight",
+        "name": "Knight",
+        "pack": 0,
+        "rarity": "Common",
+        "color": "#b9c6d0",
+        "hp": 43,
+        "damage": 5.2,
+        "speed": 0.75,
+        "walk": 1.78,
+        "range": 1,
+        "role": "Sword Strike",
+        "glyph": "⚔"
+      },
+      {
+        "id": "archer",
+        "name": "Archer",
+        "pack": 0,
+        "rarity": "Uncommon",
+        "color": "#8acaab",
+        "hp": 12,
+        "damage": 2.5,
+        "speed": 0.6,
+        "walk": 1.85,
+        "range": 6,
+        "role": "Straight Arrow",
+        "glyph": "➶"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "pack": 0,
+        "rarity": "Legendary",
+        "color": "#ffc770",
+        "hp": 14,
+        "damage": 4.2,
+        "speed": 0.55,
+        "walk": 1.8,
+        "range": 5,
+        "role": "Explosive Fireball",
+        "glyph": "✦"
+      },
+      {
+        "id": "hunter",
+        "name": "Hunter",
+        "pack": 1,
+        "rarity": "Common",
+        "color": "#a1c391",
+        "hp": 15,
+        "damage": 4.6,
+        "speed": 0.55,
+        "walk": 1.87,
+        "range": 5.5,
+        "role": "Serrated Arrow",
+        "glyph": "⌁"
+      },
+      {
+        "id": "barbarian",
+        "name": "Barbarian",
+        "pack": 1,
+        "rarity": "Rare",
+        "color": "#df9878",
+        "hp": 55,
+        "damage": 8.5,
+        "speed": 0.5,
+        "walk": 1.78,
+        "range": 1.3,
+        "role": "Wide Cleave",
+        "glyph": "🪓"
+      },
+      {
+        "id": "rogue",
+        "name": "Rogue",
+        "pack": 1,
+        "rarity": "Uncommon",
+        "color": "#b3a0d8",
+        "hp": 34,
+        "damage": 3,
+        "speed": 2.1,
+        "walk": 1.95,
+        "range": 1,
+        "role": "Alternating Daggers",
+        "glyph": "🗡"
+      },
+      {
+        "id": "paladin",
+        "name": "Paladin",
+        "pack": 2,
+        "rarity": "Rare",
+        "color": "#eac978",
+        "hp": 70,
+        "damage": 7.6,
+        "speed": 0.65,
+        "walk": 1.72,
+        "range": 1.2,
+        "role": "Hammer Strike",
+        "glyph": "⚒"
+      },
+      {
+        "id": "nun",
+        "name": "Nun",
+        "pack": 2,
+        "rarity": "Uncommon",
+        "color": "#d8cae5",
+        "hp": 46,
+        "damage": 5.8,
+        "speed": 0.9,
+        "walk": 1.85,
+        "range": 1,
+        "role": "Monastic Combination",
+        "glyph": "✚"
+      },
+      {
+        "id": "priest",
+        "name": "Priest",
+        "pack": 2,
+        "rarity": "Epic",
+        "color": "#ce91ff",
+        "hp": 20,
+        "damage": 5.6,
+        "speed": 0.6,
+        "walk": 1.76,
+        "range": 4,
+        "role": "Censuring Ray",
+        "glyph": "✥"
+      },
+      {
+        "id": "shaman",
+        "name": "Shaman",
+        "pack": 3,
+        "rarity": "Uncommon",
+        "color": "#78d6c5",
+        "hp": 20,
+        "damage": 6,
+        "speed": 0.6,
+        "walk": 1.8,
+        "range": 4.5,
+        "role": "Vial Throw",
+        "glyph": "☯"
+      },
+      {
+        "id": "druid",
+        "name": "Druid",
+        "pack": 3,
+        "rarity": "Rare",
+        "color": "#9cce79",
+        "hp": 26,
+        "damage": 5.8,
+        "speed": 0.65,
+        "walk": 1.78,
+        "range": 4.5,
+        "role": "Vine Wave",
+        "glyph": "❧"
+      },
+      {
+        "id": "warlock",
+        "name": "Warlock",
+        "pack": 3,
+        "rarity": "Epic",
+        "color": "#b06acc",
+        "hp": 19,
+        "damage": 7.6,
+        "speed": 0.5,
+        "walk": 1.75,
+        "range": 4.5,
+        "role": "Doom Sigil",
+        "glyph": "☽"
+      },
+      {
+        "id": "beastmaster",
+        "name": "Beastmaster",
+        "pack": 4,
+        "rarity": "Rare",
+        "color": "#dcab7f",
+        "hp": 42,
+        "damage": 6.6,
+        "speed": 0.6,
+        "walk": 1.86,
+        "range": 2,
+        "role": "Whip",
+        "glyph": "♞"
+      },
+      {
+        "id": "necromancer",
+        "name": "Necromancer",
+        "pack": 4,
+        "rarity": "Epic",
+        "color": "#9da2e8",
+        "hp": 23,
+        "damage": 8.4,
+        "speed": 0.5,
+        "walk": 1.73,
+        "range": 4.5,
+        "role": "Soul Sucking Beam",
+        "glyph": "☠"
+      },
+      {
+        "id": "dragonkin",
+        "name": "Dragonkin",
+        "pack": 4,
+        "rarity": "Legendary",
+        "color": "#f49b69",
+        "hp": 108,
+        "damage": 16,
+        "speed": 0.48,
+        "walk": 1.7,
+        "range": 1.7,
+        "role": "Lunge",
+        "glyph": "🐉"
+      }
+    ],
+    "summons": {
+      "hound": {
+        "id": "hound",
+        "name": "Hound",
+        "rarity": "Summoned",
+        "color": "#c99d63",
+        "hp": 9,
+        "damage": 2.4,
+        "speed": 0.8,
+        "walk": 2,
+        "range": 0.9,
+        "glyph": "🐕",
+        "role": "Summoned Bite"
+      },
+      "undead": {
+        "id": "undead",
+        "name": "Undead",
+        "rarity": "Summoned",
+        "color": "#7bd2c4",
+        "hp": 7,
+        "damage": 1.2,
+        "speed": 0.7,
+        "walk": 1.55,
+        "range": 0.9,
+        "glyph": "☠",
+        "role": "Undead Strike"
+      }
+    },
+    "packs": {
+      "heroesPerPack": 1,
+      "definitions": [
+        {
+          "name": "Recruit",
+          "stage": 1,
+          "pool": [
+            "knight",
+            "archer",
+            "mage"
+          ],
+          "price": 2
+        },
+        {
+          "name": "Outlaw",
+          "stage": null,
+          "pool": [
+            "hunter",
+            "barbarian",
+            "rogue"
+          ],
+          "price": 3
+        },
+        {
+          "name": "Devotion",
+          "stage": null,
+          "pool": [
+            "paladin",
+            "nun",
+            "priest"
+          ],
+          "price": 4
+        },
+        {
+          "name": "Occult",
+          "stage": null,
+          "pool": [
+            "shaman",
+            "druid",
+            "warlock"
+          ],
+          "price": 4
+        },
+        {
+          "name": "Mythic",
+          "stage": null,
+          "pool": [
+            "beastmaster",
+            "necromancer",
+            "dragonkin"
+          ],
+          "price": 5
+        }
+      ]
+    },
+    "encounters": [
+      {
+        "name": "Slime Pits",
+        "minion": "Slime",
+        "boss": "King Slime",
+        "minionIcon": "●",
+        "bossIcon": "♛",
+        "minionColor": "#7ee897",
+        "bossColor": "#4ad1ad",
+        "approved": true
+      },
+      {
+        "name": "Fungal Forest",
+        "minion": "Mushroom Man",
+        "boss": "Giant Plant",
+        "minionIcon": "♧",
+        "bossIcon": "✿",
+        "minionColor": "#e2b973",
+        "bossColor": "#97d67c",
+        "approved": true
+      },
+      {
+        "name": "Goblin Camp",
+        "minion": "Goblin",
+        "boss": "Orc Warlord",
+        "minionIcon": "♠",
+        "bossIcon": "⚔",
+        "minionColor": "#97ce6e",
+        "bossColor": "#7a9e59",
+        "approved": true
+      },
+      {
+        "name": "Bandit Hideout",
+        "minion": "Bandit",
+        "boss": "Bandit King",
+        "minionIcon": "◆",
+        "bossIcon": "♛",
+        "minionColor": "#d3a17d",
+        "bossColor": "#b77465",
+        "approved": false
+      },
+      {
+        "name": "Dragon's Lair",
+        "minion": "Kobold",
+        "boss": "Drake",
+        "minionIcon": "♠",
+        "bossIcon": "◆",
+        "minionColor": "#d3b477",
+        "bossColor": "#e18759",
+        "approved": false
+      },
+      {
+        "name": "Sacred Citadel",
+        "minion": "Fanatical Zealot",
+        "boss": "Fallen Seraph",
+        "minionIcon": "✚",
+        "bossIcon": "✧",
+        "minionColor": "#f5dc91",
+        "bossColor": "#dab2f4",
+        "approved": false
+      },
+      {
+        "name": "Infernal Realm",
+        "minion": "Imp",
+        "boss": "Succubus Queen",
+        "minionIcon": "✶",
+        "bossIcon": "♛",
+        "minionColor": "#e37d77",
+        "bossColor": "#c86aa7",
+        "approved": false
+      },
+      {
+        "name": "Cursed Necropolis",
+        "minion": "Wraith",
+        "boss": "Lich",
+        "minionIcon": "☾",
+        "bossIcon": "☠",
+        "minionColor": "#acb4ef",
+        "bossColor": "#96a0e8",
+        "approved": false
+      },
+      {
+        "name": "Dark Cathedral",
+        "minion": "Cultist",
+        "boss": "Abyssal High Priest",
+        "minionIcon": "◈",
+        "bossIcon": "✥",
+        "minionColor": "#ad7ebd",
+        "bossColor": "#b374c0",
+        "approved": false
+      },
+      {
+        "name": "The Final Rift",
+        "minion": "Voidling",
+        "boss": "Eldritch Horror",
+        "minionIcon": "✺",
+        "bossIcon": "☼",
+        "minionColor": "#8f86cf",
+        "bossColor": "#cf70d0",
+        "approved": false
+      }
+    ],
+    "combat": {
+      "acquisitionRange": 15,
+      "towerGuardRadius": 5,
+      "specialChargeSeconds": 10,
+      "enemyHeroDetection": 6,
+      "returnRadius": 2.4,
+      "actorRadius": 0.35,
+      "bossRadius": 0.75,
+      "personalSpace": 0.045,
+      "decisionInterval": 0.25,
+      "targetCommitSeconds": 1,
+      "retargetMargin": 0.35,
+      "rangeStandoff": 0.76,
+      "meleeSlots": 6,
+      "steerResponsiveness": 9
+    },
+    "abilities": {
+      "knight": {
+        "name": "Shield Bash",
+        "trigger": "autoCharge",
+        "bashRadius": 1.25,
+        "bashStunSeconds": 1.5,
+        "bashDamage": 0,
+        "chargeSeconds": 10
+      },
+      "archer": {
+        "name": "Arrow Volley",
+        "trigger": "autoCharge",
+        "volleyArrowCount": 3,
+        "volleyRadius": 1.35,
+        "volleyDamage": 3.2,
+        "chargeSeconds": 10
+      },
+      "mage": {
+        "name": "Chain Bolt",
+        "trigger": "autoCharge",
+        "chainJumpCount": 4,
+        "chainJumpRange": 2.4,
+        "chainDamage": 4.8
+      },
+      "hunter": {
+        "name": "Tripwire Trap",
+        "trigger": "autoCharge",
+        "trapRadius": 1.25,
+        "trapDurationSeconds": 7,
+        "trapSlowMultiplier": 0.4,
+        "chargeSeconds": 10
+      },
+      "barbarian": {
+        "name": "Battle Frenzy",
+        "trigger": "autoCharge",
+        "frenzyDurationSeconds": 4,
+        "frenzyAttackSpeedMultiplier": 1.5,
+        "chargeSeconds": 10
+      },
+      "rogue": {
+        "name": "Smoke Bomb",
+        "trigger": "autoCharge",
+        "invisibilityDurationSeconds": 2.5,
+        "chargeSeconds": 10
+      },
+      "paladin": {
+        "name": "Divine Aegis",
+        "trigger": "autoCharge",
+        "shieldAmount": 14,
+        "shieldRadius": 2.8,
+        "shieldDurationSeconds": 5,
+        "chargeSeconds": 12
+      },
+      "nun": {
+        "name": "Sanctuary Prayer",
+        "trigger": "autoCharge",
+        "sanctuaryRadius": 2.3,
+        "sanctuaryLifetimeSeconds": 5,
+        "sanctuaryHealPerSecond": 1.5,
+        "sanctuaryTickIntervalSeconds": 0.5,
+        "sanctuaryEligibilityRadius": 2.3,
+        "sanctuarySelfHealingAllowed": true,
+        "sanctuaryOverlappingZonesPolicy": "nonstacking",
+        "chargeSeconds": 10
+      },
+      "priest": {
+        "name": "Blessing of Courage",
+        "trigger": "autoCharge",
+        "blessingRadius": 3,
+        "blessingDamageBonus": 0.25,
+        "blessingDurationSeconds": 5,
+        "chargeSeconds": 12
+      },
+      "shaman": {
+        "name": "Spirit Totem",
+        "trigger": "autoCharge",
+        "totemHealth": 18,
+        "totemLifetimeSeconds": 8,
+        "totemAggroRadius": 6,
+        "totemCount": 1,
+        "chargeSeconds": 10
+      },
+      "druid": {
+        "name": "Bear Form",
+        "trigger": "autoCharge",
+        "bearFormDurationSeconds": 5,
+        "chargeSeconds": 12
+      },
+      "warlock": {
+        "name": "Life Siphon",
+        "trigger": "autoCharge",
+        "siphonDamage": 8,
+        "siphonHealAmount": 5,
+        "siphonRange": 4.8,
+        "chargeSeconds": 10
+      },
+      "beastmaster": {
+        "name": "Summon Hound",
+        "trigger": "autoCharge",
+        "houndHealth": 9,
+        "houndDamage": 2.4,
+        "houndAttackSpeed": 0.8,
+        "houndWalkSpeed": 2,
+        "houndLifetimeSeconds": 10,
+        "maximumActiveHounds": 2,
+        "chargeSeconds": 10
+      },
+      "necromancer": {
+        "name": "Raise the Fallen",
+        "trigger": "onEnemyKill",
+        "beamContinuous": true,
+        "beamBaseDamageRate": 4.2,
+        "beamRampSeconds": 3,
+        "beamMaxRampMultiplier": 1.5,
+        "beamTickSeconds": 0.2,
+        "beamRetargetPolicy": "reset-on-change",
+        "undeadHealth": 7,
+        "undeadDamage": 1.2,
+        "undeadLifetimeSeconds": 8
+      },
+      "dragonkin": {
+        "name": "Dragon Breath",
+        "trigger": "autoCharge",
+        "breathConeDegrees": 80,
+        "breathRange": 3.5,
+        "breathDamage": 21,
+        "chargeSeconds": 12
+      }
+    },
+    "spawn": {
+      "normalInterval": 2,
+      "normalRateRampFactor": 2,
+      "heroSpawnRadiusMin": 1.8,
+      "heroSpawnRadiusMultiplier": 4,
+      "heroSpawnSeparation": 0.95,
+      "bossClearDelay": 2,
+      "normalHp": 6,
+      "bossHpBase": 90,
+      "bossHpPerStage": 15,
+      "minionFirstAttackWindup": 0.65,
+      "regularWaveBase": 30,
+      "regularWavePerStage": 10,
+      "minionDamage": 4,
+      "minionSpeed": 1,
+      "minionAttackPeriod": 1,
+      "bossDamage": 10,
+      "bossSpeed": 0.7,
+      "bossAttackPeriod": 1,
+      "bossHpDivisor": 2,
+      "wavePhases": {
+        "openingFraction": 0.3,
+        "middleEndFraction": 0.85,
+        "openingStart": 2.2,
+        "openingEnd": 1.4,
+        "middleEnd": 0.75,
+        "finalInterval": 0.55
+      }
+    },
+    "economy": {
+      "startingCoinMax": 2,
+      "coinsPerClassGate": 2,
+      "minionUPChance": 0.1,
+      "bossUP": 5,
+      "startingTowerHP": 100,
+      "minionUPMode": "deterministic-eight",
+      "eligibleKillsPerUP": 8,
+      "eliteKillUP": 0.5,
+      "scheduledUPByPrestige": [
+        1,
+        1,
+        1,
+        1,
+        0.8,
+        0.65
+      ]
+    },
+    "skill": {
+      "costs": {
+        "T1-ROOT": 0,
+        "T1-M1": 0,
+        "T1-EXIT": 0,
+        "T1-G01": 2,
+        "T1-G02": 2,
+        "T1-G03": 3,
+        "T1-G04": 4,
+        "T1-G05": 4,
+        "T1-K-GATE": 0,
+        "T1-K-S01": 2,
+        "T1-K-S02": 2,
+        "T1-K-S03": 2,
+        "T1-K-S04": 3,
+        "T1-K-S05": 3,
+        "T1-K-T01": 2,
+        "T1-K-T02": 3,
+        "T1-K-T03": 3,
+        "T1-K-T04": 4,
+        "T1-K-T05": 5,
+        "T1-A-GATE": 0,
+        "T1-A-S01": 2,
+        "T1-A-S02": 2,
+        "T1-A-S03": 2,
+        "T1-A-S04": 3,
+        "T1-A-S05": 3,
+        "T1-A-T01": 2,
+        "T1-A-T02": 3,
+        "T1-A-T03": 3,
+        "T1-A-T04": 4,
+        "T1-A-T05": 5,
+        "T1-MG-GATE": 0,
+        "T1-MG-S01": 2,
+        "T1-MG-S02": 2,
+        "T1-MG-S03": 2,
+        "T1-MG-S04": 3,
+        "T1-MG-S05": 3,
+        "T1-MG-T01": 2,
+        "T1-MG-T02": 3,
+        "T1-MG-T03": 3,
+        "T1-MG-T04": 4,
+        "T1-MG-T05": 5,
+        "T2-ROOT": 0,
+        "T2-M1": 0,
+        "T2-EXIT": 0,
+        "T2-G01": 3,
+        "T2-G02": 3,
+        "T2-G03": 4,
+        "T2-G04": 5,
+        "T2-G05": 6,
+        "T2-H-GATE": 0,
+        "T2-H-S01": 3,
+        "T2-H-S02": 3,
+        "T2-H-S03": 3,
+        "T2-H-S04": 4,
+        "T2-H-S05": 4,
+        "T2-H-T01": 4,
+        "T2-H-T02": 5,
+        "T2-H-T03": 6,
+        "T2-H-T04": 7,
+        "T2-H-T05": 8,
+        "T2-B-GATE": 0,
+        "T2-B-S01": 3,
+        "T2-B-S02": 3,
+        "T2-B-S03": 3,
+        "T2-B-S04": 4,
+        "T2-B-S05": 4,
+        "T2-B-T01": 4,
+        "T2-B-T02": 5,
+        "T2-B-T03": 6,
+        "T2-B-T04": 7,
+        "T2-B-T05": 8,
+        "T2-R-GATE": 0,
+        "T2-R-S01": 3,
+        "T2-R-S02": 3,
+        "T2-R-S03": 3,
+        "T2-R-S04": 4,
+        "T2-R-S05": 4,
+        "T2-R-T01": 4,
+        "T2-R-T02": 5,
+        "T2-R-T03": 6,
+        "T2-R-T04": 7,
+        "T2-R-T05": 8,
+        "T3-ROOT": 0,
+        "T3-M1": 0,
+        "T3-EXIT": 0,
+        "T3-G01": 4,
+        "T3-G02": 4,
+        "T3-G03": 5,
+        "T3-G04": 5,
+        "T3-G05": 7,
+        "T3-P-GATE": 0,
+        "T3-P-S01": 3,
+        "T3-P-S02": 3,
+        "T3-P-S03": 3,
+        "T3-P-S04": 4,
+        "T3-P-S05": 4,
+        "T3-P-T01": 4,
+        "T3-P-T02": 5,
+        "T3-P-T03": 6,
+        "T3-P-T04": 7,
+        "T3-P-T05": 8,
+        "T3-N-GATE": 0,
+        "T3-N-S01": 3,
+        "T3-N-S02": 3,
+        "T3-N-S03": 3,
+        "T3-N-S04": 4,
+        "T3-N-S05": 4,
+        "T3-N-T01": 4,
+        "T3-N-T02": 5,
+        "T3-N-T03": 6,
+        "T3-N-T04": 7,
+        "T3-N-T05": 8,
+        "T3-PR-GATE": 0,
+        "T3-PR-S01": 3,
+        "T3-PR-S02": 3,
+        "T3-PR-S03": 3,
+        "T3-PR-S04": 4,
+        "T3-PR-S05": 4,
+        "T3-PR-T01": 4,
+        "T3-PR-T02": 5,
+        "T3-PR-T03": 6,
+        "T3-PR-T04": 7,
+        "T3-PR-T05": 8,
+        "T4-ROOT": 0,
+        "T4-M1": 0,
+        "T4-EXIT": 0,
+        "T4-G01": 5,
+        "T4-G02": 5,
+        "T4-G03": 6,
+        "T4-G04": 6,
+        "T4-G05": 8,
+        "T4-S-GATE": 0,
+        "T4-S-S01": 5,
+        "T4-S-S02": 5,
+        "T4-S-S03": 5,
+        "T4-S-S04": 6,
+        "T4-S-S05": 6,
+        "T4-S-T01": 6,
+        "T4-S-T02": 7,
+        "T4-S-T03": 8,
+        "T4-S-T04": 9,
+        "T4-S-T05": 10,
+        "T4-D-GATE": 0,
+        "T4-D-S01": 5,
+        "T4-D-S02": 5,
+        "T4-D-S03": 5,
+        "T4-D-S04": 6,
+        "T4-D-S05": 6,
+        "T4-D-T01": 6,
+        "T4-D-T02": 7,
+        "T4-D-T03": 8,
+        "T4-D-T04": 9,
+        "T4-D-T05": 10,
+        "T4-W-GATE": 0,
+        "T4-W-S01": 5,
+        "T4-W-S02": 5,
+        "T4-W-S03": 5,
+        "T4-W-S04": 6,
+        "T4-W-S05": 6,
+        "T4-W-T01": 6,
+        "T4-W-T02": 7,
+        "T4-W-T03": 8,
+        "T4-W-T04": 9,
+        "T4-W-T05": 10,
+        "T5-ROOT": 0,
+        "T5-M1": 0,
+        "T5-EXIT": 0,
+        "T5-G01": 6,
+        "T5-G02": 6,
+        "T5-G03": 7,
+        "T5-G04": 8,
+        "T5-G05": 9,
+        "T5-BM-GATE": 0,
+        "T5-BM-S01": 5,
+        "T5-BM-S02": 5,
+        "T5-BM-S03": 5,
+        "T5-BM-S04": 6,
+        "T5-BM-S05": 6,
+        "T5-BM-T01": 6,
+        "T5-BM-T02": 7,
+        "T5-BM-T03": 8,
+        "T5-BM-T04": 9,
+        "T5-BM-T05": 10,
+        "T5-NE-GATE": 0,
+        "T5-NE-S01": 5,
+        "T5-NE-S02": 5,
+        "T5-NE-S03": 5,
+        "T5-NE-S04": 6,
+        "T5-NE-S05": 6,
+        "T5-NE-T01": 6,
+        "T5-NE-T02": 7,
+        "T5-NE-T03": 8,
+        "T5-NE-T04": 9,
+        "T5-NE-T05": 10,
+        "T5-DR-GATE": 0,
+        "T5-DR-S01": 5,
+        "T5-DR-S02": 5,
+        "T5-DR-S03": 5,
+        "T5-DR-S04": 6,
+        "T5-DR-S05": 6,
+        "T5-DR-T01": 6,
+        "T5-DR-T02": 7,
+        "T5-DR-T03": 8,
+        "T5-DR-T04": 9,
+        "T5-DR-T05": 10
+      },
+      "gateGoals": {
+        "T1-K-GATE": 5,
+        "T1-A-GATE": 10,
+        "T1-MG-GATE": 15,
+        "T2-H-GATE": 30,
+        "T2-B-GATE": 35,
+        "T2-R-GATE": 40,
+        "T3-P-GATE": 40,
+        "T3-N-GATE": 40,
+        "T3-PR-GATE": 45,
+        "T4-S-GATE": 50,
+        "T4-D-GATE": 55,
+        "T4-W-GATE": 60,
+        "T5-BM-GATE": 60,
+        "T5-NE-GATE": 65,
+        "T5-DR-GATE": 70
+      },
+      "tierGatewayUP": [
+        28,
+        48,
+        75,
+        110
+      ]
+    },
+    "legacy": {
+      "vitalityPctPerRank": 0.08,
+      "damagePctPerRank": 0.08,
+      "upIncomePctPerRank": 0.25,
+      "coinsPerTreasuryRank": 2,
+      "shopSlotsPerMerchantRank": 1
+    },
+    "stages": [
+      {
+        "id": "stage-01",
+        "number": 1,
+        "slots": 48,
+        "basic": {
+          "hp": 7,
+          "damage": 3,
+          "speed": 0.85,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "elite": {
+          "name": "Trickster Slime",
+          "hp": 22,
+          "damage": 4,
+          "speed": 0.85,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "boss": {
+          "hp": 95,
+          "damage": 7,
+          "speed": 0.55,
+          "attackPeriod": 1.5
+        },
+        "status": "lab-candidate",
+        "abilitiesStatus": "existing runtime only"
+      },
+      {
+        "id": "stage-02",
+        "number": 2,
+        "slots": 56,
+        "basic": {
+          "hp": 9,
+          "damage": 3.5,
+          "speed": 0.75,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "elite": {
+          "name": "Fungal Healer",
+          "hp": 27,
+          "damage": 2.5,
+          "speed": 0.75,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "boss": {
+          "hp": 130,
+          "damage": 7.5,
+          "speed": 0.5,
+          "attackPeriod": 1.5
+        },
+        "status": "lab-candidate",
+        "abilitiesStatus": "existing runtime only"
+      },
+      {
+        "id": "stage-03",
+        "number": 3,
+        "slots": 84,
+        "basic": {
+          "hp": 6,
+          "damage": 3,
+          "speed": 1.65,
+          "attackPeriod": 1,
+          "firstDelay": 0.25
+        },
+        "elite": {
+          "name": "Goblin Thief",
+          "hp": 20,
+          "damage": 4,
+          "speed": 1.55,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "boss": {
+          "hp": 200,
+          "damage": 12,
+          "speed": 0.45,
+          "attackPeriod": 1.5
+        },
+        "status": "lab-candidate",
+        "abilitiesStatus": "existing runtime only"
+      },
+      {
+        "id": "stage-04",
+        "number": 4,
+        "slots": 76,
+        "basic": {
+          "hp": 11,
+          "damage": 4,
+          "speed": 1.05,
+          "attackPeriod": 1.4,
+          "firstDelay": 0.65
+        },
+        "elite": {
+          "name": "Bandit Saboteur",
+          "hp": 39,
+          "damage": 6,
+          "speed": 1.2,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "boss": {
+          "hp": 240,
+          "damage": 13,
+          "speed": 0.85,
+          "attackPeriod": 1.5
+        },
+        "status": "lab-candidate",
+        "abilitiesStatus": "existing runtime only"
+      },
+      {
+        "id": "stage-05",
+        "number": 5,
+        "slots": 88,
+        "basic": {
+          "hp": 16,
+          "damage": 5,
+          "speed": 1.15,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "elite": {
+          "name": "Kobold Firecaller",
+          "hp": 51,
+          "damage": 6,
+          "speed": 0.95,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "boss": {
+          "hp": 325,
+          "damage": 15,
+          "speed": 0.8,
+          "attackPeriod": 1.5
+        },
+        "status": "lab-candidate",
+        "abilitiesStatus": "existing runtime only"
+      },
+      {
+        "id": "stage-06",
+        "number": 6,
+        "slots": 96,
+        "basic": {
+          "hp": 20,
+          "damage": 6.5,
+          "speed": 1.2,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "elite": {
+          "name": "Sacred Inquisitor",
+          "hp": 61,
+          "damage": 7.5,
+          "speed": 0.85,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "boss": {
+          "hp": 420,
+          "damage": 16,
+          "speed": 0.85,
+          "attackPeriod": 1.5
+        },
+        "status": "lab-candidate",
+        "abilitiesStatus": "existing runtime only"
+      },
+      {
+        "id": "stage-07",
+        "number": 7,
+        "slots": 108,
+        "basic": {
+          "hp": 16,
+          "damage": 6.5,
+          "speed": 1.25,
+          "attackPeriod": 1.6,
+          "firstDelay": 0.65
+        },
+        "elite": {
+          "name": "Hellhound",
+          "hp": 74,
+          "damage": 10,
+          "speed": 1.8,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "boss": {
+          "hp": 520,
+          "damage": 19,
+          "speed": 1.05,
+          "attackPeriod": 1.5
+        },
+        "status": "lab-candidate",
+        "abilitiesStatus": "existing runtime only"
+      },
+      {
+        "id": "stage-08",
+        "number": 8,
+        "slots": 114,
+        "basic": {
+          "hp": 22,
+          "damage": 7.5,
+          "speed": 1.2,
+          "attackPeriod": 1.6,
+          "firstDelay": 0.65
+        },
+        "elite": {
+          "name": "Cursed Bone Pile",
+          "hp": 88,
+          "damage": 0,
+          "speed": 0,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "boss": {
+          "hp": 640,
+          "damage": 19,
+          "speed": 0.65,
+          "attackPeriod": 1.5
+        },
+        "status": "lab-candidate",
+        "abilitiesStatus": "existing runtime only"
+      },
+      {
+        "id": "stage-09",
+        "number": 9,
+        "slots": 126,
+        "basic": {
+          "hp": 28,
+          "damage": 9,
+          "speed": 1,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "elite": {
+          "name": "Shadow Assassin",
+          "hp": 93,
+          "damage": 11.25,
+          "speed": 1.5,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "boss": {
+          "hp": 775,
+          "damage": 22,
+          "speed": 0.85,
+          "attackPeriod": 1.5
+        },
+        "status": "lab-candidate",
+        "abilitiesStatus": "existing runtime only"
+      },
+      {
+        "id": "stage-10",
+        "number": 10,
+        "slots": 138,
+        "basic": {
+          "hp": 33,
+          "damage": 10.5,
+          "speed": 1.2,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "elite": {
+          "name": "Rift Caster",
+          "hp": 113,
+          "damage": 11.75,
+          "speed": 1,
+          "attackPeriod": 1,
+          "firstDelay": 0.65
+        },
+        "boss": {
+          "hp": 1390,
+          "damage": 16,
+          "speed": 0.6,
+          "attackPeriod": 1.8,
+          "phases": [
+            {
+              "hp": 390,
+              "damage": 16,
+              "speed": 0.6,
+              "attackPeriod": 1.8
+            },
+            {
+              "hp": 455,
+              "damage": 20,
+              "speed": 0.85,
+              "attackPeriod": 1.35
+            },
+            {
+              "hp": 545,
+              "damage": 25,
+              "speed": 1.1,
+              "attackPeriod": 1
+            }
+          ]
+        },
+        "status": "lab-candidate",
+        "abilitiesStatus": "existing runtime only"
+      }
+    ],
+    "towerFire": {
+      "damage": 3,
+      "cooldownSeconds": 2.5,
+      "projectileSpeed": 9,
+      "projectileRadius": 0.3
+    },
+    "eliteSchedule": {
+      "firstReset": 1,
+      "unlockStagesPerReset": 2,
+      "baseShare": 0.04,
+      "extraSharePerAge": 0.03,
+      "maxShare": 0.18,
+      "openingExclusion": 0.3,
+      "middleShare": 0.7,
+      "liveCaps": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4
+      ]
+    }
+  },
+  "target": {
+    "packs": [
+      {
+        "name": "Recruit",
+        "stage": 1,
+        "pool": [
+          "knight",
+          "archer",
+          "mage"
+        ],
+        "price": 2,
+        "weights": [
+          0.5,
+          0.35,
+          0.15
+        ],
+        "rarest": "mage"
+      },
+      {
+        "name": "Outlaw",
+        "stage": null,
+        "pool": [
+          "hunter",
+          "barbarian",
+          "rogue"
+        ],
+        "price": 3,
+        "weights": [
+          0.5,
+          0.25,
+          0.25
+        ],
+        "rarest": "barbarian"
+      },
+      {
+        "name": "Devotion",
+        "stage": null,
+        "pool": [
+          "paladin",
+          "nun",
+          "priest"
+        ],
+        "price": 4,
+        "weights": [
+          0.35,
+          0.45,
+          0.2
+        ],
+        "rarest": "priest"
+      },
+      {
+        "name": "Occult",
+        "stage": null,
+        "pool": [
+          "shaman",
+          "druid",
+          "warlock"
+        ],
+        "price": 4,
+        "weights": [
+          0.45,
+          0.35,
+          0.2
+        ],
+        "rarest": "warlock"
+      },
+      {
+        "name": "Mythic",
+        "stage": null,
+        "pool": [
+          "beastmaster",
+          "necromancer",
+          "dragonkin"
+        ],
+        "price": 5,
+        "weights": [
+          0.55,
+          0.3,
+          0.15
+        ],
+        "rarest": "dragonkin"
+      }
+    ],
+    "shop": {
+      "baseSlots": 3,
+      "maxSlots": 6,
+      "pityAfterMisses": 7,
+      "coinCap": 40,
+      "anchorRecruit": true,
+      "anchorNewest": true,
+      "anchorAdvanced": true,
+      "categoryWeights": {
+        "standard": 40,
+        "individual": 22,
+        "double": 7,
+        "triple": 4,
+        "box": 15,
+        "golden": 7,
+        "mixed": 5
+      }
+    },
+    "classGates": {
+      "knight": 5,
+      "archer": 10,
+      "mage": 15,
+      "hunter": 30,
+      "barbarian": 35,
+      "rogue": 40,
+      "paladin": 50,
+      "nun": 55,
+      "priest": 60,
+      "shaman": 50,
+      "druid": 55,
+      "warlock": 60,
+      "beastmaster": 60,
+      "necromancer": 65,
+      "dragonkin": 70
+    },
+    "gateways": {
+      "stages": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "up": [
+        10,
+        18,
+        26,
+        36
+      ],
+      "freePrestige": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "prestige": {
+      "hpDamage": 1.08,
+      "moveRate": 1.02,
+      "payout": [
+        3,
+        3,
+        4,
+        4,
+        5,
+        6,
+        8,
+        10,
+        13,
+        15
+      ],
+      "mutations": {
+        "start": 4,
+        "hpDamage": 2,
+        "shards": 1
+      },
+      "faction": {
+        "start": 5,
+        "baseHP": [
+          30,
+          34,
+          45,
+          53,
+          61,
+          77,
+          85,
+          101,
+          110,
+          127
+        ],
+        "up": 2,
+        "shards": 1
+      }
+    },
+    "skins": {
+      "unlockPrestige": 3,
+      "priceHundredths": 100,
+      "refundHundredths": 5,
+      "pityAfterMisses": 3,
+      "boxWeights": [
+        60,
+        30,
+        10
+      ],
+      "deploymentWeights": [
+        75,
+        20,
+        5
+      ],
+      "statMultipliers": [
+        1,
+        1.5,
+        2
+      ]
+    },
+    "endless": {
+      "familyCoefficients": [
+        0.8,
+        1,
+        0.55,
+        1,
+        1.15,
+        1.15,
+        0.75,
+        0.95,
+        1.1,
+        1.25
+      ],
+      "healthGrowth": 0.04,
+      "damageGrowth": 0.025,
+      "speedGrowth": 0.005,
+      "speedCap": 1.35,
+      "slotCap": 120,
+      "bossEvery": 5,
+      "bossEffectiveHP": 700,
+      "factionEveryAtPrestige5": 10
+    },
+    "ordinaryNodes": [
+      {
+        "id": "O-1-G1",
+        "name": "Vitality",
+        "cost": 2,
+        "prerequisites": "T1-ROOT",
+        "effect": "+25% all hero base HP."
+      },
+      {
+        "id": "O-1-G2",
+        "name": "Weapon Training",
+        "cost": 2,
+        "prerequisites": "T1-ROOT",
+        "effect": "+25% all hero base basic damage."
+      },
+      {
+        "id": "O-1-G3",
+        "name": "Reinforcements",
+        "cost": 4,
+        "prerequisites": "T1-ROOT",
+        "effect": "+2 max coins."
+      },
+      {
+        "id": "O-1-G4",
+        "name": "Expanded Counter",
+        "cost": 3,
+        "prerequisites": "T1-ROOT",
+        "effect": "+1 shop slot."
+      },
+      {
+        "id": "O-1-G5",
+        "name": "Battle Readiness",
+        "cost": 3,
+        "prerequisites": "T1-ROOT",
+        "effect": "Timed hero abilities start with 20 percentage points of charge."
+      },
+      {
+        "id": "O-2-G1",
+        "name": "Combat Rhythm",
+        "cost": 3,
+        "prerequisites": "T2-ROOT",
+        "effect": "+25% all hero basic attack rate."
+      },
+      {
+        "id": "O-2-G2",
+        "name": "Swift Footwork",
+        "cost": 3,
+        "prerequisites": "T2-ROOT",
+        "effect": "+25% all hero movement speed."
+      },
+      {
+        "id": "O-2-G3",
+        "name": "First Blood",
+        "cost": 4,
+        "prerequisites": "T2-ROOT",
+        "effect": "Each hero's first basic attack deals +50% damage."
+      },
+      {
+        "id": "O-2-G4",
+        "name": "Spoils of Battle",
+        "cost": 5,
+        "prerequisites": "T2-ROOT",
+        "effect": "Every five personal qualifying kills restore 5% max HP."
+      },
+      {
+        "id": "O-2-G5",
+        "name": "Bargain Hunter",
+        "cost": 5,
+        "prerequisites": "T2-ROOT",
+        "effect": "First purchased standard pack costs one fewer coin, minimum one; discounts nonstacking."
+      },
+      {
+        "id": "O-3-G1",
+        "name": "Fortitude",
+        "cost": 4,
+        "prerequisites": "T3-ROOT",
+        "effect": "+25% additional all hero max HP."
+      },
+      {
+        "id": "O-3-G2",
+        "name": "Healing Grace",
+        "cost": 4,
+        "prerequisites": "T3-ROOT",
+        "effect": "+25% healing received by heroes."
+      },
+      {
+        "id": "O-3-G3",
+        "name": "Divine Protection",
+        "cost": 5,
+        "prerequisites": "T3-ROOT",
+        "effect": "All heroes begin combat with shield equal to 15% max HP."
+      },
+      {
+        "id": "O-3-G4",
+        "name": "Battle Prayer",
+        "cost": 6,
+        "prerequisites": "T3-ROOT",
+        "effect": "+25% timed hero ability charge rate."
+      },
+      {
+        "id": "O-3-G5",
+        "name": "Royal Funding",
+        "cost": 6,
+        "prerequisites": "T3-ROOT",
+        "effect": "+2 max coins."
+      },
+      {
+        "id": "O-4-G1",
+        "name": "Arcane Power",
+        "cost": 5,
+        "prerequisites": "T4-ROOT",
+        "effect": "+25% additional all hero basic damage."
+      },
+      {
+        "id": "O-4-G2",
+        "name": "Lingering Magic",
+        "cost": 5,
+        "prerequisites": "T4-ROOT",
+        "effect": "+25% duration of hero-inflicted damaging status effects."
+      },
+      {
+        "id": "O-4-G3",
+        "name": "Arcane Echo",
+        "cost": 7,
+        "prerequisites": "T4-ROOT",
+        "effect": "Every fifth damaging timed hero special per hero deals +50% damage; no extra cast."
+      },
+      {
+        "id": "O-4-G4",
+        "name": "Forbidden Knowledge",
+        "cost": 7,
+        "prerequisites": "T4-ROOT",
+        "effect": "+1 ordinary UP per 15 qualifying scheduled-wave enemy kills."
+      },
+      {
+        "id": "O-4-G5",
+        "name": "Soul Recovery",
+        "cost": 8,
+        "prerequisites": "T4-ROOT",
+        "effect": "Every tenth personal qualifying kill gives 15 percentage points timed special charge."
+      },
+      {
+        "id": "O-5-G1",
+        "name": "Ancient Constitution",
+        "cost": 7,
+        "prerequisites": "T5-ROOT",
+        "effect": "+50% additional all hero max HP."
+      },
+      {
+        "id": "O-5-G2",
+        "name": "Bossbreakers",
+        "cost": 7,
+        "prerequisites": "T5-ROOT",
+        "effect": "+25% hero damage to bosses."
+      },
+      {
+        "id": "O-5-G3",
+        "name": "Army of Legends",
+        "cost": 8,
+        "prerequisites": "T5-ROOT",
+        "effect": "+50% allied summoned combat unit HP and damage."
+      },
+      {
+        "id": "O-5-G4",
+        "name": "Final Resolve",
+        "cost": 9,
+        "prerequisites": "T5-ROOT",
+        "effect": "First time surviving below 25% HP, 25% damage reduction for 5s, once per battle."
+      },
+      {
+        "id": "O-5-G5",
+        "name": "Legendary Awakening",
+        "cost": 10,
+        "prerequisites": "T5-ROOT",
+        "effect": "Timed hero specials start fully charged."
+      },
+      {
+        "id": "O-1-K-A1",
+        "name": "Plate Harness",
+        "cost": 2,
+        "prerequisites": "T1-K-GATE",
+        "effect": "+50% max HP."
+      },
+      {
+        "id": "O-1-K-A2",
+        "name": "Shield Training",
+        "cost": 2,
+        "prerequisites": "O-1-K-A1",
+        "effect": "25% chance to block half incoming damage."
+      },
+      {
+        "id": "O-1-K-A3",
+        "name": "Counterstrike",
+        "cost": 3,
+        "prerequisites": "O-1-K-A2",
+        "effect": "Successful blocks retaliate against the attacker for 50% normal Sword Strike damage; at most once per second."
+      },
+      {
+        "id": "O-1-K-A4",
+        "name": "Reinforced Shield",
+        "cost": 3,
+        "prerequisites": "O-1-K-A3",
+        "effect": "Block chance rises from 25% to 40%."
+      },
+      {
+        "id": "O-1-K-A5",
+        "name": "Indomitable",
+        "cost": 5,
+        "prerequisites": "O-1-K-A4",
+        "effect": "Successful blocks grant 10 percentage points Shield Bash charge; at most once per 2s."
+      },
+      {
+        "id": "O-1-K-B1",
+        "name": "Weighty Blade",
+        "cost": 2,
+        "prerequisites": "T1-K-GATE",
+        "effect": "+40% basic damage."
+      },
+      {
+        "id": "O-1-K-B2",
+        "name": "Veteran Footwork",
+        "cost": 2,
+        "prerequisites": "O-1-K-B1",
+        "effect": "+25% basic attack rate."
+      },
+      {
+        "id": "O-1-K-B3",
+        "name": "Crushing Bash",
+        "cost": 3,
+        "prerequisites": "O-1-K-B2",
+        "effect": "Shield Bash deals 50% of normal Sword Strike damage to affected enemies."
+      },
+      {
+        "id": "O-1-K-B4",
+        "name": "Stunning Impact",
+        "cost": 3,
+        "prerequisites": "O-1-K-B3",
+        "effect": "+40% Shield Bash stun duration."
+      },
+      {
+        "id": "O-1-K-B5",
+        "name": "Concussive Strike",
+        "cost": 5,
+        "prerequisites": "O-1-K-B4",
+        "effect": "After Shield Bash next two sword strikes gain +50% damage; refresh, no bank."
+      },
+      {
+        "id": "O-1-A-A1",
+        "name": "Heavy Draw",
+        "cost": 2,
+        "prerequisites": "T1-A-GATE",
+        "effect": "+50% basic damage."
+      },
+      {
+        "id": "O-1-A-A2",
+        "name": "Critical Precision",
+        "cost": 2,
+        "prerequisites": "O-1-A-A1",
+        "effect": "20% basic attack crit chance; double damage."
+      },
+      {
+        "id": "O-1-A-A3",
+        "name": "Quick Nock",
+        "cost": 3,
+        "prerequisites": "O-1-A-A2",
+        "effect": "+25% basic attack rate."
+      },
+      {
+        "id": "O-1-A-A4",
+        "name": "Deadly Precision",
+        "cost": 3,
+        "prerequisites": "O-1-A-A3",
+        "effect": "Critical chance increases to 35%."
+      },
+      {
+        "id": "O-1-A-A5",
+        "name": "Perfect Shot",
+        "cost": 5,
+        "prerequisites": "O-1-A-A4",
+        "effect": "Basic attack critical hits grant 10 percentage points Volley charge; Volley crits do not trigger this."
+      },
+      {
+        "id": "O-1-A-B1",
+        "name": "Reinforced Leather",
+        "cost": 2,
+        "prerequisites": "T1-A-GATE",
+        "effect": "+40% max HP."
+      },
+      {
+        "id": "O-1-A-B2",
+        "name": "Wide Rain",
+        "cost": 2,
+        "prerequisites": "O-1-A-B1",
+        "effect": "+40% Volley radius."
+      },
+      {
+        "id": "O-1-A-B3",
+        "name": "Quiver Discipline",
+        "cost": 3,
+        "prerequisites": "O-1-A-B2",
+        "effect": "+35% Volley charge rate."
+      },
+      {
+        "id": "O-1-A-B4",
+        "name": "Barbed Rain",
+        "cost": 3,
+        "prerequisites": "O-1-A-B3",
+        "effect": "Volley inflicts additional 50% of its damage as bleed over 3s."
+      },
+      {
+        "id": "O-1-A-B5",
+        "name": "Rain of Death",
+        "cost": 5,
+        "prerequisites": "O-1-A-B4 + O-1-A-A2",
+        "effect": "Volley may crit using Archer's existing crit chance and multiplier; needs Critical Precision for nonzero chance."
+      },
+      {
+        "id": "O-1-MG-A1",
+        "name": "Flame Focus",
+        "cost": 2,
+        "prerequisites": "T1-MG-GATE",
+        "effect": "+50% Fireball damage."
+      },
+      {
+        "id": "O-1-MG-A2",
+        "name": "Ignition",
+        "cost": 2,
+        "prerequisites": "O-1-MG-A1",
+        "effect": "Fireball applies burning equal to 25% of its damage over 3s; same source refreshes."
+      },
+      {
+        "id": "O-1-MG-A3",
+        "name": "Expanded Burst",
+        "cost": 3,
+        "prerequisites": "O-1-MG-A2",
+        "effect": "+40% Fireball explosion radius."
+      },
+      {
+        "id": "O-1-MG-A4",
+        "name": "Combustion",
+        "cost": 3,
+        "prerequisites": "O-1-MG-A3",
+        "effect": "Fireball deals +50% direct damage against already burning enemies."
+      },
+      {
+        "id": "O-1-MG-A5",
+        "name": "Inferno",
+        "cost": 5,
+        "prerequisites": "O-1-MG-A4",
+        "effect": "Enemies carrying Mage's burn explode on death for 50% normal Fireball damage to surrounding enemies; explosions do not apply burn or trigger further explosions."
+      },
+      {
+        "id": "O-1-MG-B1",
+        "name": "Arcane Ward",
+        "cost": 2,
+        "prerequisites": "T1-MG-GATE",
+        "effect": "+40% max HP."
+      },
+      {
+        "id": "O-1-MG-B2",
+        "name": "Static Power",
+        "cost": 2,
+        "prerequisites": "O-1-MG-B1",
+        "effect": "+50% Chain Bolt damage."
+      },
+      {
+        "id": "O-1-MG-B3",
+        "name": "Storm Conduit",
+        "cost": 3,
+        "prerequisites": "O-1-MG-B2",
+        "effect": "+35% Chain Bolt charge rate."
+      },
+      {
+        "id": "O-1-MG-B4",
+        "name": "Overcharge",
+        "cost": 3,
+        "prerequisites": "O-1-MG-B3",
+        "effect": "Every third Chain Bolt activation deals double damage."
+      },
+      {
+        "id": "O-1-MG-B5",
+        "name": "Elemental Fusion",
+        "cost": 5,
+        "prerequisites": "O-1-MG-B4",
+        "effect": "Chain Bolt deals +50% damage against burning enemies."
+      },
+      {
+        "id": "O-2-H-A1",
+        "name": "Barbed Fletching",
+        "cost": 3,
+        "prerequisites": "T2-H-GATE",
+        "effect": "+45% basic damage."
+      },
+      {
+        "id": "O-2-H-A2",
+        "name": "Deep Cuts",
+        "cost": 3,
+        "prerequisites": "O-2-H-A1",
+        "effect": "+50% bleed damage per tick."
+      },
+      {
+        "id": "O-2-H-A3",
+        "name": "Open Wounds",
+        "cost": 4,
+        "prerequisites": "O-2-H-A2",
+        "effect": "Up to 3 simultaneous bleed stacks per Hunter per enemy."
+      },
+      {
+        "id": "O-2-H-A4",
+        "name": "Haemorrhage",
+        "cost": 5,
+        "prerequisites": "O-2-H-A3",
+        "effect": "At three own stacks, enemies take +25% bleed damage from that Hunter."
+      },
+      {
+        "id": "O-2-H-A5",
+        "name": "Blood Harvest",
+        "cost": 6,
+        "prerequisites": "O-2-H-A4",
+        "effect": "Own bleeding final blows restore 5% max HP."
+      },
+      {
+        "id": "O-2-H-B1",
+        "name": "Hardened Leather",
+        "cost": 3,
+        "prerequisites": "T2-H-GATE",
+        "effect": "+40% max HP."
+      },
+      {
+        "id": "O-2-H-B2",
+        "name": "Improved Snare",
+        "cost": 3,
+        "prerequisites": "O-2-H-B1",
+        "effect": "+40% Tripwire duration."
+      },
+      {
+        "id": "O-2-H-B3",
+        "name": "Barbed Trap",
+        "cost": 4,
+        "prerequisites": "O-2-H-B2",
+        "effect": "Enemies affected by Tripwire receive one bleed stack; once per enemy per trap."
+      },
+      {
+        "id": "O-2-H-B4",
+        "name": "Trap Mastery",
+        "cost": 5,
+        "prerequisites": "O-2-H-B3",
+        "effect": "+35% Tripwire charge rate."
+      },
+      {
+        "id": "O-2-H-B5",
+        "name": "Deadly Combination",
+        "cost": 6,
+        "prerequisites": "O-2-H-B4",
+        "effect": "Bleeding enemies affected by Tripwire take +50% Hunter bleed damage."
+      },
+      {
+        "id": "O-2-B-A1",
+        "name": "Heavy Axe",
+        "cost": 3,
+        "prerequisites": "T2-B-GATE",
+        "effect": "+50% basic damage."
+      },
+      {
+        "id": "O-2-B-A2",
+        "name": "Brutal Rhythm",
+        "cost": 3,
+        "prerequisites": "O-2-B-A1",
+        "effect": "+25% basic attack rate."
+      },
+      {
+        "id": "O-2-B-A3",
+        "name": "Bloodthirst",
+        "cost": 4,
+        "prerequisites": "O-2-B-A2",
+        "effect": "Heal 10% of actual basic damage dealt."
+      },
+      {
+        "id": "O-2-B-A4",
+        "name": "Devastating Cleave",
+        "cost": 5,
+        "prerequisites": "O-2-B-A3",
+        "effect": "Every third cleave deals double damage."
+      },
+      {
+        "id": "O-2-B-A5",
+        "name": "Executioner's Axe",
+        "cost": 6,
+        "prerequisites": "O-2-B-A4",
+        "effect": "+50% basic damage against enemies below 25% HP."
+      },
+      {
+        "id": "O-2-B-B1",
+        "name": "Iron Constitution",
+        "cost": 3,
+        "prerequisites": "T2-B-GATE",
+        "effect": "+50% max HP."
+      },
+      {
+        "id": "O-2-B-B2",
+        "name": "Deeper Frenzy",
+        "cost": 3,
+        "prerequisites": "O-2-B-B1",
+        "effect": "+35% of configured base Frenzy attack-speed bonus."
+      },
+      {
+        "id": "O-2-B-B3",
+        "name": "Blood Rage",
+        "cost": 4,
+        "prerequisites": "O-2-B-B2",
+        "effect": "Each own kill during Frenzy adds 0.5s, max 3 extra seconds per activation."
+      },
+      {
+        "id": "O-2-B-B4",
+        "name": "Unstoppable",
+        "cost": 5,
+        "prerequisites": "O-2-B-B3",
+        "effect": "25% less incoming damage during Frenzy."
+      },
+      {
+        "id": "O-2-B-B5",
+        "name": "Endless Fury",
+        "cost": 6,
+        "prerequisites": "O-2-B-B4 + O-2-B-A3",
+        "effect": "Bloodthirst healing doubles during Frenzy; also requires first branch third node."
+      },
+      {
+        "id": "O-2-R-A1",
+        "name": "Razor Daggers",
+        "cost": 3,
+        "prerequisites": "T2-R-GATE",
+        "effect": "+60% basic damage."
+      },
+      {
+        "id": "O-2-R-A2",
+        "name": "Poisoned Steel",
+        "cost": 3,
+        "prerequisites": "O-2-R-A1",
+        "effect": "Each dagger hit applies poison equal to 35% basic damage over 4s, initially max 3 stacks per owner per enemy."
+      },
+      {
+        "id": "O-2-R-A3",
+        "name": "Lightning Hands",
+        "cost": 4,
+        "prerequisites": "O-2-R-A2",
+        "effect": "+25% basic attack rate."
+      },
+      {
+        "id": "O-2-R-A4",
+        "name": "Potent Venom",
+        "cost": 4,
+        "prerequisites": "O-2-R-A3",
+        "effect": "Poison cap increases from 3 to 6."
+      },
+      {
+        "id": "O-2-R-A5",
+        "name": "Toxic Overload",
+        "cost": 5,
+        "prerequisites": "O-2-R-A4",
+        "effect": "Dagger hit on enemy already at six own stacks consumes them and deals their remaining poison damage +50% immediately."
+      },
+      {
+        "id": "O-2-R-B1",
+        "name": "Soft Armour",
+        "cost": 3,
+        "prerequisites": "T2-R-GATE",
+        "effect": "+40% max HP."
+      },
+      {
+        "id": "O-2-R-B2",
+        "name": "Longer Smoke",
+        "cost": 3,
+        "prerequisites": "O-2-R-B1",
+        "effect": "+40% Smoke Bomb duration."
+      },
+      {
+        "id": "O-2-R-B3",
+        "name": "Quick Escape",
+        "cost": 4,
+        "prerequisites": "O-2-R-B2",
+        "effect": "+35% Smoke Bomb charge rate."
+      },
+      {
+        "id": "O-2-R-B4",
+        "name": "Silent Killer",
+        "cost": 5,
+        "prerequisites": "O-2-R-B3",
+        "effect": "+50% basic damage during Smoke Bomb."
+      },
+      {
+        "id": "O-2-R-B5",
+        "name": "Shadow Mastery",
+        "cost": 6,
+        "prerequisites": "O-2-R-B4 + O-2-R-A2",
+        "effect": "Dagger hits during Smoke Bomb apply two poison stacks instead of one; also requires first branch second node."
+      },
+      {
+        "id": "O-3-P-A1",
+        "name": "Consecrated Hammer",
+        "cost": 4,
+        "prerequisites": "T3-P-GATE",
+        "effect": "+50% basic damage."
+      },
+      {
+        "id": "O-3-P-A2",
+        "name": "Sacred Ground",
+        "cost": 4,
+        "prerequisites": "O-3-P-A1",
+        "effect": "+50% lingering Hammer Strike damage."
+      },
+      {
+        "id": "O-3-P-A3",
+        "name": "Holy Retribution",
+        "cost": 5,
+        "prerequisites": "O-3-P-A2",
+        "effect": "Every fifth damaging hit received empowers next Hammer Strike with +50% damage."
+      },
+      {
+        "id": "O-3-P-A4",
+        "name": "Divine Judgement",
+        "cost": 6,
+        "prerequisites": "O-3-P-A3",
+        "effect": "+50% Hammer Strike damage against elites and bosses."
+      },
+      {
+        "id": "O-3-P-A5",
+        "name": "Wrath of Light",
+        "cost": 8,
+        "prerequisites": "O-3-P-A4",
+        "effect": "Next Hammer Strike after Divine Aegis creates a patch dealing double normal damage."
+      },
+      {
+        "id": "O-3-P-B1",
+        "name": "Blessed Armour",
+        "cost": 4,
+        "prerequisites": "T3-P-GATE",
+        "effect": "+50% max HP."
+      },
+      {
+        "id": "O-3-P-B2",
+        "name": "Stronger Aegis",
+        "cost": 4,
+        "prerequisites": "O-3-P-B1",
+        "effect": "+35% shield absorption."
+      },
+      {
+        "id": "O-3-P-B3",
+        "name": "Sacred Restoration",
+        "cost": 5,
+        "prerequisites": "O-3-P-B2",
+        "effect": "Aegis additionally heals recipients 7.5% of their max HP."
+      },
+      {
+        "id": "O-3-P-B4",
+        "name": "Divine Renewal",
+        "cost": 6,
+        "prerequisites": "O-3-P-B3",
+        "effect": "+35% Divine Aegis charge rate."
+      },
+      {
+        "id": "O-3-P-B5",
+        "name": "Unbroken Faith",
+        "cost": 8,
+        "prerequisites": "O-3-P-B4",
+        "effect": "Recipients whose Aegis shield is destroyed gain 25% damage reduction for 3s; identical named effect does not stack."
+      },
+      {
+        "id": "O-3-N-A1",
+        "name": "Iron Fists",
+        "cost": 4,
+        "prerequisites": "T3-N-GATE",
+        "effect": "+40% basic damage."
+      },
+      {
+        "id": "O-3-N-A2",
+        "name": "Fluid Motion",
+        "cost": 4,
+        "prerequisites": "O-3-N-A1",
+        "effect": "+25% basic attack rate."
+      },
+      {
+        "id": "O-3-N-A3",
+        "name": "Powerful Palm",
+        "cost": 5,
+        "prerequisites": "O-3-N-A2",
+        "effect": "Third strike of each combination deals double damage."
+      },
+      {
+        "id": "O-3-N-A4",
+        "name": "Inner Discipline",
+        "cost": 6,
+        "prerequisites": "O-3-N-A3",
+        "effect": "Completing a combination grants 10 percentage points Sanctuary charge."
+      },
+      {
+        "id": "O-3-N-A5",
+        "name": "Divine Combination",
+        "cost": 8,
+        "prerequisites": "O-3-N-A4",
+        "effect": "Completing a combination heals Nun 5% max HP and empowers next combination with +25% damage."
+      },
+      {
+        "id": "O-3-N-B1",
+        "name": "Sacred Vitality",
+        "cost": 4,
+        "prerequisites": "T3-N-GATE",
+        "effect": "+40% max HP."
+      },
+      {
+        "id": "O-3-N-B2",
+        "name": "Healing Grace",
+        "cost": 4,
+        "prerequisites": "O-3-N-B1",
+        "effect": "+50% Sanctuary healing rate."
+      },
+      {
+        "id": "O-3-N-B3",
+        "name": "Extended Prayer",
+        "cost": 5,
+        "prerequisites": "O-3-N-B2",
+        "effect": "+40% Sanctuary duration."
+      },
+      {
+        "id": "O-3-N-B4",
+        "name": "Overflowing Grace",
+        "cost": 6,
+        "prerequisites": "O-3-N-B3",
+        "effect": "Excess Sanctuary healing becomes shield, capped at 20% recipient max HP."
+      },
+      {
+        "id": "O-3-N-B5",
+        "name": "Miracle of Life",
+        "cost": 8,
+        "prerequisites": "O-3-N-B4",
+        "effect": "Sanctuary healing doubles for recipients below 25% HP."
+      },
+      {
+        "id": "O-3-PR-A1",
+        "name": "Luminous Power",
+        "cost": 4,
+        "prerequisites": "T3-PR-GATE",
+        "effect": "+50% basic damage."
+      },
+      {
+        "id": "O-3-PR-A2",
+        "name": "Steady Chant",
+        "cost": 4,
+        "prerequisites": "O-3-PR-A1",
+        "effect": "+25% basic attack rate."
+      },
+      {
+        "id": "O-3-PR-A3",
+        "name": "Divine Brand",
+        "cost": 5,
+        "prerequisites": "O-3-PR-A2",
+        "effect": "Enemies damaged by Ray receive +15% damage from other heroes for 3s; no targeting preference."
+      },
+      {
+        "id": "O-3-PR-A4",
+        "name": "Purification",
+        "cost": 6,
+        "prerequisites": "O-3-PR-A3",
+        "effect": "Ray deals +50% damage against enemies below 30% HP."
+      },
+      {
+        "id": "O-3-PR-A5",
+        "name": "Final Judgement",
+        "cost": 8,
+        "prerequisites": "O-3-PR-A4",
+        "effect": "Each personal qualifying kill grants 15 percentage points Blessing charge."
+      },
+      {
+        "id": "O-3-PR-B1",
+        "name": "Hallowed Vitality",
+        "cost": 4,
+        "prerequisites": "T3-PR-GATE",
+        "effect": "+60% max HP."
+      },
+      {
+        "id": "O-3-PR-B2",
+        "name": "Greater Courage",
+        "cost": 4,
+        "prerequisites": "O-3-PR-B1",
+        "effect": "+75% of base Blessing damage bonus."
+      },
+      {
+        "id": "O-3-PR-B3",
+        "name": "Enduring Faith",
+        "cost": 5,
+        "prerequisites": "O-3-PR-B2",
+        "effect": "+60% Blessing duration."
+      },
+      {
+        "id": "O-3-PR-B4",
+        "name": "Sacred Inspiration",
+        "cost": 6,
+        "prerequisites": "O-3-PR-B3",
+        "effect": "Blessed heroes also gain +25% basic attack rate."
+      },
+      {
+        "id": "O-3-PR-B5",
+        "name": "Divine Ascension",
+        "cost": 6,
+        "prerequisites": "O-3-PR-B4",
+        "effect": "Blessed heroes gain 10 percentage points timed special charge after every third personal qualifying kill."
+      },
+      {
+        "id": "O-4-S-A1",
+        "name": "Potent Mixture",
+        "cost": 5,
+        "prerequisites": "T4-S-GATE",
+        "effect": "+50% Vial Throw damage."
+      },
+      {
+        "id": "O-4-S-A2",
+        "name": "Corrosive Brew",
+        "cost": 5,
+        "prerequisites": "O-4-S-A1",
+        "effect": "Vials deal additional corrosion equal to 30% normal damage over 4s."
+      },
+      {
+        "id": "O-4-S-A3",
+        "name": "Unstable Mixture",
+        "cost": 6,
+        "prerequisites": "O-4-S-A2",
+        "effect": "Every fourth vial produces second explosion at original impact, 50% normal damage."
+      },
+      {
+        "id": "O-4-S-A4",
+        "name": "Amplified Weakness",
+        "cost": 8,
+        "prerequisites": "O-4-S-A3",
+        "effect": "+50% of base Vial weakening magnitude."
+      },
+      {
+        "id": "O-4-S-A5",
+        "name": "Master Alchemist",
+        "cost": 10,
+        "prerequisites": "O-4-S-A4",
+        "effect": "When an enemy carrying own corrosion dies, next vial gains +25% damage, max four stacks."
+      },
+      {
+        "id": "O-4-S-B1",
+        "name": "Spirit Resilience",
+        "cost": 5,
+        "prerequisites": "T4-S-GATE",
+        "effect": "+40% max HP."
+      },
+      {
+        "id": "O-4-S-B2",
+        "name": "Hardened Totems",
+        "cost": 5,
+        "prerequisites": "O-4-S-B1",
+        "effect": "+50% totem max HP."
+      },
+      {
+        "id": "O-4-S-B3",
+        "name": "Spirit Offering",
+        "cost": 6,
+        "prerequisites": "O-4-S-B2",
+        "effect": "Every fifth damaging hit received by owned totem grants Shaman 10 percentage points charge."
+      },
+      {
+        "id": "O-4-S-B4",
+        "name": "Ancestral Power",
+        "cost": 8,
+        "prerequisites": "O-4-S-B3",
+        "effect": "+25% basic damage while at least one owned totem is active."
+      },
+      {
+        "id": "O-4-S-B5",
+        "name": "Spirit Rebirth",
+        "cost": 10,
+        "prerequisites": "O-4-S-B4",
+        "effect": "Each totem reforms once after destruction at 30% max HP with remaining original lifetime; no repeat reform."
+      },
+      {
+        "id": "O-4-D-A1",
+        "name": "Ancient Growth",
+        "cost": 5,
+        "prerequisites": "T4-D-GATE",
+        "effect": "+50% Vine Wave damage."
+      },
+      {
+        "id": "O-4-D-A2",
+        "name": "Thorn Magic",
+        "cost": 5,
+        "prerequisites": "O-4-D-A1",
+        "effect": "Vine Wave applies thorn damage equal to 25% normal damage over 4s."
+      },
+      {
+        "id": "O-4-D-A3",
+        "name": "Natural Renewal",
+        "cost": 6,
+        "prerequisites": "O-4-D-A2",
+        "effect": "Every third completed Vine Wave heals 5% max HP."
+      },
+      {
+        "id": "O-4-D-A4",
+        "name": "Wild Growth",
+        "cost": 8,
+        "prerequisites": "O-4-D-A3",
+        "effect": "Every fourth completed Vine Wave produces a second wave along original direction for 50% damage."
+      },
+      {
+        "id": "O-4-D-A5",
+        "name": "Nature's Wrath",
+        "cost": 10,
+        "prerequisites": "O-4-D-A4",
+        "effect": "Each personal qualifying kill in normal form grants 10 percentage points Bear Form charge."
+      },
+      {
+        "id": "O-4-D-B1",
+        "name": "Ironwood Skin",
+        "cost": 5,
+        "prerequisites": "T4-D-GATE",
+        "effect": "+75% max HP in both forms."
+      },
+      {
+        "id": "O-4-D-B2",
+        "name": "Savage Claws",
+        "cost": 5,
+        "prerequisites": "O-4-D-B1",
+        "effect": "+100% Bear Form basic damage."
+      },
+      {
+        "id": "O-4-D-B3",
+        "name": "Primal Endurance",
+        "cost": 5,
+        "prerequisites": "O-4-D-B2",
+        "effect": "+40% Bear Form duration."
+      },
+      {
+        "id": "O-4-D-B4",
+        "name": "Predator's Fury",
+        "cost": 7,
+        "prerequisites": "O-4-D-B3",
+        "effect": "Bear claws heal 25% actual damage dealt."
+      },
+      {
+        "id": "O-4-D-B5",
+        "name": "Ancient Guardian",
+        "cost": 8,
+        "prerequisites": "O-4-D-B4",
+        "effect": "Bear Form grants 40% damage reduction and releases Vine Wave every third claw attack; benefits from purchased nature upgrades but cannot create extra waves or charge transformation."
+      },
+      {
+        "id": "O-4-W-A1",
+        "name": "Forbidden Magic",
+        "cost": 5,
+        "prerequisites": "T4-W-GATE",
+        "effect": "+50% basic damage."
+      },
+      {
+        "id": "O-4-W-A2",
+        "name": "Lingering Curse",
+        "cost": 5,
+        "prerequisites": "O-4-W-A1",
+        "effect": "+50% Doom Sigil duration."
+      },
+      {
+        "id": "O-4-W-A3",
+        "name": "Greater Doom",
+        "cost": 6,
+        "prerequisites": "O-4-W-A2",
+        "effect": "+50% Doom Sigil explosion damage."
+      },
+      {
+        "id": "O-4-W-A4",
+        "name": "Soul Collector",
+        "cost": 8,
+        "prerequisites": "O-4-W-A3",
+        "effect": "Each own triggered sigil explosion adds +5 percentage points basic damage for current battle, max +100%."
+      },
+      {
+        "id": "O-4-W-A5",
+        "name": "Final Curse",
+        "cost": 10,
+        "prerequisites": "O-4-W-A4",
+        "effect": "Sigil explosions leave dark flames dealing additional 50% explosion damage over 3s."
+      },
+      {
+        "id": "O-4-W-B1",
+        "name": "Dark Vitality",
+        "cost": 5,
+        "prerequisites": "T4-W-GATE",
+        "effect": "+40% max HP."
+      },
+      {
+        "id": "O-4-W-B2",
+        "name": "Greater Siphon",
+        "cost": 5,
+        "prerequisites": "O-4-W-B1",
+        "effect": "+50% Life Siphon damage and healing."
+      },
+      {
+        "id": "O-4-W-B3",
+        "name": "Blood Pact",
+        "cost": 6,
+        "prerequisites": "O-4-W-B2",
+        "effect": "+50% Life Siphon charge rate while below half HP."
+      },
+      {
+        "id": "O-4-W-B4",
+        "name": "Soul Armour",
+        "cost": 8,
+        "prerequisites": "O-4-W-B3",
+        "effect": "Excess Siphon healing becomes shield capped at 30% max HP."
+      },
+      {
+        "id": "O-4-W-B5",
+        "name": "Undying Pact",
+        "cost": 10,
+        "prerequisites": "O-4-W-B4",
+        "effect": "Each Life Siphon cast adds +10 percentage points basic damage for current battle, max +50%."
+      },
+      {
+        "id": "O-5-BM-A1",
+        "name": "Reinforced Whip",
+        "cost": 6,
+        "prerequisites": "T5-BM-GATE",
+        "effect": "+50% basic damage."
+      },
+      {
+        "id": "O-5-BM-A2",
+        "name": "Master's Rhythm",
+        "cost": 6,
+        "prerequisites": "O-5-BM-A1",
+        "effect": "+25% basic attack rate."
+      },
+      {
+        "id": "O-5-BM-A3",
+        "name": "Pack Instinct",
+        "cost": 8,
+        "prerequisites": "O-5-BM-A2",
+        "effect": "Every third completed Whip attack grants each living own hound +50% damage on its next attack."
+      },
+      {
+        "id": "O-5-BM-A4",
+        "name": "Blood Bond",
+        "cost": 9,
+        "prerequisites": "O-5-BM-A3",
+        "effect": "Heal Beastmaster 10% actual damage dealt by own hounds."
+      },
+      {
+        "id": "O-5-BM-A5",
+        "name": "Alpha Master",
+        "cost": 10,
+        "prerequisites": "O-5-BM-A4",
+        "effect": "Each active own hound adds +25 percentage points Beastmaster basic damage, max +100%."
+      },
+      {
+        "id": "O-5-BM-B1",
+        "name": "Hardened Beasts",
+        "cost": 6,
+        "prerequisites": "T5-BM-GATE",
+        "effect": "+50% hound max HP."
+      },
+      {
+        "id": "O-5-BM-B2",
+        "name": "Savage Fangs",
+        "cost": 6,
+        "prerequisites": "O-5-BM-B1",
+        "effect": "+50% hound basic damage."
+      },
+      {
+        "id": "O-5-BM-B3",
+        "name": "Rapid Summoning",
+        "cost": 8,
+        "prerequisites": "O-5-BM-B2",
+        "effect": "+40% Summon Hound charge rate."
+      },
+      {
+        "id": "O-5-BM-B4",
+        "name": "Alpha Hound",
+        "cost": 9,
+        "prerequisites": "O-5-BM-B3",
+        "effect": "Every third hound summoned is Alpha, additional +100% base HP and damage; normal summon slot."
+      },
+      {
+        "id": "O-5-BM-B5",
+        "name": "Legendary Pack",
+        "cost": 10,
+        "prerequisites": "O-5-BM-B4",
+        "effect": "Summon Hound creates two instead of one; owner cap +2."
+      },
+      {
+        "id": "O-5-NE-A1",
+        "name": "Soul Conduit",
+        "cost": 6,
+        "prerequisites": "T5-NE-GATE",
+        "effect": "+50% baseline beam DPS."
+      },
+      {
+        "id": "O-5-NE-A2",
+        "name": "Accelerated Drain",
+        "cost": 6,
+        "prerequisites": "O-5-NE-A1",
+        "effect": "Beam ramp rate +40% (proposed interpretation of reaches maximum 40% faster)."
+      },
+      {
+        "id": "O-5-NE-A3",
+        "name": "Dark Resonance",
+        "cost": 8,
+        "prerequisites": "O-5-NE-A2",
+        "effect": "Each active own undead adds +10 percentage points baseline beam DPS, max +50%."
+      },
+      {
+        "id": "O-5-NE-A4",
+        "name": "Soul Overload",
+        "cost": 9,
+        "prerequisites": "O-5-NE-A3",
+        "effect": "+50% of base maximum ramp damage bonus."
+      },
+      {
+        "id": "O-5-NE-A5",
+        "name": "Death Incarnate",
+        "cost": 10,
+        "prerequisites": "O-5-NE-A4",
+        "effect": "At maximum intensity, beam deals +50% damage against elites and bosses."
+      },
+      {
+        "id": "O-5-NE-B1",
+        "name": "Reinforced Bones",
+        "cost": 6,
+        "prerequisites": "T5-NE-GATE",
+        "effect": "+75% undead max HP."
+      },
+      {
+        "id": "O-5-NE-B2",
+        "name": "Grave Weapons",
+        "cost": 6,
+        "prerequisites": "O-5-NE-B1",
+        "effect": "+75% undead basic damage."
+      },
+      {
+        "id": "O-5-NE-B3",
+        "name": "Eternal Servants",
+        "cost": 8,
+        "prerequisites": "O-5-NE-B2",
+        "effect": "+75% undead lifetime."
+      },
+      {
+        "id": "O-5-NE-B4",
+        "name": "Death Knight",
+        "cost": 8,
+        "prerequisites": "O-5-NE-B3",
+        "effect": "Every fifth qualifying summon is Death Knight instead, additional +100% base HP and damage; uses normal summon slot."
+      },
+      {
+        "id": "O-5-NE-B5",
+        "name": "Undead Legion",
+        "cost": 9,
+        "prerequisites": "O-5-NE-B4",
+        "effect": "Maximum active undead +50% rounded up; +25% undead attack rate."
+      },
+      {
+        "id": "O-5-DR-A1",
+        "name": "Ancient Scales",
+        "cost": 6,
+        "prerequisites": "T5-DR-GATE",
+        "effect": "+50% max HP."
+      },
+      {
+        "id": "O-5-DR-A2",
+        "name": "Draconic Strength",
+        "cost": 6,
+        "prerequisites": "O-5-DR-A1",
+        "effect": "+50% basic damage."
+      },
+      {
+        "id": "O-5-DR-A3",
+        "name": "Searing Scales",
+        "cost": 8,
+        "prerequisites": "O-5-DR-A2",
+        "effect": "Incoming basic attacks inflict burn on attacker equal to 20% Dragonkin basic damage over 3s; same source refreshes, no recursive retaliation."
+      },
+      {
+        "id": "O-5-DR-A4",
+        "name": "Unbreakable Hide",
+        "cost": 9,
+        "prerequisites": "O-5-DR-A3",
+        "effect": "20% incoming damage reduction during battle."
+      },
+      {
+        "id": "O-5-DR-A5",
+        "name": "Dragonheart",
+        "cost": 10,
+        "prerequisites": "O-5-DR-A4",
+        "effect": "First nonlethal crossing below 25% HP restores 20% max HP and fully charges Dragon Breath, once per battle."
+      },
+      {
+        "id": "O-5-DR-B1",
+        "name": "Flame Mastery",
+        "cost": 6,
+        "prerequisites": "T5-DR-GATE",
+        "effect": "+50% Dragon Breath damage."
+      },
+      {
+        "id": "O-5-DR-B2",
+        "name": "Scorching Breath",
+        "cost": 6,
+        "prerequisites": "O-5-DR-B1",
+        "effect": "Breath adds burn equal to 50% of its damage over 4s."
+      },
+      {
+        "id": "O-5-DR-B3",
+        "name": "Inner Furnace",
+        "cost": 8,
+        "prerequisites": "O-5-DR-B2",
+        "effect": "+40% Dragon Breath charge rate."
+      },
+      {
+        "id": "O-5-DR-B4",
+        "name": "Wildfire",
+        "cost": 9,
+        "prerequisites": "O-5-DR-B3",
+        "effect": "Dragon Breath deals +50% damage against burning enemies."
+      },
+      {
+        "id": "O-5-DR-B5",
+        "name": "Dragon's Wrath",
+        "cost": 10,
+        "prerequisites": "O-5-DR-B4",
+        "effect": "After Dragon Breath, next three Lunges gain +50% damage and apply burning; proposed burn uses Scorching Breath proportional rule pending tuning."
+      },
+      {
+        "id": "O-TW01",
+        "name": "Reinforced Ammunition",
+        "cost": 2,
+        "prerequisites": "T1-ROOT",
+        "effect": "+1 projectile damage."
+      },
+      {
+        "id": "O-TW02",
+        "name": "Tower Masonry",
+        "cost": 3,
+        "prerequisites": "T1-ROOT",
+        "effect": "+35% tower base HP."
+      },
+      {
+        "id": "O-TW03",
+        "name": "Rapid Fire",
+        "cost": 4,
+        "prerequisites": "T2-ROOT + O-TW01",
+        "effect": "+25% base firing rate."
+      },
+      {
+        "id": "O-TW04",
+        "name": "Heavy Bolts",
+        "cost": 4,
+        "prerequisites": "T2-ROOT + O-TW03",
+        "effect": "Pierce one additional distinct enemy."
+      },
+      {
+        "id": "O-TW05",
+        "name": "Reinforced Foundations",
+        "cost": 5,
+        "prerequisites": "T3-ROOT + O-TW02",
+        "effect": "+40% additional tower base HP."
+      },
+      {
+        "id": "O-TW06",
+        "name": "Explosive Shot",
+        "cost": 6,
+        "prerequisites": "T3-ROOT + O-TW04",
+        "effect": "On each direct impact deal 40% of that projectile's resolved damage to other enemies in 0.9-unit radius; proposed geometry retained from previous draft."
+      },
+      {
+        "id": "O-TW07",
+        "name": "Arcane Ammunition",
+        "cost": 7,
+        "prerequisites": "T4-ROOT + O-TW06",
+        "effect": "+2 projectile damage."
+      },
+      {
+        "id": "O-TW08",
+        "name": "Twin Shot",
+        "cost": 8,
+        "prerequisites": "T4-ROOT + O-TW07",
+        "effect": "Second slightly separated projectile per firing cycle, 60% normal resolved damage; same stored aim, no auto-aim."
+      },
+      {
+        "id": "O-TW09",
+        "name": "Fortified Citadel",
+        "cost": 9,
+        "prerequisites": "T5-ROOT + O-TW05",
+        "effect": "+50% additional tower base HP."
+      },
+      {
+        "id": "O-TW10",
+        "name": "Arcane Overload",
+        "cost": 10,
+        "prerequisites": "T5-ROOT + O-TW08",
+        "effect": "Every fifth firing cycle deals double normal damage; applies to both projectiles and their derived splash, count once per cycle."
+      },
+      {
+        "id": "O-SP01",
+        "name": "Lightning Strike",
+        "cost": 6,
+        "prerequisites": "T3-ROOT + P>=2",
+        "effect": "Manual strike 12 damage in radius 1.25, 25s cooldown."
+      },
+      {
+        "id": "O-SP02",
+        "name": "Healing Circle",
+        "cost": 6,
+        "prerequisites": "T3-ROOT + P>=2",
+        "effect": "Manual zone heals 2 HP/sec for 5s, radius 2, 30s cooldown."
+      },
+      {
+        "id": "O-SP03",
+        "name": "Frost Field",
+        "cost": 6,
+        "prerequisites": "T3-ROOT + P>=2",
+        "effect": "Manual zone slows enemies 35% for 5s, radius 2, 30s cooldown."
+      },
+      {
+        "id": "O-SP04",
+        "name": "Ember Rain",
+        "cost": 8,
+        "prerequisites": "T4-ROOT + P>=3",
+        "effect": "Manual zone deals 1.5 damage/sec for 5s, radius 2, 35s cooldown."
+      },
+      {
+        "id": "O-SP05",
+        "name": "Charged Lightning",
+        "cost": 5,
+        "prerequisites": "O-SP01",
+        "effect": "+50% Lightning damage."
+      },
+      {
+        "id": "O-SP06",
+        "name": "Sacred Recovery",
+        "cost": 5,
+        "prerequisites": "O-SP02",
+        "effect": "+50% Healing Circle healing rate."
+      },
+      {
+        "id": "O-SP07",
+        "name": "Lingering Frost",
+        "cost": 5,
+        "prerequisites": "O-SP03",
+        "effect": "+50% Frost duration."
+      },
+      {
+        "id": "O-SP08",
+        "name": "Arcane Efficiency",
+        "cost": 7,
+        "prerequisites": "T4-ROOT + P>=3 + ANY(O-SP01,O-SP02,O-SP03,O-SP04)",
+        "effect": "All owned spells cooldown ×0.8."
+      },
+      {
+        "id": "O-SP09",
+        "name": "Infernal Rain",
+        "cost": 7,
+        "prerequisites": "O-SP04",
+        "effect": "+50% Ember damage rate."
+      },
+      {
+        "id": "O-SP10",
+        "name": "Expanded Magic",
+        "cost": 8,
+        "prerequisites": "T4-ROOT + P>=3 + O-SP08",
+        "effect": "+25% all spell effect radii."
+      },
+      {
+        "id": "O-SP11",
+        "name": "Dual Casting",
+        "cost": 8,
+        "prerequisites": "T5-ROOT + P>=4 + ANY(O-SP01,O-SP02,O-SP03,O-SP04)",
+        "effect": "Second equipped slot; two distinct known spells; independent cooldowns."
+      },
+      {
+        "id": "O-SP12",
+        "name": "Arcane Mastery",
+        "cost": 10,
+        "prerequisites": "T5-ROOT + P>=4 + O-SP10",
+        "effect": "+25% additional base damage and healing rates of owned spells."
+      },
+      {
+        "id": "O-SP13",
+        "name": "Echo Casting",
+        "cost": 12,
+        "prerequisites": "T5-ROOT + P>=4 + O-SP12",
+        "effect": "Every third manual cast across slots echoes the same effect at 50% potency at original cast point; see audit rules."
+      },
+      {
+        "id": "V2-KNI-01",
+        "name": "Shield Reprieve",
+        "cost": 4,
+        "prerequisites": "T1-K-GATE + R-KNI-C + O-1-K-A2",
+        "effect": "Blocking heals 5% max HP, at most once per 2s; requires O-1-K-A2 Shield Training."
+      },
+      {
+        "id": "V2-KNI-02",
+        "name": "Bannerman",
+        "cost": 7,
+        "prerequisites": "T1-K-GATE + R-KNI-E + V2-KNI-01",
+        "effect": "Every third Shield Bash grants all other living heroes +25% base basic attack rate for 5s; same named effect refreshes."
+      },
+      {
+        "id": "V2-ARC-01",
+        "name": "Crossfire",
+        "cost": 4,
+        "prerequisites": "T1-A-GATE + R-ARC-C",
+        "effect": "Arrow Volley deals +50% damage to enemies directly damaged by another hero within preceding 2s."
+      },
+      {
+        "id": "V2-ARC-02",
+        "name": "Endless Quiver",
+        "cost": 7,
+        "prerequisites": "T1-A-GATE + R-ARC-E + V2-ARC-01",
+        "effect": "Every fifth completed basic arrow attack launches second arrow along the same attack line at 75% normal damage; no additional targeting or attack count."
+      },
+      {
+        "id": "V2-MAG-01",
+        "name": "Crowd Conductor",
+        "cost": 4,
+        "prerequisites": "T1-MG-GATE + R-MAG-C",
+        "effect": "Fireball hits three or more distinct enemies grants 10 percentage points Chain Bolt charge, at most once per 2s."
+      },
+      {
+        "id": "V2-MAG-02",
+        "name": "Storm Furnace",
+        "cost": 7,
+        "prerequisites": "T1-MG-GATE + R-MAG-E + V2-MAG-01",
+        "effect": "Chain Bolt empowers next two Fireballs with +50% normal damage; refresh remaining count, no stacking."
+      },
+      {
+        "id": "V2-HUN-01",
+        "name": "Deep Wounds",
+        "cost": 6,
+        "prerequisites": "T2-H-GATE + R-HUN-C",
+        "effect": "Hunter bleed ignores 25% of existing enemy damage resistance (not 25 percentage points); no effect on unresisted damage."
+      },
+      {
+        "id": "V2-HUN-02",
+        "name": "Bloodstorm",
+        "cost": 9,
+        "prerequisites": "T2-H-GATE + R-HUN-E + V2-HUN-01 + O-2-H-A3",
+        "effect": "Enemy dies with three own Hunter bleed stacks: burst equal to their remaining damage; requires O-2-H-A3 Open Wounds; no new bleed or recursive bursts."
+      },
+      {
+        "id": "V2-BAR-01",
+        "name": "Crowd Breaker",
+        "cost": 6,
+        "prerequisites": "T2-B-GATE + R-BAR-C",
+        "effect": "Each extra enemy struck by own cleave adds 10% damage to next cleave, capped at +50%; consume once and calculate next bonus from new hit count."
+      },
+      {
+        "id": "V2-BAR-02",
+        "name": "Titan Slayer",
+        "cost": 9,
+        "prerequisites": "T2-B-GATE + R-BAR-E + V2-BAR-01",
+        "effect": "Every fifth completed basic attack during one Frenzy deals triple normal damage; count actual attacks, not individual targets."
+      },
+      {
+        "id": "V2-ROG-01",
+        "name": "Venomous Recovery",
+        "cost": 6,
+        "prerequisites": "T2-R-GATE + R-ROG-C + O-2-R-A2",
+        "effect": "Heal 10% actual poison damage dealt; requires O-2-R-A2 Poisoned Steel."
+      },
+      {
+        "id": "V2-ROG-02",
+        "name": "Afterimage",
+        "cost": 9,
+        "prerequisites": "T2-R-GATE + R-ROG-E + V2-ROG-01",
+        "effect": "When Smoke Bomb ends deal 25% of remaining own poison damage on each affected enemy without consuming stacks; no reapplication or recursive trigger."
+      },
+      {
+        "id": "V2-PAL-01",
+        "name": "Consecrated Flame",
+        "cost": 6,
+        "prerequisites": "T3-P-GATE + R-PAL-C",
+        "effect": "Every third Hammer Strike creates a ground patch lasting twice normal duration."
+      },
+      {
+        "id": "V2-PAL-02",
+        "name": "Sacred Retribution",
+        "cost": 9,
+        "prerequisites": "T3-P-GATE + R-PAL-E + V2-PAL-01",
+        "effect": "Every fifth own Aegis shield fully consumed by enemy damage grants 25 percentage points charge; at most once per 2s; no expiry trigger."
+      },
+      {
+        "id": "V2-NUN-01",
+        "name": "Shared Vitality",
+        "cost": 6,
+        "prerequisites": "T3-N-GATE + R-NUN-C",
+        "effect": "Every 20 actual HP healed by own Sanctuary empowers next full combination with double damage; remainder carries within battle, max one pending empowerment."
+      },
+      {
+        "id": "V2-NUN-02",
+        "name": "Sanctuary's Farewell",
+        "cost": 9,
+        "prerequisites": "T3-N-GATE + R-NUN-E + V2-NUN-01",
+        "effect": "Living heroes actually healed during Sanctuary Prayer gain 15%-max-HP shield at expiry, 4s proposed duration; no tower, summons or downed heroes."
+      },
+      {
+        "id": "V2-PRI-01",
+        "name": "Divine Sacrament",
+        "cost": 6,
+        "prerequisites": "T3-PR-GATE + R-PRI-C",
+        "effect": "Blessed heroes heal 5% max HP after every fifth personal qualifying kill while blessed; count per recipient, not per Priest."
+      },
+      {
+        "id": "V2-PRI-02",
+        "name": "Eternal Hymn",
+        "cost": 9,
+        "prerequisites": "T3-PR-GATE + R-PRI-E + V2-PRI-01",
+        "effect": "Every third Blessing activation lasts twice its normal duration; same named buff does not stack."
+      },
+      {
+        "id": "V2-SHA-01",
+        "name": "Mending Draught",
+        "cost": 8,
+        "prerequisites": "T4-S-GATE + R-SHA-C",
+        "effect": "Every fourth completed Vial Throw restores 20% max HP to each living owned totem."
+      },
+      {
+        "id": "V2-SHA-02",
+        "name": "Ancestral Remedy",
+        "cost": 12,
+        "prerequisites": "T4-S-GATE + R-SHA-E + V2-SHA-01",
+        "effect": "When an owned totem is destroyed by enemies, prime next Vial Throw for triple normal damage; one pending prime, no stack or trigger on natural expiry."
+      },
+      {
+        "id": "V2-DRU-01",
+        "name": "Nature's Balance",
+        "cost": 8,
+        "prerequisites": "T4-D-GATE + R-DRU-C",
+        "effect": "Entering Bear Form grants shield worth 25% max HP for 4s (duration proposed)."
+      },
+      {
+        "id": "V2-DRU-02",
+        "name": "Primal Awakening",
+        "cost": 12,
+        "prerequisites": "T4-D-GATE + R-DRU-E + V2-DRU-01",
+        "effect": "Every third Bear Form activation lasts twice normal duration."
+      },
+      {
+        "id": "V2-WAR-01",
+        "name": "Soul Tribute",
+        "cost": 8,
+        "prerequisites": "T4-W-GATE + R-WAR-C",
+        "effect": "Each own Doom Sigil explosion grants 5 percentage points Life Siphon charge, at most once per second."
+      },
+      {
+        "id": "V2-WAR-02",
+        "name": "Final Offering",
+        "cost": 12,
+        "prerequisites": "T4-W-GATE + R-WAR-E + V2-WAR-01",
+        "effect": "Direct Life Siphon final blow on own Doom-marked enemy causes its single sigil explosion to deal triple damage; no extra burst."
+      },
+      {
+        "id": "V2-BEA-01",
+        "name": "Ferocious Pack",
+        "cost": 8,
+        "prerequisites": "T5-BM-GATE + R-BEA-C",
+        "effect": "Own hounds have 25% crit chance, double basic damage."
+      },
+      {
+        "id": "V2-BEA-02",
+        "name": "Bloodline",
+        "cost": 12,
+        "prerequisites": "T5-BM-GATE + R-BEA-E + V2-BEA-01",
+        "effect": "Own hounds inherit 50% of owner's additive permanent basic-damage bonus, capped at +50% of hound base damage; exclude skin bonus and recursive modifiers."
+      },
+      {
+        "id": "V2-NEC-01",
+        "name": "Grave Strength",
+        "cost": 8,
+        "prerequisites": "T5-NE-GATE + R-NEC-C",
+        "effect": "Own undead deal +50% damage while Necromancer's beam is at maximum intensity."
+      },
+      {
+        "id": "V2-NEC-02",
+        "name": "Grave Vengeance",
+        "cost": 12,
+        "prerequisites": "T5-NE-GATE + R-NEC-E + V2-NEC-01",
+        "effect": "Each own undead destroyed by enemies adds +5 percentage points baseline beam DPS for rest of combat, cap +100%; no expiry trigger."
+      },
+      {
+        "id": "V2-DRA-01",
+        "name": "Molten Heart",
+        "cost": 8,
+        "prerequisites": "T5-DR-GATE + R-DRA-C",
+        "effect": "Own burn damage grants Dragon Breath charge, capped at 10 percentage points per 2s; proposed 5 points per eligible damage event until cap; excludes other heroes' burn."
+      },
+      {
+        "id": "V2-DRA-02",
+        "name": "Ancient Dragonfire",
+        "cost": 12,
+        "prerequisites": "T5-DR-GATE + R-DRA-E + V2-DRA-01",
+        "effect": "Every third Dragon Breath deals triple normal damage."
+      }
+    ],
+    "legacyNodes": [
+      {
+        "id": "R-G01",
+        "name": "Veteran Blood",
+        "cost": 1,
+        "prerequisites": "ROOT",
+        "effect": "Stat | +25% base HP for all hero classes."
+      },
+      {
+        "id": "R-G02",
+        "name": "Forged Arms",
+        "cost": 2,
+        "prerequisites": "R-G01",
+        "effect": "Stat | +25% base basic damage for all hero classes."
+      },
+      {
+        "id": "R-G03",
+        "name": "Battle Rhythm",
+        "cost": 2,
+        "prerequisites": "R-G02",
+        "effect": "Stat | +25% basic attack rate for all hero classes."
+      },
+      {
+        "id": "R-G04",
+        "name": "Long March",
+        "cost": 3,
+        "prerequisites": "R-G03",
+        "effect": "Stat | +25% base movement speed for all hero classes; guard radius unchanged."
+      },
+      {
+        "id": "R-G05",
+        "name": "Opening Orders",
+        "cost": 3,
+        "prerequisites": "R-G04",
+        "effect": "Mechanic | All timed-special heroes start deployed with an additional 15 percentage points of charge (cap 100%). Necromancer remains on-kill. No reset of charge on rescue."
+      },
+      {
+        "id": "R-G06",
+        "name": "United Banner",
+        "cost": 4,
+        "prerequisites": "R-G05",
+        "effect": "Mechanic | When at least three distinct living deployable hero classes are present, all living deployable heroes gain +15% base basic damage while condition holds. No summons count; evaluate once, not per hero."
+      },
+      {
+        "id": "R-G07",
+        "name": "Hardened Company",
+        "cost": 4,
+        "prerequisites": "R-G06",
+        "effect": "Stat | +25% additional base HP for all hero classes."
+      },
+      {
+        "id": "R-G08",
+        "name": "Boss Readiness",
+        "cost": 5,
+        "prerequisites": "R-G07",
+        "effect": "Mechanic | At the start of the first boss phase in each attempt, grant every living deployable hero a 15%-max-HP shield for 5s. Once per attempt, no activation for each Legion boss."
+      },
+      {
+        "id": "R-G09",
+        "name": "Seasoned Army",
+        "cost": 6,
+        "prerequisites": "R-G08",
+        "effect": "Stat | +25% additional base basic damage for all hero classes."
+      },
+      {
+        "id": "R-G10",
+        "name": "Lasting Fellowship",
+        "cost": 12,
+        "prerequisites": "R-G09",
+        "effect": "Mechanic | The first time a deployable hero of a particular class is fully removed after capture, surviving OTHER classes gain 5 percentage points of base basic attack rate for the round; maximum +25% total, once per distinct removed class, never on a temporary down or summon expiry."
+      },
+      {
+        "id": "R-KNI-A",
+        "name": "Plate Oath",
+        "cost": 1,
+        "prerequisites": "R-G01",
+        "effect": "Stat | +25% Knight base HP."
+      },
+      {
+        "id": "R-KNI-B",
+        "name": "Iron Resolve",
+        "cost": 2,
+        "prerequisites": "R-KNI-A",
+        "effect": "Permanent mechanic | Every fifth damaging hit received by Knight deals 50% less damage; count actual positive incoming hits per living unit, reset after triggering."
+      },
+      {
+        "id": "R-KNI-C",
+        "name": "Shield Reprieve",
+        "cost": 2,
+        "prerequisites": "R-KNI-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-KNI-01; buy for 4 UP each run. Requires T1-K-GATE + R-KNI-C + O-1-K-A2. Blocking heals 5% max HP, at most once per 2s; requires O-1-K-A2 Shield Training. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-KNI-D",
+        "name": "Shielded Veteran",
+        "cost": 5,
+        "prerequisites": "R-KNI-B",
+        "effect": "Permanent mechanic | Each Shield Bash grants Knight a shield worth 15% max HP for 4s; once per cast, refresh rather than stack."
+      },
+      {
+        "id": "R-KNI-E",
+        "name": "Bannerman",
+        "cost": 6,
+        "prerequisites": "R-KNI-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-KNI-02; buy for 7 UP each run. Requires T1-K-GATE + R-KNI-E + V2-KNI-01. Every third Shield Bash grants all other living heroes +25% base basic attack rate for 5s; same named effect refreshes. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-ARC-A",
+        "name": "Hawkeye",
+        "cost": 1,
+        "prerequisites": "R-G01",
+        "effect": "Stat | +25% Archer base basic damage."
+      },
+      {
+        "id": "R-ARC-B",
+        "name": "Sharpened Quiver",
+        "cost": 2,
+        "prerequisites": "R-ARC-A",
+        "effect": "Permanent mechanic | Every fourth completed normal arrow attack deals +50% normal damage, regardless of whom it hits; counter per unit, no extra arrow."
+      },
+      {
+        "id": "R-ARC-C",
+        "name": "Crossfire",
+        "cost": 3,
+        "prerequisites": "R-ARC-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-ARC-01; buy for 4 UP each run. Requires T1-A-GATE + R-ARC-C. Arrow Volley deals +50% damage to enemies directly damaged by another hero within preceding 2s. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-ARC-D",
+        "name": "Splintered Shafts",
+        "cost": 5,
+        "prerequisites": "R-ARC-B",
+        "effect": "Permanent mechanic | Every fifth completed Straight Arrow attack applies a bleed totalling 25% of normal basic damage over 2s on hit; no new projectile or target change."
+      },
+      {
+        "id": "R-ARC-E",
+        "name": "Endless Quiver",
+        "cost": 6,
+        "prerequisites": "R-ARC-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-ARC-02; buy for 7 UP each run. Requires T1-A-GATE + R-ARC-E + V2-ARC-01. Every fifth completed basic arrow attack launches second arrow along the same attack line at 75% normal damage; no additional targeting or attack count. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-MAG-A",
+        "name": "Emberheart",
+        "cost": 1,
+        "prerequisites": "R-G01",
+        "effect": "Stat | +25% Mage base basic damage."
+      },
+      {
+        "id": "R-MAG-B",
+        "name": "Opening Flare",
+        "cost": 2,
+        "prerequisites": "R-MAG-A",
+        "effect": "Permanent mechanic | First Fireball each attempt has +50% normal splash damage to secondary targets only; never repeats on rescue."
+      },
+      {
+        "id": "R-MAG-C",
+        "name": "Crowd Conductor",
+        "cost": 3,
+        "prerequisites": "R-MAG-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-MAG-01; buy for 4 UP each run. Requires T1-MG-GATE + R-MAG-C. Fireball hits three or more distinct enemies grants 10 percentage points Chain Bolt charge, at most once per 2s. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-MAG-D",
+        "name": "Kindled Charge",
+        "cost": 5,
+        "prerequisites": "R-MAG-B",
+        "effect": "Permanent mechanic | A Fireball primary-target final blow grants 10 percentage points of Chain Bolt charge, at most once per 2s."
+      },
+      {
+        "id": "R-MAG-E",
+        "name": "Storm Furnace",
+        "cost": 7,
+        "prerequisites": "R-MAG-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-MAG-02; buy for 7 UP each run. Requires T1-MG-GATE + R-MAG-E + V2-MAG-01. Chain Bolt empowers next two Fireballs with +50% normal damage; refresh remaining count, no stacking. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-HUN-A",
+        "name": "Trailcraft",
+        "cost": 2,
+        "prerequisites": "R-G03",
+        "effect": "Stat | +25% Hunter base damage."
+      },
+      {
+        "id": "R-HUN-B",
+        "name": "Big Game",
+        "cost": 3,
+        "prerequisites": "R-HUN-A",
+        "effect": "Permanent mechanic | Hunter's own Serrated Arrow bleed ticks deal +25% normal bleed damage to bosses and faction bosses."
+      },
+      {
+        "id": "R-HUN-C",
+        "name": "Deep Wounds",
+        "cost": 3,
+        "prerequisites": "R-HUN-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-HUN-01; buy for 6 UP each run. Requires T2-H-GATE + R-HUN-C. Hunter bleed ignores 25% of existing enemy damage resistance (not 25 percentage points); no effect on unresisted damage. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-HUN-D",
+        "name": "Trap Bounty",
+        "cost": 6,
+        "prerequisites": "R-HUN-B",
+        "effect": "Permanent mechanic | When a target affected by Hunter's own Tripwire and bleed dies, add 15 percentage points to that Hunter's next trap charge, once per 2s, not extra kill credit."
+      },
+      {
+        "id": "R-HUN-E",
+        "name": "Bloodstorm",
+        "cost": 7,
+        "prerequisites": "R-HUN-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-HUN-02; buy for 9 UP each run. Requires T2-H-GATE + R-HUN-E + V2-HUN-01 + O-2-H-A3. Enemy dies with three own Hunter bleed stacks: burst equal to their remaining damage; requires O-2-H-A3 Open Wounds; no new bleed or recursive bursts. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-BAR-A",
+        "name": "Iron Hide",
+        "cost": 2,
+        "prerequisites": "R-G03",
+        "effect": "Stat | +25% Barbarian base HP."
+      },
+      {
+        "id": "R-BAR-B",
+        "name": "Bloodied Axe",
+        "cost": 3,
+        "prerequisites": "R-BAR-A",
+        "effect": "Permanent mechanic | A Wide Cleave that kills at least one enemy heals Barbarian by 5% max HP once per swing, not once per enemy."
+      },
+      {
+        "id": "R-BAR-C",
+        "name": "Crowd Breaker",
+        "cost": 3,
+        "prerequisites": "R-BAR-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-BAR-01; buy for 6 UP each run. Requires T2-B-GATE + R-BAR-C. Each extra enemy struck by own cleave adds 10% damage to next cleave, capped at +50%; consume once and calculate next bonus from new hit count. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-BAR-D",
+        "name": "Rage's Reward",
+        "cost": 6,
+        "prerequisites": "R-BAR-B",
+        "effect": "Permanent mechanic | If at least three enemies die to Barbarian during a Battle Frenzy activation, grant a 20%-max-HP shield for 4s when that activation ends alive; once per activation."
+      },
+      {
+        "id": "R-BAR-E",
+        "name": "Titan Slayer",
+        "cost": 8,
+        "prerequisites": "R-BAR-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-BAR-02; buy for 9 UP each run. Requires T2-B-GATE + R-BAR-E + V2-BAR-01. Every fifth completed basic attack during one Frenzy deals triple normal damage; count actual attacks, not individual targets. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-ROG-A",
+        "name": "Quicksteel",
+        "cost": 2,
+        "prerequisites": "R-G03",
+        "effect": "Stat | +25% Rogue base basic attack rate."
+      },
+      {
+        "id": "R-ROG-B",
+        "name": "Razor Rhythm",
+        "cost": 3,
+        "prerequisites": "R-ROG-A",
+        "effect": "Permanent mechanic | Every fifth completed normal dagger strike deals +50% normal damage; count across all attacks, no extra attack."
+      },
+      {
+        "id": "R-ROG-C",
+        "name": "Venomous Recovery",
+        "cost": 3,
+        "prerequisites": "R-ROG-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-ROG-01; buy for 6 UP each run. Requires T2-R-GATE + R-ROG-C + O-2-R-A2. Heal 10% actual poison damage dealt; requires O-2-R-A2 Poisoned Steel. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-ROG-D",
+        "name": "Ghost's Prize",
+        "cost": 6,
+        "prerequisites": "R-ROG-B",
+        "effect": "Permanent mechanic | During one Smoke Bomb activation, first direct dagger hit on each new enemy restores 5% Rogue max HP, maximum two heals per activation."
+      },
+      {
+        "id": "R-ROG-E",
+        "name": "Afterimage",
+        "cost": 8,
+        "prerequisites": "R-ROG-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-ROG-02; buy for 9 UP each run. Requires T2-R-GATE + R-ROG-E + V2-ROG-01. When Smoke Bomb ends deal 25% of remaining own poison damage on each affected enemy without consuming stacks; no reapplication or recursive trigger. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-PAL-A",
+        "name": "Consecrated Plate",
+        "cost": 2,
+        "prerequisites": "R-G05",
+        "effect": "Stat | +25% Paladin base HP."
+      },
+      {
+        "id": "R-PAL-B",
+        "name": "Merciful Aegis",
+        "cost": 3,
+        "prerequisites": "R-PAL-A",
+        "effect": "Permanent mechanic | Divine Aegis grants +25% base shield amount to each eligible recipient already below half HP at cast time."
+      },
+      {
+        "id": "R-PAL-C",
+        "name": "Consecrated Flame",
+        "cost": 4,
+        "prerequisites": "R-PAL-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-PAL-01; buy for 6 UP each run. Requires T3-P-GATE + R-PAL-C. Every third Hammer Strike creates a ground patch lasting twice normal duration. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-PAL-D",
+        "name": "Faith Returned",
+        "cost": 7,
+        "prerequisites": "R-PAL-B",
+        "effect": "Permanent mechanic | When an ally's shield from this Paladin is fully consumed by damage, add 10 percentage points to that Paladin's charge; maximum 20 per cast, not expiry or transfer."
+      },
+      {
+        "id": "R-PAL-E",
+        "name": "Sacred Retribution",
+        "cost": 8,
+        "prerequisites": "R-PAL-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-PAL-02; buy for 9 UP each run. Requires T3-P-GATE + R-PAL-E + V2-PAL-01. Every fifth own Aegis shield fully consumed by enemy damage grants 25 percentage points charge; at most once per 2s; no expiry trigger. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-NUN-A",
+        "name": "Discipline of Life",
+        "cost": 2,
+        "prerequisites": "R-G05",
+        "effect": "Stat | +25% Nun base HP."
+      },
+      {
+        "id": "R-NUN-B",
+        "name": "Shared Prayer",
+        "cost": 3,
+        "prerequisites": "R-NUN-A",
+        "effect": "Permanent mechanic | Nun heals herself for 20% of actual Sanctuary Prayer healing delivered to other deployable heroes, capped at 10% of her own max HP per cast; no recursive healing."
+      },
+      {
+        "id": "R-NUN-C",
+        "name": "Shared Vitality",
+        "cost": 4,
+        "prerequisites": "R-NUN-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-NUN-01; buy for 6 UP each run. Requires T3-N-GATE + R-NUN-C. Every 20 actual HP healed by own Sanctuary empowers next full combination with double damage; remainder carries within battle, max one pending empowerment. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-NUN-D",
+        "name": "Gentle Palm",
+        "cost": 6,
+        "prerequisites": "R-NUN-B",
+        "effect": "Permanent mechanic | Every completed Monastic Combination heals Nun for 5% max HP if she is injured; once per combo."
+      },
+      {
+        "id": "R-NUN-E",
+        "name": "Sanctuary's Farewell",
+        "cost": 8,
+        "prerequisites": "R-NUN-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-NUN-02; buy for 9 UP each run. Requires T3-N-GATE + R-NUN-E + V2-NUN-01. Living heroes actually healed during Sanctuary Prayer gain 15%-max-HP shield at expiry, 4s proposed duration; no tower, summons or downed heroes. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-PRI-A",
+        "name": "Luminous Resolve",
+        "cost": 2,
+        "prerequisites": "R-G05",
+        "effect": "Stat | +25% Priest base HP."
+      },
+      {
+        "id": "R-PRI-B",
+        "name": "Answered Prayer",
+        "cost": 3,
+        "prerequisites": "R-PRI-A",
+        "effect": "Permanent mechanic | Whenever any other deployable hero defeats a qualifying scheduled-wave enemy while Priest is alive, add 3 percentage points to Priest's charge, at most once per 2s; true kill owner unchanged."
+      },
+      {
+        "id": "R-PRI-C",
+        "name": "Divine Sacrament",
+        "cost": 4,
+        "prerequisites": "R-PRI-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-PRI-01; buy for 6 UP each run. Requires T3-PR-GATE + R-PRI-C. Blessed heroes heal 5% max HP after every fifth personal qualifying kill while blessed; count per recipient, not per Priest. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-PRI-D",
+        "name": "Courage Against Giants",
+        "cost": 7,
+        "prerequisites": "R-PRI-B",
+        "effect": "Permanent mechanic | Heroes under Priest's Blessing of Courage deal +15% normal basic damage to bosses, unique effect across multiple Priests."
+      },
+      {
+        "id": "R-PRI-E",
+        "name": "Eternal Hymn",
+        "cost": 9,
+        "prerequisites": "R-PRI-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-PRI-02; buy for 9 UP each run. Requires T3-PR-GATE + R-PRI-E + V2-PRI-01. Every third Blessing activation lasts twice its normal duration; same named buff does not stack. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-SHA-A",
+        "name": "Spiritual Resilience",
+        "cost": 3,
+        "prerequisites": "R-G07",
+        "effect": "Stat | +25% Shaman base HP."
+      },
+      {
+        "id": "R-SHA-B",
+        "name": "Potent Venom",
+        "cost": 4,
+        "prerequisites": "R-SHA-A",
+        "effect": "Permanent mechanic | Every third Vial Throw gains +50% normal damage; count completed casts, no extra throw."
+      },
+      {
+        "id": "R-SHA-C",
+        "name": "Mending Draught",
+        "cost": 4,
+        "prerequisites": "R-SHA-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-SHA-01; buy for 8 UP each run. Requires T4-S-GATE + R-SHA-C. Every fourth completed Vial Throw restores 20% max HP to each living owned totem. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-SHA-D",
+        "name": "Spirit Returned",
+        "cost": 7,
+        "prerequisites": "R-SHA-B",
+        "effect": "Permanent mechanic | If a Spirit Totem naturally expires alive, restore 10% of its owner's max HP if the Shaman is alive; once per totem, not destruction."
+      },
+      {
+        "id": "R-SHA-E",
+        "name": "Ancestral Remedy",
+        "cost": 9,
+        "prerequisites": "R-SHA-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-SHA-02; buy for 12 UP each run. Requires T4-S-GATE + R-SHA-E + V2-SHA-01. When an owned totem is destroyed by enemies, prime next Vial Throw for triple normal damage; one pending prime, no stack or trigger on natural expiry. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-DRU-A",
+        "name": "Ancient Bark",
+        "cost": 3,
+        "prerequisites": "R-G07",
+        "effect": "Stat | +25% Druid base HP."
+      },
+      {
+        "id": "R-DRU-B",
+        "name": "Bearhide",
+        "cost": 4,
+        "prerequisites": "R-DRU-A",
+        "effect": "Permanent mechanic | Entering Bear Form grants a shield worth 15% Druid max HP for 4s; does not extend form or revive."
+      },
+      {
+        "id": "R-DRU-C",
+        "name": "Nature's Balance",
+        "cost": 4,
+        "prerequisites": "R-DRU-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-DRU-01; buy for 8 UP each run. Requires T4-D-GATE + R-DRU-C. Entering Bear Form grants shield worth 25% max HP for 4s (duration proposed). Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-DRU-D",
+        "name": "Wild Renewal",
+        "cost": 7,
+        "prerequisites": "R-DRU-B",
+        "effect": "Permanent mechanic | Exiting Bear Form alive restores 10% Druid max HP once per transformation."
+      },
+      {
+        "id": "R-DRU-E",
+        "name": "Primal Awakening",
+        "cost": 9,
+        "prerequisites": "R-DRU-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-DRU-02; buy for 12 UP each run. Requires T4-D-GATE + R-DRU-E + V2-DRU-01. Every third Bear Form activation lasts twice normal duration. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-WAR-A",
+        "name": "Forbidden Power",
+        "cost": 3,
+        "prerequisites": "R-G07",
+        "effect": "Stat | +25% Warlock base basic damage."
+      },
+      {
+        "id": "R-WAR-B",
+        "name": "Marked Hunger",
+        "cost": 4,
+        "prerequisites": "R-WAR-A",
+        "effect": "Permanent mechanic | Life Siphon restores +25% normal healing when its target carries own Doom Sigil. Does not add targets."
+      },
+      {
+        "id": "R-WAR-C",
+        "name": "Soul Tribute",
+        "cost": 4,
+        "prerequisites": "R-WAR-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-WAR-01; buy for 8 UP each run. Requires T4-W-GATE + R-WAR-C. Each own Doom Sigil explosion grants 5 percentage points Life Siphon charge, at most once per second. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-WAR-D",
+        "name": "Soul Tribute",
+        "cost": 7,
+        "prerequisites": "R-WAR-B",
+        "effect": "Permanent mechanic | When own marked enemy dies while Warlock is alive below 50% HP, restore 3% max HP; at most once per 1s, no revive."
+      },
+      {
+        "id": "R-WAR-E",
+        "name": "Final Offering",
+        "cost": 9,
+        "prerequisites": "R-WAR-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-WAR-02; buy for 12 UP each run. Requires T4-W-GATE + R-WAR-E + V2-WAR-01. Direct Life Siphon final blow on own Doom-marked enemy causes its single sigil explosion to deal triple damage; no extra burst. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-BEA-A",
+        "name": "Handler's Strength",
+        "cost": 3,
+        "prerequisites": "R-G09",
+        "effect": "Stat | +25% Beastmaster base basic damage."
+      },
+      {
+        "id": "R-BEA-B",
+        "name": "First Fang",
+        "cost": 4,
+        "prerequisites": "R-BEA-A",
+        "effect": "Permanent mechanic | Each legitimately summoned hound's first valid basic hit deals +50% normal damage; no attack duplication."
+      },
+      {
+        "id": "R-BEA-C",
+        "name": "Ferocious Pack",
+        "cost": 5,
+        "prerequisites": "R-BEA-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-BEA-01; buy for 8 UP each run. Requires T5-BM-GATE + R-BEA-C. Own hounds have 25% crit chance, double basic damage. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-BEA-D",
+        "name": "Hunter's Reward",
+        "cost": 8,
+        "prerequisites": "R-BEA-B",
+        "effect": "Permanent mechanic | Whenever own hound defeats a qualifying enemy, heal Beastmaster 5% max HP, at most once per 2s; preserve owner kill credit."
+      },
+      {
+        "id": "R-BEA-E",
+        "name": "Bloodline",
+        "cost": 10,
+        "prerequisites": "R-BEA-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-BEA-02; buy for 12 UP each run. Requires T5-BM-GATE + R-BEA-E + V2-BEA-01. Own hounds inherit 50% of owner's additive permanent basic-damage bonus, capped at +50% of hound base damage; exclude skin bonus and recursive modifiers. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-NEC-A",
+        "name": "Grave Power",
+        "cost": 3,
+        "prerequisites": "R-G09",
+        "effect": "Stat | +25% Necromancer base basic damage."
+      },
+      {
+        "id": "R-NEC-B",
+        "name": "Patient Harvest",
+        "cost": 4,
+        "prerequisites": "R-NEC-A",
+        "effect": "Permanent mechanic | While the sustained beam deals damage to an elite or boss, its normal ramped DPS gains +25%; no new targeting rule or discrete shot."
+      },
+      {
+        "id": "R-NEC-C",
+        "name": "Grave Strength",
+        "cost": 5,
+        "prerequisites": "R-NEC-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-NEC-01; buy for 8 UP each run. Requires T5-NE-GATE + R-NEC-C. Own undead deal +50% damage while Necromancer's beam is at maximum intensity. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-NEC-D",
+        "name": "Quiet Passing",
+        "cost": 8,
+        "prerequisites": "R-NEC-B",
+        "effect": "Permanent mechanic | Own raised undead that expire naturally while Necromancer is alive restore 3% Necromancer max HP, at most once per 1s; no new summon or kill credit."
+      },
+      {
+        "id": "R-NEC-E",
+        "name": "Grave Vengeance",
+        "cost": 10,
+        "prerequisites": "R-NEC-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-NEC-02; buy for 12 UP each run. Requires T5-NE-GATE + R-NEC-E + V2-NEC-01. Each own undead destroyed by enemies adds +5 percentage points baseline beam DPS for rest of combat, cap +100%; no expiry trigger. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-DRA-A",
+        "name": "Ancient Scales",
+        "cost": 3,
+        "prerequisites": "R-G09",
+        "effect": "Stat | +25% Dragonkin base HP."
+      },
+      {
+        "id": "R-DRA-B",
+        "name": "Crushing Impact",
+        "cost": 4,
+        "prerequisites": "R-DRA-A",
+        "effect": "Permanent mechanic | Every third completed Lunge deals +50% normal basic damage, regardless of whom it hits; no change to Lunge movement or knockback."
+      },
+      {
+        "id": "R-DRA-C",
+        "name": "Molten Heart",
+        "cost": 5,
+        "prerequisites": "R-DRA-A",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-DRA-01; buy for 8 UP each run. Requires T5-DR-GATE + R-DRA-C. Own burn damage grants Dragon Breath charge, capped at 10 percentage points per 2s; proposed 5 points per eligible damage event until cap; excludes other heroes' burn. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-DRA-D",
+        "name": "Giantscale",
+        "cost": 8,
+        "prerequisites": "R-DRA-B",
+        "effect": "Permanent mechanic | A Lunge hitting an elite or boss grants 10%-max-HP shield for 3s, at most once per 5s."
+      },
+      {
+        "id": "R-DRA-E",
+        "name": "Ancient Dragonfire",
+        "cost": 10,
+        "prerequisites": "R-DRA-C",
+        "effect": "Ordinary unlock | Permanently reveals ordinary veteran node V2-DRA-02; buy for 12 UP each run. Requires T5-DR-GATE + R-DRA-E + V2-DRA-01. Every third Dragon Breath deals triple normal damage. Section 9.14 is the canonical ordinary effect."
+      },
+      {
+        "id": "R-M01",
+        "name": "Extra Counter",
+        "cost": 1,
+        "prerequisites": "ROOT",
+        "effect": "Capacity | +1 initial shop slot."
+      },
+      {
+        "id": "R-M02",
+        "name": "Second Look",
+        "cost": 2,
+        "prerequisites": "R-M01",
+        "effect": "Control | One free reroll per preparation, only unsold unreserved slots."
+      },
+      {
+        "id": "R-M03",
+        "name": "Hold That Offer",
+        "cost": 2,
+        "prerequisites": "R-M02",
+        "effect": "Control | Reserve one unsold offer against rerolls this preparation; release or buy it normally. Does not carry across attempts."
+      },
+      {
+        "id": "R-M04",
+        "name": "Haggler",
+        "cost": 4,
+        "prerequisites": "R-M03",
+        "effect": "Discount | Each completed reroll gives eligible newly rolled ordinary standard packs a +15 percentage-point chance of a 1-coin discount, capped at 45% this preparation; reset next attempt."
+      },
+      {
+        "id": "R-M05",
+        "name": "Fresh Delivery",
+        "cost": 5,
+        "prerequisites": "R-M04",
+        "effect": "Control | +1 free reroll per preparation, separate finite charge."
+      },
+      {
+        "id": "R-M06",
+        "name": "Paid Search",
+        "cost": 3,
+        "prerequisites": "R-M02",
+        "effect": "Control | After free charges are used, allow up to two paid rerolls per preparation at 1 coin each; no free stock restoration."
+      },
+      {
+        "id": "R-M07",
+        "name": "First Purchase",
+        "cost": 3,
+        "prerequisites": "R-M01",
+        "effect": "Discount | First purchased ordinary standard pack each preparation costs 1 coin less, floor 1. Nonstacking with other offer discounts."
+      },
+      {
+        "id": "R-M08",
+        "name": "Marked Down",
+        "cost": 4,
+        "prerequisites": "R-M07",
+        "effect": "Discount | Eligible advanced products have a 20% chance of a 1-coin discount on creation; floor 1, not stackable with other discounts."
+      },
+      {
+        "id": "R-M09",
+        "name": "Bulk Bargain",
+        "cost": 5,
+        "prerequisites": "R-M08",
+        "effect": "Discount | One eligible booster box, Golden or mixed bundle per preparation may receive a guaranteed 1-coin discount on first eligible appearance; no stacking with other discounts."
+      },
+      {
+        "id": "R-M10",
+        "name": "Hirelings",
+        "cost": 2,
+        "prerequisites": "R-M01",
+        "effect": "Product | Enable guaranteed individual hero offers from currently eligible pack pools; retain approved relative class prices; Uncommon/Legendary values unresolved."
+      },
+      {
+        "id": "R-M11",
+        "name": "Contract Board",
+        "cost": 3,
+        "prerequisites": "R-M10",
+        "effect": "Control | Reserve one initial unsold slot for an eligible individual hero offer when possible; affordable opening guarantee takes priority."
+      },
+      {
+        "id": "R-M12",
+        "name": "Double Contract",
+        "cost": 5,
+        "prerequisites": "R-M10",
+        "effect": "Product | Unlock a product containing two guaranteed copies of the offered hero; provisional price max(2,2× individual price−1), each copy rolls its skin independently."
+      },
+      {
+        "id": "R-M13",
+        "name": "Triple Contract",
+        "cost": 8,
+        "prerequisites": "R-M12",
+        "effect": "Product | Unlock a product containing three guaranteed copies of the offered hero; provisional price max(3,3× individual price−1), independent skins."
+      },
+      {
+        "id": "R-M14",
+        "name": "Crate Dealer",
+        "cost": 3,
+        "prerequisites": "R-M10",
+        "effect": "Product | Enable booster-box offers, provisionally three normal packs of one eligible tier at 3× its standard pack price−1 (minimum 3 after discounts); normal independent hero and skin rolls."
+      },
+      {
+        "id": "R-M15",
+        "name": "Gilded Seal",
+        "cost": 6,
+        "prerequisites": "R-M14",
+        "effect": "Product | Enable Golden/Shiny full-roster offer: all three distinct eligible heroes from one pack; selected price 3× standard pack price, minimum 3; each skin rolls independently."
+      },
+      {
+        "id": "R-M16",
+        "name": "Crossroads Trade",
+        "cost": 8,
+        "prerequisites": "R-M15",
+        "effect": "Product | Enable mixed product containing two standard packs of two different currently accessible tiers; proposed price sum of their ordinary pack prices−1, minimum 2."
+      },
+      {
+        "id": "R-M17",
+        "name": "Hidden Compartment",
+        "cost": 10,
+        "prerequisites": "R-M14",
+        "effect": "Bonus pack | Once per preparation, first purchased eligible non-Recruit standard pack has a 25% chance to include one bonus ordinary Recruit pack. Bonus does not consume stock or recursively grant another; original pack still draws exactly one hero."
+      },
+      {
+        "id": "R-M18",
+        "name": "Larger Stall",
+        "cost": 5,
+        "prerequisites": "R-M01",
+        "effect": "Capacity | +1 additional initial shop slot."
+      },
+      {
+        "id": "R-M19",
+        "name": "Curated Shelf",
+        "cost": 4,
+        "prerequisites": "R-M18",
+        "effect": "Control | Guarantee an additional initial advanced product slot, prioritising unlocked multi-hero products (double, triple, booster box, Golden or mixed); otherwise an eligible individual offer. Recruit, newest and commission/contract anchors retain priority. No additional slots."
+      },
+      {
+        "id": "R-M20",
+        "name": "Personal Commission",
+        "cost": 12,
+        "prerequisites": "R-M11",
+        "effect": "Control | Before initial stock generation choose one eligible discovered hero class as commission target; one initial individual offer guarantees that class if possible, using the existing individual price. No guaranteed skin or free hero; affordable guarantee takes priority and only one commission per preparation."
+      },
+      {
+        "id": "R-E01",
+        "name": "Small Treasury",
+        "cost": 1,
+        "prerequisites": "ROOT",
+        "effect": "Economy | +2 permanent maximum attempt coins."
+      },
+      {
+        "id": "R-E02",
+        "name": "Field Study",
+        "cost": 2,
+        "prerequisites": "R-E01",
+        "effect": "Economy | +25 percentage points ordinary base UP income from qualifying scheduled kills, elite bonus and boss rewards; track fractional carry."
+      },
+      {
+        "id": "R-E03",
+        "name": "Prepared Notes",
+        "cost": 2,
+        "prerequisites": "R-E02",
+        "effect": "Economy | Begin each new voluntary prestige run with 2 ordinary UP, once after reset; not every attempt."
+      },
+      {
+        "id": "R-E04",
+        "name": "Deep Treasury",
+        "cost": 3,
+        "prerequisites": "R-E01",
+        "effect": "Economy | +2 additional permanent maximum attempt coins."
+      },
+      {
+        "id": "R-E05",
+        "name": "Battle Scholar",
+        "cost": 4,
+        "prerequisites": "R-E02",
+        "effect": "Economy | +25 percentage points additional ordinary base UP income; additive with Field Study."
+      },
+      {
+        "id": "R-E06",
+        "name": "Victory Journal",
+        "cost": 4,
+        "prerequisites": "R-E03",
+        "effect": "Economy | +1 ordinary UP on first clear of each main stage in current prestige run; once per stage."
+      },
+      {
+        "id": "R-E07",
+        "name": "Class Scholarship",
+        "cost": 4,
+        "prerequisites": "R-E03",
+        "effect": "Economy | +1 ordinary UP on each newly completed class kill gate in current run; normal +2 coin-cap reward unchanged."
+      },
+      {
+        "id": "R-E08",
+        "name": "Strategic Reserve",
+        "cost": 7,
+        "prerequisites": "R-E05",
+        "effect": "Economy | Before Enter Battle snapshot unspent ordinary UP after purchases. On outcome with at least six qualifying scheduled kills, award 10% of snapshot rounded down, maximum 2 UP; once per attempt, no interest on same-attempt earnings or Shards."
+      },
+      {
+        "id": "R-E09",
+        "name": "Royal Treasury",
+        "cost": 7,
+        "prerequisites": "R-E04",
+        "effect": "Economy | +2 additional permanent maximum attempt coins."
+      },
+      {
+        "id": "R-E10",
+        "name": "Legion Ledger",
+        "cost": 8,
+        "prerequisites": "R-E06",
+        "effect": "Economy | +1 ordinary UP per legitimate faction boss defeated, in addition to its separately configured reward; no Shard multiplier or class credit."
+      },
+      {
+        "id": "R-E11",
+        "name": "Frugal Victory",
+        "cost": 10,
+        "prerequisites": "R-E09",
+        "effect": "Economy | On main-stage victory, award 1 ordinary UP per two unused preparation coins, maximum 2 UP. Snapshot remaining coins at combat start; no coin carry, no reward on failure."
+      },
+      {
+        "id": "R-T01",
+        "name": "Foundation",
+        "cost": 2,
+        "prerequisites": "R-G01",
+        "effect": "Stat | +25% tower base maximum HP."
+      },
+      {
+        "id": "R-T02",
+        "name": "Steel Bolt",
+        "cost": 3,
+        "prerequisites": "R-T01",
+        "effect": "Stat | +25% tower base projectile damage."
+      },
+      {
+        "id": "R-T03",
+        "name": "Quick Mechanism",
+        "cost": 5,
+        "prerequisites": "R-T02",
+        "effect": "Stat | +25% tower base firing rate, not cooldown subtraction."
+      },
+      {
+        "id": "R-T04",
+        "name": "Citadel",
+        "cost": 8,
+        "prerequisites": "R-T03",
+        "effect": "Stat | +50% additional tower base maximum HP."
+      }
+    ],
+    "heroRules": [
+      "COMBAT-HERO-KNIGHT | Basic: Sword Strike unchanged single hit. Special: Shield Bash: 10s charge, 1.25 radius, stun 1.5s, no base damage (Crushing Bash adds damage). Stun refreshes; boss stun cap 0.5s per cast.",
+      "COMBAT-HERO-ARCHER | Basic: Straight Arrow single hit. Arrow Volley: 10s charge, radius 1.35 around target, up to 3 distinct enemies, 3.2 base damage each. Crit only when unlocked.",
+      "COMBAT-HERO-MAGE | Basic: Fireball primary full damage, other enemies within radius 1.05 receive 60% basic damage, max 4 secondary hits. Special: Chain Bolt: 10s, max 4 distinct enemies, 4.8/3.84/2.88/1.92 base damage, bounce reach 2.4; no repeat target.",
+      "COMBAT-HERO-HUNTER | Basic: Serrated Arrow full direct hit +25% direct normal basic damage as bleed over 3s, ticks .5s; own bleed refreshes until Open Wounds unlock. Special: Tripwire: 10s, radius 1.25, 7s lifetime, enemy move speed ×0.40 inside; no damage until relevant upgrade, no extra targeting.",
+      "COMBAT-HERO-BARBARIAN | Basic: Wide Cleave frontal 100-degree arc, 1.3 reach, primary full, up to 3 additional targets 70% damage. Special: Battle Frenzy: 10s, +50% base basic attack rate for 4s; normal duration extension cap per reviewed tree.",
+      "COMBAT-HERO-ROGUE | Basic: Alternating Daggers each strike normal base damage; no base poison before Poisoned Steel. Special: Smoke Bomb: 10s, 2.5s untargetable, existing attacks continue; can take unavoidable AoE/status damage under normal rules, no extra movement.",
+      "COMBAT-HERO-PALADIN | Basic: Hammer Strike direct full damage plus lingering patch, radius 1.1, 2s, total 30% basic damage. Divine Aegis: 12s charge, shield 20% recipient max HP within 2.8, 5s, includes caster, no tower or summons. Upgrade effects are in section 6.",
+      "COMBAT-HERO-NUN | Basic: Monastic Combination three successive normal attack events, each full base damage; third pushes by 0.45 map unit (boss displacement immunity), not three hits per event. Special: Sanctuary Prayer: 10s, radius 2.3, 5s, heal 1.5 HP/sec per living hero incl Nun, .5s ticks, hold ready if no injured eligible hero. No tower/summon/downed healing, overlapping identical strongest only.",
+      "COMBAT-HERO-PRIEST | Basic: Censuring Ray full basic damage distributed across 0.9s channel, three equal ticks, next ordinary cycle remains 1/0.60s baseline. Special: Blessing of Courage: 12s, radius 3.0 on activation, +25% base basic damage for 5s to living allied heroes incl self; same buff refreshes not stacks; no tower/summons.",
+      "COMBAT-HERO-SHAMAN | Basic: Vial Throw primary full, up to four secondaries at 60% within radius 1.15; weakening reduces affected enemies' outgoing ordinary damage by 15% for 3s (refresh no stack). Special: Spirit Totem: 10s, 18 HP, 8s max lifetime, cap 1 per owner; innate approved attraction retained, no added targeting upgrades. No ordinary attacks.",
+      "COMBAT-HERO-DRUID | Basic: Vine Wave normal damage, hits up to 4 distinct enemies along existing wave path, secondary 70%; normal form range 4.5. Special: Bear Form: 12s, 5s, replace Vine Wave with claw swipe, base damage 5.8, APS 0.80 before upgrades, 15% damage reduction, unchanged max HP, range 1.3; no additional pursuit mechanics. Return to normal with same HP fraction.",
+      "COMBAT-HERO-WARLOCK | Basic: Doom Sigil marks for 5s; on marked death burst 60% normal damage, radius 1.25, up to four other enemies, no recursive mark. Life Siphon: 10s charge, 8 direct base damage and heals 50% actual HP damage, not overkill.",
+      "COMBAT-HERO-BEASTMASTER | Basic: Whip direct full base damage and existing beast bias unchanged. Special: Summon Hound: 10s, hound HP 9, damage 2.4, APS .8, speed 2.0, melee range .9, lifetime 10s, cap 2 per owner, cap eviction oldest with no death/expiry rewards. Legendary Pack raises cap by 2.",
+      "COMBAT-HERO-NECROMANCER | Basic: Soul Sucking Beam continuous, baseline 4.2 DPS (8.4 × .5); tick .2s, ramps linearly to +50% DPS over 3s of uninterrupted channel, reset ramp only when valid channel ends/target changes, never per ordinary attack interval; no healing. Special: Raise the Fallen: one undead for every qualifying scheduled enemy death (any legitimate allied source), no cooldown; if multiple live active Necromancers assign one owner round-robin, not one summon per owner per kill. Undead HP 7, dmg 1.2, APS .7, speed 1.55, melee range .9, lifetime 8s, cap 6 per owner; at cap replace oldest without death/expiry reward. Undead Legion raises cap to 9. Enemy-generated units, bosses, allied deaths do not trigger. Summon-owned legitimate final blows still credit owner and can trigger one new undead. ",
+      "COMBAT-HERO-DRAGONKIN | Basic: Lunge full direct damage, existing knockback (nonboss 0.6 units). Dragon Breath: 12s charge, 80° cone, range 3.5, 21 damage per enemy up to six; burn unlocked via Scorching Breath."
+    ],
+    "rules": [
+      "PRIMARY DESIGN RULE — Every resolved normal battle, including a zero-kill defeat, must advance progression: minimum 2 earned ordinary UP, after other earned rewards. Top up only the shortfall; no extra flat bonus. Rewards persist on failure. Abandoning or reloading an unfinished battle, test mode and duplicate outcomes never trigger the floor. Legitimate rewards already earned remain saved. Show total earned and included top-up in the report.",
+      "Frequent meaningful failures are intentional; do not balance them away. Aim for approximately five voluntary prestige resets, no mandatory reset or forced loss. Target 1–3 meaningful upgrades per attempt on average, with saving for expensive nodes allowed. Pooled hero kill-rate spread should be around 2–3× maximum; kill counts are not total support or defensive value. Archer must not dominate later-pack heroes. Earlier 10–15-minute cumulative stage pacing is a historical target, not a verified current result; keep the shorter demo battles until human feedback justifies adjustment.",
+      "After seven consecutive random draws of a particular pack without its pity target, the eighth draw guarantees that class. Track independently by tier; reset on a rarest random draw and on voluntary prestige, retain across attempts and reloads. Individual contracts and Golden roster offers do not consume random pity draws. Booster boxes and mixed packs use independent random draws with pity. Hero rarity is independent of skin rarity.",
+      "Starting maximum coins 2. Each completed current-run class challenge adds 2; ordinary Reinforcements and Royal Funding each add 2; permanent Small, Deep and Royal Treasury each add 2. Maximum coin cap 40. Three initial shop slots; Expanded Counter, Extra Counter and Larger Stall each add one, capped at six. Recruit standard pack always anchored and initially affordable; newest eligible tier has its own anchor. Commission or Contract Board has priority for an individual anchor; Curated Shelf guarantees a distinct advanced offer, prioritising bulk products, in an existing slot. Locked products and tiers are never bypassed. If only individuals unlocked, Curated Shelf may anchor a second individual. If no advanced product or free slot, no additional offer.",
+      "Random non-anchor category weights: standard 40, individual 22, double 7, triple 4, booster box 15, Golden 7, mixed 5. Locked-category weight transfers to standard. Eligible tier weights proportional to tier index 1–5. Mixed selects a different eligible second tier uniformly. Rerolls affect only unsold, unanchored, unreserved slots; finite free and paid charges per preparation, no stock regeneration by reloading. Discounts do not stack; minimum one coin per hero in any product.",
+      "Individual list price i = max(1, standard price b + rarity offset): Common −1, Uncommon/Rare 0, Epic +1, Legendary +2. Double contract = max(2,2i−1); triple = max(3,3i−1). Booster box (three draws of same tier) = 3b−1. Golden (one of each class) = 3b. Mixed (two distinct eligible tiers) = b1+b2−1. Each deployed hero rolls its skin independently. Exact merchant unlocks, discounts, bonus packs, rerolls and costs are specified once in the Legacy catalogue (section 7).",
+      "All numerical values below are pre-prestige development baselines. HP and hit damage multiply by 1.08^p; movement and attack rate by 1.02^p (intervals divided by rate multiplier), where p is completed prestige. Scheduled slots are not increased by prestige. First minion immediately, then interval linearly 2.2→1.4 seconds during first 30%, 1.4→0.75 through 85%, final 0.55 seconds. Wait until all scheduled enemies and surviving hostile wave summons are defeated, then 2 seconds before next boss; one boss active at a time.",
+      "P0: standard combat, tower aiming and rescue. P1: elite unlock Stages 1–2; P2 adds 3–4 and spell eligibility; P3 adds 5–6, skin boxes and Ember Rain eligibility; P4 adds 7–8, mutations and second spell-slot eligibility; P5 adds 9–10 and Hollow Legion. First lifetime attempt at any stage is protected from elites, mutations and invasion. At p≥ceil(stage/2), elite share min(18%,4%+3%×(p−ceil(stage/2))), round nearest. No elites first 30%; 70% of quota middle and remainder late. Live caps 2 (1–4), 3 (5–8), 4 (9–10); excess elite slots spawn basic enemies. Mutated basic slots = min(available basic slots,max(0,p−3)); double HP and damage, normal movement and attack cadence, +1 Shard per eligible kill.",
+      "Hollow Legion: at P5 every even campaign stage on eligible subsequent attempts; odd stages unlock when p≥6+floor(stage/2). Three sequential bosses after minions and before original stage boss: Legion Champion, Sorcerer, Executioner, separated by 2 seconds. Stage reference HP 30/34/45/53/61/77/85/101/110/127; multiply by 1/0.8/1.2 and round, then prestige scale. Ordinary damage relative to stage boss 0.8/0.65/1; attack intervals 1.6/1.5/1.9s; movement 0.65/0.8/0.55. Signature abilities remain in game-core.js. Each awards 2 UP and 1 Shard, no class credit or normal boss award.",
+      "Hero acquisition radius 15, normal tower guard radius 5, enemy hero detection 6; class attack range separate. Heroes prefer eligible nearby enemies ahead and turn when needed; ranged units hold while in range, melee moves into contact. Preserve valid windups and continuous beam channels. Initial random deployment radius 1.8–7.2 with preferred 0.95 spacing; outside-guard initial deployment allowed. Tower solid: actor-specific clearance around corners, outward recovery from conservative navigation footprint, actual perimeter contact for enemy attacks, Wraith blocked-at-tower fallback after 3s without reachable target. Preserve existing innate target attraction and physical collision; no skill-tree targeting or positioning perks. Exact pathfinding and timing in game-core.js and game-arcade.js.",
+      "Base tower 100 HP, player-directed automatic projectile every 2.5s, damage 3, travel speed 9 units/s, radius 0.30. Aim at latest cursor or tap; no manual repeated fire, homing or auto-aim. Shots can miss. Only active, unpaused combat. Tower upgrades are ordinary armaments plus a few permanent tower stats; no permanent spells.",
+      "Spells are manual, purchased in ordinary tree with tier and prestige prerequisites. Lightning: radius 1.25, damage 12, cooldown 25s. Healing Circle: radius 2, heals 2 HP/s for 5s, cooldown 30s. Frost Field: radius 2, slows 35% for 5s, cooldown 30s. Ember Rain: radius 2, damage 1.5/s for 5s, cooldown 35s. One slot until O-SP11, no duplicates; select during preparation. Arm then tap point, cooldown starts on actual cast; capture taps take priority. Strongest identical overlapping zone only; pause freezes time; echoes do not recursively count. Exact spell upgrades in section 6.",
+      "At start, purchased products auto-resolve into temporary heroes; design calls for visible field-deal and automatic reveal, new hero/skin discovery presentation. Hero down triggers 5s capture; first rescue 10 effective taps, second 20, third no rescue. Progress decays 0.5 units/s after 0.5s without input. A living eligible ordinary captor stops combat during capture, one capture per enemy; its death rescues if a rescue remains, otherwise removes the hero. Captures from other damage may have no captor. Successful rescue restores same hero at exactly 1 HP, 1s invulnerability, retains charge and marks armour damaged. No summon rescues. Pause freezes; removed units cannot be healed or resurrected.",
+      "After third prestige, universal skin box costs exactly 1 Shard. One eligible discovered-hero unlock per box, default excluded; 2 Common recolours, 1 Epic, 1 Legendary per hero (60 unlocks plus 15 defaults). Box rarity weights 60/30/10; deployed hero appearance weights 75/20/5; normalize over available eligible rarity tiers. Common ×1, Epic ×1.5, Legendary ×2 final HP and basic damage after additive base upgrades; no other stat bonus. Duplicate returns 0.05 Shard; after three consecutive duplicates next box guarantees new eligible skin. Persist discovery, skins and streak through prestige; disable boxes when eligible collection complete. No real-money purchases; independent skin draw for each hero in every product.",
+      "Cumulative scheduled enemy kills: 1 base UP per 8 kills, carry remainder through attempts and mode transitions, reset on prestige. Eligible elite +0.5 base UP. Multiply scheduled base reward by 1 at P0–3, 0.8 P4, 0.65 P5+, then applicable Legacy income multiplier (additive +25 percentage points each from Field Study and Battle Scholar). Normal boss 5 base UP with income multiplier, paid once after complete boss encounter. Faction 2 UP + eligible Legion Ledger bonus and 1 Shard; mutated scheduled minion 1 Shard. Class credit only genuine scheduled final blows attributed to hero classes, not tower/spell/generated kills; generated enemies no separate ordinary UP or class credit. Forbidden Knowledge and class scholarship add their own specified bonuses. Victory Journal first campaign clear per stage/run; Frugal Victory main-stage wins only. At battle resolution top up earned UP to 2 if needed, including zero kills.",
+      "Voluntary prestige requires at least one main-stage win this run, during preparation before buying stock, with confirmation. Shard payout based on highest stage CLEARED this run: 3, 3, 4, 4, 5, 6, 8, 10, 13, 15 for stages 1–10 (cap 15). Reset to Stage 1, clear ordinary UP/purchases, class kills, tier gates, pack pity, run milestones and temporary preparation state. Preserve Legacy upgrades, Shards, completed prestige count, lifetime stage history/discovery, skins and Endless records. Prepared Notes gives 2 starting UP once after reset. No automatic permanent tier unlocks.",
+      "ENDLESS-003 — ACCESS AND LOOP: First lifetime Stage 10 victory permanently discovers Endless and records campaign completion; actual entry requires Stage 10 cleared in CURRENT prestige run. Victory screen offers Continue to Endless or Return to Progression. Never automatically activate prestige or restart campaign. Each Endless run starts at Wave 1; before EVERY wave run existing preparation shop/deployment loop: full calculated tower HP, coin cap refill including all applicable run/Legacy bonuses, finite fresh stock, ordinary UP skill purchases, choose known spells, auto-open purchased packs and independently roll unlocked skins. All temporary heroes, summons, spell/ability charge, rescue counts and tower HP reset each wave exactly as a new campaign attempt. Nothing survives as a deployed army into next wave. Retain ordinary purchases, qualifying class kills, class coin-cap rewards and tier access across waves and across separate Endless runs within same prestige cycle. No unspent coin carry. Prior campaign victories cannot be farmed by reentering from Endless; return hub with Stage10 cleared state.",
+      "ENDLESS-004 — OUTCOME AND CHECKPOINT: Tower destroyed means current Endless run ends, no retry at same wave. Retain earned UP and Shards including valid kills on failed waves; persist highest completed wave and deepest attempted wave separately. Offer Start New Endless Run (Wave 1), Return to Hub, or normal voluntary prestige. Allow save/quit at intermission, resume same stock, purchases, state and wave index; no free reroll. A combat-active reload resumes identical committed state if reliable battle serialization exists; otherwise present Resume not supported for active battle, abandon that attempt/end run with already committed legitimate rewards, never grant fresh attempt at same wave. Confirm voluntary retirement; retirement ends run, no loss of earned rewards. Only one active Endless session per save. Legacy spending and skin-box purchases occur outside an active Endless run; ordinary UP purchases allowed at each intermission. Voluntary prestige terminates active session, uses existing highest main-stage payout capped at Stage 10 = 15 Shards, resets ordinary progression and gates, never erases records, discovery, skins or earned permanent currency.",
+      "ENDLESS-005 — FAMILY ROTATION: Wave w>=1 uses existing family index f=1+((w−1) mod 10), in campaign order: Slime, Mushroom Man, Goblin, Bandit, Kobold, Zealot, Imp, Wraith, Cultist, Voidling. Reuse all their original mechanics, attack intervals, ranges, speed, visuals and eligible associated elites. Do not mix randomly selected families in v1.16.0, introduce unrelated random events, environmental hazards or new permanent skill mechanics. Family HP/count coefficients c=[0.80,1.00,0.55,1.00,1.15,1.15,0.75,0.95,1.10,1.25]. Normalized pre-prestige base HP = 33×c; scheduled slots N=min(120, round-half-up(80/c)+2×(w−1)). Base ordinary hit damage = 10.5×original family damage/Stage10 base damage (10.5) adjusted by floor 0.65 and ceiling 1.15, i.e. 10.5×clamp(original/10.5,0.65,1.15). This gives early archetypes meaningful post-campaign pressure while preserving distinctive fragile swarms and attack cadence; no new stage records or campaign stat changes. Scale elite HP by existing family elite/basic HP ratio applied to normalized basic HP, elite ordinary damage by original elite/basic damage ratio (zero remains zero), plus applicable wave/prestige scaling. Fractional values internal, round display only.",
+      "ENDLESS-006 — DIFFICULTY: Wave multiplier for enemy HP H(w)=1+0.04×(w−1); hit damage D(w)=1+0.025×(w−1); movement speed and attack rate both use S(w)=min(1.35,1+0.005×(w−1)). Multiply normalized base values by H or D and existing prestige factors 1.08^p for HP/damage and S×1.02^p for speed/attack rate. Separate attack interval inverse conversion, no multiply range/stun duration/fixed scripted mechanics. Count capped at 120, use existing three-part rising spawn pressure section 3 with all intervals ×0.85, lower interval floor 0.45s; no extra spawns on account of higher prestige except existing enemy-created summons. Wave-number scaling continues indefinitely; no wave cap or hidden forced loss. Use numerically safe representations; practical testing through waves 100/500/1000, protect from nonfinite values. All new exact stats/cadence outside pressure model are selected implementation proposals.",
+      "ENDLESS-007 — ELITES AND MUTATIONS: Respect existing prestige family unlocks (section 3.2). Use completed prestige p and family-specific ceil(f/2) unlock, same quota min(18%,4%+3%×(p−unlockReset)) rounded, first 30% free from elites, family live caps 2/3/4; same elite replacement rule. Reuse persistent campaign family attempted flag, not a new first-ever flag on each Endless wave; successful current-run Stage10 implies all ten attempted. At p>=4, replace min(available basic slots,p−3) scheduled basics with mutants spaced through wave, ×2 HP and damage after scaling; never mutate elite or boss, normal reward exactly 1 Shard on each legitimate mutant kill even failed runs, no per-run farming cap. Enemy-created summons inherit applicable wave/prestige stats, no eligible UP/class reward, with original summon caps and no recursive scaling.",
+      "ENDLESS-008 — BOSSES: On every fifth Endless wave, after all scheduled minions and surviving hostile wave summons defeated, 2s break then one existing campaign boss. Boss family b=1+((w/5−1) mod 10) for boss waves: King Slime Wave5, Giant Plant Wave10, Orc Wave15, Bandit King Wave20, Drake Wave25, Seraph Wave30, Succubus Wave35, Lich Wave40, High Priest Wave45, Eldritch Horror Wave50; then repeat. Normalize each boss to effective 700 pre-wave/prestige HP, ordinary hit base 14×clamp(original ordinary hit/16,0.75,1.4); preserve existing attack cadence, speed, signature ability geometry/mechanics and relative phase damage; scale with H/D/S and prestige. For King Slime use effective HP = half initial boss HP + four normalized Slime child HP (26.4 each pre-multipliers), so initial HP=2×(700−4×26.4)=1188.8; split at half and destroy all four, one reward. For Eldritch Horror distribute 700 across phases in ratio 390:455:545 (196.40,229.14,274.46 approximately), same phases and original relative speeds/damage intervals; final phase death awards one boss reward. Boss signature damaging abilities scale with D and prestige once, not double. On nonboss waves clear all scheduled and lingering hostile units, then victory. Existing boss-created enemy reward exclusions remain.",
+      "ENDLESS-009 — FACTION: At completed prestige 5, every second boss wave (w=10,20,30...) receives the existing exactly-three sequential Hollow Legion encounters AFTER the minion wave and before that wave's original boss, one active at a time, 2s intermission. At p6 add boss ordinal j=1 mod10; p7 add j=3 mod10; p8 j=5; p9 j=7; p10 j=9, i.e. all boss waves at p10. No faction on ordinary nonboss waves. Each faction boss reference HP=12% of 700 (84) before H and prestige, Champion/Sorcerer/Executioner ×1/.8/1.2, ordinary damage relative to normalized boss per COMBAT-BAL-008, existing individual signature mechanics, apply wave/prestige factors once. Preserve legitimate 2 UP+1 Shard per faction boss; first campaign encounter rules unchanged. This precise smaller-boss budget is a design estimate; pressure proxy models faction as +15% normalized demand on every tenth wave at p5 only, not three literal encounters.",
+      "Endless rewards: same eight-kill cadence, elite +0.5, prestige reward factors and 2 UP resolution floor as campaign. Normal Endless boss grants 5 base UP and 1 Shard; mutated and faction rewards remain independent. No campaign Victory Journal or Frugal Victory repeats. No active Legacy or skin purchases; ordinary preparation upgrades remain available. Endless high-wave difficulty is provisionally balanced; natural play has not validated the entire curve.",
+      "Ordinary tree: 228 purchases (1332 UP), 30 structural/gate nodes; Legacy: 120 purchases (566 Shards). All exact prerequisites and effects in ordinaryNodes/legacyNodes. Stage 8 Wraith attack window 0.25s before, 1.05s after; no changes to other final enemy or Endless values. Demo balance sign-off in tools/balance/final-balance-summary.json."
+    ]
+  }
+}
