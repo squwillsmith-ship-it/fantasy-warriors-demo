@@ -40,7 +40,8 @@ function restoreShopStock(){
 function clearShopStock(){if(state.testMode||SKILLS?.sandboxActive?.())return;try{localStorage.removeItem(SHOP_SAVE_KEY);}catch(e){}}
 
 const {view,resize,render}=window.FWGameRenderer.create({canvas,ctx,state,ENCOUNTERS,TUNING,clamp,cfg,chargeSeconds,isOriginalHero});
-const TOWER_FIRE=window.FWTowerFire.create({canvas,ctx,view,state,config:BALANCE.towerFire,hitEnemy,addEffect});
+const ACTIONS=window.FWBattleActions.create({state,owns:id=>!!SKILLS?.has(id),equipped:()=>SKILLS?.spellLoadout()||[],hitEnemy,healHero,ring:visualRing,log});
+const TOWER_FIRE=window.FWTowerFire.create({canvas,ctx,view,state,config:BALANCE.towerFire,hitEnemy,addEffect,intercept:(x,y)=>{if(state.mode==='battle'&&state.paused)return true;const handled=ACTIONS.pointer(x,y);if(handled)updateUI();return handled;},aimBlocked:()=>!!state.spellArmed||(state.mode==='battle'&&state.paused)});
 function rand(a,b){return a+Math.random()*(b-a)}
 function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
 function chooseHero(packIndex=0){const pool=PACKS[packIndex].pool;return HERO_MAP[pool[Math.floor(Math.random()*pool.length)]]}
@@ -158,7 +159,7 @@ function pushEnemy(e,fromX,fromY,dist){const dx=e.x-fromX,dy=e.y-fromY,len=Math.
 function pointSegmentDistance(x,y,ax,ay,bx,by){const vx=bx-ax,vy=by-ay;const t=clamp(((x-ax)*vx+(y-ay)*vy)/(vx*vx+vy*vy||1),0,1);return Math.hypot(x-ax-t*vx,y-ay-t*vy)}
 // Numerical secondary effects are temporary demonstrations. Only the basic-attack concepts are approved.
 function hitHero(h,d,source){
- if(!(d>0)||h.hp<=0)return 0;
+ if(!(d>0)||h.hp<=0||h.rescueInvulnerableUntil>state.elapsed)return 0;
  if(h.base.id==='knight'&&owns('R-KNI-B')){h.incomingCount=(h.incomingCount||0)+1;if(h.incomingCount%5===0)d*=.5}
  if(h.base.id==='knight'&&owns('O-1-K-A2')&&Math.random()<(owns('O-1-K-A4')?.40:.25)){
   d*=.5;if(owns('V2-KNI-01')&&state.elapsed-(h.lastBlockHeal??-Infinity)>=2){h.lastBlockHeal=state.elapsed;healHero(h,h.maxHp*.05)}
@@ -168,6 +169,7 @@ function hitHero(h,d,source){
  if(h.resolveUntil>state.elapsed)d*=.75;if(h.aegisGuardUntil>state.elapsed)d*=.75;if(h.base.id==='barbarian'&&h.frenzyUntil>state.elapsed&&owns('O-2-B-B4'))d*=.75;if(h.base.id==='druid'&&h.bearUntil>state.elapsed&&owns('O-4-D-B5'))d*=.7;if(h.base.id==='dragonkin'&&owns('O-5-DR-A4'))d*=.8;
  if(h.shield>0){const absorb=Math.min(h.shield,d);h.shield-=absorb;d-=absorb;if(h.shield<=0&&h.shieldOwner!=null){const pal=state.heroes.find(a=>a.id===h.shieldOwner&&a.hp>0);if(pal&&owns('O-3-P-B5'))h.aegisGuardUntil=state.elapsed+3;if(pal&&owns('R-PAL-D')&&pal.aegisCast===h.shieldCast&&(pal.aegisRefund||0)<.2){pal.aegisRefund=(pal.aegisRefund||0)+.1;grantCharge(pal,.10)}if(pal&&owns('V2-PAL-02')){pal.brokenShields=(pal.brokenShields||0)+1;if(pal.brokenShields%5===0&&state.elapsed-(pal.lastBreakCharge??-Infinity)>=2){pal.lastBreakCharge=state.elapsed;grantCharge(pal,.25)}}h.shieldOwner=null;h.shieldCast=null}}
  if(d>0){h.hp=Math.max(0,h.hp-d);h.hitFlash=.11;if(h.base.id==='paladin'&&owns('O-3-P-A3')){h.damageHits=(h.damageHits||0)+1;if(h.damageHits%5===0)h.nextHammer=true}if(h.base.id==='dragonkin'&&owns('O-5-DR-A3')&&source?.hp>0&&state.enemies.includes(source))applyStatus(source,h,'burn',h.base.damage*.2,3);if(h.base.id==='dragonkin'&&owns('O-5-DR-A5')&&h.hp>0&&h.hp<h.maxHp*.25&&!h.dragonHeart){h.dragonHeart=true;healHero(h,h.maxHp*.2);grantCharge(h,1)}if(h.hp>0&&h.hp<h.maxHp*.25&&owns('O-5-G4')&&!h.summonKind&&!h.resolveUsed){h.resolveUsed=true;h.resolveUntil=state.elapsed+5}}
+ if(h.hp<=0&&isOriginalHero(h))ACTIONS.down(h,source);
  return d
 }
 function spawnSummon(base,atX,atY,kind,duration,ownerId){const s={id:state.nextId++,base,x:atX,y:atY,hp:base.hp,maxHp:base.hp,cooldown:.2,facing:0,charge:0,casts:0,shield:0,invisibleUntil:0,bearUntil:0,blessingUntil:0,frenzyUntil:0,summonKind:kind,ownerId,ownerHeroId:state.heroes.find(h=>h.id===ownerId&&isOriginalHero(h))?.base.id||null,expiry:state.elapsed+duration,anchorX:atX,anchorY:atY,beamTarget:null};state.heroes.push(s);return s}
@@ -368,7 +370,7 @@ function stepSporeClouds(dt){
 }
 function stepNecroBeam(h,target,dt){if(!target||target.hp<=0||Math.hypot(target.x-h.x,target.y-h.y)>h.base.range||Math.hypot(h.x,h.y)>guardRadius(h)+.1){h.beamTarget=null;h.beamTime=0;h.beamTickClock=0;return}if(h.beamTarget!==target.id){h.beamTarget=target.id;h.beamTime=h.beamTransferUntil>state.elapsed?(h.beamStoredRamp||0):0;h.beamTickClock=0}const spec=cfg(h).special;h.beamTime+=dt*(SKILLFX?SKILLFX.beamRampBoost(h):1);h.beamTickClock+=dt;const ticks=Math.floor(h.beamTickClock/spec.beamTickSeconds);if(ticks>0){const n=Math.min(ticks,8);h.beamTickClock-=ticks*spec.beamTickSeconds;const mult=1+(spec.beamMaxRampMultiplier-1)*Math.min(1,h.beamTime/spec.beamRampSeconds);{const full=h.beamTime>=spec.beamRampSeconds,count=state.heroes.filter(a=>a.hp>0&&a.summonKind==='undead'&&a.ownerId===h.id).length,bonus=(owns('O-5-NE-A3')?Math.min(.5,count*.1):0)+(h.graveBonus||0),elite=(target.boss||target.elite)?(owns('R-NEC-B')?.25:0)+(full&&owns('O-5-NE-A5')?.5:0):0;hitEnemy(target,(h.base.damage*h.base.speed)*spec.beamTickSeconds*n*mult*(1+bonus)*(1+elite),h.base.color,h.base.id,h.id)}}}
 function step(dt){if(state.mode!=='battle'||state.paused)return;
- state.elapsed+=dt;state.spawnClock+=dt;state.uiClock+=dt;if(SKILLFX)SKILLFX.tick(dt);TOWER_FIRE.step(dt);
+ state.elapsed+=dt;state.spawnClock+=dt;state.uiClock+=dt;ACTIONS.tick(dt);if(SKILLFX)SKILLFX.tick(dt);TOWER_FIRE.step(dt);
  if(state.regularSpawned===0){spawnEnemy(false);state.regularSpawned=1;state.spawnClock=0}
  else if(state.regularSpawned<regularCount()&&state.spawnClock>=nextSpawnInterval()){state.spawnClock-=nextSpawnInterval();spawnEnemy(false);state.regularSpawned++}
  // Boss arrival is checked after dead minions are removed: spawning the full wave is not enough.
@@ -391,7 +393,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
   if(goal&&dist>attackRange-(!isBear&&h.base.range>2.15?0:.02)){h.attackState='approach';h.windupTime=0;moveToPoint(h,goal,dt);if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);continue}
   if(goal&&(h.base.range<=2.15||isBear)&&Math.hypot(goal.x-h.x,goal.y-h.y)>.15)moveToPoint(h,goal,dt*.7);else brake(h,dt);
   if(h.base.id==='necromancer'){h.attackState='channel';h.engagedTargetId=target.id;stepNecroBeam(h,target,dt);continue}
-  const cycle=1/(h.base.speed*(h.frenzyUntil>state.elapsed?cfg(h).special.frenzyAttackSpeedMultiplier:1)*(1+(h.bannerUntil>state.elapsed?.25:0)+(h.blessingUntil>state.elapsed&&owns('O-3-PR-B4')?.25:0)));
+  const cycle=1/(h.base.speed*(h.frenzyUntil>state.elapsed?cfg(h).special.frenzyAttackSpeedMultiplier:1)*(1+(h.bannerUntil>state.elapsed?.25:0)+(h.blessingUntil>state.elapsed&&owns('O-3-PR-B4')?.25:0)+ACTIONS.fellowship(h)));
   if(h.windupTime>0){h.windupTime-=dt;h.attackState='windup';if(h.windupTime>0)continue;
    const aim=state.enemies.find(e=>e.id===h.windupTarget&&e.hp>0);
    if(aim&&Math.hypot(aim.x-h.x,aim.y-h.y)<=attackRange+.2){if(isBear){const bearDamage=(SKILLS?SKILLS.bearBasicDamage():h.base.damage)*(SKILLS?SKILLS.heroBonus(h,aim):1);h.clawCount=(h.clawCount||0)+1;const actual=hitEnemy(aim,bearDamage,h.base.color,h.base.id,h.id);if(owns('O-4-D-B4'))healHero(h,actual*.15);if(owns('O-4-D-B5')&&h.clawCount%3===0)vineWave(h,aim,h.base.damage,true);visualBeam(h,aim,'#b2e585');visualRing(aim.x,aim.y,.5,'#96d46e');if(SKILLFX)SKILLFX.afterBasic(h,aim,bearDamage,true)}else{basicAttack(h,aim)}}
@@ -403,7 +405,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  stepSanctuaries(dt);
  stepSporeClouds(dt);
  tickAttackEffects(dt);
- for(const e of state.enemies){if(e.hp<=0)continue;if(e.stunnedUntil>state.elapsed)continue;
+ for(const e of state.enemies){if(e.hp<=0||e.capturing)continue;if(e.stunnedUntil>state.elapsed)continue;
   let hero=null,closest=TUNING.shared.enemyHeroDetection**2;for(const h of state.heroes){if(h.hp<=0||h.invisibleUntil>state.elapsed)continue;const d=(h.x-e.x)**2+(h.y-e.y)**2;if(d<=closest){hero=h;closest=d}}
   let totem=null,totemDist=Infinity;for(const p of state.totems){const sq=(p.x-e.x)**2+(p.y-e.y)**2;if(sq<=p.radius*p.radius&&sq<totemDist){totem=p;totemDist=sq}}
   const target=totem||hero||towerApproach(e);const dist=Math.hypot(target.x-e.x,target.y-e.y);e.attackingTower=!totem&&!hero&&dist<1.5;
@@ -414,9 +416,9 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
     e.cooldown-=dt;if(e.cooldown<=0){e.cooldown=e.attackPeriod??1;
     const damage=e.damage*(e.weakUntil>state.elapsed?(owns('O-4-S-A4')?.7:.8):1)*(e.weakerUntil>state.elapsed?.8:1);
     if(totem){totem.hp-=damage;const h=state.heroes.find(a=>a.id===totem.owner&&a.hp>0);if(h&&damage>0){totem.hits=(totem.hits||0)+1;if(owns('O-4-S-B3')&&totem.hits%5===0)grantCharge(h,.1);if(totem.hp<=0){if(owns('V2-SHA-02'))h.totemVengeance=true;if(owns('O-4-S-B5')&&!totem.reformed&&totem.expires>state.elapsed){totem.reformed=true;totem.hp=totem.maxHp*.3}}}visualRing(totem.x,totem.y,.35,'#51dcc0')}
-    else if(hero){const dealt=hitHero(hero,damage,e);if(dealt>0)damageNumber(hero.x,hero.y-.7,'−'+dealt.toFixed(1),'#ffb6a7');if(hero.hp===0)log('Your '+hero.base.name+' was defeated.')}
+    else if(hero){const dealt=hitHero(hero,damage,e);if(dealt>0)damageNumber(hero.x,hero.y-.7,'−'+dealt.toFixed(1),'#ffb6a7');if(hero.hp===0&&!hero.capture)log('Your '+hero.base.name+' was defeated.')}
     else{applyTowerDamage(damage);if(state.mode==='over')break}
-  }}else if(dist>0){e.inAttackRange=false;let mult=1;for(const p of state.traps)if(Math.hypot(e.x-p.x,e.y-p.y)<=p.radius){mult=Math.min(mult,p.slow)}if(e.slowUntil>state.elapsed)mult=Math.min(mult,e.slowFactor||.75);if(e.rootUntil>state.elapsed)mult=0;takeTowerSafeStep(e,target,dt,e.speed*mult)}else brake(e,dt)
+  }}else if(dist>0){e.inAttackRange=false;let mult=ACTIONS.slow(e);for(const p of state.traps)if(Math.hypot(e.x-p.x,e.y-p.y)<=p.radius){mult=Math.min(mult,p.slow)}if(e.slowUntil>state.elapsed)mult=Math.min(mult,e.slowFactor||.75);if(e.rootUntil>state.elapsed)mult=0;takeTowerSafeStep(e,target,dt,e.speed*mult)}else brake(e,dt)
  }
  if(state.mode!=='battle')return;
  resolveActorCollisions();
@@ -457,7 +459,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  }
 
  if(owns('V2-NEC-02'))for(const h of state.heroes){if(h.hp>0||h.summonKind!=='undead'||h.naturalExpiry||h.evicted)continue;const owner=state.heroes.find(a=>a.id===h.ownerId&&a.hp>0);if(owner)owner.graveBonus=Math.min(1,(owner.graveBonus||0)+.05)}
- state.heroes=state.heroes.filter(h=>h.hp>0);
+ ACTIONS.captureTick();state.heroes=state.heroes.filter(h=>h.hp>0||h.capture);
  // Only begin the boss intermission once every regular minion has spawned AND been defeated.
  if(!state.bossSpawned&&state.regularSpawned===regularCount()&&state.kills>=regularCount()&&state.enemies.every(e=>e.hp<=0||e.boss)){
   state.bossWaitClock+=dt;
@@ -488,7 +490,20 @@ function tick(now){
  }
  render(now/1000);TOWER_FIRE.draw();requestAnimationFrame(tick);
 }
-const {updateUI,showBattleReport,waveStatus,rollShop,offeredPacks,selectedStock}=window.FWGameUI.create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,nextSpawnInterval,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY});
+const {updateUI:refreshBaseUI,showBattleReport,waveStatus,rollShop,offeredPacks,selectedStock}=window.FWGameUI.create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,nextSpawnInterval,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY});
+function updateUI(){refreshBaseUI();refreshActionsUI()}
+function refreshActionsUI(){
+ const a=ACTIONS.snapshot(),prep=state.mode==='prep',battle=state.mode==='battle',panel=$('battleActions');
+ if(!panel)return;panel.hidden=!(a.known.length&&(prep||battle)||battle&&a.captures.length);
+ for(let slot=0;slot<2;slot++){
+  const select=$('spellEquip'+slot),button=$('spellCast'+slot);if(!select||!button)continue;
+  select.hidden=!prep||!a.known.length||slot>=a.slots;button.hidden=!battle||!a.loadout[slot];
+  const k=a.loadout[slot],key=JSON.stringify([a.known,a.loadout,slot]);if(select.dataset.key!==key){select.dataset.key=key;select.innerHTML='<option value="">No spell</option>'+a.known.filter(x=>!a.loadout.includes(x)||x===k).map(x=>'<option value="'+x+'">'+window.FWBattleActions.spells[x].name+'</option>').join('');select.value=k||''}
+  if(k){const cd=a.cooldowns[k]||0;button.textContent=window.FWBattleActions.spells[k].name+(a.armed===k?' · choose target':cd>0?' · '+Math.ceil(cd)+'s':' · Ready');button.disabled=state.paused||cd>0;button.setAttribute('aria-pressed',String(a.armed===k))}
+ }
+ $('spellCancel').hidden=!battle||!a.armed;$('spellHelp').textContent=a.armed?'Tap the battlefield to cast; rescue taps take priority.':prep&&a.known.length?'Equip known spells before battle.':battle&&a.loadout.length?'Select a ready spell, then tap its target.':'';
+ const selected=a.captures.find(c=>c.hero===state.selectedCapture);$('captureStatus').textContent=selected?selected.name+' · '+(selected.required?Math.floor(selected.progress)+' / '+selected.required+' taps':'No rescues remaining')+' · '+selected.remaining.toFixed(1)+'s':a.captures.length?a.captures.length+' captured · tap a downed hero to rescue.':'';
+}
 function buyPack(){const stock=selectedStock();if(!stock||state.mode!=='prep'||state.testMode)return;const remaining=M.buy(state.merchantShop,state.selectedSlot,state.coins);if(remaining===null)return;stock.order=state.bought;state.coins=remaining;state.packQueue.push(stock.packIndex);state.bought++;log(M.label(stock)+' purchased · '+stock.qty+' hero slot(s).');updateUI();saveShopStock()}
 function rerollMerchant(){if(state.mode!=='prep'||state.testMode)return;const coins=M.reroll(state.merchantShop,state.coins);if(coins===null)return;state.coins=coins;state.shopCacheKey='';updateUI();saveShopStock()}
 function reserveMerchant(){if(state.mode!=='prep'||state.testMode)return;if(M.reserve(state.merchantShop,state.selectedSlot)){state.shopCacheKey='';updateUI();saveShopStock()}}
@@ -501,8 +516,8 @@ function revealPack(){if(state.mode!=='opening'||!state.pendingPack)return;
  else{for(const hero of state.openedHeroes)createHero(hero);if(SKILLS)SKILLS.recordPack(state.currentRevealPack);state.packsToOpen--;state.openedHeroes=null;state.pendingPack=false;if(state.packsToOpen>0)openNextPack();else{refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');beginBattle()}updateUI()}
 }
 
-function beginBattle(){state.necroRoundRobin=0;SKILLS?.startAttempt();state.firstEncounterProtected=SKILLS?!SKILLS.markStageAttempt(state.stage):true;state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.bossRewardPending=false;state.bossWaitClock=0;state.enemies=[];TOWER_FIRE.reset();state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.towerShield=0;state.lastTowerShield=false;state.combatTelemetry={overlaps:0,targetSwitches:0,blocked:0};state.deployedHeroes=state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length;state.upEarned=0;state.upDrops=0;state.lastReport=null;refs.battleReport.hidden=true;log('Stage '+state.stage+' · '+encounter().name+' — '+regularCount()+' '+encounter().minion+' units and '+encounter().boss+'.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
-function resetPreparation(restoreTower=true){state.coins=state.coinMax;if(restoreTower)state.towerHp=state.towerMax||100;state.mode='prep';state.paused=false;state.bought=0;state.packQueue=[];state.packsToOpen=0;state.testQueue=[];state.heroes=[];state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.bossRewardPending=false;state.elapsed=0;state.spawnClock=0;state.bossWaitClock=0;state.uiClock=0;TOWER_FIRE.reset();state.upEarned=0;state.upDrops=0;state.deployedHeroes=0;state.lastReport=null;state.bossRewardPending=false;refs.battleReport.hidden=true;state.pendingPack=false;state.openedHeroes=null;refs.overlay.classList.add('hidden');if(SKILLS)SKILLS.recalc();state.coins=state.coinMax;rollShop();updateUI();saveShopStock()}
+function beginBattle(){ACTIONS.reset();state.necroRoundRobin=0;SKILLS?.startAttempt();state.firstEncounterProtected=SKILLS?!SKILLS.markStageAttempt(state.stage):true;state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.bossRewardPending=false;state.bossWaitClock=0;state.enemies=[];TOWER_FIRE.reset();state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.towerShield=0;state.lastTowerShield=false;state.combatTelemetry={overlaps:0,targetSwitches:0,blocked:0};state.deployedHeroes=state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length;state.upEarned=0;state.upDrops=0;state.lastReport=null;refs.battleReport.hidden=true;log('Stage '+state.stage+' · '+encounter().name+' — '+regularCount()+' '+encounter().minion+' units and '+encounter().boss+'.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
+function resetPreparation(restoreTower=true){ACTIONS.reset();state.coins=state.coinMax;if(restoreTower)state.towerHp=state.towerMax||100;state.mode='prep';state.paused=false;state.bought=0;state.packQueue=[];state.packsToOpen=0;state.testQueue=[];state.heroes=[];state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.bossRewardPending=false;state.elapsed=0;state.spawnClock=0;state.bossWaitClock=0;state.uiClock=0;TOWER_FIRE.reset();state.upEarned=0;state.upDrops=0;state.deployedHeroes=0;state.lastReport=null;state.bossRewardPending=false;refs.battleReport.hidden=true;state.pendingPack=false;state.openedHeroes=null;refs.overlay.classList.add('hidden');if(SKILLS)SKILLS.recalc();state.coins=state.coinMax;rollShop();updateUI();saveShopStock()}
 function startStage(){if(state.mode==='clear'){if(!state.testMode)state.stage++;resetPreparation(true);if(SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);log((state.testMode?'Test preparation':'Stage '+state.stage+' preparation')+' has begun.');updateUI();return}
  if(state.mode!=='prep')return;
  if(SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);
@@ -518,18 +533,19 @@ function startStage(){if(state.mode==='clear'){if(!state.testMode)state.stage++;
  state.packsToOpen=0;state.pendingPack=false;beginBattle()
 }
 
-function clearStage(){
+function clearStage(){ACTIONS.reset();
  if(state.bossRewardPending){
   state.bossRewardPending=false;state.kills++;
   const reward=SKILLS?SKILLS.recordKill(null,true):0;
   if(reward>0){state.upEarned=Number((state.upEarned+reward).toFixed(2));state.upDrops++;log('King Slime defeated! +'+reward+' UP boss reward.');}
  }
  SKILLS?.finishAttempt(true);showBattleReport();if(SKILLS)SKILLS.recordWin(state.stage);state.mode=(!state.testMode&&state.stage===10)?'champion':'clear';state.heroes=[];state.effects=[];state.hazards=[];state.pendingHits=[];refs.messageSymbol.textContent='✦';refs.messageTitle.textContent=state.mode==='champion'?'Ten Stages Complete!':'Stage '+state.stage+' Cleared';refs.messageText.textContent=state.mode==='champion'?'You have cleared all ten stages and defeated the Eldritch Horror. The campaign is complete; post-game progression is not yet designed.':state.testMode?'Test battle completed. Debug battles do not advance your stage. Return to preparation with full coins.':'The boss has fallen and the tower stands! All heroes leave after this stage. Your next round refills to '+state.coinMax+' coins.';refs.messageButton.textContent=state.mode==='champion'?'↻ Start New Run':state.testMode?'Back to Testing Prep':'Prepare Stage '+(state.stage+1);refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' cleared!'+(state.testMode?' (debug only)':''));updateUI()}
-function gameOver(){SKILLS?.finishAttempt(false);showBattleReport();if(SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);state.mode='over';state.paused=false;refs.messageSymbol.textContent='♜';refs.messageTitle.textContent='Stage '+state.stage+' Failed';refs.messageText.textContent='You defeated '+state.kills+' of '+totalCount()+' enemies. Retry this stage with a restored tower and a refilled coin budget.';refs.messageButton.textContent='↻ Retry Stage '+state.stage;refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' failed. You can retry.');updateUI()}
+function gameOver(){ACTIONS.reset();SKILLS?.finishAttempt(false);showBattleReport();if(SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);state.mode='over';state.paused=false;refs.messageSymbol.textContent='♜';refs.messageTitle.textContent='Stage '+state.stage+' Failed';refs.messageText.textContent='You defeated '+state.kills+' of '+totalCount()+' enemies. Retry this stage with a restored tower and a refilled coin budget.';refs.messageButton.textContent='↻ Retry Stage '+state.stage;refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' failed. You can retry.');updateUI()}
 function retryStage(){if(state.mode!=='over')return;resetPreparation();log('Retry Stage '+state.stage+' — 100 tower HP and '+state.coinMax+' coins.');updateUI()}
 function restart(){state.stage=1;state.coinMax=BALANCE.economy.startingCoinMax;state.testMode=false;state.testSavedTowerHp=null;state.testSavedStage=null;state.notifications=[];resetPreparation();refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');if(SKILLS)SKILLS.recalc();log('New run — defend the tower!');updateUI()}
 
 function init(){
+ for(let slot=0;slot<2;slot++){ $('spellEquip'+slot)?.addEventListener('change',e=>{SKILLS?.setSpellLoadout(slot,e.target.value);updateUI()});$('spellCast'+slot)?.addEventListener('click',()=>{const k=ACTIONS.loadout()[slot];if(k)ACTIONS.arm(k);updateUI()})} $('spellCancel')?.addEventListener('click',()=>{ACTIONS.cancel();updateUI()});
  // The full tree controls available pack offers and persistent progression.
  for(const h of HEROES.filter(h=>h.pack===0)){const div=document.createElement('div');div.className='odd';div.style.setProperty('--hcolor',h.color);div.innerHTML=`<i></i><span class="nm">${h.name}</span><span class="tier">${h.rarity}</span><b>Pool</b>`;$('odds').append(div)}
  for(const p of PACKS){const div=document.createElement('div');div.className='pack-tier';div.textContent=p.name+' Pack';refs.packProgress.append(div)}
@@ -548,10 +564,11 @@ window.__FW_DEMO__={snapshot:()=>({combatTelemetry:{...state.combatTelemetry},st
 
 // Testing-only, non-persistent simulation controls for automated playtesting.
 window.__FW_TEST__={
+ actions:()=>ACTIONS.snapshot(),armSpell:k=>state.testMode&&ACTIONS.arm(k),castSpell:(x,y)=>state.testMode&&ACTIONS.cast(x,y),rescue:id=>state.testMode&&ACTIONS.press(id),damageHero:(id,amount,enemyId)=>{if(!state.testMode||state.mode!=='battle')return false;const h=state.heroes.find(h=>h.id===id);if(!h)return false;hitHero(h,amount,state.enemies.find(e=>e.id===enemyId));return true},
  advance:(seconds)=>{if(!state.testMode||state.mode!=='battle')return false;for(let i=0;i<Math.round(seconds/.05)&&state.mode==='battle';i++)step(.05);updateUI();return true},
  enemy:(x,y,hp=SPAWN_CONFIG.normalHp,damage=0)=>{if(!state.testMode||state.mode!=='battle')return false;state.enemies.push({id:state.nextId++,x,y,hp,maxHp:hp,boss:false,speed:0,damage,attackPeriod:1,firstDelay:SPAWN_CONFIG.minionFirstAttackWindup,cooldown:0,inAttackRange:false,testSpawn:true});return true},
  kill:(count=1)=>{if(!state.testMode||state.mode!=='battle')return false;let n=0;for(const e of state.enemies){if(!e.boss&&e.hp>0){e.hp=0;n++;if(n>=count)break}}return n},
- current:()=>({mode:state.mode,elapsed:state.elapsed,casts:state.abilityCasts,heroes:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,beamTarget:h.beamTarget,beamTime:h.beamTime,summonKind:h.summonKind,expiry:h.expiry,invisibleUntil:h.invisibleUntil,shield:h.shield})),enemies:state.enemies.map(e=>({id:e.id,hp:e.hp,maxHp:e.maxHp,x:e.x,y:e.y,damage:e.damage,speed:e.speed,attackPeriod:e.attackPeriod,cooldown:e.cooldown,inAttackRange:!!e.inAttackRange,boss:!!e.boss})),totems:state.totems.length,traps:state.traps.length,sanctuaries:state.sanctuaries.map(z=>({...z})),encounter:encounter().name})};
+ current:()=>({mode:state.mode,elapsed:state.elapsed,casts:state.abilityCasts,heroes:state.heroes.map(h=>({id:h.id,rescues:h.rescues||0,downed:!!h.capture,invulnerableUntil:h.rescueInvulnerableUntil||0,name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,beamTarget:h.beamTarget,beamTime:h.beamTime,summonKind:h.summonKind,expiry:h.expiry,invisibleUntil:h.invisibleUntil,shield:h.shield})),enemies:state.enemies.map(e=>({id:e.id,hp:e.hp,maxHp:e.maxHp,x:e.x,y:e.y,damage:e.damage,speed:e.speed,attackPeriod:e.attackPeriod,cooldown:e.cooldown,inAttackRange:!!e.inAttackRange,boss:!!e.boss})),totems:state.totems.length,traps:state.traps.length,sanctuaries:state.sanctuaries.map(z=>({...z})),encounter:encounter().name})};
 
 if(document.body.classList.contains('lab-mode')){
  window.__FW_LAB_API__={
