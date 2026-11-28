@@ -32,3 +32,11 @@ The candidate JSON is an explicit compatibility subset of manifesto v1.16.0. The
 7. Add Endless, records and save/resume after campaign tests; integrate with UI and deploy only after regression checks.
 
 Known compatibility limitations are in the manifest JSON. Do not interpret test-mode fixed teams or partial candidate ability mappings as a fully simulated campaign. Do not infer that all design features are implemented merely because their records exist.
+
+## Merchant integration checkpoint (development only)
+
+The branch now loads merchant.js in the main demo and balance lab. All five pack prices, fifteen class rarities and per-pack odds, eighth-draw protection, finite protected stock, seven product categories, price floors, all twenty merchant unlocks, rerolls/reserves/commission, and automatic deployment are wired. Persistent class discovery and pack draw pity are recorded in the existing skill save, with a committed-attempt marker to avoid counting the same purchased stock twice on reload. The previous save's ordinary/permanent skill data is retained; this branch temporarily uses old coin-cap and slot node effects (capped at 40 coins/six slots), and the new merchant purchase list coexists with the old Legacy rank list. Existing old preparation stock uses a different schema and is not migrated. Combat-active refresh abandons that battle rather than restoring it. Browser storage is required for reliable persistence.
+
+Verified in the current session: source syntax, 4,653 pure merchant assertions, mocked-DOM startup/purchase/reload/deployment/commit-once checks, and ten seconds of the existing combat loop. Repeat with `node merchant.test.mjs` and `node merchant-integration.test.mjs` from tools/balance; browser-level CI results remain unverified. Old numerical combat profile remains active in the public demo. The candidate runner remains a conditional fixed-team balance test; its live/candidate labels now refer to numerical combat profiles, not two different merchant implementations.
+
+Pending: migrate the complete ordinary/Legacy graphs, exact new coin-cap sources and old rank entitlements, skin loot boxes/skin stats and appearance rolls, real battlefield pack-opening presentation, remaining combat mechanics and full-browser validation. Do not deploy until save migration and CI are verified.
