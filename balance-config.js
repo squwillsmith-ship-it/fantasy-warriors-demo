@@ -14,7 +14,7 @@ const dataset={
       "status": "live",
       "manifestoVersion": "1.16.0",
       "lastReviewed": "2026-11-28",
-      "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required. Reward pacing: 8 scheduled kills per UP; +0.5 elite UP.",
+      "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required. Reward pacing: 8 scheduled kills per UP; +0.5 elite UP. Late prestige scheduled UP scaling 0.8 at P4 and 0.65 at P5+; boss and floor retained.",
       "heroes": [
         {
           "id": "knight",
@@ -594,7 +594,15 @@ const dataset={
         "startingTowerHP": 100,
         "minionUPMode": "deterministic-eight",
         "eligibleKillsPerUP": 8,
-        "eliteKillUP": 0.5
+        "eliteKillUP": 0.5,
+        "scheduledUPByPrestige": [
+          1,
+          1,
+          1,
+          1,
+          0.8,
+          0.65
+        ]
       },
       "skill": {
         "costs": {
@@ -2364,6 +2372,7 @@ function validate(profile){
  finite(profile.economy.eligibleKillsPerUP,1,1000,'UP cadence');
  if(!Number.isInteger(profile.economy.eligibleKillsPerUP)||!['deterministic-six','deterministic-eight'].includes(profile.economy.minionUPMode))error('UP mode');
  finite(profile.economy.eliteKillUP,0,1000,'elite UP');
+ if(profile.economy.scheduledUPByPrestige!==undefined){const factors=profile.economy.scheduledUPByPrestige;if(!Array.isArray(factors)||factors.length!==6)error('prestige UP scaling');for(const n of factors)finite(n,.01,1,'prestige UP factor');}
  for(const key of ['openingFraction','middleEndFraction','openingStart','openingEnd','middleEnd','finalInterval'])finite(profile.spawn.wavePhases?.[key],.01,30,'wave.'+key);
  if(!profile.eliteSchedule||profile.eliteSchedule.liveCaps?.length!==10)error('elite schedule');
  return true;
