@@ -41,10 +41,10 @@ function create({state,owns,equipped,hitEnemy,healHero,ring,log}){
   // Per simulation slice integrate only the strongest overlapping instance of each spell.
   for(const h of state.heroes){if(h.hp<=0||h.summonKind)continue;let n=0;for(const z of active)if(z.key==='healing'&&Math.hypot(h.x-z.x,h.y-z.y)<=z.radius)n=Math.max(n,z.amount*Math.max(0,Math.min(z.end,state.elapsed)-Math.max(z.start,start)));if(n>0)healHero(h,n)}
   for(const e of state.enemies){if(e.hp<=0)continue;let n=0;for(const z of active)if(z.key==='ember'&&Math.hypot(e.x-z.x,e.y-z.y)<=z.radius)n=Math.max(n,z.amount*Math.max(0,Math.min(z.end,state.elapsed)-Math.max(z.start,start)));if(n>0)hitEnemy(e,n,spells.ember.color,null,null,'playerSpell')}
-  state.spellZones=state.spellZones.filter(z=>z.end>state.elapsed);
+  state.spellZones=state.spellZones.filter(z=>z.end>state.elapsed+1e-8);
   const echoes=state.spellEchoes.filter(z=>z.at<=state.elapsed+1e-8);state.spellEchoes=state.spellEchoes.filter(z=>z.at>state.elapsed+1e-8);for(const z of echoes)apply(z.key,z.x,z.y,z.v,.5)
  }
- function slow(e){let factor=1;for(const z of state.spellZones)if(z.key==='frost'&&z.end>state.elapsed&&Math.hypot(e.x-z.x,e.y-z.y)<=z.radius)factor=Math.min(factor,1-z.amount);return factor}
+ function slow(e){let factor=1;for(const z of state.spellZones)if(z.key==='frost'&&z.end>state.elapsed+1e-8&&Math.hypot(e.x-z.x,e.y-z.y)<=z.radius)factor=Math.min(factor,1-z.amount);return factor}
  function fellowship(h){return owns('R-G10')?Math.min(.25,.05*state.removedClasses.filter(id=>id!==h.base.id).length):0}
  function snapshot(){return {loadout:loadout(),known:Object.keys(spells).filter(known),slots:slots(),armed:state.spellArmed,casts:state.spellCasts,cooldowns:Object.fromEntries(loadout().map(k=>[k,Math.max(0,(state.spellReady[k]||0)-state.elapsed)])),zones:state.spellZones.map(z=>({...z})),echoes:state.spellEchoes.length,captures:state.heroes.filter(h=>h.capture).map(h=>({hero:h.id,name:h.base.name,rescues:h.rescues||0,...h.capture,remaining:Math.max(0,h.capture.expires-state.elapsed)}))}}
  reset();return {reset,down,press,tick,arm,cancel,cast,pointer,slow,fellowship,snapshot,values,loadout,known,slots,captureTick};
