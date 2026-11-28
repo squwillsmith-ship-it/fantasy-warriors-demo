@@ -1,7 +1,7 @@
 /* Canvas rendering only: reads shared state, does not progress combat. */
 window.FWGameRenderer={create({canvas,ctx,state,ENCOUNTERS,TUNING,clamp,cfg,chargeSeconds,isOriginalHero}){
 const view={w:900,h:570,dpr:1,scale:42,worldW:20,worldH:14};
-function resize(){const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;const dpr=Math.min(2,window.devicePixelRatio||1);Object.assign(view,{w:rect.width,h:rect.height,dpr,scale:Math.min(rect.width/27,rect.height/19.5),worldW:rect.width/Math.min(rect.width/27,rect.height/19.5),worldH:rect.height/Math.min(rect.width/27,rect.height/19.5)});canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(rect.height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
+function resize(){const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;const dpr=Math.min(2,window.devicePixelRatio||1);Object.assign(view,{w:rect.width,h:rect.height,dpr,scale:Math.min(rect.width/27,rect.height/19.5),worldW:rect.width/Math.min(rect.width/27,rect.height/19.5),worldH:rect.height/Math.min(rect.width/27,rect.height/19.5)});const width=Math.round(rect.width*dpr),height=Math.round(rect.height*dpr);if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}ctx.setTransform(dpr,0,0,dpr,0,0)}
 function px(x){return view.w/2+x*view.scale}function py(y){return view.h/2+y*view.scale}
 function circle(x,y,r,col){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=col;ctx.fill()}
 function strokeCircle(x,y,r,col,width=1){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.strokeStyle=col;ctx.lineWidth=width;ctx.stroke()}
