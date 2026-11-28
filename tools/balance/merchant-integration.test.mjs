@@ -53,3 +53,27 @@ assert(migrated.treeSchema===2&&migrated.up===12&&migrated.shards===8,'Migration
 assert.equal(migrated.kills.knight,7);
 assert.equal(boot(true).window.FWSkillTree.debug().up,migrated.up,'Migration refund must not repeat');
 console.log('Schema migration and refund checks passed.');
+
+storage.set(key,JSON.stringify({treeSchema:2,up:10000,shards:10000,resets:5,runHighest:10,highestClear:10,runWins:10,campaignStage:1,gateways:[2,3,4,5],kills:Object.fromEntries(tree.heroes.map(id=>[id,10000])),nodes:[],legacyNodes:[]}));
+const d=boot(true),ds=d.window.FWSkillTree,dl=d.window.__FW_LAB_API__,dt=d.window.__FW_TEST__;
+assert(ds.purchase('O-SP01'));assert(ds.purchase('O-SP02'));assert(ds.purchase('O-SP11'));
+assert(ds.setSpellLoadout(0,'lightning'));assert(ds.setSpellLoadout(1,'healing'));assert.equal(ds.setSpellLoadout(1,'lightning'),false);
+dl.prepare();dl.queueHero('mage',1);dl.queueHero('archer',1);dl.start();
+const [victim,other]=dt.current().heroes;
+dt.enemy(victim.x,victim.y,1000,0);dt.enemy(other.x,other.y,1000,0);
+const [captor,otherCaptor]=dt.current().enemies;
+assert(dt.damageHero(victim.id,1e6,captor.id));assert(dt.damageHero(other.id,1e6,otherCaptor.id));
+assert.equal(dt.actions().captures.length,2);
+assert(dt.armSpell('lightning'));assert(dt.castSpell(captor.x,captor.y));assert.equal(dt.actions().casts,1);assert.equal(dt.armSpell('lightning'),false);
+const before=dt.current().heroes.find(h=>h.id===victim.id).charge;
+for(let i=0;i<10;i++)assert(dt.rescue(victim.id));
+let revived=dt.current().heroes.find(h=>h.id===victim.id);
+assert.equal(revived.hp,1);assert.equal(revived.charge,before);assert.equal(revived.rescues,1);
+dt.damageHero(victim.id,1e6,captor.id);assert.equal(dt.current().heroes.find(h=>h.id===victim.id).hp,1,'rescue invulnerability');
+assert(dt.armSpell('healing'));assert(dt.castSpell(revived.x,revived.y));dl.pause();const frozen=JSON.stringify(dt.actions());dt.advance(2);assert.equal(JSON.stringify(dt.actions()),frozen,'pause freezes captures and spells');dl.pause();
+dt.advance(1.1);dt.damageHero(victim.id,1e6,captor.id);assert.equal(dt.actions().captures.find(c=>c.hero===victim.id).required,20);
+for(let i=0;i<20;i++)assert(dt.rescue(victim.id));
+assert.equal(dt.current().heroes.find(h=>h.id===victim.id).rescues,2);
+dt.advance(1.1);dt.damageHero(victim.id,1e6,captor.id);assert.equal(dt.actions().captures.find(c=>c.hero===victim.id).required,0);
+assert(dt.rescue(victim.id));assert.equal(dt.current().heroes.find(h=>h.id===victim.id).hp,0);
+console.log('Real-core spell and capture integration passed.');
