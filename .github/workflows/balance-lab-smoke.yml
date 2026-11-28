@@ -4,11 +4,21 @@ on:
     branches: [balance-v1.16]
     paths:
       - 'tools/balance/**'
+      - 'merchant.js'
+      - 'game-*.js'
+      - 'skill-tree.js'
+      - 'index.html'
+      - 'balance-lab.html'
       - '.github/workflows/balance-lab-smoke.yml'
   pull_request:
     branches: [main]
     paths:
       - 'tools/balance/**'
+      - 'merchant.js'
+      - 'game-*.js'
+      - 'skill-tree.js'
+      - 'index.html'
+      - 'balance-lab.html'
       - '.github/workflows/balance-lab-smoke.yml'
 permissions:
   contents: read
@@ -31,6 +41,7 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
       - run: npm run check
+      - run: node merchant.test.mjs
       - run: node run.mjs --profile=${{ matrix.profile }} --stages=1,2,10 --seeds=2 --max-seconds=240 --output=smoke-${{ matrix.profile }}.json
       - uses: actions/upload-artifact@v4
         with:
