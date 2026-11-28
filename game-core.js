@@ -328,52 +328,71 @@ function resolveActorCollisions(){
  }
  state.combatTelemetry.overlaps=overlaps;
 }
-// Arcade AI: the closest living enemy in the hero's forward half-plane wins.
-// If nothing is ahead, turn toward the closest accessible enemy instead.
+// Simple combat states: acquire once, pursue/attack that enemy, then patrol.
+function effectiveRange(h,e,isBear=h.base.id==='druid'&&h.bearUntil>state.elapsed){
+ return (isBear?1.3:h.base.range)+(e?.boss&&(isBear||h.base.range<=2.15)?.4:0);
+}
+function reachableTarget(h,e){
+ if(!e||e.hp<=0)return false;
+ const range=effectiveRange(h,e);
+ // A hero deployed outside its normal guard may fight enemies already within range.
+ // Otherwise the target must be reachable from the existing tower guard area.
+ return Math.hypot(e.x-h.x,e.y-h.y)<=range+.001||
+   Math.hypot(e.x,e.y)<=guardRadius(h)+range-.08;
+}
 function selectHeroTarget(h,dt){
- const current=state.enemies.find(e=>e.id===h.targetId&&e.hp>0&&(!e.ethereal||e.vulnerableUntil>state.elapsed));
- const legal=e=>e&&Math.hypot(e.x-h.x,e.y-h.y)<=acquireRadius(h)
-   &&Math.hypot(e.x,e.y)<=guardRadius(h)+Math.max(1,h.base.range);
- if(h.windupTime>0&&legal(current))return current; // Finish an attack.
- h.targetClock=(h.targetClock||0)-dt;
- if(legal(current)&&h.targetClock>0)return current;
- h.targetClock=TUNING.shared.decisionInterval;
- const lure=state.enemies.filter(e=>e.hp>0&&(e.kind==='decoy'||e.stage===8&&e.elite)&&legal(e)&&Math.hypot(e.x-h.x,e.y-h.y)<=3).sort((a,b)=>Math.hypot(a.x-h.x,a.y-h.y)-Math.hypot(b.x-h.x,b.y-h.y)||a.id-b.id)[0];
- const target=lure||ARCADE.nearestFrontTarget(
-   h,state.enemies.filter(e=>!e.ethereal||e.vulnerableUntil>state.elapsed),acquireRadius(h),guardRadius(h),h.base.range,
-   e=>SKILLFX?.focusBias(h,e)||0
- );
- if((target?.id??null)!==(h.targetId??null)){
-   h.lastTargetSwitch=state.elapsed;
-   state.combatTelemetry.targetSwitches++;
-   h.slotIndex=-1;h.slotTarget=null;h.windupTime=0;
+ const current=state.enemies.find(e=>e.id===h.targetId);
+ // Never re-rank a living, reachable target. Temporary Wraith invulnerability
+ // is not a reason to abandon an established fight.
+ if(reachableTarget(h,current))return current;
+ const old=h.targetId??null;
+ let target=null,best=Infinity,lure=null,lureBest=Infinity;
+ for(const e of state.enemies){
+  if(!reachableTarget(h,e)||e.ethereal&&!(e.vulnerableUntil>state.elapsed))continue;
+  const d=Math.hypot(e.x-h.x,e.y-h.y);
+  if(d>acquireRadius(h))continue;
+  // Preserve explicit enemy lure mechanics on acquisition only.
+  if((e.kind==='decoy'||e.stage===8&&e.elite)&&d<=3&&(d<lureBest||d===lureBest&&e.id<lure.id)){lure=e;lureBest=d}
+  if(d<best||d===best&&e.id<target.id){target=e;best=d}
+ }
+ target=lure||target;
+ if((target?.id??null)!==old){
+  h.lastTargetSwitch=state.elapsed;
+  state.combatTelemetry.targetSwitches++;
+  h.slotIndex=-1;h.slotTarget=null;h.windupTime=0;h.windupTarget=null;
+  h.engagedTargetId=null;h.idleCenter=null;h.idleGoal=null;
+  // Count actual abandonment separately from normal acquisition/death.
+  if(current&&current.hp>0)state.combatTelemetry.unreachableReleases=(state.combatTelemetry.unreachableReleases||0)+1;
  }
  h.targetId=target?.id??null;
  return target;
 }
-function meleeSlotGoal(h,e){
- // Straight-line chase to a nearby hit position; collision and tower geometry
- // are still resolved by the shared movement system, without slot auctions.
- const dx=h.x-e.x,dy=h.y-e.y,d=Math.max(.01,Math.hypot(dx,dy));
- const gap=actorRadius(h)+actorRadius(e)+.12;
- let x=e.x+dx/d*gap,y=e.y+dy/d*gap;
- const limit=guardRadius(h)-.08;
- const length=Math.hypot(x,y);
- if(length>limit&&Math.hypot(h.x,h.y)<=guardRadius(h)){
-   x=x/length*limit;y=y/length*limit;
+function idlePatrol(h,dt){
+ // Short, slow loops around the position where the previous fight ended,
+ // not a forced return to spawn or a random walk across the arena.
+ if(!h.idleCenter){h.idleCenter={x:h.x,y:h.y};h.idlePhase=(h.id*2.399963229728653)% (2*Math.PI);h.idleGoal=null}
+ const nearGoal=h.idleGoal&&Math.hypot(h.x-h.idleGoal.x,h.y-h.idleGoal.y)<.16;
+ if(!h.idleGoal||nearGoal||!legalActorPosition(h,h.idleGoal.x,h.idleGoal.y)){
+  h.idleGoal=null;
+  for(let i=0;i<12;i++){
+   h.idlePhase+=Math.PI*.62;
+   const radius=.85+(h.id%3)*.15;
+   const p={x:h.idleCenter.x+Math.cos(h.idlePhase)*radius,y:h.idleCenter.y+Math.sin(h.idlePhase)*radius};
+   if(legalActorPosition(h,p.x,p.y)&&!segmentHitsTower(h.x,h.y,p.x,p.y,Math.max(TOWER_BLOCK,1+actorRadius(h)+.045))){h.idleGoal=p;break}
+  }
  }
- return safeGoal(x,y);
+ if(h.idleGoal){const dx=h.idleGoal.x-h.x,dy=h.idleGoal.y-h.y;h.facing=Math.atan2(dy,dx)+Math.PI/2;steerActor(h,h.idleGoal,dt,h.base.walk*.38)}else brake(h,dt);
 }
-function heroCombatGoal(h,e,isMeleeForm=false){
- const dist=Math.max(.01,Math.hypot(e.x-h.x,e.y-h.y)),range=isMeleeForm?1.15:h.base.range;
- if(range<=2.15)return meleeSlotGoal(h,e);
- // Ranged and support heroes hold their current position whenever the target is in attack range.
- // No defensive kiting, backpedalling or standoff repositioning when an enemy approaches.
- if(dist<=range)return {x:h.x,y:h.y};
- const preferred=clamp(range*TUNING.shared.rangeStandoff,1.7,4.3),dx=(h.x-e.x)/dist,dy=(h.y-e.y)/dist;
- const goal={x:e.x+dx*preferred,y:e.y+dy*preferred};
- if(Math.hypot(goal.x,goal.y)>guardRadius(h)-.2){const a=Math.atan2(goal.y,goal.x);goal.x=Math.cos(a)*(guardRadius(h)-.25);goal.y=Math.sin(a)*(guardRadius(h)-.25)}
- return goal;
+function heroCombatGoal(h,e,isBear=false){
+ const range=effectiveRange(h,e,isBear),dist=Math.hypot(e.x-h.x,e.y-h.y);
+ if(dist<=range)return null;
+ // Approach only until in range. No orbiting, slot juggling or defensive kiting.
+ const gap=Math.max(actorRadius(h)+actorRadius(e)+.06,range-.10);
+ const dx=(h.x-e.x)/Math.max(.01,dist),dy=(h.y-e.y)/Math.max(.01,dist);
+ let x=e.x+dx*gap,y=e.y+dy*gap;
+ const limit=guardRadius(h)-.035,length=Math.hypot(x,y);
+ if(length>limit){x=x/length*limit;y=y/length*limit}
+ return safeGoal(x,y,Math.max(TOWER_BLOCK,1+actorRadius(h)+.045));
 }
 
 function stepSporeClouds(dt){
@@ -424,19 +443,20 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  for(const p of state.traps)if(owns('O-2-H-B3')){const h=state.heroes.find(a=>a.id===p.owner&&a.hp>0);if(h)for(const e of enemiesInRadius(p.x,p.y,p.radius))if(!p.seen.has(e.id)){p.seen.add(e.id);hunterBleed(e,h)}}
  for(const h of state.heroes){if(h.hp<=0)continue;if(h.rootedUntil>state.elapsed){h.vx=h.vy=0;continue}if(h.controlUntil>state.elapsed){const q={x:h.x+Math.cos(h.controlAngle)*2,y:h.y+Math.sin(h.controlAngle)*2};if(!legalActorPosition(h,q.x,q.y))h.controlAngle+=1.5;takeTowerSafeStep(h,q,dt,h.base.walk);continue}if(h.expiry<=state.elapsed){h.naturalExpiry=true;h.hp=0;if(h.summonKind==='undead'&&owns('R-NEC-D')){const owner=state.heroes.find(a=>a.id===h.ownerId&&a.hp>0);if(owner&&state.elapsed-(owner.lastExpiryHeal??-Infinity)>=1){owner.lastExpiryHeal=state.elapsed;healHero(owner,owner.maxHp*.03)}}continue}if(h.shieldUntil>0&&h.shieldUntil<state.elapsed){h.shield=0;h.shieldOwner=null;h.shieldCast=null}if(h.frenzyActive&&h.frenzyUntil<=state.elapsed){h.frenzyActive=false;if(owns('R-BAR-D')&&h.frenzyKills>=3)grantShield(h,h.maxHp*.2,4)}if(h.smokeActive&&h.invisibleUntil<=state.elapsed){h.smokeActive=false;if(owns('V2-ROG-02'))for(const e of state.enemies){const total=ownStatuses(e,h,'poison').reduce((n,a)=>n+a.dps*a.remaining,0);if(total>0)hitEnemy(e,total*.25,h.base.color,h.base.id,h.id,'derived')}}if(h.bearActive&&h.bearUntil<=state.elapsed){h.bearActive=false;if(owns('R-DRU-D'))healHero(h,h.maxHp*.1)}
   if(!isOriginalHero(h)){
-   h.cooldown-=dt;let enemy=null,best=Infinity,rangeDistance=Infinity;for(const e of state.enemies){if(e.hp<=0||e.ethereal&&!(e.vulnerableUntil>state.elapsed))continue;const actual=Math.hypot(e.x-h.x,e.y-h.y);let d=actual;if(h.summonKind==='hound'&&e.beastFocus>state.elapsed)d*=.35;if(SKILLFX)d+=SKILLFX.summonPriority(h,e);if(d<best&&Math.hypot(e.x,e.y)<TUNING.shared.towerGuardRadius+(h.summonKind==='hound'&&SKILLS?.has('T5-BM-T01')?-.20:1)){best=d;rangeDistance=actual;enemy=e}}
-   if(enemy){h.facing=Math.atan2(enemy.y-h.y,enemy.x-h.x)+Math.PI/2;if(rangeDistance>h.base.range)moveToPoint(h,enemy,dt);else if(h.cooldown<=0){h.cooldown=1/(h.base.speed*(h.alphaBuffUntil>state.elapsed?1.2:1));{const owner=state.heroes.find(a=>a.id===h.ownerId&&a.hp>0);let mult=1;if(h.summonKind==='hound'){if(owns('R-BEA-B')&&!h.firstSummonHit)mult+=.5;if(h.whipBoost){mult+=.5;h.whipBoost=false}if(owns('V2-BEA-01')&&Math.random()<.25)mult*=2;if(owns('V2-BEA-02'))mult+=Math.min(.5,(SKILLS?.permanentDamageBonus?.('beastmaster')||0)*.5)}if(h.summonKind==='undead'&&owner&&owns('V2-NEC-01')&&owner.beamTime>=cfg(owner).special.beamRampSeconds)mult+=.5;h.firstSummonHit=true;const actual=hitEnemy(enemy,h.base.damage*mult,h.base.color,heroSourceId(h),h.ownerId,'summon');if(owner&&h.summonKind==='hound'){if(owns('O-5-BM-A4'))healHero(owner,actual*.1);if(owns('R-BEA-D')&&enemy.hp<=0&&enemy.scheduled&&state.elapsed-(owner.lastDogHeal??-Infinity)>=2){owner.lastDogHeal=state.elapsed;healHero(owner,owner.maxHp*.05)}}}visualBeam(h,enemy)}}continue;
+   h.cooldown-=dt;const leash=TUNING.shared.towerGuardRadius+(h.summonKind==='hound'&&SKILLS?.has('T5-BM-T01')?-.20:1);let enemy=state.enemies.find(e=>e.id===h.targetId&&e.hp>0&&Math.hypot(e.x,e.y)<leash),best=Infinity,rangeDistance=enemy?Math.hypot(enemy.x-h.x,enemy.y-h.y):Infinity;if(!enemy)for(const e of state.enemies){if(e.hp<=0||e.ethereal&&!(e.vulnerableUntil>state.elapsed))continue;const actual=Math.hypot(e.x-h.x,e.y-h.y);let d=actual;if(h.summonKind==='hound'&&e.beastFocus>state.elapsed)d*=.35;if(SKILLFX)d+=SKILLFX.summonPriority(h,e);if(d<best&&Math.hypot(e.x,e.y)<leash){best=d;rangeDistance=actual;enemy=e}}h.targetId=enemy?.id??null;
+   if(enemy){h.facing=Math.atan2(enemy.y-h.y,enemy.x-h.x)+Math.PI/2;if(rangeDistance>h.base.range)moveToPoint(h,enemy,dt);else if(h.cooldown<=0&&(!enemy.ethereal||enemy.vulnerableUntil>state.elapsed)){h.cooldown=1/(h.base.speed*(h.alphaBuffUntil>state.elapsed?1.2:1));{const owner=state.heroes.find(a=>a.id===h.ownerId&&a.hp>0);let mult=1;if(h.summonKind==='hound'){if(owns('R-BEA-B')&&!h.firstSummonHit)mult+=.5;if(h.whipBoost){mult+=.5;h.whipBoost=false}if(owns('V2-BEA-01')&&Math.random()<.25)mult*=2;if(owns('V2-BEA-02'))mult+=Math.min(.5,(SKILLS?.permanentDamageBonus?.('beastmaster')||0)*.5)}if(h.summonKind==='undead'&&owner&&owns('V2-NEC-01')&&owner.beamTime>=cfg(owner).special.beamRampSeconds)mult+=.5;h.firstSummonHit=true;const actual=hitEnemy(enemy,h.base.damage*mult,h.base.color,heroSourceId(h),h.ownerId,'summon');if(owner&&h.summonKind==='hound'){if(owns('O-5-BM-A4'))healHero(owner,actual*.1);if(owns('R-BEA-D')&&enemy.hp<=0&&enemy.scheduled&&state.elapsed-(owner.lastDogHeal??-Infinity)>=2){owner.lastDogHeal=state.elapsed;healHero(owner,owner.maxHp*.05)}}}visualBeam(h,enemy)}}continue;
   }
   const tc=cfg(h),isBear=h.base.id==='druid'&&h.bearUntil>state.elapsed;
   let target=selectHeroTarget(h,dt);
-  if(h.base.id==='necromancer'&&h.beamTarget!=null){const ongoing=state.enemies.find(e=>e.id===h.beamTarget&&e.hp>0);if(ongoing&&Math.hypot(ongoing.x-h.x,ongoing.y-h.y)<=h.base.range&&Math.hypot(h.x,h.y)<=guardRadius(h)+.05)target=ongoing}
   stepSpecials(h,dt);
-  if(!target){h.attackState='idle';h.windupTime=0;h.slotIndex=-1;h.slotTarget=null;if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);if(h.base.range<=2.15&&Math.hypot(h.x-h.anchorX,h.y-h.anchorY)>.52)moveToPoint(h,{x:h.anchorX,y:h.anchorY},dt);else brake(h,dt);continue}
-  const dist=Math.hypot(target.x-h.x,target.y-h.y),attackRange=(isBear?1.3:h.base.range)+(target.boss&&h.base.range<=2.15?.4:0);
+  if(!target||target.hp<=0){h.attackState='idle';h.windupTime=0;h.windupTarget=null;h.engagedTargetId=null;h.slotIndex=-1;h.slotTarget=null;if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);idlePatrol(h,dt);continue}
+  h.idleCenter=null;h.idleGoal=null;
+  const dist=Math.hypot(target.x-h.x,target.y-h.y),attackRange=effectiveRange(h,target,isBear);
   h.facing=Math.atan2(target.y-h.y,target.x-h.x)+Math.PI/2;
   const goal=heroCombatGoal(h,target,isBear);
-  if(goal&&dist>attackRange-(!isBear&&h.base.range>2.15?0:.02)){h.attackState='approach';h.windupTime=0;moveToPoint(h,goal,dt);if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);continue}
-  if(goal&&(h.base.range<=2.15||isBear)&&Math.hypot(goal.x-h.x,goal.y-h.y)>.15)moveToPoint(h,goal,dt*.7);else brake(h,dt);
+  if(goal){h.attackState='approach';h.windupTime=0;h.windupTarget=null;moveToPoint(h,goal,dt);if(h.base.id==='necromancer')stepNecroBeam(h,null,dt);continue}
+  h.vx=h.vy=0; // Both melee and ranged hold position while attacking.
+  if(target.ethereal&&!(target.vulnerableUntil>state.elapsed)){h.attackState='waiting';h.windupTime=0;h.windupTarget=null;continue}
   if(h.base.id==='necromancer'){h.attackState='channel';h.engagedTargetId=target.id;stepNecroBeam(h,target,dt);continue}
   const cycle=1/((isBear?h.base.speed*.8/.65:h.base.speed)*(h.frenzyUntil>state.elapsed?cfg(h).special.frenzyAttackSpeedMultiplier:1)*(1+(h.bannerUntil>state.elapsed?.25:0)+(h.blessingUntil>state.elapsed&&owns('O-3-PR-B4')?.25:0)+ACTIONS.fellowship(h)));
   if(h.windupTime>0){h.windupTime-=dt;h.attackState='windup';if(h.windupTime>0)continue;
