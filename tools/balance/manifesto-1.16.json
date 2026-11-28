@@ -25,8 +25,8 @@
     "schemaVersion": 1,
     "status": "live",
     "manifestoVersion": "1.16.0",
-    "lastReviewed": "2026-11-23",
-    "notes": "LAB ONLY: numerical subset of manifesto v1.16.0 compatible with demo 1.0.14. Old skill effect engine, equal pack draw, no prestige stat scaling, no new abilities, no endless. Do not activate for public campaign.",
+    "lastReviewed": "2026-11-28",
+    "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required.",
     "heroes": [
       {
         "id": "knight",
@@ -34,8 +34,8 @@
         "pack": 0,
         "rarity": "Common",
         "color": "#b9c6d0",
-        "hp": 19,
-        "damage": 3.2,
+        "hp": 29,
+        "damage": 3.68,
         "speed": 0.75,
         "walk": 1.78,
         "range": 1,
@@ -90,8 +90,8 @@
         "pack": 1,
         "rarity": "Rare",
         "color": "#df9878",
-        "hp": 28,
-        "damage": 6.4,
+        "hp": 42,
+        "damage": 7.36,
         "speed": 0.5,
         "walk": 1.78,
         "range": 1.3,
@@ -104,8 +104,8 @@
         "pack": 1,
         "rarity": "Uncommon",
         "color": "#b3a0d8",
-        "hp": 14,
-        "damage": 1.6,
+        "hp": 21,
+        "damage": 1.84,
         "speed": 2.1,
         "walk": 1.95,
         "range": 1,
@@ -118,8 +118,8 @@
         "pack": 2,
         "rarity": "Rare",
         "color": "#eac978",
-        "hp": 36,
-        "damage": 5.2,
+        "hp": 54,
+        "damage": 5.98,
         "speed": 0.65,
         "walk": 1.72,
         "range": 1.2,
@@ -132,8 +132,8 @@
         "pack": 2,
         "rarity": "Uncommon",
         "color": "#d8cae5",
-        "hp": 21,
-        "damage": 3.8,
+        "hp": 32,
+        "damage": 4.37,
         "speed": 0.9,
         "walk": 1.85,
         "range": 1,
@@ -230,8 +230,8 @@
         "pack": 4,
         "rarity": "Legendary",
         "color": "#f49b69",
-        "hp": 56,
-        "damage": 10,
+        "hp": 84,
+        "damage": 11.5,
         "speed": 0.4,
         "walk": 1.7,
         "range": 1.7,
@@ -937,8 +937,8 @@
         "number": 4,
         "slots": 76,
         "basic": {
-          "hp": 13,
-          "damage": 5,
+          "hp": 11,
+          "damage": 4,
           "speed": 1.05,
           "attackPeriod": 1.4,
           "firstDelay": 0.65
@@ -1150,8 +1150,8 @@
       }
     ],
     "towerFire": {
-      "damage": 2,
-      "cooldownSeconds": 3,
+      "damage": 3,
+      "cooldownSeconds": 2.5,
       "projectileSpeed": 9,
       "projectileRadius": 0.3
     },
@@ -1319,15 +1319,15 @@
       "hpDamage": 1.08,
       "moveRate": 1.02,
       "payout": [
-        1,
-        1,
-        2,
-        2,
+        3,
         3,
         4,
+        4,
+        5,
         6,
         8,
-        11,
+        10,
+        13,
         15
       ],
       "mutations": {
@@ -3735,7 +3735,7 @@
         "name": "Small Treasury",
         "cost": 1,
         "prerequisites": "ROOT",
-        "effect": "Economy | +1 permanent maximum attempt coin."
+        "effect": "Economy | +2 permanent maximum attempt coins."
       },
       {
         "id": "R-E02",
@@ -3756,7 +3756,7 @@
         "name": "Deep Treasury",
         "cost": 3,
         "prerequisites": "R-E01",
-        "effect": "Economy | +1 additional permanent maximum attempt coin."
+        "effect": "Economy | +2 additional permanent maximum attempt coins."
       },
       {
         "id": "R-E05",
@@ -3874,7 +3874,8 @@
       "ENDLESS-007 — ELITES AND MUTATIONS: Respect existing prestige family unlocks (ELITE-PROG-001–004). Use completed prestige p and family-specific ceil(f/2) unlock, same quota min(18%,4%+3%×(p−unlockReset)) rounded, first 30% free from elites, family live caps 2/3/4; same elite replacement rule. Reuse persistent campaign family attempted flag, not a new first-ever flag on each Endless wave; successful current-run Stage10 implies all ten attempted. At p>=4, replace min(available basic slots,p−3) scheduled basics with mutants spaced through wave, ×2 HP and damage after scaling; never mutate elite or boss, normal reward exactly 1 Shard on each legitimate mutant kill even failed runs, no per-run farming cap. Enemy-created summons inherit applicable wave/prestige stats, no eligible UP/class reward, with original summon caps and no recursive scaling.",
       "ENDLESS-008 — BOSSES: On every fifth Endless wave, after all scheduled minions and surviving hostile wave summons defeated, 2s break then one existing campaign boss. Boss family b=1+((w/5−1) mod 10) for boss waves: King Slime Wave5, Giant Plant Wave10, Orc Wave15, Bandit King Wave20, Drake Wave25, Seraph Wave30, Succubus Wave35, Lich Wave40, High Priest Wave45, Eldritch Horror Wave50; then repeat. Normalize each boss to effective 700 pre-wave/prestige HP, ordinary hit base 14×clamp(original ordinary hit/16,0.75,1.4); preserve existing attack cadence, speed, signature ability geometry/mechanics and relative phase damage; scale with H/D/S and prestige. For King Slime use effective HP = half initial boss HP + four normalized Slime child HP (26.4 each pre-multipliers), so initial HP=2×(700−4×26.4)=1188.8; split at half and destroy all four, one reward. For Eldritch Horror distribute 700 across phases in ratio 390:455:545 (196.40,229.14,274.46 approximately), same phases and original relative speeds/damage intervals; final phase death awards one boss reward. Boss signature damaging abilities scale with D and prestige once, not double. On nonboss waves clear all scheduled and lingering hostile units, then victory. Existing boss-created enemy reward exclusions remain.",
       "ENDLESS-009 — FACTION: At completed prestige 5, every second boss wave (w=10,20,30...) receives the existing exactly-three sequential Hollow Legion encounters AFTER the minion wave and before that wave's original boss, one active at a time, 2s intermission. At p6 add boss ordinal j=1 mod10; p7 add j=3 mod10; p8 j=5; p9 j=7; p10 j=9, i.e. all boss waves at p10. No faction on ordinary nonboss waves. Each faction boss reference HP=12% of 700 (84) before H and prestige, Champion/Sorcerer/Executioner ×1/.8/1.2, ordinary damage relative to normalized boss per COMBAT-BAL-008, existing individual signature mechanics, apply wave/prestige factors once. Preserve legitimate 2 UP+1 Shard per faction boss; first campaign encounter rules unchanged. This precise smaller-boss budget is a design estimate; pressure proxy models faction as +15% normalized demand on every tenth wave at p5 only, not three literal encounters.",
-      "ENDLESS-010 — REWARDS: Eligible scheduled minions and elites retain cumulative 1 UP/6 kill rule and normal class final-blow credit, carry existing current-run remainder across mode transitions. +1 UP per eligible elite and +5 UP per normal Endless boss defeat; existing multipliers/milestones only as applicable, no repeat campaign first-clear journal reward. Existing mutation Shards (1 each) and faction rewards (2 UP+1 Shard per boss) remain unchanged even on defeat. New optional Endless bonus: exactly 1 Shard per normal boss defeat (every fifth wave), earned once per legitimate boss encounter including repeat runs; no extra end-of-run payout or exponentially escalating Endless Shard reward, no new currency. No UP/class credit for enemy-created units; faction bosses grant only their separate boss rewards, never scheduled-kill UP or class credit; preserve true final blow attribution for legitimate scheduled hero-owned kills. Normal boss Shard reward is independent of fixed 15 max main-campaign reset payout. Use unique persistent encounter/reward IDs and transaction commits against reload exploits, no cap on legitimate mutation farming. Existing one-Shard skin box and 570-Shard Legacy candidate unchanged."
+      "ENDLESS-010 — REWARDS: Eligible scheduled minions and elites retain cumulative 1 UP/6 kill rule and normal class final-blow credit, carry existing current-run remainder across mode transitions. +1 UP per eligible elite and +5 UP per normal Endless boss defeat; existing multipliers/milestones only as applicable, no repeat campaign first-clear journal reward. Existing mutation Shards (1 each) and faction rewards (2 UP+1 Shard per boss) remain unchanged even on defeat. New optional Endless bonus: exactly 1 Shard per normal boss defeat (every fifth wave), earned once per legitimate boss encounter including repeat runs; no extra end-of-run payout or exponentially escalating Endless Shard reward, no new currency. No UP/class credit for enemy-created units; faction bosses grant only their separate boss rewards, never scheduled-kill UP or class credit; preserve true final blow attribution for legitimate scheduled hero-owned kills. Normal boss Shard reward is independent of fixed 15 max main-campaign reset payout. Use unique persistent encounter/reward IDs and transaction commits against reload exploits, no cap on legitimate mutation farming. Existing one-Shard skin box and 570-Shard Legacy candidate unchanged.",
+      "CAMPAIGN-BAL-ROUND2 — Development branch revision supersedes conflicting original numerical targets: melee heroes with range <=1.7 gain 50% HP rounded and 15% basic damage; tower 3 damage every 2.5s; Stage 4 basic HP 11, damage 4; Small/Deep Treasury +2 coins each (total permanent Treasury +6 with Royal Treasury); campaign prestige payout original +2 capped at 15; failed campaign Stage 1 with at least one enemy defeated grants a minimum of 1 earned UP. Two starting coins, six stock slots, 40 coin cap and six-kill reward cadence retained. Not deployment-approved."
     ]
   }
 }
