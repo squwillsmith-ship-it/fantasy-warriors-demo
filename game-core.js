@@ -184,7 +184,7 @@ function castSpecial(h){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='aut
  case 'barbarian':if(!enemy)return false;h.frenzyUntil=duration(spec.frenzyDurationSeconds);h.frenzyExtra=0;h.frenzyKills=0;h.frenzyAttacks=0;h.frenzyActive=true;signalSpecial(h,'Battle Frenzy');break;
  case 'rogue':if(!enemy)return false;h.invisibleUntil=duration(spec.invisibilityDurationSeconds);h.smokeActive=true;h.smokeHeals=0;h.smokeTargets=new Set();signalSpecial(h,'Smoke Bomb');break;
  case 'paladin':if(!otherAllies.length)return false;h.aegisCast=(h.aegisCast||0)+1;h.aegisRefund=0;for(const a of otherAllies){grantShield(a,spec.shieldAmount*(1+(owns('O-3-P-B2')?.5:0)+(owns('R-PAL-B')&&a.hp<a.maxHp*.5?.25:0)),spec.shieldDurationSeconds,h.id,h.aegisCast);if(owns('O-3-P-B3'))healHero(a,a.maxHp*.1)}if(owns('O-3-P-A5'))h.nextPatch=true;signalSpecial(h,'Divine Aegis',spec.shieldRadius);break;
- case 'nun':{const candidates=state.heroes.filter(a=>a!==h&&a.hp>0&&a.hp<a.maxHp-.001&&Math.hypot(a.x-h.x,a.y-h.y)<=spec.sanctuaryEligibilityRadius);if(!candidates.length)return false;state.sanctuaries.push({ownerId:h.id,radius:spec.sanctuaryRadius,expires:duration(spec.sanctuaryLifetimeSeconds),clock:0});h.sanctuaryUntil=duration(spec.sanctuaryLifetimeSeconds);signalSpecial(h,'Sanctuary Prayer',spec.sanctuaryRadius);break;}
+ case 'nun':{const candidates=activeOriginalHeroes().filter(a=>(a!==h||spec.sanctuarySelfHealingAllowed)&&(a.hp<a.maxHp-.001||owns('O-3-N-B4'))&&Math.hypot(a.x-h.x,a.y-h.y)<=spec.sanctuaryEligibilityRadius);if(!candidates.length)return false;state.sanctuaries.push({ownerId:h.id,radius:spec.sanctuaryRadius,expires:duration(spec.sanctuaryLifetimeSeconds),clock:0,healed:new Set(),selfHeal:0});h.sanctuaryUntil=duration(spec.sanctuaryLifetimeSeconds);signalSpecial(h,'Sanctuary Prayer',spec.sanctuaryRadius);break;}
  case 'priest':if(!otherAllies.length)return false;for(const a of otherAllies){a.blessingUntil=duration(spec.blessingDurationSeconds*(owns('V2-PRI-02')&&(h.casts+1)%3===0?2:1));}signalSpecial(h,'Blessing',spec.blessingRadius);break;
  case 'shaman':if(!enemy)return false;for(let i=0;i<spec.totemCount;i++){state.totems.push({id:state.nextId++,x:clamp(h.x+(i-0.5)*.6,-view.worldW/2,view.worldW/2),y:h.y,hp:spec.totemHealth,maxHp:spec.totemHealth,owner:h.id,expires:duration(spec.totemLifetimeSeconds),radius:spec.totemAggroRadius})}signalSpecial(h,'Spirit Totem');break;
  case 'druid':if(!enemy)return false;h.bearUntil=duration(spec.bearFormDurationSeconds*(owns('V2-DRU-02')&&(h.casts+1)%3===0?2:1));h.bearActive=true;if(owns('R-DRU-B')||owns('V2-DRU-01'))grantShield(h,h.maxHp*(owns('V2-DRU-01')?.25:.15),4);signalSpecial(h,'Bear Form');break;
@@ -196,10 +196,25 @@ function castSpecial(h){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='aut
  if(SKILLFX)SKILLFX.afterCast(h,enemy,spec);return true;
 }
 function stepSanctuaries(dt){
- const heals=new Map();state.sanctuaries=state.sanctuaries.filter(z=>z.expires>state.elapsed&&state.heroes.some(h=>h.id===z.ownerId&&h.hp>0));
- for(const zone of state.sanctuaries){const owner=state.heroes.find(h=>h.id===zone.ownerId&&h.hp>0);if(!owner)continue;const spec=cfg(owner).special;const tick=Math.max(.04,spec.sanctuaryTickIntervalSeconds);zone.clock+=dt;const ticks=Math.floor(zone.clock/tick);if(!ticks)continue;zone.clock-=ticks*tick;
-   for(const h of state.heroes){if(h.hp<=0||h.hp>=h.maxHp||(h===owner&&!spec.sanctuarySelfHealingAllowed))continue;if(Math.hypot(h.x-owner.x,h.y-owner.y)>zone.radius)continue;heals.set(h,Math.max(heals.get(h)||0,spec.sanctuaryHealPerSecond*tick*ticks));}}
- for(const [hero,amount] of heals)healHero(hero,amount);
+ const heals=new Map(),ended=[];
+ for(const zone of state.sanctuaries){
+  const owner=state.heroes.find(h=>h.id===zone.ownerId&&h.hp>0);
+  if(!owner||zone.expires<=state.elapsed){if(owner)ended.push(zone);continue}
+  const spec=cfg(owner).special,tick=Math.max(.04,spec.sanctuaryTickIntervalSeconds);zone.clock+=dt;const ticks=Math.floor(zone.clock/tick);if(!ticks)continue;zone.clock-=ticks*tick;
+  for(const h of activeOriginalHeroes()){
+   if((h===owner&&!spec.sanctuarySelfHealingAllowed)||Math.hypot(h.x-owner.x,h.y-owner.y)>zone.radius)continue;
+   let amount=spec.sanctuaryHealPerSecond*tick*ticks;if(owns('O-3-N-B5')&&h.hp<h.maxHp*.25)amount*=2;
+   if(!heals.has(h)||heals.get(h).amount<amount)heals.set(h,{amount,zone,owner});
+  }
+ }
+ for(const [h,{amount,zone,owner}] of heals){
+  const actual=healHero(h,amount);if(actual>0)zone.healed.add(h.id);
+  if(owns('O-3-N-B4')){const excess=amount*(owns('O-3-G2')?1.25:1)-actual;if(excess>0)grantShield(h,Math.min(h.maxHp*.2,(h.shield||0)+excess),4)}
+  if(actual>0&&owns('V2-NUN-01')){owner.sanctuaryTotal=(owner.sanctuaryTotal||0)+actual;if(owner.sanctuaryTotal>=20){owner.sanctuaryTotal%=20;owner.sanctuaryCombo=true}}
+  if(actual>0&&h!==owner&&owns('R-NUN-B')){const wanted=Math.min(actual*.2,Math.max(0,owner.maxHp*.1-zone.selfHeal));zone.selfHeal+=healHero(owner,wanted/(owns('O-3-G2')?1.25:1))}
+ }
+ if(owns('V2-NUN-02'))for(const zone of ended)for(const h of activeOriginalHeroes())if(zone.healed.has(h.id))grantShield(h,h.maxHp*.15,4);
+ state.sanctuaries=state.sanctuaries.filter(z=>z.expires>state.elapsed&&state.heroes.some(h=>h.id===z.ownerId&&h.hp>0));
 }
 function stepSpecials(h,dt){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return;h.charge=Math.min(chargeSeconds(h),h.charge+dt*((SKILLS?SKILLS.rate(h):1)+(h.base.id==='warlock'&&h.hp<h.maxHp*.5&&owns('O-4-W-B3')?.5:0)));if(h.charge>=chargeSeconds(h)){h.abilityStatus='ready';if(castSpecial(h)){h.charge=0;h.abilityStatus='charging'}}}
 // Every qualified enemy kill raises one undead if at least one living Necromancer exists.
