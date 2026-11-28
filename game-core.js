@@ -1,7 +1,7 @@
 /* Simulation, combat, AI, spawning, progression and player actions. */
 (()=>{'use strict';
 const {HEROES,HEROES_PER_PACK,PACKS,HERO_MAP,ENCOUNTERS,TUNING,ABILITIES,HOUND,UNDEAD,SPAWN_CONFIG}=window.FWGameData;
-const QUICK_STATS=window.FWQuickStats,M=window.FWMerchant;
+const QUICK_STATS=window.FWQuickStats,M=window.FWMerchant,PRE=window.FWPrestigeEnemies;
 const ARCADE=window.FWArcade;
 const BALANCE=window.FWBalance.profile; // Never changes the normal game's approved stats.
 const encounter=()=>ENCOUNTERS[Math.max(0,Math.min(9,state.stage-1))];
@@ -37,6 +37,7 @@ function restoreShopStock(){
   state.merchantShop=shop;state.shopOffers=shop.offers;state.merchantAttemptId=x.id;state.bought=shop.offers.filter(o=>o.sold).length;state.packQueue=shop.offers.filter(o=>o.sold).map(o=>o.packIndex);state.coins=x.coins;state.selectedSlot=Number.isInteger(x.selectedSlot)?x.selectedSlot:0;state.shopCacheKey='';updateUI();return true;
  }catch(e){return false;}
 }
+function applyShopTheft(){if(state.testMode||!state.merchantShop)return;const floor=M.price(state.shopOffers[0],state.merchantShop),lost=SKILLS?.applyTheft(state.merchantAttemptId,state.coins,floor)||0;state.coins-=lost;if(lost)log('Goblin Thief stole '+lost+' coins from this preparation.');}
 function clearShopStock(){if(state.testMode||SKILLS?.sandboxActive?.())return;try{localStorage.removeItem(SHOP_SAVE_KEY);}catch(e){}}
 
 const {view,resize,render}=window.FWGameRenderer.create({canvas,ctx,state,ENCOUNTERS,TUNING,clamp,cfg,chargeSeconds,isOriginalHero});
@@ -48,7 +49,10 @@ function chooseHero(packIndex=0){const pool=PACKS[packIndex].pool;return HERO_MA
 
 const {normalInterval:NORMAL_SPAWN_INTERVAL,bossClearDelay:BOSS_AFTER_CLEAR_DELAY}=SPAWN_CONFIG;
 function regularCount(){return BALANCE.stages[state.stage-1]?.slots??SPAWN_CONFIG.regularWaveBase}
-function totalCount(){return regularCount()+1}
+function currentPrestige(){return state.testMode?(state.testPrestige||0):(SKILLS?.prestigeCount()||0)}
+function wavePlan(){return PRE.plan(state.stage,regularCount(),currentPrestige(),state.testMode?!state.testPreviouslyAttempted:!SKILLS?.attempted(state.stage))}
+function totalCount(){return regularCount()+1+((state.mode==='battle'||state.mode==='over'||state.mode==='clear'||state.mode==='champion'?state.wavePlan:wavePlan())?.faction?3:0)}
+function spawnScheduled(){const kind=PRE.slotKind(state.wavePlan,state.regularSpawned,state.enemies.filter(e=>e.elite&&e.hp>0).length);spawnEnemy(false,kind);state.regularSpawned++}
 function nextSpawnInterval(){
  const w=SPAWN_CONFIG.wavePhases,p=state.regularSpawned/Math.max(1,regularCount()-1);
  if(p<w.openingFraction)return w.openingStart+(w.openingEnd-w.openingStart)*(p/w.openingFraction);
@@ -75,14 +79,15 @@ function spawnEnemy(boss,kind='basic',at=null){
  else if(Math.random()<.55){x=(Math.random()<.5?-1:1)*halfW;y=rand(-halfH,halfH);}
  else{y=(Math.random()<.5?-1:1)*halfH;x=rand(-halfW,halfW);}
  const profile=BALANCE.stages[state.stage-1];
- const base=boss?profile.boss:kind==='elite'?profile.elite:profile.basic;
+ const faction=kind==='faction',base=boss?profile.boss:kind==='elite'?profile.elite:profile.basic;
  const overrides=state.testMode&&QUICK_STATS&&kind!=='generated'?QUICK_STATS.enemyForBattle(state.stage,boss):null;
- const stats=overrides?{...base,...overrides}:base;
- const hp=boss&&state.stage===10&&!overrides?BALANCE.stages[9].boss.phases[0].hp:stats.hp,elite=kind==='elite',generated=kind==='generated';
+ const raw=overrides?{...base,...overrides}:boss&&!faction&&state.stage===10?{...base,...profile.boss.phases[0]}:base;
+ const p=state.wavePlan?.p??currentPrestige(),mutated=kind==='mutated',stats=faction?PRE.legion(state.stage,state.factionSpawned,profile.boss.damage,p):PRE.scale(raw,p,mutated);
+ const hp=stats.hp,elite=kind==='elite',generated=kind==='generated';
  const e={id:state.nextId++,x,y,hp,maxHp:hp,boss,elite,generated,scheduled:!boss&&!generated,stage:state.stage,speed:stats.speed,damage:stats.damage,
   attackPeriod:stats.attackPeriod??1,firstDelay:stats.firstDelay??SPAWN_CONFIG.minionFirstAttackWindup,cooldown:rand(0,.5),
   inAttackRange:false,radius:boss?.75:elite?.48:.35,vx:0,vy:0,targetId:null,hitFlash:0,
-  towerLane:((state.nextId*7)%11-5)*.13,kind:boss?'boss':kind,phase:boss?1:0};
+  towerLane:((state.nextId*7)%11-5)*.13,kind:faction?'faction':boss?'boss':kind,phase:boss?1:0,mutated,faction,factionIndex:stats.factionIndex,name:faction?stats.name:elite?PRE.eliteNames[state.stage-1]:null,nextAbility:state.elapsed+(faction?10:([10,6,0,12,9,11,0,0,9,10][state.stage-1]||Infinity)),firstShield:(faction&&stats.factionIndex===0)||(!boss&&!elite&&!generated&&state.stage===5),ethereal:!boss&&!elite&&!generated&&state.stage===8};
  state.enemies.push(e);return e;
 }
 // Walk speed comes from each hero’s approved STATS entry, not a universal speed.
@@ -140,7 +145,7 @@ function visualBeam(h,e,color=h.base.color,life=.18){addEffect({kind:'bolt',x1:h
 function visualRing(x,y,r,color){addEffect({kind:'pulse',x,y,radius:r,color,life:.36,maxLife:.36})}
 // Damage source is an explicit hero-class ID, never inferred from animation colours.
 function heroSourceId(h){return !h?null:h.summonKind?(h.ownerHeroId||null):(isOriginalHero(h)?h.base.id:null)}
-function hitEnemy(e,damage,color,sourceHeroId=null,ownerId=null,kind='direct'){if(!e||e.hp<=0||!(damage>0))return 0;const heroId=typeof sourceHeroId==='string'&&HERO_MAP[sourceHeroId]?sourceHeroId:null;if(heroId&&e.boss&&SKILLS?.has('O-5-G2'))damage*=1.25;if(heroId&&e.priestBrandUntil>state.elapsed&&heroId!=='priest')damage*=1.15;e.lastHitHero=heroId;e.lastHitOwner=ownerId;e.lastHitKind=kind;if(heroId&&kind==='direct'){e.directHits??={};e.directHits[ownerId??heroId]=state.elapsed;}const dealt=Math.min(e.hp,damage);const n=Number(Math.abs(damage).toFixed(1));e.hp-=damage;e.hitFlash=.11;if(damage>=.2)damageNumber(e.x,e.y-.15,n.toFixed(1),color);return dealt}
+function hitEnemy(e,damage,color,sourceHeroId=null,ownerId=null,kind='direct'){if(!e||e.hp<=0||!(damage>0)||e.ethereal&&!(e.vulnerableUntil>state.elapsed))return 0;if(e.firstShield){e.firstShield=false;visualRing(e.x,e.y,.7,'#f7cf91');return 0}damage=PRE.damageAfterResistance(damage,e,state.enemies,kind==='hunterBleed'&&owns('V2-HUN-01'));const heroId=typeof sourceHeroId==='string'&&HERO_MAP[sourceHeroId]?sourceHeroId:null;if(heroId&&e.boss&&SKILLS?.has('O-5-G2'))damage*=1.25;if(heroId&&e.priestBrandUntil>state.elapsed&&heroId!=='priest')damage*=1.15;e.lastHitHero=heroId;e.lastHitOwner=ownerId;e.lastHitKind=kind;if(heroId&&kind==='direct'){e.directHits??={};e.directHits[ownerId??heroId]=state.elapsed;}const dealt=Math.min(e.hp,damage);const n=Number(Math.abs(damage).toFixed(1));e.hp-=damage;e.hitFlash=.11;if(damage>=.2)damageNumber(e.x,e.y-.15,n.toFixed(1),color);return dealt}
 const owns=id=>!!SKILLS?.has(id);
 function grantCharge(h,fraction){if(h&&h.hp>0&&cfg(h)?.special.trigger==='autoCharge')h.charge=Math.min(chargeSeconds(h),h.charge+fraction*chargeSeconds(h))}
 function healHero(h,amount){if(h.hp<=0)return 0;const n=Math.min(h.maxHp-h.hp,Math.max(0,amount)*(owns('O-3-G2')&&!h.summonKind?1.25:1));h.hp+=n;return n}
@@ -169,13 +174,13 @@ function hitHero(h,d,source){
  if(h.resolveUntil>state.elapsed)d*=.75;if(h.aegisGuardUntil>state.elapsed)d*=.75;if(h.base.id==='barbarian'&&h.frenzyUntil>state.elapsed&&owns('O-2-B-B4'))d*=.75;if(h.base.id==='druid'&&h.bearUntil>state.elapsed&&owns('O-4-D-B5'))d*=.7;if(h.base.id==='dragonkin'&&owns('O-5-DR-A4'))d*=.8;
  if(h.shield>0){const absorb=Math.min(h.shield,d);h.shield-=absorb;d-=absorb;if(h.shield<=0&&h.shieldOwner!=null){const pal=state.heroes.find(a=>a.id===h.shieldOwner&&a.hp>0);if(pal&&owns('O-3-P-B5'))h.aegisGuardUntil=state.elapsed+3;if(pal&&owns('R-PAL-D')&&pal.aegisCast===h.shieldCast&&(pal.aegisRefund||0)<.2){pal.aegisRefund=(pal.aegisRefund||0)+.1;grantCharge(pal,.10)}if(pal&&owns('V2-PAL-02')){pal.brokenShields=(pal.brokenShields||0)+1;if(pal.brokenShields%5===0&&state.elapsed-(pal.lastBreakCharge??-Infinity)>=2){pal.lastBreakCharge=state.elapsed;grantCharge(pal,.25)}}h.shieldOwner=null;h.shieldCast=null}}
  if(d>0){h.hp=Math.max(0,h.hp-d);h.hitFlash=.11;if(h.base.id==='paladin'&&owns('O-3-P-A3')){h.damageHits=(h.damageHits||0)+1;if(h.damageHits%5===0)h.nextHammer=true}if(h.base.id==='dragonkin'&&owns('O-5-DR-A3')&&source?.hp>0&&state.enemies.includes(source))applyStatus(source,h,'burn',h.base.damage*.2,3);if(h.base.id==='dragonkin'&&owns('O-5-DR-A5')&&h.hp>0&&h.hp<h.maxHp*.25&&!h.dragonHeart){h.dragonHeart=true;healHero(h,h.maxHp*.2);grantCharge(h,1)}if(h.hp>0&&h.hp<h.maxHp*.25&&owns('O-5-G4')&&!h.summonKind&&!h.resolveUsed){h.resolveUsed=true;h.resolveUntil=state.elapsed+5}}
- if(h.hp<=0&&isOriginalHero(h))ACTIONS.down(h,source);
+ if(h.hp<=0&&isOriginalHero(h)){if(source?.elite&&source.stage===3&&!state.testMode)SKILLS?.stealCoin();ACTIONS.down(h,source);}
  return d
 }
 function spawnSummon(base,atX,atY,kind,duration,ownerId){const s={id:state.nextId++,base,x:atX,y:atY,hp:base.hp,maxHp:base.hp,cooldown:.2,facing:0,charge:0,casts:0,shield:0,invisibleUntil:0,bearUntil:0,blessingUntil:0,frenzyUntil:0,summonKind:kind,ownerId,ownerHeroId:state.heroes.find(h=>h.id===ownerId&&isOriginalHero(h))?.base.id||null,expiry:state.elapsed+duration,anchorX:atX,anchorY:atY,beamTarget:null};state.heroes.push(s);return s}
 function activeOriginalHeroes(){return state.heroes.filter(h=>h.hp>0&&isOriginalHero(h))}
-function enemyNear(h,r){let best=null,d=r*r;for(const e of state.enemies){if(e.hp<=0)continue;const sq=(e.x-h.x)**2+(e.y-h.y)**2;if(sq<=d){d=sq;best=e}}return best}
-function nearestAllowedEnemy(h){let choice=null,dist=acquireRadius(h)**2;for(const e of state.enemies){if(e.hp<=0)continue;const ds=(h.x-e.x)**2+(h.y-e.y)**2;if(ds>dist)continue;if(Math.hypot(e.x,e.y)>guardRadius(h)+Math.max(0.5,h.base.range))continue;choice=e;dist=ds}return choice}
+function enemyNear(h,r){let best=null,d=r*r;for(const e of state.enemies){if(e.hp<=0||e.ethereal&&!(e.vulnerableUntil>state.elapsed))continue;const sq=(e.x-h.x)**2+(e.y-h.y)**2;if(sq<=d){d=sq;best=e}}return best}
+function nearestAllowedEnemy(h){let choice=null,dist=acquireRadius(h)**2;for(const e of state.enemies){if(e.hp<=0||e.ethereal&&!(e.vulnerableUntil>state.elapsed))continue;const ds=(h.x-e.x)**2+(h.y-e.y)**2;if(ds>dist)continue;if(Math.hypot(e.x,e.y)>guardRadius(h)+Math.max(0.5,h.base.range))continue;choice=e;dist=ds}return choice}
 function signalSpecial(h,label,r=.9){state.abilityCasts++;h.casts++;h.abilityStatus='active';addEffect({kind:'label',x:h.x,y:h.y-.55,text:label,color:'#fff3bd',life:1.2,maxLife:1.2});visualRing(h.x,h.y,r,h.base.color);log(h.base.name+' used '+label+'!')}
 function castSpecial(h){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return false;const enemy=SKILLFX?SKILLFX.specialTarget(h,enemyNear(h,Math.max(acquireRadius(h),h.base.range,5))):enemyNear(h,Math.max(acquireRadius(h),h.base.range,5));const otherAllies=state.heroes.filter(a=>a!==h&&a.hp>0&&Math.hypot(a.x-h.x,a.y-h.y)<=(spec.shieldRadius??spec.blessingRadius??3));const duration=(n)=>state.elapsed+n;
  switch(h.base.id){
@@ -315,7 +320,7 @@ function resolveActorCollisions(){
 // Arcade AI: the closest living enemy in the hero's forward half-plane wins.
 // If nothing is ahead, turn toward the closest accessible enemy instead.
 function selectHeroTarget(h,dt){
- const current=state.enemies.find(e=>e.id===h.targetId&&e.hp>0);
+ const current=state.enemies.find(e=>e.id===h.targetId&&e.hp>0&&(!e.ethereal||e.vulnerableUntil>state.elapsed));
  const legal=e=>e&&Math.hypot(e.x-h.x,e.y-h.y)<=acquireRadius(h)
    &&Math.hypot(e.x,e.y)<=guardRadius(h)+Math.max(1,h.base.range);
  if(h.windupTime>0&&legal(current))return current; // Finish an attack.
@@ -323,7 +328,7 @@ function selectHeroTarget(h,dt){
  if(legal(current)&&h.targetClock>0)return current;
  h.targetClock=TUNING.shared.decisionInterval;
  const target=ARCADE.nearestFrontTarget(
-   h,state.enemies,acquireRadius(h),guardRadius(h),h.base.range,
+   h,state.enemies.filter(e=>!e.ethereal||e.vulnerableUntil>state.elapsed),acquireRadius(h),guardRadius(h),h.base.range,
    e=>SKILLFX?.focusBias(h,e)||0
  );
  if((target?.id??null)!==(h.targetId??null)){
@@ -369,17 +374,45 @@ function stepSporeClouds(dt){
  }
 }
 function stepNecroBeam(h,target,dt){if(!target||target.hp<=0||Math.hypot(target.x-h.x,target.y-h.y)>h.base.range||Math.hypot(h.x,h.y)>guardRadius(h)+.1){h.beamTarget=null;h.beamTime=0;h.beamTickClock=0;return}if(h.beamTarget!==target.id){h.beamTarget=target.id;h.beamTime=h.beamTransferUntil>state.elapsed?(h.beamStoredRamp||0):0;h.beamTickClock=0}const spec=cfg(h).special;h.beamTime+=dt*(SKILLFX?SKILLFX.beamRampBoost(h):1);h.beamTickClock+=dt;const ticks=Math.floor(h.beamTickClock/spec.beamTickSeconds);if(ticks>0){const n=Math.min(ticks,8);h.beamTickClock-=ticks*spec.beamTickSeconds;const mult=1+(spec.beamMaxRampMultiplier-1)*Math.min(1,h.beamTime/spec.beamRampSeconds);{const full=h.beamTime>=spec.beamRampSeconds,count=state.heroes.filter(a=>a.hp>0&&a.summonKind==='undead'&&a.ownerId===h.id).length,bonus=(owns('O-5-NE-A3')?Math.min(.5,count*.1):0)+(h.graveBonus||0),elite=(target.boss||target.elite)?(owns('R-NEC-B')?.25:0)+(full&&owns('O-5-NE-A5')?.5:0):0;hitEnemy(target,(h.base.damage*h.base.speed)*spec.beamTickSeconds*n*mult*(1+bonus)*(1+elite),h.base.color,h.base.id,h.id)}}}
+function randomLiving(){const a=activeOriginalHeroes();return a.length?a[Math.floor(Math.random()*a.length)]:null}
+function spawnGenerated(owner,stats,kind,dx=0,dy=0){const e=spawnEnemy(false,'generated',{x:owner.x+dx,y:owner.y+dy});Object.assign(e,PRE.scale(stats,state.wavePlan.p),{kind,generated:true,scheduled:false,elite:false,mutated:false,ethereal:false,firstShield:false,ownerId:owner.id});e.maxHp=e.hp;return e}
+function enemySpecial(e,dt){
+ const now=state.elapsed,p=state.wavePlan.p,scale=PRE.factors(p).hpDamage;
+ if(e.generated){if(e.expires&&now>=e.expires){e.expired=true;e.hp=0;return true}return e.kind==='decoy'}
+ if(e.faction){
+  if(e.factionIndex===0&&now>=e.nextAbility){e.firstShield=true;e.nextAbility=now+10}
+  if(e.factionIndex===1&&now>=e.nextAbility){const h=randomLiving();if(h){for(const a of activeOriginalHeroes())if(a!==h&&Math.hypot(a.x-h.x,a.y-h.y)<=1.2)hitHero(a,e.damage*.5,e);visualRing(h.x,h.y,1.2,'#c9a2ff');e.nextAbility=now+10}}
+  if(e.factionIndex===2){if(e.slamAt){if(now>=e.slamAt){for(const h of activeOriginalHeroes())if(Math.hypot(h.x-e.x,h.y-e.y)<=1.5)hitHero(h,e.damage*1.25,e);visualRing(e.x,e.y,1.5,'#e5a0a0');e.slamAt=0;e.nextAbility=now+10}return true}if(now>=e.nextAbility){e.slamAt=now+1;visualRing(e.x,e.y,1.5,'#e5a0a0');return true}}
+  return false;
+ }
+ if(!e.elite)return false;
+ if(e.stage===4){if(Math.hypot(e.x,e.y)<=2.1){if(!e.bombAt&&now>=e.nextAbility){e.bombAt=now+4;visualRing(0,0,1.6,'#ffae73')}if(e.bombAt&&now>=e.bombAt){e.bombAt=0;e.nextAbility=now+12;applyTowerDamage(12*scale);visualRing(0,0,2,'#ffae73')}return true}takeTowerSafeStep(e,towerApproach(e),dt,e.speed);return true}
+ if(e.stage===8)return true;
+ if(now<e.nextAbility)return false;
+ switch(e.stage){
+ case 1:{const n=Math.min(2,4-state.enemies.filter(a=>a.kind==='decoy'&&a.ownerId===e.id&&a.hp>0).length);for(let i=0;i<n;i++){const a=spawnGenerated(e,{hp:3,damage:0,speed:0,attackPeriod:1},'decoy',(i?1:-1)*.9,.6);a.expires=now+6}e.nextAbility=now+10;break}
+ case 2:for(const a of state.enemies)if(a!==e&&a.hp>0&&a.scheduled&&!a.elite&&!a.boss&&Math.hypot(a.x-e.x,a.y-e.y)<=2.4)a.hp=Math.min(a.maxHp,a.hp+3*scale);visualRing(e.x,e.y,2.4,'#ace3a1');e.nextAbility=now+6;break;
+ case 5:{const h=randomLiving();if(h)state.enemyZones.push({x:h.x,y:h.y,radius:1.25,expires:now+4,damage:scale,owner:e.id});e.nextAbility=now+9;break}
+ case 6:{const h=randomLiving();if(h){h.controlUntil=now+3;h.controlAngle=Math.random()*Math.PI*2;visualRing(h.x,h.y,.8,'#d6adff')}e.nextAbility=now+11;break}
+ case 9:{const h=randomLiving();if(h){const q=safeGoal(h.x+.8,h.y+.5);if(legalActorPosition(e,q.x,q.y)){e.x=q.x;e.y=q.y}hitHero(h,e.damage+7*scale,e);visualRing(h.x,h.y,.8,'#d8b0e5')}e.nextAbility=now+9;break}
+ case 10:{if(!e.teleportAt){const h=randomLiving();e.teleportHero=h?.id;e.teleportAt=now+.8;if(h)visualRing(h.x,h.y,.8,'#b3a5ff');return false}if(now>=e.teleportAt){const h=state.heroes.find(h=>h.id===e.teleportHero&&h.hp>0);if(h){for(let i=0;i<30;i++){const x=rand(-view.worldW/2+1,view.worldW/2-1),y=rand(-view.worldH/2+1,view.worldH/2-1);if(!nearTower(x,y,h.radius)){h.x=x;h.y=y;h.initialSpawnRadius=Math.max(h.initialSpawnRadius||0,Math.hypot(x,y));h.vx=h.vy=0;break}}}e.teleportAt=0;e.nextAbility=now+10}break}
+ default:e.nextAbility=Infinity;
+ }
+ return false;
+}
+function enemyDeathSpecial(e){if(e.kind==='decoy'&&!e.expired){for(const h of activeOriginalHeroes())if(Math.hypot(h.x-e.x,h.y-e.y)<=1.2)hitHero(h,1.5*PRE.factors(state.wavePlan.p).hpDamage,e);visualRing(e.x,e.y,1.2,'#edb399')}if(e.elite&&e.stage===8)for(let i=0;i<3;i++){const a=i*Math.PI*2/3;spawnGenerated(e,{hp:6,damage:2,speed:1.2,attackPeriod:1},'skeleton',Math.cos(a),Math.sin(a))}}
+function stepEnemyZones(dt){for(const z of state.enemyZones){const active=Math.max(0,Math.min(dt,z.expires-(state.elapsed-dt)));if(active>0)for(const h of state.heroes)if(h.hp>0&&Math.hypot(h.x-z.x,h.y-z.y)<=z.radius)hitHero(h,z.damage*active,state.enemies.find(e=>e.id===z.owner))}state.enemyZones=state.enemyZones.filter(z=>z.expires>state.elapsed)}
 function step(dt){if(state.mode!=='battle'||state.paused)return;
- state.elapsed+=dt;state.spawnClock+=dt;state.uiClock+=dt;ACTIONS.tick(dt);if(SKILLFX)SKILLFX.tick(dt);TOWER_FIRE.step(dt);
- if(state.regularSpawned===0){spawnEnemy(false);state.regularSpawned=1;state.spawnClock=0}
- else if(state.regularSpawned<regularCount()&&state.spawnClock>=nextSpawnInterval()){state.spawnClock-=nextSpawnInterval();spawnEnemy(false);state.regularSpawned++}
+ state.elapsed+=dt;state.spawnClock+=dt;state.uiClock+=dt;ACTIONS.tick(dt);stepEnemyZones(dt);if(SKILLFX)SKILLFX.tick(dt);TOWER_FIRE.step(dt);
+ if(state.regularSpawned===0){spawnScheduled();state.spawnClock=0}
+ else if(state.regularSpawned<regularCount()&&state.spawnClock>=nextSpawnInterval()){state.spawnClock-=nextSpawnInterval();spawnScheduled()}
  // Boss arrival is checked after dead minions are removed: spawning the full wave is not enough.
  for(const a of state.heroes)a.hitFlash=Math.max(0,(a.hitFlash||0)-dt);for(const a of state.enemies)a.hitFlash=Math.max(0,(a.hitFlash||0)-dt);state.traps=state.traps.filter(p=>p.expires>state.elapsed);
  for(const p of state.totems){if(p.hp>0&&p.expires<=state.elapsed&&owns('R-SHA-D')){const h=state.heroes.find(a=>a.id===p.owner&&a.hp>0);if(h)healHero(h,h.maxHp*.1)}}state.totems=state.totems.filter(p=>p.hp>0&&p.expires>state.elapsed);
  for(const p of state.traps)if(owns('O-2-H-B3')){const h=state.heroes.find(a=>a.id===p.owner&&a.hp>0);if(h)for(const e of enemiesInRadius(p.x,p.y,p.radius))if(!p.seen.has(e.id)){p.seen.add(e.id);hunterBleed(e,h)}}
- for(const h of state.heroes){if(h.hp<=0)continue;if(h.expiry<=state.elapsed){h.naturalExpiry=true;h.hp=0;if(h.summonKind==='undead'&&owns('R-NEC-D')){const owner=state.heroes.find(a=>a.id===h.ownerId&&a.hp>0);if(owner&&state.elapsed-(owner.lastExpiryHeal??-Infinity)>=1){owner.lastExpiryHeal=state.elapsed;healHero(owner,owner.maxHp*.03)}}continue}if(h.shieldUntil>0&&h.shieldUntil<state.elapsed){h.shield=0;h.shieldOwner=null;h.shieldCast=null}if(h.frenzyActive&&h.frenzyUntil<=state.elapsed){h.frenzyActive=false;if(owns('R-BAR-D')&&h.frenzyKills>=3)grantShield(h,h.maxHp*.2,4)}if(h.smokeActive&&h.invisibleUntil<=state.elapsed){h.smokeActive=false;if(owns('V2-ROG-02'))for(const e of state.enemies){const total=ownStatuses(e,h,'poison').reduce((n,a)=>n+a.dps*a.remaining,0);if(total>0)hitEnemy(e,total*.25,h.base.color,h.base.id,h.id,'derived')}}if(h.bearActive&&h.bearUntil<=state.elapsed){h.bearActive=false;if(owns('R-DRU-D'))healHero(h,h.maxHp*.1)}
+ for(const h of state.heroes){if(h.hp<=0)continue;if(h.controlUntil>state.elapsed){const q={x:h.x+Math.cos(h.controlAngle)*2,y:h.y+Math.sin(h.controlAngle)*2};if(!legalActorPosition(h,q.x,q.y))h.controlAngle+=1.5;takeTowerSafeStep(h,q,dt,h.base.walk);continue}if(h.expiry<=state.elapsed){h.naturalExpiry=true;h.hp=0;if(h.summonKind==='undead'&&owns('R-NEC-D')){const owner=state.heroes.find(a=>a.id===h.ownerId&&a.hp>0);if(owner&&state.elapsed-(owner.lastExpiryHeal??-Infinity)>=1){owner.lastExpiryHeal=state.elapsed;healHero(owner,owner.maxHp*.03)}}continue}if(h.shieldUntil>0&&h.shieldUntil<state.elapsed){h.shield=0;h.shieldOwner=null;h.shieldCast=null}if(h.frenzyActive&&h.frenzyUntil<=state.elapsed){h.frenzyActive=false;if(owns('R-BAR-D')&&h.frenzyKills>=3)grantShield(h,h.maxHp*.2,4)}if(h.smokeActive&&h.invisibleUntil<=state.elapsed){h.smokeActive=false;if(owns('V2-ROG-02'))for(const e of state.enemies){const total=ownStatuses(e,h,'poison').reduce((n,a)=>n+a.dps*a.remaining,0);if(total>0)hitEnemy(e,total*.25,h.base.color,h.base.id,h.id,'derived')}}if(h.bearActive&&h.bearUntil<=state.elapsed){h.bearActive=false;if(owns('R-DRU-D'))healHero(h,h.maxHp*.1)}
   if(!isOriginalHero(h)){
-   h.cooldown-=dt;let enemy=null,best=Infinity,rangeDistance=Infinity;for(const e of state.enemies){if(e.hp<=0)continue;const actual=Math.hypot(e.x-h.x,e.y-h.y);let d=actual;if(h.summonKind==='hound'&&e.beastFocus>state.elapsed)d*=.35;if(SKILLFX)d+=SKILLFX.summonPriority(h,e);if(d<best&&Math.hypot(e.x,e.y)<TUNING.shared.towerGuardRadius+(h.summonKind==='hound'&&SKILLS?.has('T5-BM-T01')?-.20:1)){best=d;rangeDistance=actual;enemy=e}}
+   h.cooldown-=dt;let enemy=null,best=Infinity,rangeDistance=Infinity;for(const e of state.enemies){if(e.hp<=0||e.ethereal&&!(e.vulnerableUntil>state.elapsed))continue;const actual=Math.hypot(e.x-h.x,e.y-h.y);let d=actual;if(h.summonKind==='hound'&&e.beastFocus>state.elapsed)d*=.35;if(SKILLFX)d+=SKILLFX.summonPriority(h,e);if(d<best&&Math.hypot(e.x,e.y)<TUNING.shared.towerGuardRadius+(h.summonKind==='hound'&&SKILLS?.has('T5-BM-T01')?-.20:1)){best=d;rangeDistance=actual;enemy=e}}
    if(enemy){h.facing=Math.atan2(enemy.y-h.y,enemy.x-h.x)+Math.PI/2;if(rangeDistance>h.base.range)moveToPoint(h,enemy,dt);else if(h.cooldown<=0){h.cooldown=1/(h.base.speed*(h.alphaBuffUntil>state.elapsed?1.2:1));{const owner=state.heroes.find(a=>a.id===h.ownerId&&a.hp>0);let mult=1;if(h.summonKind==='hound'){if(owns('R-BEA-B')&&!h.firstSummonHit)mult+=.5;if(h.whipBoost){mult+=.5;h.whipBoost=false}if(owns('V2-BEA-01')&&Math.random()<.25)mult*=2;if(owns('V2-BEA-02'))mult+=Math.min(.5,(SKILLS?.permanentDamageBonus?.('beastmaster')||0)*.5)}if(h.summonKind==='undead'&&owner&&owns('V2-NEC-01')&&owner.beamTime>=cfg(owner).special.beamRampSeconds)mult+=.5;h.firstSummonHit=true;const actual=hitEnemy(enemy,h.base.damage*mult,h.base.color,heroSourceId(h),h.ownerId,'summon');if(owner&&h.summonKind==='hound'){if(owns('O-5-BM-A4'))healHero(owner,actual*.1);if(owns('R-BEA-D')&&enemy.hp<=0&&enemy.scheduled&&state.elapsed-(owner.lastDogHeal??-Infinity)>=2){owner.lastDogHeal=state.elapsed;healHero(owner,owner.maxHp*.05)}}}visualBeam(h,enemy)}}continue;
   }
   const tc=cfg(h),isBear=h.base.id==='druid'&&h.bearUntil>state.elapsed;
@@ -405,15 +438,15 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  stepSanctuaries(dt);
  stepSporeClouds(dt);
  tickAttackEffects(dt);
- for(const e of state.enemies){if(e.hp<=0||e.capturing)continue;if(e.stunnedUntil>state.elapsed)continue;
+ for(const e of [...state.enemies]){if(e.hp<=0||e.capturing)continue;if(e.stunnedUntil>state.elapsed)continue;if(enemySpecial(e,dt))continue;
   let hero=null,closest=TUNING.shared.enemyHeroDetection**2;for(const h of state.heroes){if(h.hp<=0||h.invisibleUntil>state.elapsed)continue;const d=(h.x-e.x)**2+(h.y-e.y)**2;if(d<=closest){hero=h;closest=d}}
   let totem=null,totemDist=Infinity;for(const p of state.totems){const sq=(p.x-e.x)**2+(p.y-e.y)**2;if(sq<=p.radius*p.radius&&sq<totemDist){totem=p;totemDist=sq}}
   const target=totem||hero||towerApproach(e);const dist=Math.hypot(target.x-e.x,target.y-e.y);e.attackingTower=!totem&&!hero&&dist<1.5;
-  const reach=totem?actorRadius(e)+.35:hero?((e.stage===4&&!e.elite&&!e.boss)?3:(e.stage===7&&!e.elite&&!e.boss)?3.5:actorRadius(e)+actorRadius(hero)+.22):.34;
+  const reach=totem?actorRadius(e)+.35:hero?(e.faction&&e.factionIndex===1?3.5:(e.stage===4&&!e.elite&&!e.boss)?3:(e.stage===7&&!e.elite&&!e.boss)?3.5:actorRadius(e)+actorRadius(hero)+.22):.34;
   if(dist<=reach){
     // Regular minions need 0.65s to wind up after first reaching contact; bosses do not.
     if(!e.inAttackRange){e.inAttackRange=true;if(!e.boss)e.cooldown=Math.max(e.cooldown,e.firstDelay??SPAWN_CONFIG.minionFirstAttackWindup);}
-    e.cooldown-=dt;if(e.cooldown<=0){e.cooldown=e.attackPeriod??1;
+    e.cooldown-=dt;if(e.ethereal)e.vulnerableUntil=state.elapsed+.85;if(e.cooldown<=0){e.cooldown=e.attackPeriod??1;
     const damage=e.damage*(e.weakUntil>state.elapsed?(owns('O-4-S-A4')?.7:.8):1)*(e.weakerUntil>state.elapsed?.8:1);
     if(totem){totem.hp-=damage;const h=state.heroes.find(a=>a.id===totem.owner&&a.hp>0);if(h&&damage>0){totem.hits=(totem.hits||0)+1;if(owns('O-4-S-B3')&&totem.hits%5===0)grantCharge(h,.1);if(totem.hp<=0){if(owns('V2-SHA-02'))h.totemVengeance=true;if(owns('O-4-S-B5')&&!totem.reformed&&totem.expires>state.elapsed){totem.reformed=true;totem.hp=totem.maxHp*.3}}}visualRing(totem.x,totem.y,.35,'#51dcc0')}
     else if(hero){const dealt=hitHero(hero,damage,e);if(dealt>0)damageNumber(hero.x,hero.y-.7,'−'+dealt.toFixed(1),'#ffb6a7');if(hero.hp===0&&!hero.capture)log('Your '+hero.base.name+' was defeated.')}
@@ -426,13 +459,13 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  // Boss transformations are one encounter, not fresh reward-bearing enemies.
  for(let i=state.enemies.length-1;i>=0;i--){
   const e=state.enemies[i];
-  if(e.boss&&state.stage===1&&e.hp<=e.maxHp*.5&&!state.bossRewardPending){
+  if(e.boss&&!e.faction&&state.stage===1&&e.hp<=e.maxHp*.5&&!state.bossRewardPending){
    state.bossRewardPending=true;state.bossKilled=true;
    state.enemies.splice(i,1);
    for(let n=0;n<4;n++){
     const angle=Math.PI*2*n/4+.4;
     const child=spawnEnemy(false,'generated',{x:e.x+Math.cos(angle)*1.25,y:e.y+Math.sin(angle)*1.25});
-    child.hp=BALANCE.stages[0].basic.hp;child.maxHp=child.hp;
+    child.hp=PRE.scale(BALANCE.stages[0].basic,state.wavePlan.p).hp;child.maxHp=child.hp;
     child.kind='king-split';child.scheduled=false;child.generated=true;
     child.vx=Math.cos(angle)*1.5;child.vy=Math.sin(angle)*1.5;
    }
@@ -442,28 +475,28 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
  }
  for(let i=state.enemies.length-1;i>=0;i--){
   const e=state.enemies[i];if(e.hp>0)continue;
-  if(e.boss&&state.stage===10&&e.phase<3){
+  if(e.boss&&!e.faction&&state.stage===10&&e.phase<3){
    e.phase++;
-   const next=BALANCE.stages[9].boss.phases[e.phase-1];
+   const next=PRE.scale(BALANCE.stages[9].boss.phases[e.phase-1],state.wavePlan.p);
    e.hp=e.maxHp=next.hp;e.damage=next.damage;e.speed=next.speed;e.attackPeriod=next.attackPeriod;
    e.hitFlash=.5;e.cooldown=.5;e.lastHitHero=null;e.lastHitOwner=null;e.treeStatuses=[];e.doomMarks=[];e.noDoomProc=false;e.noBurnDeathProc=false;e.noBleedBurst=false;
    visualRing(e.x,e.y,2+e.phase*.45,'#d18fff');
    log('Eldritch Horror reborn — Phase '+e.phase+' of 3!');
    continue;
   }
-  if(e.boss){state.bossKilled=true;log(encounter().boss+' defeated!')}
+  if(e.faction){state.factionDefeated++;log(e.name+' defeated!')}else if(e.boss){state.bossKilled=true;log(encounter().boss+' defeated!')}
   for(const mark of e.doomMarks||[]){if(mark.until<=state.elapsed||e.noDoomProc)continue;const owner=state.heroes.find(h=>h.id===mark.owner&&h.hp>0);if(!owner)continue;const d=mark.damage*(owns('V2-WAR-02')&&e.lastHitOwner===owner.id&&e.lastHitKind==='siphon'?3:1);visualRing(e.x,e.y,1.25,'#be86df');for(const other of enemiesInRadius(e.x,e.y,1.25).slice(0,4)){if(other===e)continue;if(owns('O-4-W-A5'))applyStatus(other,owner,'darkFlame',d*.5,3);hitEnemy(other,d,'#ca91ef','warlock',owner.id,'derived');if(other.hp<=0)other.noDoomProc=true}if(owns('O-4-W-A4'))owner.doomBonus=Math.min(1,(owner.doomBonus||0)+.05);if(owns('V2-WAR-01')&&state.elapsed-(owner.lastDoomCharge??-Infinity)>=1){owner.lastDoomCharge=state.elapsed;grantCharge(owner,.05)}if(owns('R-WAR-D')&&owner.hp<owner.maxHp*.5&&state.elapsed-(owner.lastDoomHeal??-Infinity)>=1){owner.lastDoomHeal=state.elapsed;healHero(owner,owner.maxHp*.03)}}
-  if(e.scheduled&&!e.boss)SKILLS?.scheduledKill();const upDrop=SKILLS?SKILLS.recordKill(e.lastHitHero||null,!!e.boss,{scheduled:!!e.scheduled,elite:!!e.elite}):0;
+  if(e.scheduled&&!e.boss){state.scheduledDefeated++;SKILLS?.scheduledKill()}const upDrop=SKILLS?SKILLS.recordKill(e.lastHitHero||null,!!e.boss&&!e.faction,{scheduled:!!e.scheduled,elite:!!e.elite,mutated:!!e.mutated,faction:!!e.faction,rewardId:'enemy-'+e.id}):0;if((e.mutated||e.faction)&&!state.testMode){state.shardsEarned=(state.shardsEarned||0)+1;log('+1 Shard · '+(e.faction?e.name:'Mutated enemy'))}
   if(upDrop>0){state.upEarned=Number((state.upEarned+upDrop).toFixed(3));state.upDrops++;const amount=Number(upDrop.toFixed(2));if(e.boss)log('Boss reward: +'+amount+' UP guaranteed!');else damageNumber(e.x,e.y-.55,'+'+amount+' UP','#ffd886');}
-  onEnemyDeath(e);if(e.scheduled||e.boss)state.kills++;state.enemies.splice(i,1);
+  enemyDeathSpecial(e);onEnemyDeath(e);if(e.scheduled||e.boss)state.kills++;state.enemies.splice(i,1);
  }
 
  if(owns('V2-NEC-02'))for(const h of state.heroes){if(h.hp>0||h.summonKind!=='undead'||h.naturalExpiry||h.evicted)continue;const owner=state.heroes.find(a=>a.id===h.ownerId&&a.hp>0);if(owner)owner.graveBonus=Math.min(1,(owner.graveBonus||0)+.05)}
  ACTIONS.captureTick();state.heroes=state.heroes.filter(h=>h.hp>0||h.capture);
  // Only begin the boss intermission once every regular minion has spawned AND been defeated.
- if(!state.bossSpawned&&state.regularSpawned===regularCount()&&state.kills>=regularCount()&&state.enemies.every(e=>e.hp<=0||e.boss)){
+ if(!state.bossSpawned&&state.regularSpawned===regularCount()&&state.scheduledDefeated>=regularCount()&&state.enemies.length===0){
   state.bossWaitClock+=dt;
-  if(state.bossWaitClock>=BOSS_AFTER_CLEAR_DELAY){spawnEnemy(true);state.bossSpawned=true;if(owns('R-G08'))for(const h of activeOriginalHeroes())grantShield(h,h.maxHp*.15,5);log(encounter().boss+' has arrived after the minion wave!')}
+  if(state.bossWaitClock>=BOSS_AFTER_CLEAR_DELAY){state.bossWaitClock=0;if(state.wavePlan.faction&&state.factionSpawned<3){const e=spawnEnemy(true,'faction');state.factionSpawned++;log(e.name+' has arrived!')}else{spawnEnemy(true);state.bossSpawned=true;if(owns('R-G08'))for(const h of activeOriginalHeroes())grantShield(h,h.maxHp*.15,5);log(encounter().boss+' has arrived after the minion wave!')}}
  }else if(!state.bossSpawned)state.bossWaitClock=0;
  if(state.bossSpawned&&state.bossKilled&&state.regularSpawned===regularCount()&&state.enemies.length===0){clearStage();return}
  if(state.uiClock>=.16){state.uiClock=0;updateUI()}
@@ -516,8 +549,8 @@ function revealPack(){if(state.mode!=='opening'||!state.pendingPack)return;
  else{for(const hero of state.openedHeroes)createHero(hero);if(SKILLS)SKILLS.recordPack(state.currentRevealPack);state.packsToOpen--;state.openedHeroes=null;state.pendingPack=false;if(state.packsToOpen>0)openNextPack();else{refs.modal.classList.remove('active');refs.modal.setAttribute('aria-hidden','true');beginBattle()}updateUI()}
 }
 
-function beginBattle(){ACTIONS.reset();state.necroRoundRobin=0;SKILLS?.startAttempt();state.firstEncounterProtected=SKILLS?!SKILLS.markStageAttempt(state.stage):true;state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.bossRewardPending=false;state.bossWaitClock=0;state.enemies=[];TOWER_FIRE.reset();state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.towerShield=0;state.lastTowerShield=false;state.combatTelemetry={overlaps:0,targetSwitches:0,blocked:0};state.deployedHeroes=state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length;state.upEarned=0;state.upDrops=0;state.lastReport=null;refs.battleReport.hidden=true;log('Stage '+state.stage+' · '+encounter().name+' — '+regularCount()+' '+encounter().minion+' units and '+encounter().boss+'.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
-function resetPreparation(restoreTower=true){ACTIONS.reset();state.coins=state.coinMax;if(restoreTower)state.towerHp=state.towerMax||100;state.mode='prep';state.paused=false;state.bought=0;state.packQueue=[];state.packsToOpen=0;state.testQueue=[];state.heroes=[];state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.bossRewardPending=false;state.elapsed=0;state.spawnClock=0;state.bossWaitClock=0;state.uiClock=0;TOWER_FIRE.reset();state.upEarned=0;state.upDrops=0;state.deployedHeroes=0;state.lastReport=null;state.bossRewardPending=false;refs.battleReport.hidden=true;state.pendingPack=false;state.openedHeroes=null;refs.overlay.classList.add('hidden');if(SKILLS)SKILLS.recalc();state.coins=state.coinMax;rollShop();updateUI();saveShopStock()}
+function beginBattle(){ACTIONS.reset();state.necroRoundRobin=0;SKILLS?.startAttempt();state.wavePlan=wavePlan();state.firstEncounterProtected=state.wavePlan.protectedAttempt;SKILLS?.markStageAttempt(state.stage);state.factionSpawned=0;state.factionDefeated=0;state.scheduledDefeated=0;state.shardsEarned=0;state.enemyZones=[];state.mode='battle';state.paused=false;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.elapsed=0;state.spawnClock=0;state.uiClock=0;state.bossKilled=false;state.bossRewardPending=false;state.bossWaitClock=0;state.enemies=[];TOWER_FIRE.reset();state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.towerShield=0;state.lastTowerShield=false;state.combatTelemetry={overlaps:0,targetSwitches:0,blocked:0};state.deployedHeroes=state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length;state.upEarned=0;state.upDrops=0;state.lastReport=null;refs.battleReport.hidden=true;log('Stage '+state.stage+' · '+encounter().name+' — '+regularCount()+' '+encounter().minion+' units and '+encounter().boss+'.'+(state.testMode?' (test only)':''));if(state.heroes.length===0)log('Warning: no heroes have been recruited.');updateUI()}
+function resetPreparation(restoreTower=true){ACTIONS.reset();state.wavePlan=null;state.factionSpawned=0;state.factionDefeated=0;state.scheduledDefeated=0;state.shardsEarned=0;state.enemyZones=[];state.coins=state.coinMax;if(restoreTower)state.towerHp=state.towerMax||100;state.mode='prep';state.paused=false;state.bought=0;state.packQueue=[];state.packsToOpen=0;state.testQueue=[];state.heroes=[];state.enemies=[];state.effects=[];state.hazards=[];state.pendingHits=[];state.totems=[];state.traps=[];state.sanctuaries=[];state.sporeClouds=[];state.abilityCasts=0;state.regularSpawned=0;state.bossSpawned=false;state.kills=0;state.bossKilled=false;state.bossRewardPending=false;state.elapsed=0;state.spawnClock=0;state.bossWaitClock=0;state.uiClock=0;TOWER_FIRE.reset();state.upEarned=0;state.upDrops=0;state.deployedHeroes=0;state.lastReport=null;state.bossRewardPending=false;refs.battleReport.hidden=true;state.pendingPack=false;state.openedHeroes=null;refs.overlay.classList.add('hidden');if(SKILLS)SKILLS.recalc();state.coins=state.coinMax;rollShop();if(!initialising)applyShopTheft();updateUI();saveShopStock()}
 function startStage(){if(state.mode==='clear'){if(!state.testMode)state.stage++;resetPreparation(true);if(SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);log((state.testMode?'Test preparation':'Stage '+state.stage+' preparation')+' has begun.');updateUI();return}
  if(state.mode!=='prep')return;
  if(SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);
@@ -536,7 +569,7 @@ function startStage(){if(state.mode==='clear'){if(!state.testMode)state.stage++;
 function clearStage(){ACTIONS.reset();
  if(state.bossRewardPending){
   state.bossRewardPending=false;state.kills++;
-  const reward=SKILLS?SKILLS.recordKill(null,true):0;
+  const reward=SKILLS?SKILLS.recordKill(null,true,{rewardId:'king-split-boss'}):0;
   if(reward>0){state.upEarned=Number((state.upEarned+reward).toFixed(2));state.upDrops++;log('King Slime defeated! +'+reward+' UP boss reward.');}
  }
  SKILLS?.finishAttempt(true);showBattleReport();if(SKILLS)SKILLS.recordWin(state.stage);state.mode=(!state.testMode&&state.stage===10)?'champion':'clear';state.heroes=[];state.effects=[];state.hazards=[];state.pendingHits=[];refs.messageSymbol.textContent='✦';refs.messageTitle.textContent=state.mode==='champion'?'Ten Stages Complete!':'Stage '+state.stage+' Cleared';refs.messageText.textContent=state.mode==='champion'?'You have cleared all ten stages and defeated the Eldritch Horror. The campaign is complete; post-game progression is not yet designed.':state.testMode?'Test battle completed. Debug battles do not advance your stage. Return to preparation with full coins.':'The boss has fallen and the tower stands! All heroes leave after this stage. Your next round refills to '+state.coinMax+' coins.';refs.messageButton.textContent=state.mode==='champion'?'↻ Start New Run':state.testMode?'Back to Testing Prep':'Prepare Stage '+(state.stage+1);refs.overlay.classList.remove('hidden');log('Stage '+state.stage+' cleared!'+(state.testMode?' (debug only)':''));updateUI()}
@@ -557,27 +590,28 @@ function init(){
  $('packOfferButtons').addEventListener('click',e=>{const b=e.target.closest('[data-shop-slot]');if(!b||state.mode!=='prep'||state.testMode)return;const slot=Number(b.dataset.shopSlot);if(!Number.isInteger(slot)||!state.shopOffers[slot]||state.shopOffers[slot].sold)return;state.selectedSlot=slot;updateUI();saveShopStock()});$('rotateShop').addEventListener('click',rerollMerchant);$('reserveShop')?.addEventListener('click',reserveMerchant);refs.buy.addEventListener('click',buyPack);refs.revealButton.addEventListener('click',revealPack);refs.start.addEventListener('click',startStage);
  refs.pause.addEventListener('click',()=>{if(state.mode!=='battle')return;state.paused=!state.paused;updateUI()});refs.restart.addEventListener('click',()=>{if(SKILLS)SKILLS.markRestart();restart()});
  refs.messageButton.addEventListener('click',()=>{if(state.mode==='clear')startStage();else if(state.mode==='over')retryStage();else if(state.mode==='champion'){if(SKILLS)SKILLS.markRestart();restart()}});
- document.addEventListener('keydown',e=>{if(e.target.closest?.('#fwQuickStats'))return;if(e.code==='Space'&&state.mode==='battle'){e.preventDefault();state.paused=!state.paused;updateUI()}else if(e.key==='Enter'&&state.mode==='prep'&&!state.pendingPack)startStage()});window.addEventListener('resize',resize);if('ResizeObserver'in window)new ResizeObserver(resize).observe(canvas.parentElement);resize();restart();if(SKILLS)SKILLS.resumeStage();initialising=false;if(!restoreShopStock()){rollShop();updateUI()}saveShopStock();requestAnimationFrame(tick)
+ document.addEventListener('keydown',e=>{if(e.target.closest?.('#fwQuickStats'))return;if(e.code==='Space'&&state.mode==='battle'){e.preventDefault();state.paused=!state.paused;updateUI()}else if(e.key==='Enter'&&state.mode==='prep'&&!state.pendingPack)startStage()});window.addEventListener('resize',resize);if('ResizeObserver'in window)new ResizeObserver(resize).observe(canvas.parentElement);resize();restart();if(SKILLS)SKILLS.resumeStage();initialising=false;if(!restoreShopStock()){rollShop();applyShopTheft();updateUI()}saveShopStock();requestAnimationFrame(tick)
 }
 
 window.__FW_DEMO__={snapshot:()=>({combatTelemetry:{...state.combatTelemetry},stage:state.stage,coins:state.coins,coinMax:state.coinMax,towerHp:state.towerHp,mode:state.mode,paused:state.paused,bought:state.bought,packsToOpen:state.packsToOpen,testMode:state.testMode,testQueue:state.testQueue.slice(),regularTotal:regularCount(),heroes:state.heroes.map(h=>({name:h.base.name,rarity:h.base.rarity,hp:h.hp,x:h.x,y:h.y})),regularSpawned:state.regularSpawned,worldW:view.worldW,worldH:view.worldH,bossSpawned:state.bossSpawned,bossWaitClock:state.bossWaitClock,normalSpawnInterval:NORMAL_SPAWN_INTERVAL,nextSpawnInterval:nextSpawnInterval(),kills:state.kills,enemies:state.enemies.length,hasPendingPack:state.pendingPack,abilityCasts:state.abilityCasts,totems:state.totems.length,traps:state.traps.length,heroesCharged:state.heroes.filter(h=>h.charge>=chargeSeconds(h)&&isOriginalHero(h)).length,heroesDetail:state.heroes.map(h=>({name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,summonKind:h.summonKind,beamTarget:h.beamTarget,beamTime:h.beamTime,damage:h.base.damage})),tuning:TUNING.shared,packs:PACKS.map(p=>({name:p.name,pool:p.pool,stage:p.stage})),encounter:{...encounter()},campaignStages:ENCOUNTERS.length,towerAim:state.towerAim,projectiles:state.towerShots?.length||0,sporeClouds:state.sporeClouds?.length||0,balanceProfile:BALANCE.profileId,balanceSchema:BALANCE.schemaVersion,sanctuaries:state.sanctuaries.length,shopOffers:state.shopOffers.map(o=>({...o})),selectedSlot:state.selectedSlot,merchant:{...SKILLS?.merchantState?.(),free:state.merchantShop?.free,paid:state.merchantShop?.paid},version:'development tree integration / design-1.16.0',skillTree:SKILLS?.debug(),quests:SKILLS?.questProgress?.(),wave:waveStatus(),battleReport:state.lastReport})};
 
 // Testing-only, non-persistent simulation controls for automated playtesting.
 window.__FW_TEST__={
- actions:()=>ACTIONS.snapshot(),armSpell:k=>state.testMode&&ACTIONS.arm(k),castSpell:(x,y)=>state.testMode&&ACTIONS.cast(x,y),rescue:id=>state.testMode&&ACTIONS.press(id),damageHero:(id,amount,enemyId)=>{if(!state.testMode||state.mode!=='battle')return false;const h=state.heroes.find(h=>h.id===id);if(!h)return false;hitHero(h,amount,state.enemies.find(e=>e.id===enemyId));return true},
+ prestige:()=>({plan:state.wavePlan,factionSpawned:state.factionSpawned,factionDefeated:state.factionDefeated,scheduledDefeated:state.scheduledDefeated,shardsEarned:state.shardsEarned}),actions:()=>ACTIONS.snapshot(),armSpell:k=>state.testMode&&ACTIONS.arm(k),castSpell:(x,y)=>state.testMode&&ACTIONS.cast(x,y),rescue:id=>state.testMode&&ACTIONS.press(id),damageHero:(id,amount,enemyId)=>{if(!state.testMode||state.mode!=='battle')return false;const h=state.heroes.find(h=>h.id===id);if(!h)return false;hitHero(h,amount,state.enemies.find(e=>e.id===enemyId));return true},
  advance:(seconds)=>{if(!state.testMode||state.mode!=='battle')return false;for(let i=0;i<Math.round(seconds/.05)&&state.mode==='battle';i++)step(.05);updateUI();return true},
  enemy:(x,y,hp=SPAWN_CONFIG.normalHp,damage=0)=>{if(!state.testMode||state.mode!=='battle')return false;state.enemies.push({id:state.nextId++,x,y,hp,maxHp:hp,boss:false,speed:0,damage,attackPeriod:1,firstDelay:SPAWN_CONFIG.minionFirstAttackWindup,cooldown:0,inAttackRange:false,testSpawn:true});return true},
  kill:(count=1)=>{if(!state.testMode||state.mode!=='battle')return false;let n=0;for(const e of state.enemies){if(!e.boss&&e.hp>0){e.hp=0;n++;if(n>=count)break}}return n},
- current:()=>({mode:state.mode,elapsed:state.elapsed,casts:state.abilityCasts,heroes:state.heroes.map(h=>({id:h.id,rescues:h.rescues||0,downed:!!h.capture,invulnerableUntil:h.rescueInvulnerableUntil||0,name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,beamTarget:h.beamTarget,beamTime:h.beamTime,summonKind:h.summonKind,expiry:h.expiry,invisibleUntil:h.invisibleUntil,shield:h.shield})),enemies:state.enemies.map(e=>({id:e.id,hp:e.hp,maxHp:e.maxHp,x:e.x,y:e.y,damage:e.damage,speed:e.speed,attackPeriod:e.attackPeriod,cooldown:e.cooldown,inAttackRange:!!e.inAttackRange,boss:!!e.boss})),totems:state.totems.length,traps:state.traps.length,sanctuaries:state.sanctuaries.map(z=>({...z})),encounter:encounter().name})};
+ current:()=>({mode:state.mode,elapsed:state.elapsed,casts:state.abilityCasts,heroes:state.heroes.map(h=>({id:h.id,rescues:h.rescues||0,downed:!!h.capture,invulnerableUntil:h.rescueInvulnerableUntil||0,name:h.base.name,hp:h.hp,x:h.x,y:h.y,charge:h.charge,casts:h.casts,beamTarget:h.beamTarget,beamTime:h.beamTime,summonKind:h.summonKind,expiry:h.expiry,invisibleUntil:h.invisibleUntil,shield:h.shield})),enemies:state.enemies.map(e=>({id:e.id,name:e.name,elite:!!e.elite,mutated:!!e.mutated,faction:!!e.faction,generated:!!e.generated,phase:e.phase,hp:e.hp,maxHp:e.maxHp,x:e.x,y:e.y,damage:e.damage,speed:e.speed,attackPeriod:e.attackPeriod,cooldown:e.cooldown,inAttackRange:!!e.inAttackRange,boss:!!e.boss})),totems:state.totems.length,traps:state.traps.length,sanctuaries:state.sanctuaries.map(z=>({...z})),encounter:encounter().name})};
 
 if(document.body.classList.contains('lab-mode')){
  window.__FW_LAB_API__={
   prepare(){
    resetPreparation();
-   if(!state.testMode)toggleTesting();
+   if(!state.testMode)toggleTesting();state.testPrestige=0;state.testPreviouslyAttempted=false;
    updateUI();
    return true;
   },
+  setPrestige(n,previouslyAttempted=true){if(state.mode!=='prep'||!state.testMode)return false;state.testPrestige=Math.max(0,Math.min(100,Math.floor(Number(n)||0)));state.testPreviouslyAttempted=!!previouslyAttempted;updateUI();return true},
   setStage(n){
    if(state.mode!=='prep')return false;
    state.stage=clamp(Math.round(Number(n)||1),1,ENCOUNTERS.length);
