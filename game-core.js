@@ -578,12 +578,13 @@ function resetPreparation(restoreTower=true){ACTIONS.reset();BOSSES.reset();stat
 function startStage(){if(state.endlessHub)return;if(state.endlessWave&&state.mode==='clear'){if(state.testMode){state.endlessWave++;state.stage=E.wave(state.endlessWave).family;resetPreparation()}else prepareEndless();return}if(state.mode==='clear'){if(!state.testMode)state.stage++;resetPreparation(true);if(SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);log((state.testMode?'Test preparation':'Stage '+state.stage+' preparation')+' has begun.');updateUI();return}
  if(state.mode!=='prep')return;
  if(!state.endlessWave&&SKILLS&&!state.testMode)SKILLS.checkpointStage(state.stage);
- if(state.testMode){for(const id of state.testQueue)createHero(HERO_MAP[id]);state.testQueue=[]}
+ if(state.testMode){if(window.FWCampaignUI){window.FWCampaignUI.prepareField();resize()}for(const id of state.testQueue)createHero(HERO_MAP[id]);state.testQueue=[]}
  else{
   if(!state.bought){log('Purchase at least one hero offer before starting.');return;}
   const plan=M.resolve(state.merchantShop,SKILLS.merchantState().pity);
   if(!SKILLS.commitMerchant(state.merchantAttemptId,plan)){log('This merchant transaction was already committed.');return;}
   clearShopStock();
+  if(window.FWCampaignUI){window.FWCampaignUI.prepareField();resize()}
   const deployed=plan.heroes.map(id=>createHero(HERO_MAP[id],SKILLS.drawSkin(id)));
   log('Deployed '+deployed.map(h=>h.base.name+(h.skin.key!=='default'?' ('+h.skin.name+' · '+h.skin.rarity+')':'')).join(', ')+'.');
  }
