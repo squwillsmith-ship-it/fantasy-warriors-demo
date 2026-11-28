@@ -29,7 +29,7 @@ function restoreShopStock(){
  try{
   const x=JSON.parse(localStorage.getItem(SHOP_SAVE_KEY)),m=SKILLS?.merchantState?.(),shop=x?.shop;
   if(!x||x.stage!==state.stage||(x.endlessWave||0)!==(state.endlessWave||0)||(x.endlessId||null)!==(SKILLS?.endlessState().session?.id||null)||x.resets!==(SKILLS?.debug()?.resets??0)||typeof x.id!=='string'||x.id===m?.lastCommit)return false;
-  if(!shop||!Array.isArray(shop.offers)||shop.offers.length<3||shop.offers.length>6||!Array.isArray(shop.tiers)||!Array.isArray(shop.flags)||!shop.tiers.includes(0))return false;
+  if(!shop||!Array.isArray(shop.offers)||shop.offers.length!==state.shopSlots||!Array.isArray(shop.tiers)||!Array.isArray(shop.flags)||!shop.tiers.includes(0))return false;
   if(!shop.tiers.every(i=>Number.isInteger(i)&&i>=0&&i<5&&SKILLS.isTierOpen(i+1))||shop.flags.some(id=>!m.flags.includes(id)))return false;
   if(!shop.offers.every(o=>o&&['standard','individual','double','triple','box','golden','mixed'].includes(o.type)&&shop.tiers.includes(o.packIndex)&&Number.isInteger(o.qty)&&o.qty>=1&&o.qty<=3&&Number.isInteger(o.listPrice)&&o.listPrice>=o.qty&&typeof o.sold==='boolean'&&(!o.heroId||HERO_MAP[o.heroId])&&(o.type!=='mixed'||shop.tiers.includes(o.other))))return false;
   if(!Number.isFinite(x.coins)||x.coins<0||x.coins>state.coinMax)return false;
