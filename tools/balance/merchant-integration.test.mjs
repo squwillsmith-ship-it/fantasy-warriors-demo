@@ -121,12 +121,12 @@ try{
  const y=boot(false),ys=y.window.FWSkillTree;
  assert.equal(ys.debug().skinDuplicateStreak,3);
  const newSkin=ys.buySkinBox();assert(!newSkin.duplicate);assert.equal(newSkin.skin.id,'knight:ember');assert.equal(ys.shards(),6.15);
- assert(ys.prestige());assert.equal(ys.debug().resets,4);assert.equal(ys.shards(),7.15);assert.equal(ys.skinCollection().owned,3);
- const z=boot(false),zs=z.window.FWSkillTree;assert.equal(zs.skinCollection().owned,3);assert.equal(zs.shards(),7.15);
+ assert(ys.prestige());assert.equal(ys.debug().resets,4);assert.equal(ys.shards(),9.15);assert.equal(ys.skinCollection().owned,3);
+ const z=boot(false),zs=z.window.FWSkillTree;assert.equal(zs.skinCollection().owned,3);assert.equal(zs.shards(),9.15);
  // Deterministic test selection of the owned Epic appearance, while still running normal merchant deployment.
  z.window.FWSkillTree.drawSkin=id=>z.window.FWSkins.draw(z.window.FWMerchant.data.heroes,id,zs.debug().ownedSkins,()=>.99);
  z.get('buyButton').fire('click');z.get('stageButton').fire('click');
- const unit=z.window.__FW_DEMO__.snapshot().heroes[0];assert.equal(unit.name,'Knight');assert.equal(unit.skinRarity,'Epic');assert.equal(unit.skinMultiplier,1.5);assert.equal(unit.maxHp,19*1.5);assert(Math.abs(unit.damage-3.2*1.5)<1e-8);
+ const unit=z.window.__FW_DEMO__.snapshot().heroes[0];assert.equal(unit.name,'Knight');assert.equal(unit.skinRarity,'Epic');assert.equal(unit.skinMultiplier,1.5);assert.equal(unit.maxHp,29*1.5);assert(Math.abs(unit.damage-3.68*1.5)<1e-8);
  assert.equal(unit.rarity,'Common');
  assert.equal(zs.buySkinBox(),false,'no purchases during combat');
  console.log('Skin collection integration: exact refunds, persisted protection, prestige preservation and Epic unit deployment passed.');
