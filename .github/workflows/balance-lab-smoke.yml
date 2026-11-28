@@ -8,6 +8,8 @@ on:
       - 'skins.js'
       - 'battle-actions.js'
       - 'prestige-enemies.js'
+      - 'boss-abilities.js'
+      - 'balance-config.js'
       - 'tower-fire.js'
       - 'game-*.js'
       - 'skill-tree.js'
@@ -22,6 +24,8 @@ on:
       - 'skins.js'
       - 'battle-actions.js'
       - 'prestige-enemies.js'
+      - 'boss-abilities.js'
+      - 'balance-config.js'
       - 'tower-fire.js'
       - 'game-*.js'
       - 'skill-tree.js'
@@ -37,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        profile: [live, candidate]
+        profile: [live, historical]
     defaults:
       run:
         working-directory: tools/balance
@@ -53,6 +57,7 @@ jobs:
       - run: node skins.test.mjs
       - run: node battle-actions.test.mjs
       - run: node prestige-enemies.test.mjs
+      - run: node boss-abilities.test.mjs
       - run: node merchant-integration.test.mjs
       - run: node run.mjs --profile=${{ matrix.profile }} --stages=1,2,10 --seeds=2 --max-seconds=240 --output=smoke-${{ matrix.profile }}.json
       - uses: actions/upload-artifact@v4
