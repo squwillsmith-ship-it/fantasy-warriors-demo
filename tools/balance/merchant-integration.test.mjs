@@ -212,12 +212,12 @@ try{
  assert.equal(boot(false).window.FWSkillTree.points(),2,'reward survives reload');
  const b=boot(false),bs=b.window.FWSkillTree,bf=b.window.__FW_PROGRESS_FIXTURE__;
  b.get('buyButton').fire('click');b.get('stageButton').fire('click');
- for(let i=0;i<6;i++)bf.state.upEarned+=bs.recordKill(null,false,{scheduled:true,rewardId:'progress-'+i});
+ for(let i=0;i<8;i++)bf.state.upEarned+=bs.recordKill(null,false,{scheduled:true,rewardId:'progress-'+i});
  bf.lose();assert.equal(bs.points(),4,'one earned UP topped up to two, not added');
  assert.equal(bf.state.lastReport.minimumTopup,1);assert.equal(bf.state.lastReport.up,2);
  const c=boot(false),cs=c.window.FWSkillTree,cf=c.window.__FW_PROGRESS_FIXTURE__;
  c.get('buyButton').fire('click');c.get('stageButton').fire('click');
- for(let i=0;i<18;i++)cf.state.upEarned+=cs.recordKill(null,false,{scheduled:true,rewardId:'progress-high-'+i});
+ for(let i=0;i<24;i++)cf.state.upEarned+=cs.recordKill(null,false,{scheduled:true,rewardId:'progress-high-'+i});
  cf.lose();assert.equal(cs.points(),7);assert.equal(cf.state.lastReport.minimumTopup,0);assert.equal(cf.state.lastReport.up,3);
  const d=boot(false),ds=d.window.FWSkillTree;
  d.get('buyButton').fire('click');d.get('stageButton').fire('click');assert.equal(boot(false).window.FWSkillTree.points(),7,'abandoned battle does not get floor');
