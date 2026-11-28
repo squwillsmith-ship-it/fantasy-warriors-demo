@@ -6,6 +6,7 @@ on:
       - 'tools/balance/**'
       - 'merchant.js'
       - 'battle-actions.js'
+      - 'prestige-enemies.js'
       - 'tower-fire.js'
       - 'game-*.js'
       - 'skill-tree.js'
@@ -18,6 +19,7 @@ on:
       - 'tools/balance/**'
       - 'merchant.js'
       - 'battle-actions.js'
+      - 'prestige-enemies.js'
       - 'tower-fire.js'
       - 'game-*.js'
       - 'skill-tree.js'
@@ -47,6 +49,7 @@ jobs:
       - run: npm run check
       - run: node merchant.test.mjs
       - run: node battle-actions.test.mjs
+      - run: node prestige-enemies.test.mjs
       - run: node merchant-integration.test.mjs
       - run: node run.mjs --profile=${{ matrix.profile }} --stages=1,2,10 --seeds=2 --max-seconds=240 --output=smoke-${{ matrix.profile }}.json
       - uses: actions/upload-artifact@v4
