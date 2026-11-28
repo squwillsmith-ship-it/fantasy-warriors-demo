@@ -130,7 +130,7 @@ function finishAttempt(won){
  if(!api||api.state.testMode||api.state.mode!=='battle'||api.state.treeOutcomePaid)return 0;
  const state=api.state;state.treeOutcomePaid=true;let bonus=0;
  if(has('R-E08')&&state.treeScheduledKills>=6)bonus+=Math.min(2,Math.floor(state.treeStartUP*.1));
- if(won&&has('R-E11'))bonus+=Math.min(2,Math.floor(state.treeStartCoins/2));
+ if(won&&!state.endlessWave&&has('R-E11'))bonus+=Math.min(2,Math.floor(state.treeStartCoins/2));
  // A resolved battle always advances the player: top up, never add a flat farming bonus.
  const topup=Math.max(0,Math.round((2-(p.up-state.treeStartUP)-bonus)*100)/100);
  bonus+=topup;state.attemptProgressTopup=topup;credit(bonus);
