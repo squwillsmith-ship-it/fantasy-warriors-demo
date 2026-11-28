@@ -92,17 +92,17 @@ window.FW_SKILL_DATA={
   "ordinary": [
     {
       "id": "O-1-G1",
-      "name": "Vitality",
+      "name": "Shop Expansion I",
       "cost": 2,
       "prerequisites": "T1-ROOT",
-      "effect": "+25% all hero base HP."
+      "effect": "+1 shop slot."
     },
     {
       "id": "O-1-G2",
-      "name": "Weapon Training",
+      "name": "Shop Expansion II",
       "cost": 2,
       "prerequisites": "T1-ROOT",
-      "effect": "+25% all hero base basic damage."
+      "effect": "+1 shop slot."
     },
     {
       "id": "O-1-G3",
@@ -2531,13 +2531,13 @@ window.FW_SKILL_DATA={
   ],
   "supported": {
     "O-1-G1": {
-      "kind": "hp",
-      "amount": 0.25,
+      "kind": "slots",
+      "amount": 1,
       "key": null
     },
     "O-1-G2": {
-      "kind": "damage",
-      "amount": 0.25,
+      "kind": "slots",
+      "amount": 1,
       "key": null
     },
     "O-1-G3": {
