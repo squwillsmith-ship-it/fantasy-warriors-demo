@@ -456,7 +456,10 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
   e.wraithBlockedTime=atTowerEdge&&!totem&&!heroReachable?(e.wraithBlockedTime||0)+dt:0;
   const wraithTowerFallback=atTowerEdge&&e.wraithBlockedTime>=3;
   if(wraithTowerFallback)hero=null;
-  const target=totem||hero||towerApproach(e);const dist=wraithTowerFallback?0:Math.hypot(target.x-e.x,target.y-e.y);e.attackingTower=!totem&&!hero&&dist<1.5;
+  const target=totem||hero||towerApproach(e);
+  // Attack the actual tower perimeter, not only the assigned movement lane.
+  const towerContact=!totem&&!hero&&nearTower(e.x,e.y,actorRadius(e)+.34);
+  const dist=wraithTowerFallback||towerContact?0:Math.hypot(target.x-e.x,target.y-e.y);e.attackingTower=!totem&&!hero&&dist<1.5;
   const reach=totem?actorRadius(e)+.35:hero?(e.faction&&e.factionIndex===1?3.5:(e.stage===4&&!e.elite&&!e.boss)?3:(e.stage===7&&!e.elite&&!e.boss)?3.5:actorRadius(e)+actorRadius(hero)+.22):.34;
   if(hero&&!totem&&!e.boss&&!e.elite&&!e.generated&&e.stage===6&&dist>reach&&dist<=2.5&&!(e.dashReady>state.elapsed)){const len=Math.min(2,Math.max(0,dist-reach+.02)),x=e.x+(hero.x-e.x)/dist*len,y=e.y+(hero.y-e.y)/dist*len;if(legalActorPosition(e,x,y)&&!nearTower((e.x+x)/2,(e.y+y)/2,e.radius)){e.x=x;e.y=y;e.dashReady=state.elapsed+5;e.inAttackRange=true;e.cooldown=e.attackPeriod;hitHero(hero,e.damage,e);visualRing(x,y,.5,'#f2c892');continue}}
   if(dist<=reach){
