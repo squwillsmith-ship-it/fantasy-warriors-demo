@@ -2,7 +2,7 @@
 (function(){'use strict';
 const $=id=>document.getElementById(id), E=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e};
 let installed=false,screen='menu',previousMode=null,live=null,ui={},selected=null,lastCapture=null,rosterKey='',mapKey='';
-const art=window.FWPrototypeArt;const icons=['●','♣','⚑','◆','▲','✚','✶','☾','◈','✺'];let sealed=false,portraitKey='',dealTimer=null,dealGeneration=0,showcaseQueue=[],knownBefore=new Set(),seenAppearances=new Set();try{seenAppearances=new Set(JSON.parse(localStorage.getItem('fw-ui-seen-appearances')||'[]'))}catch{}
+let rotationGate=null,orientationBlocked=false;const art=window.FWPrototypeArt;const icons=['●','♣','⚑','◆','▲','✚','✶','☾','◈','✺'];let sealed=false,portraitKey='',dealTimer=null,dealGeneration=0,showcaseQueue=[],knownBefore=new Set(),seenAppearances=new Set();try{seenAppearances=new Set(JSON.parse(localStorage.getItem('fw-ui-seen-appearances')||'[]'))}catch{}
 function canvas(w,h,cls){const x=E('canvas',cls);x.width=w;x.height=h;x.setAttribute('aria-hidden','true');return x}
 const active=s=>s&&s.mode!=='prep';
 function choosePage(page){
@@ -11,16 +11,25 @@ function choosePage(page){
 }
 function btn(label,fn){const b=E('button','btn secondary compact',label);b.type='button';b.addEventListener('click',fn);return b}
 function skill(tab){if(active(live))return;$('openSkillTree').click();$(tab).click()}
+function syncOrientation(){
+ if(!installed||!rotationGate)return;
+ const touch=(navigator.maxTouchPoints||0)>0||window.matchMedia('(any-pointer: coarse)').matches;
+ const blocked=touch&&window.matchMedia('(orientation: portrait)').matches;
+ orientationBlocked=blocked;
+ document.body.classList.toggle('fw-orientation-blocked',blocked);
+ if(blocked&&!rotationGate.open){rotationGate.showModal();if(live?.mode==='battle'&&!live.paused)ui.pauseForRotation?.()}
+ else if(!blocked&&rotationGate.open)rotationGate.close();
+}
 function install(){
  const shell=document.querySelector('.shell'),layout=document.querySelector('.layout'),field=document.querySelector('.battleground'),side=document.querySelector('.sidebar');
  if(!shell||!layout||!field||!side)return false;
  const merchant=$('shopTitle').closest('.panel'),test=$('testingPanel'),quest=$('questPanel'),pool=$('odds').closest('.panel'),encounter=$('encounterName').closest('.panel'),tree=$('openSkillTree').closest('.panel'),log=$('events').closest('.panel');
  const nav=E('nav','fw-live-nav'),pages=E('div','fw-live-pages'),menu=E('section','fw-live-menu'),map=E('section','fw-live-map'),shop=E('section','fw-live-shop'),dev=E('section','fw-live-dev');
- const titleArt=canvas(320,180,'fw-pixel-background'),title=E('h2',null,'Fantasy Warriors'),lead=E('p',null,'A KINGDOM UNDER SIEGE'),menuBody=E('div','fw-title-body');
- art.title(titleArt);if(window.FWInterimAssets?.title)document.documentElement.style.setProperty('--fw-recruit-pack','url('+window.FWInterimAssets.title+')');menuBody.append(lead,title,btn('Continue campaign',()=>choosePage('map')),btn('New Game',()=>{if(confirm('Start a fresh campaign? Export a backup first. This clears current progression.'))ui.newGame?.()}),btn('Settings',()=>settings()),btn('Save & backup',()=>skill('skillBackupTab')));menu.append(titleArt,menuBody,E('small','fw-art-label','INTERIM ART · NOT FINAL'));
+ const titleArt=canvas(320,180,'fw-pixel-background'),title=E('h2'),lead=E('p',null,'A KINGDOM UNDER SIEGE'),menuBody=E('div','fw-title-body');
+ title.append(E('span',null,'Fantasy'),E('span',null,'Warriors'));art.title(titleArt);if(window.FWInterimAssets?.title)document.documentElement.style.setProperty('--fw-recruit-pack','url('+window.FWInterimAssets.title+')');menuBody.append(lead,title,btn('Continue campaign',()=>choosePage('map')),btn('New Game',()=>{if(confirm('Start a fresh campaign? Export a backup first. This clears current progression.'))ui.newGame?.()}),btn('Settings',()=>settings()),btn('Save & backup',()=>skill('skillBackupTab')));menu.append(titleArt,menuBody,E('small','fw-art-label','INTERIM ART · NOT FINAL'));
  const settings=()=>{const d=E('dialog','fw-settings');const h=E('h2',null,'Settings');d.append(h,E('p',null,'Sound and final artwork are not yet implemented.'),btn('Save & backup',()=>{d.close();skill('skillBackupTab')}),btn('Testing tools',()=>{d.close();choosePage('dev')}),btn('Close',()=>d.close()));document.body.append(d);d.addEventListener('close',()=>d.remove(),{once:true});d.showModal()};
  const mapTitle=E('h2',null,'The Realm'),mapInfo=E('p','fw-live-map-info'),regions=E('div','fw-live-regions'),mapActions=E('div','fw-live-actions');
- mapActions.append(btn('Prepare attempt',()=>choosePage('shop')),btn('Skill tree',()=>skill('skillTreeTab')),btn('Legacy & prestige',()=>skill('skillLegacyTab')),btn('Hero collection',()=>skill('skillSkinsTab')),btn('Settings',settings));const mapHeader=E('header','fw-screen-head'),mapArt=canvas(320,180,'fw-pixel-background');mapHeader.append(btn('‹ Menu',()=>choosePage('menu')),mapTitle,mapInfo);regions.append(mapArt);map.append(mapHeader,regions,mapActions);
+ mapActions.append(btn('Prepare attempt',()=>choosePage('shop')),btn('Skill tree',()=>skill('skillTreeTab')),btn('Legacy & prestige',()=>skill('skillLegacyTab')),btn('Hero collection',()=>skill('skillSkinsTab')),btn('Settings',settings));const mapHeader=E('header','fw-screen-head'),mapArt=canvas(320,180,'fw-pixel-background');mapHeader.append(btn('‹ Menu',()=>choosePage('menu')),mapTitle,mapInfo);regions.append(mapArt);const mapFrame=E('div','fw-map-frame');mapFrame.append(regions);map.append(mapHeader,mapFrame,mapActions);
  const merchantHeader=E('div','fw-live-merchant-banner'),coinLabel=E('b','fw-live-coin-label');merchantHeader.append(E('span','fw-live-emblem','✦'),E('div',null,'The Merchant · finite stock'),coinLabel);
  const prepSpells=E('div','fw-live-prep-spells');
  const stall=E('div','fw-merchant-art'),merchantArt=canvas(96,116,'fw-pixel-background');art.merchant(merchantArt);stall.append(merchantArt,E('p',null,'“Stock is limited, traveller. Choose wisely.”'));merchantHeader.prepend(btn('‹ Map',()=>choosePage('map')));shop.append(merchantHeader,stall,merchant,prepSpells,encounter,pool);
@@ -37,7 +46,9 @@ function install(){
  buttons.tree=btn('Upgrades',()=>skill('skillTreeTab'));buttons.collection=btn('Collection',()=>skill('skillSkinsTab'));nav.append(buttons.tree,buttons.collection);
  pages.append(menu,map,shop,dev);shell.insertBefore(nav,layout);shell.insertBefore(pages,layout);
  ui={...ui,shell,layout,field,side,menu,map,shop,dev,buttons,mapInfo,regions,mapArt,mapActions,coinLabel,hud,hp,earned,meter,speed,battleControls,abandon,deployment,roster,rosterButtons,portrait,glyph,heroName,heroDetail,health,rescue,prepSpells,battleActions,canvasWrap,test,merchant};
- shell.classList.add('fw-live');document.body.classList.add('fw-live-body');installed=true;return true;
+ shell.classList.add('fw-live');document.body.classList.add('fw-live-body');installed=true;
+ rotationGate=E('dialog','fw-rotation-gate');rotationGate.setAttribute('aria-labelledby','fwRotateHeading');const heading=E('h2',null,'Rotate your device');heading.id='fwRotateHeading';rotationGate.append(E('div','fw-rotate-device','↻'),heading,E('p',null,'Fantasy Warriors is played in landscape. Turn your device sideways to continue.'));rotationGate.addEventListener('cancel',e=>e.preventDefault());document.body.append(rotationGate);
+ window.addEventListener('resize',syncOrientation);window.matchMedia('(orientation: portrait)').addEventListener('change',syncOrientation);syncOrientation();return true;
 }
 function renderMap(){
  const p=window.FWSkillTree.debug(),end=window.FWSkillTree.endlessState(),data=window.FWGameData.ENCOUNTERS;
@@ -75,8 +86,8 @@ function paint(){
  // In testing, keep the actual controls available instead of making a second test state.
  if(!combat&&live.testMode&&screen==='shop')ui.shop.append(ui.test);else if(ui.test.parentElement!==ui.dev)ui.dev.prepend(ui.test);
 }
-function sync(state,press,abandon,newGame,view,resume,speed){
- live=state;ui.press=press;ui.abandon=abandon;ui.newGame=newGame;ui.view=view;ui.resume=resume;ui.changeSpeed=speed;if(!installed&&!install())return;
+function sync(state,press,abandon,newGame,view,resume,speed,pauseForRotation){
+ live=state;ui.press=press;ui.abandon=abandon;ui.newGame=newGame;ui.view=view;ui.resume=resume;ui.changeSpeed=speed;ui.pauseForRotation=pauseForRotation;if(!installed&&!install())return;
  if(previousMode&&previousMode!=='prep'&&state.mode==='prep'){screen=previousMode==='clear'||previousMode==='champion'?'map':'shop';selected=null;lastCapture=null;window.scrollTo?.(0,0)}
  const began=state.mode==='battle'&&previousMode!=='battle';previousMode=state.mode;paint();
  if(began){window.scrollTo?.(0,0);if(!state.testMode)deal(state)}
@@ -103,5 +114,5 @@ function beforeDeploy(){knownBefore=new Set(window.FWSkillTree.debug().discovere
 function inspect(id){if(!live||live.mode!=='battle'||id==null)return;if(selected!==id){selected=id;rosterKey='';renderRoster()}}
 function prepareField(){if(!installed)return;ui.layout.hidden=false;ui.side.hidden=false;ui.shell.classList.add('fw-combat');ui.shell.dataset.screen='battle';}
 function resetAppearanceHistory(){seenAppearances.clear();try{localStorage.removeItem('fw-ui-seen-appearances')}catch{}}
-window.FWCampaignUI={sync,prepareField,inspect,beforeDeploy,resetAppearanceHistory,isDealing:()=>!!ui.shell?.classList.contains('fw-dealing'),isPackSealed:()=>sealed};
+window.FWCampaignUI={sync,prepareField,inspect,beforeDeploy,resetAppearanceHistory,isDealing:()=>!!ui.shell?.classList.contains('fw-dealing'),isPackSealed:()=>sealed,isOrientationBlocked:()=>orientationBlocked};
 })();
