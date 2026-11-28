@@ -3402,6 +3402,756 @@ window.FW_SKILL_DATA={
       "kind": "combat",
       "amount": 0,
       "key": null
+    },
+    "O-2-G4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-G3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-G5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-H-A2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-H-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-H-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-H-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-H-B3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-H-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-B-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-B-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-B-B3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-B-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-B-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-R-A2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-R-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-R-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-2-R-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-P-A2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-P-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-P-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-P-B2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-P-B3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-P-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-N-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-N-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-N-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-PR-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-PR-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-PR-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-PR-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-PR-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-S-A2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-S-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-S-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-S-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-S-B3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-S-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-S-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-D-A2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-D-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-D-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-D-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-D-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-D-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-W-A2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-W-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-W-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-W-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-W-B2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-W-B3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-W-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-4-W-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-BM-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-BM-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-BM-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-BM-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-BM-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-NE-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-NE-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-NE-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-NE-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-DR-A3": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-DR-A4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-DR-A5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-DR-B2": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-DR-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-5-DR-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-G08": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-KNI-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-KNI-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-ARC-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-ARC-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-MAG-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-MAG-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-HUN-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-HUN-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-BAR-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-BAR-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-ROG-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-ROG-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-PAL-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-PAL-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-NUN-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-PRI-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-PRI-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-SHA-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-SHA-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-DRU-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-DRU-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-WAR-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-WAR-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-BEA-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-BEA-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-NEC-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-NEC-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-DRA-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-DRA-D": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-KNI-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-KNI-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-ARC-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-ARC-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-MAG-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-MAG-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-HUN-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-BAR-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-BAR-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-ROG-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-ROG-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-PAL-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-PAL-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-PRI-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-PRI-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-SHA-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-SHA-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-DRU-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-DRU-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-WAR-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-WAR-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-BEA-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-NEC-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-NEC-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-DRA-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-DRA-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-KNI-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-KNI-01"
+    },
+    "R-KNI-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-KNI-02"
+    },
+    "R-ARC-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-ARC-01"
+    },
+    "R-ARC-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-ARC-02"
+    },
+    "R-MAG-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-MAG-01"
+    },
+    "R-MAG-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-MAG-02"
+    },
+    "R-HUN-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-HUN-02"
+    },
+    "R-BAR-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-BAR-01"
+    },
+    "R-BAR-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-BAR-02"
+    },
+    "R-ROG-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-ROG-01"
+    },
+    "R-ROG-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-ROG-02"
+    },
+    "R-PAL-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-PAL-01"
+    },
+    "R-PAL-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-PAL-02"
+    },
+    "R-PRI-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-PRI-01"
+    },
+    "R-PRI-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-PRI-02"
+    },
+    "R-SHA-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-SHA-01"
+    },
+    "R-SHA-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-SHA-02"
+    },
+    "R-DRU-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-DRU-01"
+    },
+    "R-DRU-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-DRU-02"
+    },
+    "R-WAR-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-WAR-01"
+    },
+    "R-WAR-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-WAR-02"
+    },
+    "R-BEA-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-BEA-01"
+    },
+    "R-NEC-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-NEC-01"
+    },
+    "R-NEC-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-NEC-02"
+    },
+    "R-DRA-C": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-DRA-01"
+    },
+    "R-DRA-E": {
+      "kind": "unlock",
+      "amount": 0,
+      "key": "V2-DRA-02"
     }
   }
 };
