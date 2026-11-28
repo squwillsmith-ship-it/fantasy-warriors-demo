@@ -83,8 +83,8 @@ function spawnEnemy(boss,kind='basic',at=null){
  const faction=kind==='faction',base=boss?profile.boss:kind==='elite'?profile.elite:profile.basic;
  // Stationary bone piles must be reachable within the defenders' normal combat area.
  if(kind==='elite'&&state.stage===8){const angle=Math.random()*Math.PI*2,d=rand(2.6,4.2),q=safeGoal(Math.cos(angle)*d,Math.sin(angle)*d);x=clamp(q.x,-halfW,halfW);y=clamp(q.y,-halfH,halfH)}
- const overrides=state.testMode&&QUICK_STATS&&kind!=='generated'?QUICK_STATS.enemyForBattle(state.stage,boss):null;
- const raw=overrides?{...base,...overrides}:boss&&!faction&&state.stage===10?{...base,...profile.boss.phases[0]}:base;
+ const overrides=state.testMode&&QUICK_STATS&&!faction&&(kind==='basic'||kind==='mutated'||boss)?(boss?QUICK_STATS.snapshot().boss[state.stage]:QUICK_STATS.snapshot().minion):null;
+ const phaseBase=boss&&!faction&&state.stage===10?{...base,...profile.boss.phases[0]}:base;const raw={...phaseBase,...(overrides||{})};
  const p=state.wavePlan?.p??currentPrestige(),mutated=kind==='mutated',stats=faction?PRE.legion(state.stage,state.factionSpawned,profile.boss.damage,p):PRE.scale(raw,p,mutated);
  const hp=stats.hp,elite=kind==='elite',generated=kind==='generated';
  const e={id:state.nextId++,x,y,hp,maxHp:hp,boss,elite,generated,scheduled:!boss&&!generated,stage:state.stage,speed:stats.speed,damage:stats.damage,
