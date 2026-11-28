@@ -119,7 +119,7 @@ function updateUI(){
 function eligiblePackIndices(){return PACKS.map((_,i)=>i).filter(i=>SKILLS?SKILLS.isTierOpen(i+1):i===0);}
 function rollShop(){
  const m=SKILLS?.merchantState?.()||{flags:[],commission:null};
- state.merchantShop=M.roll({tiers:eligiblePackIndices(),slots:state.shopSlots,flags:m.flags,commission:m.commission});
+ state.merchantShop=M.roll({tiers:eligiblePackIndices(),slots:state.shopSlots,flags:m.flags,commission:m.commission,firstDiscount:m.firstDiscount});
  state.shopOffers=state.merchantShop.offers;
  state.merchantAttemptId=(globalThis.crypto?.randomUUID?.()||Date.now()+'-'+Math.random());
  state.selectedSlot=0;state.shopCacheKey='';return state.shopOffers;
