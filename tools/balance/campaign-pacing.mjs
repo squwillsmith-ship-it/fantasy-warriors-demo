@@ -7,8 +7,8 @@ const simulate= new Function("files","sources","rngMath",bootSrc+"return {boot,s
 function seeded(seed){let a=seed>>>0;const m=Object.create(Math);m.random=()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296};return m}
 function run(seed,candidate,maxAttempts=40){
  const sources=original.slice();
- if(candidate==='paced'){
- sources[5]=sources[5].replace('integer(source.eligibleKillRemainder,5)','integer(source.eligibleKillRemainder,7)').replace('p.eligibleKillRemainder>=6','p.eligibleKillRemainder>=8').replace('p.eligibleKillRemainder-=6','p.eligibleKillRemainder-=8').replace('if(flags.elite)base++;','if(flags.elite)base+=.5;');
+ if(candidate==='paced'||candidate==='slow'){
+ sources[5]=sources[5].replace('integer(source.eligibleKillRemainder,5)','integer(source.eligibleKillRemainder,'+(candidate==='slow'?9:7)+')').replace('p.eligibleKillRemainder>=6','p.eligibleKillRemainder>='+(candidate==='slow'?10:8)).replace('p.eligibleKillRemainder-=6','p.eligibleKillRemainder-='+(candidate==='slow'?10:8)).replace('if(flags.elite)base++;','if(flags.elite)base+=.5;');
  }
  sources[16]=sources[16].replace("window.__FW_TEST__={","window.__FW_SIM__={state,actions:ACTIONS,advance:(seconds)=>{for(let i=0;i<Math.round(seconds/.05)&&state.mode==='battle';i++)step(.05);}};\nwindow.__FW_TEST__={");
  const {boot}=simulate(files,sources,seeded(seed));const b=boot(false),w=b.window,sk=w.FWSkillTree,sim=w.__FW_SIM__,s=sim.state,d=w.FW_SKILL_DATA,M=w.FWMerchant;
