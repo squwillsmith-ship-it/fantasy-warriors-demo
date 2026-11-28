@@ -24,8 +24,7 @@ function install(){
  shop.append(merchantHeader,merchant,prepSpells,encounter,pool);
  dev.append(test,quest,tree,log);
  const deployment=E('div','fw-live-deployment');deployment.hidden=true;deployment.setAttribute('role','status');field.append(deployment);
- const battleControls=E('div','fw-live-battle-controls');const abandon=btn('Abandon attempt',()=>ui.abandon?.());battleControls.append($('pauseButton'),abandon,E('small',null,'Aim with mouse or tap · rescue downed heroes on the field.'));
- field.append(battleControls);
+ const battleControls=$('liveBattleControls'),abandon=$('abandonButton');abandon.addEventListener('click',()=>ui.abandon?.());
  const roster=E('div','fw-live-roster'),portrait=E('div','fw-live-portrait'),rosterButtons=E('div','fw-live-roster-buttons'),glyph=E('div','fw-live-emblem'),heroName=E('h3'),heroDetail=E('p'),health=E('progress'),rescue=btn('Rescue',()=>{if(selected!=null)ui.press?.(selected)});
  health.max=100;health.value=0;portrait.append(glyph,heroName,heroDetail,health,rescue);roster.append(E('h2',null,'Heroes in battle'),rosterButtons,portrait);
  const formation=$('formation');roster.append(formation);roster.append($('formationCount'));side.append(roster);
@@ -68,7 +67,7 @@ function paint(){
  for(const k of ['menu','map','shop','dev'])ui[k].hidden=screen!==k;
  ui.layout.hidden=!combat;ui.side.hidden=!combat;
  for(const [k,b] of Object.entries(ui.buttons)){b.disabled=!!combat;b.setAttribute('aria-current',k===screen?'page':'false')}
- if(combat){ui.abandon.disabled=live.mode!=='battle';if(ui.battleActions.parentElement!==ui.field)ui.field.insertBefore(ui.battleActions,ui.canvasWrap);renderRoster()}
+ ui.battleControls.hidden=!combat||live.mode!=='battle';if(combat){ui.abandon.disabled=live.mode!=='battle';if(ui.battleActions.parentElement!==ui.field)ui.field.insertBefore(ui.battleActions,ui.canvasWrap);renderRoster()}
  else {if(ui.battleActions.parentElement!==ui.prepSpells)ui.prepSpells.append(ui.battleActions);renderMap()}
  // In testing, keep the actual controls available instead of making a second test state.
  if(!combat&&live.testMode&&screen==='shop')ui.shop.append(ui.test);else if(ui.test.parentElement!==ui.dev)ui.dev.prepend(ui.test);
