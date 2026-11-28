@@ -10,15 +10,15 @@ function updateFormation(){const groups=[];for(const h of state.heroes){let g=gr
 function updateTestingUI(){refs.testStatus.textContent=state.testMode?'ON · FREE':'OFF';refs.testStatus.style.color=state.testMode?'#92f2c9':'';refs.testToggle.textContent=state.testMode?'Disable testing mode':'Enable testing mode';refs.testToggle.setAttribute('aria-pressed',String(state.testMode));refs.testToggle.disabled=state.mode!=='prep';refs.testControls.classList.toggle('hidden',!state.testMode);refs.testStage.disabled=!state.testMode||state.mode!=='prep';refs.testQueueCount.textContent=state.testQueue.length+' queued';refs.clearTest.disabled=!state.testQueue.length||state.mode!=='prep';for(const b of refs.testGrid.querySelectorAll('button'))b.disabled=state.mode!=='prep';window.FWQuickStats?.sync()}
 
 function waveStatus(){
- const total=regularCount(),dead=Math.min(total,state.kills),live=state.enemies.filter(e=>!e.boss&&e.hp>0).length,unspawned=Math.max(0,total-state.regularSpawned);
+ const total=regularCount(),dead=Math.min(total,state.scheduledDefeated||0),live=state.enemies.filter(e=>!e.boss&&e.hp>0).length,unspawned=Math.max(0,total-state.regularSpawned);
  const boss=state.enemies.find(e=>e.boss&&e.hp>0);
  const preparing=state.mode==='prep'||state.mode==='opening',finished=['clear','champion','over'].includes(state.mode);
  let phase='WAVE PREPARATION',next='Buy packs and start the stage';
  if(state.mode==='battle'){
-   if(boss){phase=state.stage===10?'ELDRITCH PHASE '+boss.phase+'/3':'BOSS FIGHT';next=encounter().boss+' has arrived';}
+   if(boss){phase=boss.faction?'HOLLOW LEGION '+state.factionSpawned+'/3':state.stage===10?'ELDRITCH PHASE '+boss.phase+'/3':'BOSS FIGHT';next=(boss.name||encounter().boss)+' has arrived';}
    else if(unspawned){const p=state.regularSpawned/total;phase=p<.30?'OPENING WAVE':p<.85?'ESCALATING WAVE':'FINAL RUSH';next='Next '+encounter().minion+': '+Math.max(0,nextSpawnInterval()-state.spawnClock).toFixed(1)+'s · '+unspawned+' left';}
    else if(live){phase=state.bossRewardPending?'KING SLIME SPLIT':'CLEAR THE WAVE';next=live+' '+encounter().minion+' remaining on field';}
-   else{phase='BOSS INCOMING';next=encounter().boss+' in '+Math.max(0,BOSS_AFTER_CLEAR_DELAY-state.bossWaitClock).toFixed(1)+'s';}
+   else{const faction=state.wavePlan?.faction&&state.factionSpawned<3;phase=faction?'LEGION INCOMING':'BOSS INCOMING';next=(faction?window.FWPrestigeEnemies.factionNames[state.factionSpawned]:encounter().boss)+' in '+Math.max(0,BOSS_AFTER_CLEAR_DELAY-state.bossWaitClock).toFixed(1)+'s';}
    if(state.paused)phase='PAUSED · '+phase;
  } else if(finished){phase=state.mode==='over'?'STAGE FAILED':'STAGE COMPLETE';next=state.mode==='over'?'Retry when ready':'Wave resolved';}
  return {total,dead,live,unspawned,boss,phase,next,progress:total?dead/total:0,up:state.upEarned||0};
@@ -29,18 +29,18 @@ function updateWaveTracker(){
  refs.waveStats.textContent=w.dead+' / '+w.total+' '+encounter().minion+' defeated · '+w.live+' alive';
  refs.waveMeter.style.width=(Math.min(1,Math.max(0,w.progress))*100).toFixed(1)+'%';
  refs.waveNext.textContent=w.next;
- refs.waveUP.textContent='UP earned: '+Number(w.up.toFixed(2));
+ refs.waveUP.textContent='UP earned: '+Number(w.up.toFixed(2))+' · Shards: '+(state.shardsEarned||0);
  refs.waveBoss.hidden=!w.boss;
- if(w.boss){refs.waveBossName.textContent=encounter().boss;refs.waveBossHP.textContent=Math.max(0,Number(w.boss.hp.toFixed(1)))+' / '+w.boss.maxHp+' HP';refs.waveBossMeter.style.width=(Math.max(0,Math.min(1,w.boss.hp/w.boss.maxHp))*100).toFixed(1)+'%';}
+ if(w.boss){refs.waveBossName.textContent=w.boss.name||encounter().boss;refs.waveBossHP.textContent=Math.max(0,Number(w.boss.hp.toFixed(1)))+' / '+w.boss.maxHp+' HP';refs.waveBossMeter.style.width=(Math.max(0,Math.min(1,w.boss.hp/w.boss.maxHp))*100).toFixed(1)+'%';}
 }
 function battleSummary(){
  const alive=state.heroes.filter(h=>h.hp>0&&isOriginalHero(h)).length;
  const minutes=Math.floor(state.elapsed/60),seconds=String(Math.floor(state.elapsed%60)).padStart(2,'0');
- return {time:minutes+':'+seconds,kills:state.kills,total:totalCount(),up:Number((state.upEarned||0).toFixed(2)),drops:state.upDrops||0,casts:state.abilityCasts||0,heroesAlive:alive,heroesStarted:state.deployedHeroes||0,towerHp:Math.max(0,Number(state.towerHp.toFixed(1))),test:state.testMode};
+ return {time:minutes+':'+seconds,kills:state.kills,total:totalCount(),up:Number((state.upEarned||0).toFixed(2)),shards:state.shardsEarned||0,drops:state.upDrops||0,casts:state.abilityCasts||0,heroesAlive:alive,heroesStarted:state.deployedHeroes||0,towerHp:Math.max(0,Number(state.towerHp.toFixed(1))),test:state.testMode};
 }
 function showBattleReport(){
  const data=battleSummary();state.lastReport=data;
- const rows=[['Time',data.time],['Defeated',data.kills+' / '+data.total],['UP earned',data.test?'TEST':String(data.up)],['Hero survivors',data.heroesAlive+' / '+data.heroesStarted],['Special casts',String(data.casts)],['Tower HP',String(data.towerHp)]];
+ const rows=[['Time',data.time],['Defeated',data.kills+' / '+data.total],['UP earned',data.test?'TEST':String(data.up)],['Shards earned',data.test?'TEST':String(data.shards)],['Hero survivors',data.heroesAlive+' / '+data.heroesStarted],['Special casts',String(data.casts)],['Tower HP',String(data.towerHp)]];
  refs.battleReport.replaceChildren(...rows.map(([name,value])=>{const div=document.createElement('div'),small=document.createElement('span'),strong=document.createElement('b');small.textContent=name;strong.textContent=value;div.append(small,strong);return div;}));
  refs.battleReport.hidden=false;
 }
