@@ -545,7 +545,8 @@ function tick(now){
   if(state.mode!=='battle'||!state.paused)state.effects[i].life-=lab?simulated:dt;
   if(state.effects[i].life<=0)state.effects.splice(i,1);
  }
- render(now/1000);TOWER_FIRE.draw();requestAnimationFrame(tick);
+ // The campaign hides the battlefield outside battle/results. Do not paint an invisible canvas.
+ if(!window.FWCampaignUI||state.mode!=='prep'){render(now/1000);TOWER_FIRE.draw()}requestAnimationFrame(tick);
 }
 const {updateUI:refreshBaseUI,showBattleReport,waveStatus,rollShop,offeredPacks,selectedStock}=window.FWGameUI.create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,nextSpawnInterval,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY});
 function updateUI(){refreshBaseUI();refreshActionsUI();refreshEndlessUI();window.FWCampaignUI?.sync(state,id=>{if(ACTIONS.press(id)){updateUI();return true}return false},abandonAttempt)}
