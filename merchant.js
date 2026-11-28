@@ -35,7 +35,7 @@
  function roll({tiers,slots,flags=[],firstDiscount=false,commission=null},r=Math.random){
   tiers=[...new Set([0,...tiers])].sort((a,b)=>a-b);
   const has=id=>flags.includes(id),shop={tiers,flags:[...flags],firstDiscount:firstDiscount||has('R-M07'),firstUsed:false,bulkUsed:false,rerolls:0,free:(has('R-M02')?1:0)+(has('R-M05')?1:0),paid:has('R-M06')?2:0,offers:[]};
-  slots=Math.max(3,Math.min(6,Math.floor(slots)));
+  slots=Math.max(1,Math.min(6,Math.floor(slots)));
   const put=(o,anchor)=>{if(shop.offers.length>=slots)return false;o.anchor=anchor;shop.offers.push(o);return true};
   put(create('standard',0,tiers,has,r),'recruit');
   if(tiers.length>1)put(create('standard',tiers.at(-1),tiers,has,r),'newest');
