@@ -100,6 +100,7 @@ function showcase(novel,finish,generation){
 }
 function beforeDeploy(){knownBefore=new Set(window.FWSkillTree.debug().discoveredHeroes||[])}
 function inspect(id){if(!live||live.mode!=='battle'||id==null)return;if(selected!==id){selected=id;rosterKey='';renderRoster()}}
-function prepareField(){if(!installed)return;ui.layout.hidden=false;ui.side.hidden=false;ui.shell.dataset.screen='battle';}
-window.FWCampaignUI={sync,prepareField,inspect,beforeDeploy};
+function prepareField(){if(!installed)return;ui.layout.hidden=false;ui.side.hidden=false;ui.shell.classList.add('fw-combat');ui.shell.dataset.screen='battle';}
+function resetAppearanceHistory(){seenAppearances.clear();try{localStorage.removeItem('fw-ui-seen-appearances')}catch{}}
+window.FWCampaignUI={sync,prepareField,inspect,beforeDeploy,resetAppearanceHistory};
 })();
