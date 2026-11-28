@@ -12,7 +12,7 @@ const ENCOUNTERS=BALANCE.encounters.map(x=>({...x}));
 const TUNING={shared:{...BALANCE.combat},heroes:{}};
 const ABILITIES=JSON.parse(JSON.stringify(BALANCE.abilities));
 for(const core of HEROES){
- const special={...ABILITIES[core.id],chargeSeconds:null};
+ const special={...ABILITIES[core.id],chargeSeconds:ABILITIES[core.id].chargeSeconds??null};
  TUNING.heroes[core.id]={core,acquisitionRange:null,towerGuardRadius:null,special};
 }
 TUNING.heroes.necromancer.special.beamBaseDamageRate=HERO_MAP.necromancer.damage*HERO_MAP.necromancer.speed;
