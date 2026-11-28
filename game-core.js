@@ -368,7 +368,7 @@ function stepSporeClouds(dt){
  for(let i=state.sporeClouds.length-1;i>=0;i--){
   const c=state.sporeClouds[i];c.life-=dt;c.clock+=dt;
   while(c.clock>=.5){c.clock-=.5;
-   for(const h of state.heroes)if(h.hp>0&&Math.hypot(h.x-c.x,h.y-c.y)<=c.radius)hitHero(h,.5,{kind:'mushroom-spore'});
+   for(const h of state.heroes)if(h.hp>0&&Math.hypot(h.x-c.x,h.y-c.y)<=c.radius)hitHero(h,.5*(c.damageScale||1),{kind:'mushroom-spore'});
   }
   if(c.life<=0)state.sporeClouds.splice(i,1);
  }
