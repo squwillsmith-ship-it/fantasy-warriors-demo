@@ -4197,6 +4197,76 @@ window.FW_SKILL_DATA={
       "kind": "combat",
       "amount": 0,
       "key": null
+    },
+    "O-SP01": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP02": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP03": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP04": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP05": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP06": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP07": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP08": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP09": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP10": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP11": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP12": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "O-SP13": {
+      "kind": "spell",
+      "amount": 0,
+      "key": null
+    },
+    "R-G10": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
     }
   }
 };
