@@ -450,7 +450,7 @@ const dataset={
           "trigger": "autoCharge",
           "chainJumpCount": 4,
           "chainJumpRange": 2.4,
-          "chainDamage": 2.5
+          "chainDamage": 4.8
         },
         "hunter": {
           "name": "Tripwire Trap",
