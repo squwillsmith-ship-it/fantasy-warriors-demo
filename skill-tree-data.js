@@ -2412,9 +2412,9 @@ window.FW_SKILL_DATA={
     {
       "id": "R-M19",
       "name": "Curated Shelf",
-      "cost": 8,
+      "cost": 4,
       "prerequisites": "R-M18",
-      "effect": "Control | Reserve one initial slot for an unlocked eligible advanced product (individual, bulk, booster, Golden or mixed); affordable opening guarantee takes priority, normal stock fallback if none eligible."
+      "effect": "Control | Guarantee an additional initial advanced product slot, prioritising unlocked multi-hero products (double, triple, booster box, Golden or mixed); otherwise an eligible individual offer. Recruit, newest and commission/contract anchors retain priority. No additional slots."
     },
     {
       "id": "R-M20",
