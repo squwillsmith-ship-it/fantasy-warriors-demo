@@ -1,4 +1,4 @@
-/* Canonical v1.16 catalogue; supported effect registry is intentionally explicit. */
+/* Canonical v1.16 catalogue; explicit effect registry. */
 window.FW_SKILL_DATA={
   "version": "1.16.0",
   "heroes": [
@@ -4152,6 +4152,51 @@ window.FW_SKILL_DATA={
       "kind": "unlock",
       "amount": 0,
       "key": "V2-DRA-02"
+    },
+    "O-3-N-B4": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "O-3-N-B5": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-NUN-01": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-NUN-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "V2-BEA-02": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-NUN-B": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-NUN-C": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-NUN-E": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
+    },
+    "R-BEA-E": {
+      "kind": "combat",
+      "amount": 0,
+      "key": null
     }
   }
 };
