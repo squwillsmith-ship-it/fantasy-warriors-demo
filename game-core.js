@@ -550,7 +550,7 @@ function tick(now){
  if(!window.FWCampaignUI||state.mode!=='prep'){render(now/1000);TOWER_FIRE.draw()}requestAnimationFrame(tick);
 }
 const {updateUI:refreshBaseUI,showBattleReport,waveStatus,rollShop,offeredPacks,selectedStock}=window.FWGameUI.create({state,refs,PACKS,HEROES,HERO_MAP,ENCOUNTERS,TUNING,SKILLS,regularCount,totalCount,encounter,chargeSeconds,isOriginalHero,nextSpawnInterval,NORMAL_SPAWN_INTERVAL,BOSS_AFTER_CLEAR_DELAY});
-function updateUI(){refreshBaseUI();refreshActionsUI();refreshEndlessUI();window.FWCampaignUI?.sync(state,id=>{if(ACTIONS.press(id)){updateUI();return true}return false},abandonAttempt,()=>{if(SKILLS?.newGame()){window.FWCampaignUI?.resetAppearanceHistory?.();updateUI()}},view,()=>{if(state.mode==='battle'){state.paused=false;updateUI()}})}
+function updateUI(){refreshBaseUI();refreshActionsUI();refreshEndlessUI();window.FWCampaignUI?.sync(state,id=>{if(ACTIONS.press(id)){updateUI();return true}return false},abandonAttempt,()=>{if(SKILLS?.newGame()){window.FWCampaignUI?.resetAppearanceHistory?.();updateUI()}},view,()=>{if(state.mode==='battle'){state.paused=!!document.hidden;updateUI()}})}
 function refreshActionsUI(){
  const a=ACTIONS.snapshot(),prep=state.mode==='prep',battle=state.mode==='battle',panel=$('battleActions');
  if(!panel)return;panel.hidden=!(a.known.length&&(prep||battle)||battle&&a.captures.length);
