@@ -7,7 +7,8 @@ const simulate= new Function("files","sources","rngMath",bootSrc+"return {boot,s
 function seeded(seed){let a=seed>>>0;const m=Object.create(Math);m.random=()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296};return m}
 function run(seed,candidate,maxAttempts=40){
  const sources=original.slice();
- if(candidate.includes('late'))sources[5]=sources[5].replace('if(boss)base=5;const gain=credit(base*income()+bonus);','if(boss)base=5;else if(scheduled)base*=p.resets>=5?.65:p.resets===4?.8:1;const gain=credit(base*income()+bonus);');
+ if(candidate.includes('late'))sources[0]+='\nwindow.FWBalance.profile.economy.scheduledUPByPrestige=[1,1,1,1,.8,.65];';
+ if(candidate.includes('unscaled'))sources[0]+='\nwindow.FWBalance.profile.economy.scheduledUPByPrestige=[1,1,1,1,1,1];';
  const passive=candidate.includes('passive'), casual=candidate.includes('casual');
  // Explicit numerical overrides; do not silently depend on old hardcoded skill-tree source strings.
  if(['baseline','paced','slow'].includes(candidate)){
