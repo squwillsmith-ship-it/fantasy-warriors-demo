@@ -468,7 +468,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
   if(dist<=reach){
     // Regular minions need 0.65s to wind up after first reaching contact; bosses do not.
     if(!e.inAttackRange){e.inAttackRange=true;if(!e.boss)e.cooldown=Math.max(e.cooldown,e.firstDelay??SPAWN_CONFIG.minionFirstAttackWindup);}
-    e.cooldown-=dt;if(e.ethereal&&e.cooldown<=.15)e.vulnerableUntil=Math.max(e.vulnerableUntil||0,state.elapsed+.15);if(e.cooldown<=0){if(e.ethereal)e.vulnerableUntil=state.elapsed+.85;e.cooldown=e.attackPeriod??1;
+    e.cooldown-=dt;if(e.ethereal&&e.cooldown<=.25)e.vulnerableUntil=Math.max(e.vulnerableUntil||0,state.elapsed+.25);if(e.cooldown<=0){if(e.ethereal)e.vulnerableUntil=state.elapsed+1.05;e.cooldown=e.attackPeriod??1;
     const damage=e.damage*(e.ritualUntil>state.elapsed?1.5:1)*(e.weakUntil>state.elapsed?(owns('O-4-S-A4')?.775:.85):1)*(e.weakerUntil>state.elapsed?.8:1);
     if(totem){totem.hp-=damage;const h=state.heroes.find(a=>a.id===totem.owner&&a.hp>0);if(h&&damage>0){totem.hits=(totem.hits||0)+1;if(owns('O-4-S-B3')&&totem.hits%5===0)grantCharge(h,.1);if(totem.hp<=0){if(owns('V2-SHA-02'))h.totemVengeance=true;if(owns('O-4-S-B5')&&!totem.reformed&&totem.expires>state.elapsed){totem.reformed=true;totem.hp=totem.maxHp*.3}}}visualRing(totem.x,totem.y,.35,'#51dcc0')}
     else if(hero){if(!e.boss&&!e.elite&&!e.generated&&(e.stage===4||e.stage===7))visualBeam(e,hero,e.stage===7?'#ff995b':'#d3d9e0',.25);const dealt=hitHero(hero,damage,e);if(dealt>0)damageNumber(hero.x,hero.y-.7,'−'+dealt.toFixed(1),'#ffb6a7');if(hero.hp===0&&!hero.capture)log('Your '+hero.base.name+' was defeated.')}
