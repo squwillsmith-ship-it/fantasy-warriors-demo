@@ -1,6 +1,6 @@
 import {readFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
-const files=['balance-config.js','merchant.js','skill-tree-data.js','skill-tree.js','skill-tree-effects.js','game-data.js','game-arcade.js','quick-stats.js','game-render.js','game-ui.js','tower-fire.js','battle-actions.js','game-core.js'];
+const files=['balance-config.js','merchant.js','skill-tree-data.js','skill-tree.js','skill-tree-effects.js','game-data.js','game-arcade.js','quick-stats.js','game-render.js','game-ui.js','tower-fire.js','battle-actions.js','prestige-enemies.js','game-core.js'];
 const sources=await Promise.all(files.map(p=>readFile(new URL('../../'+p,import.meta.url),'utf8')));
 const storage=new Map();
 function boot(lab=false){
