@@ -107,7 +107,7 @@ function recordKill(heroId,boss=false,flags={}){
  if(scheduled){p.eligibleKillRemainder++;if(p.eligibleKillRemainder>=B.economy.eligibleKillsPerUP){p.eligibleKillRemainder-=B.economy.eligibleKillsPerUP;base++}if(flags.elite)base+=B.economy.eliteKillUP;
  if(has('O-4-G4')){p.knowledgeRemainder++;if(p.knowledgeRemainder>=15){p.knowledgeRemainder-=15;bonus++}}
  const g=gates.find(x=>x.heroId===heroId);if(g){const was=has(g.id);p.kills[heroId]=(p.kills[heroId]||0)+1;if(!was&&has(g.id)){if(has('R-E07'))bonus++;recalc();api.log(g.name+' complete: +2 max coins');}}}
- if(boss)base=5;const gain=credit(base*income()+bonus);if(p.endless?.phase==='battle')p.endless.up+=gain;save();labels();return gain;
+ if(boss)base=5;else if(scheduled){const factors=B.economy.scheduledUPByPrestige;if(factors)base*=factors[Math.min(p.resets,factors.length-1)];}const gain=credit(base*income()+bonus);if(p.endless?.phase==='battle')p.endless.up+=gain;save();labels();return gain;
 }
 function prestigeCount(){return p.resets}
 function attempted(stage){return p.attemptedStages.includes(stage)}
