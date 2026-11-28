@@ -139,12 +139,29 @@ function visualBeam(h,e,color=h.base.color,life=.18){addEffect({kind:'bolt',x1:h
 function visualRing(x,y,r,color){addEffect({kind:'pulse',x,y,radius:r,color,life:.36,maxLife:.36})}
 // Damage source is an explicit hero-class ID, never inferred from animation colours.
 function heroSourceId(h){return !h?null:h.summonKind?(h.ownerHeroId||null):(isOriginalHero(h)?h.base.id:null)}
-function hitEnemy(e,damage,color,sourceHeroId=null){if(!e||e.hp<=0)return;if(damage>0)e.lastHitHero=typeof sourceHeroId==='string'&&HERO_MAP[sourceHeroId]?sourceHeroId:null;const n=Number(Math.abs(damage).toFixed(1));e.hp-=damage;e.hitFlash=.11;if(damage>=.2)damageNumber(e.x,e.y-.15,n.toFixed(1),color)}
+function hitEnemy(e,damage,color,sourceHeroId=null,ownerId=null){if(!e||e.hp<=0||!(damage>0))return 0;const heroId=typeof sourceHeroId==='string'&&HERO_MAP[sourceHeroId]?sourceHeroId:null;if(heroId&&e.boss&&SKILLS?.has('O-5-G2'))damage*=1.25;e.lastHitHero=heroId;e.lastHitOwner=ownerId;const dealt=Math.min(e.hp,damage);const n=Number(Math.abs(damage).toFixed(1));e.hp-=damage;e.hitFlash=.11;if(damage>=.2)damageNumber(e.x,e.y-.15,n.toFixed(1),color);return dealt}
+const owns=id=>!!SKILLS?.has(id);
+function grantCharge(h,fraction){if(h&&h.hp>0&&cfg(h)?.special.trigger==='autoCharge')h.charge=Math.min(chargeSeconds(h),h.charge+fraction*chargeSeconds(h))}
+function healHero(h,amount){if(h.hp<=0)return 0;const n=Math.min(h.maxHp-h.hp,Math.max(0,amount)*(owns('O-3-G2')&&!h.summonKind?1.25:1));h.hp+=n;return n}
+function applyStatus(e,h,kind,total,duration){if(e.hp<=0)return;const life=duration*(owns('O-4-G2')?1.25:1);e.treeStatuses??=[];const entry={owner:h.id,heroId:h.base.id,kind,remaining:life,tick:.25,dps:total/life};const i=e.treeStatuses.findIndex(a=>a.owner===h.id&&a.kind===kind);if(i>=0)e.treeStatuses[i]=entry;else e.treeStatuses.push(entry)}
+function burning(e){return !!e.treeStatuses?.some(a=>a.kind==='burn'&&a.remaining>0)}
+function critChance(){return owns('O-1-A-A4')?.35:owns('O-1-A-A2')?.20:0}
 function enemiesInRadius(x,y,r){const rr=r*r;return state.enemies.filter(e=>e.hp>0&&(e.x-x)**2+(e.y-y)**2<=rr)}
 function pushEnemy(e,fromX,fromY,dist){const dx=e.x-fromX,dy=e.y-fromY,len=Math.max(.01,Math.hypot(dx,dy));e.x=clamp(e.x+dx/len*dist,-view.worldW/2+.8,view.worldW/2-.8);e.y=clamp(e.y+dy/len*dist,-view.worldH/2+.8,view.worldH/2-.8)}
 function pointSegmentDistance(x,y,ax,ay,bx,by){const vx=bx-ax,vy=by-ay;const t=clamp(((x-ax)*vx+(y-ay)*vy)/(vx*vx+vy*vy||1),0,1);return Math.hypot(x-ax-t*vx,y-ay-t*vy)}
 // Numerical secondary effects are temporary demonstrations. Only the basic-attack concepts are approved.
-function hitHero(h,d,source){if(SKILLS&&isOriginalHero(h))d=SKILLS.guardDamage(h,d);if(SKILLFX)d=SKILLFX.incoming(h,d,source);if(h.shield>0){const absorb=Math.min(h.shield,d);h.shield-=absorb;d-=absorb}if(d>0){h.hp=Math.max(0,h.hp-d);h.hitFlash=.11}if(SKILLFX)SKILLFX.afterHeroHit(h);return d}
+function hitHero(h,d,source){
+ if(!(d>0)||h.hp<=0)return 0;
+ if(h.base.id==='knight'&&owns('O-1-K-A2')&&Math.random()<(owns('O-1-K-A4')?.40:.25)){
+  d*=.5;
+  if(owns('O-1-K-A3')&&source?.hp>0&&state.enemies.includes(source)&&state.elapsed-(h.lastCounter??-Infinity)>=1){h.lastCounter=state.elapsed;hitEnemy(source,h.base.damage*.5,h.base.color,h.base.id,h.id)}
+  if(owns('O-1-K-A5')&&state.elapsed-(h.lastBlockCharge??-Infinity)>=2){h.lastBlockCharge=state.elapsed;grantCharge(h,.10)}
+ }
+ if(h.resolveUntil>state.elapsed)d*=.75;
+ if(h.shield>0){const absorb=Math.min(h.shield,d);h.shield-=absorb;d-=absorb}
+ if(d>0){h.hp=Math.max(0,h.hp-d);h.hitFlash=.11;if(h.hp>0&&h.hp<h.maxHp*.25&&owns('O-5-G4')&&!h.summonKind&&!h.resolveUsed){h.resolveUsed=true;h.resolveUntil=state.elapsed+5}}
+ return d
+}
 function spawnSummon(base,atX,atY,kind,duration,ownerId){const s={id:state.nextId++,base,x:atX,y:atY,hp:base.hp,maxHp:base.hp,cooldown:.2,facing:0,charge:0,casts:0,shield:0,invisibleUntil:0,bearUntil:0,blessingUntil:0,frenzyUntil:0,summonKind:kind,ownerId,ownerHeroId:state.heroes.find(h=>h.id===ownerId&&isOriginalHero(h))?.base.id||null,expiry:state.elapsed+duration,anchorX:atX,anchorY:atY,beamTarget:null};state.heroes.push(s);return s}
 function activeOriginalHeroes(){return state.heroes.filter(h=>h.hp>0&&isOriginalHero(h))}
 function enemyNear(h,r){let best=null,d=r*r;for(const e of state.enemies){if(e.hp<=0)continue;const sq=(e.x-h.x)**2+(e.y-h.y)**2;if(sq<=d){d=sq;best=e}}return best}
@@ -152,9 +169,9 @@ function nearestAllowedEnemy(h){let choice=null,dist=acquireRadius(h)**2;for(con
 function signalSpecial(h,label,r=.9){state.abilityCasts++;h.casts++;h.abilityStatus='active';addEffect({kind:'label',x:h.x,y:h.y-.55,text:label,color:'#fff3bd',life:1.2,maxLife:1.2});visualRing(h.x,h.y,r,h.base.color);log(h.base.name+' used '+label+'!')}
 function castSpecial(h){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return false;const enemy=SKILLFX?SKILLFX.specialTarget(h,enemyNear(h,Math.max(acquireRadius(h),h.base.range,5))):enemyNear(h,Math.max(acquireRadius(h),h.base.range,5));const otherAllies=state.heroes.filter(a=>a!==h&&a.hp>0&&Math.hypot(a.x-h.x,a.y-h.y)<=(spec.shieldRadius??spec.blessingRadius??3));const duration=(n)=>state.elapsed+n;
  switch(h.base.id){
- case 'knight':if(!enemy||Math.hypot(enemy.x-h.x,enemy.y-h.y)>2.3)return false;for(const e of enemiesInRadius(h.x,h.y,spec.bashRadius))e.stunnedUntil=duration(spec.bashStunSeconds);signalSpecial(h,'Shield Bash',spec.bashRadius);break;
- case 'archer':if(!enemy)return false;{const targets=enemiesInRadius(enemy.x,enemy.y,spec.volleyRadius);for(const e of targets)hitEnemy(e,spec.volleyDamage,h.base.color,h.base.id);for(let i=0;i<spec.volleyArrowCount;i++){const angle=2*Math.PI*i/spec.volleyArrowCount,r=.25+(i%3)*.33;addEffect({kind:'bolt',x1:h.x,y1:h.y,x2:enemy.x+Math.cos(angle)*r,y2:enemy.y+Math.sin(angle)*r,color:'#a5e1b5',life:.45,maxLife:.45})}visualRing(enemy.x,enemy.y,spec.volleyRadius,'#8acaab')}signalSpecial(h,'Arrow Volley');break;
- case 'mage':if(!enemy)return false;{let current=enemy,used=new Set(),previous={x:h.x,y:h.y};for(let i=0;i<spec.chainJumpCount&&current;i++){used.add(current.id);addEffect({kind:'bolt',x1:previous.x,y1:previous.y,x2:current.x,y2:current.y,color:'#b7ddff',life:.5,maxLife:.5});hitEnemy(current,spec.chainDamage,'#b7ddff',h.base.id);visualRing(current.x,current.y,.45,'#c6dbff');const candidates=state.enemies.filter(e=>e.hp>0&&!used.has(e.id)&&Math.hypot(e.x-current.x,e.y-current.y)<=spec.chainJumpRange);previous=current;current=candidates.sort((a,b)=>Math.hypot(a.x-previous.x,a.y-previous.y)-Math.hypot(b.x-previous.x,b.y-previous.y))[0]||null}}signalSpecial(h,'Chain Bolt');break;
+ case 'knight':if(!enemy||Math.hypot(enemy.x-h.x,enemy.y-h.y)>2.3)return false;for(const e of enemiesInRadius(h.x,h.y,spec.bashRadius)){e.stunnedUntil=duration(spec.bashStunSeconds);if(owns('O-1-K-B3'))hitEnemy(e,h.base.damage*.5,h.base.color,h.base.id,h.id)}if(owns('O-1-K-B5'))h.bashStrikes=2;signalSpecial(h,'Shield Bash',spec.bashRadius);break;
+ case 'archer':if(!enemy)return false;{const targets=enemiesInRadius(enemy.x,enemy.y,spec.volleyRadius);for(const e of targets){const d=spec.volleyDamage*(owns('O-1-A-B5')&&Math.random()<critChance()?2:1);hitEnemy(e,d,h.base.color,h.base.id,h.id);if(owns('O-1-A-B4'))applyStatus(e,h,'volleyBleed',d*.5,3)}for(let i=0;i<spec.volleyArrowCount;i++){const angle=2*Math.PI*i/spec.volleyArrowCount,r=.25+(i%3)*.33;addEffect({kind:'bolt',x1:h.x,y1:h.y,x2:enemy.x+Math.cos(angle)*r,y2:enemy.y+Math.sin(angle)*r,color:'#a5e1b5',life:.45,maxLife:.45})}visualRing(enemy.x,enemy.y,spec.volleyRadius,'#8acaab')}signalSpecial(h,'Arrow Volley');break;
+ case 'mage':if(!enemy)return false;{let current=enemy,used=new Set(),previous={x:h.x,y:h.y};for(let i=0;i<spec.chainJumpCount&&current;i++){used.add(current.id);addEffect({kind:'bolt',x1:previous.x,y1:previous.y,x2:current.x,y2:current.y,color:'#b7ddff',life:.5,maxLife:.5});hitEnemy(current,spec.chainDamage*(owns('O-1-MG-B4')&&(h.casts+1)%3===0?2:1)*(owns('O-1-MG-B5')&&burning(current)?1.5:1),'#b7ddff',h.base.id,h.id);visualRing(current.x,current.y,.45,'#c6dbff');const candidates=state.enemies.filter(e=>e.hp>0&&!used.has(e.id)&&Math.hypot(e.x-current.x,e.y-current.y)<=spec.chainJumpRange);previous=current;current=candidates.sort((a,b)=>Math.hypot(a.x-previous.x,a.y-previous.y)-Math.hypot(b.x-previous.x,b.y-previous.y))[0]||null}}signalSpecial(h,'Chain Bolt');break;
  case 'hunter':if(!enemy)return false;state.traps.push({x:enemy.x,y:enemy.y,radius:spec.trapRadius,expires:duration(spec.trapDurationSeconds),slow:spec.trapSlowMultiplier});signalSpecial(h,'Tripwire Trap');break;
  case 'barbarian':if(!enemy)return false;h.frenzyUntil=duration(spec.frenzyDurationSeconds);signalSpecial(h,'Battle Frenzy');break;
  case 'rogue':if(!enemy)return false;h.invisibleUntil=duration(spec.invisibilityDurationSeconds);signalSpecial(h,'Smoke Bomb');break;
@@ -163,7 +180,7 @@ function castSpecial(h){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='aut
  case 'priest':if(!otherAllies.length)return false;for(const a of otherAllies)a.blessingUntil=duration(spec.blessingDurationSeconds);signalSpecial(h,'Blessing',spec.blessingRadius);break;
  case 'shaman':if(!enemy)return false;for(let i=0;i<spec.totemCount;i++){state.totems.push({id:state.nextId++,x:clamp(h.x+(i-0.5)*.6,-view.worldW/2,view.worldW/2),y:h.y,hp:spec.totemHealth,expires:duration(spec.totemLifetimeSeconds),radius:spec.totemAggroRadius})}signalSpecial(h,'Spirit Totem');break;
  case 'druid':if(!enemy)return false;h.bearUntil=duration(spec.bearFormDurationSeconds);signalSpecial(h,'Bear Form');break;
- case 'warlock':if(!enemy)return false;hitEnemy(enemy,spec.siphonDamage,h.base.color,h.base.id);h.hp=Math.min(h.maxHp,h.hp+spec.siphonHealAmount);visualBeam(h,enemy,'#d89aff',.4);signalSpecial(h,'Life Siphon');break;
+ case 'warlock':if(!enemy)return false;hitEnemy(enemy,spec.siphonDamage,h.base.color,h.base.id);healHero(h,spec.siphonHealAmount);visualBeam(h,enemy,'#d89aff',.4);signalSpecial(h,'Life Siphon');break;
  case 'beastmaster':if(!enemy)return false;if(state.heroes.filter(a=>a.hp>0&&a.summonKind==='hound'&&a.ownerId===h.id).length>=spec.maximumActiveHounds)return false;{const base={...HOUND,hp:spec.houndHealth,damage:spec.houndDamage,speed:spec.houndAttackSpeed,walk:spec.houndWalkSpeed};spawnSummon(base,h.x+.65,h.y+.4,'hound',spec.houndLifetimeSeconds,h.id)}signalSpecial(h,'Summon Hound');break;
  case 'dragonkin':if(!enemy)return false;{const dx=enemy.x-h.x,dy=enemy.y-h.y,len=Math.max(.01,Math.hypot(dx,dy));let hits=0;for(const e of state.enemies){if(e.hp<=0)continue;const ex=e.x-h.x,ey=e.y-h.y,dist=Math.hypot(ex,ey),dot=(ex*dx+ey*dy)/(dist*len||1);if(dist<=spec.breathRange&&dot>=Math.cos(spec.breathConeDegrees*Math.PI/360)){hitEnemy(e,spec.breathDamage,'#ffae76',h.base.id);hits++}}if(!hits)return false;visualRing(h.x,h.y,spec.breathRange,'#ff905b')}signalSpecial(h,'Dragon Breath');break;
  default:return false;
@@ -174,11 +191,12 @@ function stepSanctuaries(dt){
  const heals=new Map();state.sanctuaries=state.sanctuaries.filter(z=>z.expires>state.elapsed&&state.heroes.some(h=>h.id===z.ownerId&&h.hp>0));
  for(const zone of state.sanctuaries){const owner=state.heroes.find(h=>h.id===zone.ownerId&&h.hp>0);if(!owner)continue;const spec=cfg(owner).special;const tick=Math.max(.04,spec.sanctuaryTickIntervalSeconds);zone.clock+=dt;const ticks=Math.floor(zone.clock/tick);if(!ticks)continue;zone.clock-=ticks*tick;
    for(const h of state.heroes){if(h.hp<=0||h.hp>=h.maxHp||(h===owner&&!spec.sanctuarySelfHealingAllowed))continue;if(Math.hypot(h.x-owner.x,h.y-owner.y)>zone.radius)continue;heals.set(h,Math.max(heals.get(h)||0,spec.sanctuaryHealPerSecond*tick*ticks));}}
- for(const [hero,amount] of heals)hero.hp=Math.min(hero.maxHp,hero.hp+amount);
+ for(const [hero,amount] of heals)healHero(hero,amount);
 }
 function stepSpecials(h,dt){const spec=cfg(h)?.special;if(!spec||spec.trigger!=='autoCharge')return;h.charge=Math.min(chargeSeconds(h),h.charge+dt*(SKILLS?SKILLS.rate(h):1));if(h.charge>=chargeSeconds(h)){h.abilityStatus='ready';if(castSpecial(h)){h.charge=0;h.abilityStatus='charging'}}}
 // Every qualified enemy kill raises one undead if at least one living Necromancer exists.
 function onEnemyDeath(e){
+ if(owns('O-1-MG-A5')&&!e.noBurnDeathProc)for(const a of e.treeStatuses||[]){if(a.kind!=='burn'||a.heroId!=='mage'||a.remaining<=0)continue;const h=state.heroes.find(h=>h.id===a.owner&&h.hp>0);if(h)for(const other of enemiesInRadius(e.x,e.y,1.4))if(other!==e){hitEnemy(other,h.base.damage*.5,h.base.color,h.base.id,h.id);if(other.hp<=0)other.noBurnDeathProc=true}}
  if(SKILLFX)SKILLFX.enemyDeath(e);
  if(e.boss||e.generated)return;
  if(e.stage===2&&e.scheduled&&!e.elite){
@@ -188,9 +206,9 @@ function onEnemyDeath(e){
 
 function basicAttack(h,target){if(target.hp<=0)return;const id=h.base.id,d=h.base.damage*(SKILLS?SKILLS.heroBonus(h,target):1),col=h.base.color;if(id!=='necromancer')visualBeam(h,target,col);h.cooldown=1/h.base.speed;
  switch(id){
-  case 'knight':hitEnemy(target,d,col,id);break;
-  case 'archer':hitEnemy(target,d,col,id);break;
-  case 'mage':{const radius=1.4*(SKILLS?.rangeBonus('mage')||1);hitEnemy(target,d,col,id);for(const e of enemiesInRadius(target.x,target.y,radius))if(e!==target)hitEnemy(e,(SKILLS?SKILLS.mageSplashDamage():d)*.42,col,id);visualRing(target.x,target.y,radius,'#f7b961');break;}
+  case 'knight':{const bonus=h.bashStrikes>0?1.5:1;if(h.bashStrikes>0)h.bashStrikes--;hitEnemy(target,d*bonus,col,id,h.id);break}
+  case 'archer':{const crit=critChance()>0&&Math.random()<critChance();hitEnemy(target,d*(crit?2:1),col,id,h.id);if(crit&&owns('O-1-A-A5'))grantCharge(h,.10);break}
+  case 'mage':{const radius=1.4*(owns('O-1-MG-A3')?1.4:1),direct=d*(owns('O-1-MG-A4')&&burning(target)?1.5:1),splash=(SKILLS?SKILLS.mageSplashDamage():d)*.42;const targets=enemiesInRadius(target.x,target.y,radius);if(owns('O-1-MG-A2'))applyStatus(target,h,'burn',direct*.25,3);hitEnemy(target,direct,col,id,h.id);for(const e of targets)if(e!==target){if(owns('O-1-MG-A2'))applyStatus(e,h,'burn',splash*.25,3);hitEnemy(e,splash,col,id,h.id)}visualRing(target.x,target.y,radius,'#f7b961');break;}
   case 'hunter':hitEnemy(target,d,col,id);target.bleed={time:2.4*(SKILLS?.has('T2-H-S04')?1.4:1),tick:.6,damage:2,sourceHeroId:id};break;
   case 'barbarian':{const ax=target.x-h.x,ay=target.y-h.y;for(const e of enemiesInRadius(h.x,h.y,1.8)){const vx=e.x-h.x,vy=e.y-h.y,dot=(ax*vx+ay*vy)/(Math.hypot(ax,ay)*Math.hypot(vx,vy)||1);if(dot>=(SKILLS?.has('T2-B-T04')&&h.frenzyUntil>state.elapsed?-1:SKILLS?.has('T2-B-S04')?.20:.35))hitEnemy(e,e===target?d:d*.55,col,id)}visualRing(h.x,h.y,1.8,'#f4b195');break}
   case 'rogue':h.combo=(h.combo+1)%2;hitEnemy(target,d,col,id);addEffect({kind:'bolt',x1:h.x+(h.combo?-.25:.25),y1:h.y,x2:target.x,y2:target.y,color:'#e4daff',life:.13,maxLife:.13});break;
@@ -207,6 +225,7 @@ function basicAttack(h,target){if(target.hp<=0)return;const id=h.base.id,d=h.bas
  if(SKILLFX)SKILLFX.afterBasic(h,target,d,false);
 }
 function tickAttackEffects(dt){
+ for(const e of state.enemies){if(e.hp<=0)continue;for(const a of e.treeStatuses||[]){if(a.remaining<=0)continue;const active=Math.min(dt,a.remaining);a.remaining-=active;a.tick-=active;if(a.tick<=1e-8||a.remaining<=1e-8){const elapsed=.25-a.tick;hitEnemy(e,a.dps*elapsed,'#e9a86a',a.heroId,a.owner);a.tick=.25}}if(e.treeStatuses)e.treeStatuses=e.treeStatuses.filter(a=>a.remaining>1e-8)}
  for(let i=state.pendingHits.length-1;i>=0;i--){const p=state.pendingHits[i];if(p.time>state.elapsed)continue;state.pendingHits.splice(i,1);if(p.target.hp<=0&&SKILLS?.has('T3-PR-T02')&&p.sourceHeroId==='priest'){p.target=enemyNear({x:p.x,y:p.y},4)||p.target;}if(p.target.hp>0){hitEnemy(p.target,p.damage,p.color,p.sourceHeroId);addEffect({kind:'bolt',x1:p.x,y1:p.y,x2:p.target.x,y2:p.target.y,color:p.color,life:.08,maxLife:.08})}}
  for(const e of state.enemies){if(e.hp<=0)continue;if(e.bleed){e.bleed.time-=dt;e.bleed.tick-=dt;if(e.bleed.tick<=0){e.bleed.tick+=.6;hitEnemy(e,e.bleed.damage,'#ff9d96',e.bleed.sourceHeroId)}if(e.bleed.time<=0)e.bleed=null}}
  for(let i=state.hazards.length-1;i>=0;i--){const p=state.hazards[i];p.life-=dt;p.clock+=dt;if(p.clock>=.65){p.clock-=.65;for(const e of enemiesInRadius(p.x,p.y,p.radius)){hitEnemy(e,p.damage,p.color,p.sourceHeroId)}}if(p.life<=0)state.hazards.splice(i,1)}
@@ -397,7 +416,7 @@ function step(dt){if(state.mode!=='battle'||state.paused)return;
    e.phase++;
    const next=BALANCE.stages[9].boss.phases[e.phase-1];
    e.hp=e.maxHp=next.hp;e.damage=next.damage;e.speed=next.speed;e.attackPeriod=next.attackPeriod;
-   e.hitFlash=.5;e.cooldown=.5;e.lastHitHero=null;
+   e.hitFlash=.5;e.cooldown=.5;e.lastHitHero=null;e.lastHitOwner=null;e.treeStatuses=[];e.noBurnDeathProc=false;
    visualRing(e.x,e.y,2+e.phase*.45,'#d18fff');
    log('Eldritch Horror reborn — Phase '+e.phase+' of 3!');
    continue;
