@@ -26,7 +26,7 @@ function install(){
  const stall=E('div','fw-merchant-art'),merchantArt=canvas(96,116,'fw-pixel-background');art.merchant(merchantArt);stall.append(merchantArt,E('p',null,'“Stock is limited, traveller. Choose wisely.”'));merchantHeader.prepend(btn('‹ Map',()=>choosePage('map')));shop.append(merchantHeader,stall,merchant,prepSpells,encounter,pool);
  dev.append(btn('‹ Map',()=>choosePage('map')),test,quest,tree,log);
  const deployment=E('div','fw-live-deployment');deployment.hidden=true;deployment.setAttribute('role','status');$('arena').parentElement.append(deployment);
- const battleControls=$('liveBattleControls'),abandon=$('abandonButton'),speed=btn('1×',()=>{ui.speed?.();speed.textContent=(live.playbackSpeed||1)+'×'});abandon.addEventListener('click',()=>ui.abandon?.());battleControls.prepend(speed);const hud=E('div','fw-pixel-hud'),hp=E('b'),earned=E('b'),meter=E('progress');meter.max=100;hud.append(hp,meter,earned);field.prepend(hud);
+ const battleControls=$('liveBattleControls'),abandon=$('abandonButton'),speed=btn('1×',()=>{ui.changeSpeed?.();speed.textContent=(live.playbackSpeed||1)+'×'});abandon.addEventListener('click',()=>ui.abandon?.());battleControls.prepend(speed);const hud=E('div','fw-pixel-hud'),hp=E('b'),earned=E('b'),meter=E('progress');meter.max=100;hud.append(hp,meter,earned);field.prepend(hud);
  const roster=E('div','fw-live-roster'),portrait=E('div','fw-live-portrait'),rosterButtons=E('div','fw-live-roster-buttons'),glyph=canvas(72,96,'fw-portrait-art'),heroName=E('h3'),heroDetail=E('p'),health=E('progress'),rescue=btn('Rescue',()=>{if(selected!=null)ui.press?.(selected)});
  health.max=100;health.value=0;portrait.append(glyph,heroName,heroDetail,health,rescue);roster.append(E('small','fw-portrait-heading','HERO INSPECTION'),portrait,rosterButtons);
  const formation=$('formation');roster.append(formation);roster.append($('formationCount'));side.append(roster);
@@ -75,7 +75,7 @@ function paint(){
  if(!combat&&live.testMode&&screen==='shop')ui.shop.append(ui.test);else if(ui.test.parentElement!==ui.dev)ui.dev.prepend(ui.test);
 }
 function sync(state,press,abandon,newGame,view,resume,speed){
- live=state;ui.press=press;ui.abandon=abandon;ui.newGame=newGame;ui.view=view;ui.resume=resume;ui.speed=speed;if(!installed&&!install())return;
+ live=state;ui.press=press;ui.abandon=abandon;ui.newGame=newGame;ui.view=view;ui.resume=resume;ui.changeSpeed=speed;if(!installed&&!install())return;
  if(previousMode&&previousMode!=='prep'&&state.mode==='prep'){screen=previousMode==='clear'||previousMode==='champion'?'map':'shop';selected=null;lastCapture=null;window.scrollTo?.(0,0)}
  const began=state.mode==='battle'&&previousMode!=='battle';previousMode=state.mode;paint();
  if(began){window.scrollTo?.(0,0);if(!state.testMode)deal(state)}
