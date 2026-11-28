@@ -26,3 +26,30 @@ a.get('stageButton').fire('click');s=a.window.__FW_DEMO__.snapshot();assert(s.mo
 a=boot();s=a.window.__FW_DEMO__.snapshot();assert(s.mode==='prep'&&s.bought===0&&JSON.stringify(s.merchant.pity)===pity&&s.skillTree.packOpens[0]===1,'committed attempt not duplicated');
 const b=boot(true),api=b.window.__FW_LAB_API__;api.prepare();api.queueHero('knight',2);api.start();b.window.__FW_TEST__.advance(10);const snap=api.snapshot();assert(Number.isFinite(snap.elapsed)&&snap.elapsed>0,'actual combat step');
 console.log('Mock DOM integration: 8 checks passed; real core stepped '+snap.elapsed.toFixed(2)+' seconds.');
+
+const tree=b.window.FW_SKILL_DATA,S=tree.supported;
+assert.equal(tree.ordinary.length,228);assert.equal(tree.legacy.length,120);
+assert.equal(new Set([...tree.ordinary,...tree.legacy].map(n=>n.id)).size,348);
+const key='fantasy-warriors-lab-skilltree-1.1';
+storage.set(key,JSON.stringify({treeSchema:2,up:10000,shards:10000,resets:5,runHighest:10,highestClear:10,runWins:10,campaignStage:1,gateways:[2,3,4,5],kills:Object.fromEntries(tree.heroes.map(id=>[id,10000])),nodes:[],legacyNodes:[],merchantPity:[0,0,0,0,0]}));
+const c=boot(true),sk=c.window.FWSkillTree,lab=c.window.__FW_LAB_API__;
+let bought=0;
+for(let j=0;j<348;j++){let count=0;for(const n of [...tree.legacy,...tree.ordinary])if(sk.purchase(n.id)){count++;bought++}if(!count)break;}
+const state=sk.debug();
+assert.equal(state.nodes.length+state.legacyNodes.length,bought);
+assert(bought>=329,'Unexpected loss of reachable upgrade effects');
+assert.equal(sk.purchase('O-1-K-A1'),false,'Duplicate purchase');
+assert.equal(sk.tower().pierce,1);assert.equal(sk.tower().twin,.6);
+assert.equal(c.window.__FW_DEMO__.snapshot().coinMax,40);
+for(const n of [...tree.ordinary,...tree.legacy])if(!S[n.id])assert.equal(sk.purchase(n.id),false,'Pending node must not be purchasable');
+lab.prepare();for(const id of tree.heroes)lab.queueHero(id,2);
+lab.start();c.window.__FW_TEST__.advance(60);
+const combat=lab.snapshot();assert(Number.isFinite(combat.towerHP)&&Number.isFinite(combat.elapsed),'Finite all-hero combat');
+console.log('Tree: '+bought+' reachable purchases; all-hero battle ran '+combat.elapsed.toFixed(2)+' seconds.');
+const old={up:9,shards:2,resets:3,runHighest:2,highestClear:3,runWins:2,campaignStage:3,nodes:['T1-G01'],purchaseCosts:{'T1-G01':3},legacy:{vitality:2,merchant:1},kills:{knight:7},gateways:[2],merchantPity:[2,0,0,0,0]};
+storage.set(key,JSON.stringify(old));
+const migrated=boot(true).window.FWSkillTree.debug();
+assert(migrated.treeSchema===2&&migrated.up===12&&migrated.shards===8,'Migration balances');
+assert.equal(migrated.kills.knight,7);
+assert.equal(boot(true).window.FWSkillTree.debug().up,migrated.up,'Migration refund must not repeat');
+console.log('Schema migration and refund checks passed.');
