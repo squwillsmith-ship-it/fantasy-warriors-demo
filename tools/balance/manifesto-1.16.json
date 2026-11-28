@@ -1935,14 +1935,14 @@
         "name": "Razor Daggers",
         "cost": 3,
         "prerequisites": "T2-R-GATE",
-        "effect": "+45% basic damage."
+        "effect": "+60% basic damage."
       },
       {
         "id": "O-2-R-A2",
         "name": "Poisoned Steel",
         "cost": 3,
         "prerequisites": "O-2-R-A1",
-        "effect": "Each dagger hit applies poison equal to 20% basic damage over 3s, initially max 3 stacks per owner per enemy."
+        "effect": "Each dagger hit applies poison equal to 35% basic damage over 4s, initially max 3 stacks per owner per enemy."
       },
       {
         "id": "O-2-R-A3",
@@ -1954,14 +1954,14 @@
       {
         "id": "O-2-R-A4",
         "name": "Potent Venom",
-        "cost": 5,
+        "cost": 4,
         "prerequisites": "O-2-R-A3",
         "effect": "Poison cap increases from 3 to 6."
       },
       {
         "id": "O-2-R-A5",
         "name": "Toxic Overload",
-        "cost": 6,
+        "cost": 5,
         "prerequisites": "O-2-R-A4",
         "effect": "Dagger hit on enemy already at six own stacks consumes them and deals their remaining poison damage +50% immediately."
       },
@@ -2047,14 +2047,14 @@
         "name": "Stronger Aegis",
         "cost": 4,
         "prerequisites": "O-3-P-B1",
-        "effect": "+50% shield absorption."
+        "effect": "+35% shield absorption."
       },
       {
         "id": "O-3-P-B3",
         "name": "Sacred Restoration",
         "cost": 5,
         "prerequisites": "O-3-P-B2",
-        "effect": "Aegis additionally heals recipients 10% of their max HP."
+        "effect": "Aegis additionally heals recipients 7.5% of their max HP."
       },
       {
         "id": "O-3-P-B4",
@@ -2180,21 +2180,21 @@
         "name": "Hallowed Vitality",
         "cost": 4,
         "prerequisites": "T3-PR-GATE",
-        "effect": "+40% max HP."
+        "effect": "+60% max HP."
       },
       {
         "id": "O-3-PR-B2",
         "name": "Greater Courage",
         "cost": 4,
         "prerequisites": "O-3-PR-B1",
-        "effect": "+50% of base Blessing damage bonus."
+        "effect": "+75% of base Blessing damage bonus."
       },
       {
         "id": "O-3-PR-B3",
         "name": "Enduring Faith",
         "cost": 5,
         "prerequisites": "O-3-PR-B2",
-        "effect": "+40% Blessing duration."
+        "effect": "+60% Blessing duration."
       },
       {
         "id": "O-3-PR-B4",
@@ -2206,7 +2206,7 @@
       {
         "id": "O-3-PR-B5",
         "name": "Divine Ascension",
-        "cost": 8,
+        "cost": 6,
         "prerequisites": "O-3-PR-B4",
         "effect": "Blessed heroes gain 10 percentage points timed special charge after every third personal qualifying kill."
       },
@@ -2320,35 +2320,35 @@
         "name": "Ironwood Skin",
         "cost": 5,
         "prerequisites": "T4-D-GATE",
-        "effect": "+50% max HP in both forms."
+        "effect": "+75% max HP in both forms."
       },
       {
         "id": "O-4-D-B2",
         "name": "Savage Claws",
         "cost": 5,
         "prerequisites": "O-4-D-B1",
-        "effect": "+50% Bear Form basic damage."
+        "effect": "+100% Bear Form basic damage."
       },
       {
         "id": "O-4-D-B3",
         "name": "Primal Endurance",
-        "cost": 6,
+        "cost": 5,
         "prerequisites": "O-4-D-B2",
         "effect": "+40% Bear Form duration."
       },
       {
         "id": "O-4-D-B4",
         "name": "Predator's Fury",
-        "cost": 8,
+        "cost": 7,
         "prerequisites": "O-4-D-B3",
-        "effect": "Bear claws heal 15% actual damage dealt."
+        "effect": "Bear claws heal 25% actual damage dealt."
       },
       {
         "id": "O-4-D-B5",
         "name": "Ancient Guardian",
-        "cost": 10,
+        "cost": 8,
         "prerequisites": "O-4-D-B4",
-        "effect": "Bear Form grants 30% damage reduction and releases Vine Wave every third claw attack; benefits from purchased nature upgrades but cannot create extra waves or charge transformation."
+        "effect": "Bear Form grants 40% damage reduction and releases Vine Wave every third claw attack; benefits from purchased nature upgrades but cannot create extra waves or charge transformation."
       },
       {
         "id": "O-4-W-A1",
@@ -2530,33 +2530,33 @@
         "name": "Reinforced Bones",
         "cost": 6,
         "prerequisites": "T5-NE-GATE",
-        "effect": "+50% undead max HP."
+        "effect": "+75% undead max HP."
       },
       {
         "id": "O-5-NE-B2",
         "name": "Grave Weapons",
         "cost": 6,
         "prerequisites": "O-5-NE-B1",
-        "effect": "+50% undead basic damage."
+        "effect": "+75% undead basic damage."
       },
       {
         "id": "O-5-NE-B3",
         "name": "Eternal Servants",
         "cost": 8,
         "prerequisites": "O-5-NE-B2",
-        "effect": "+50% undead lifetime."
+        "effect": "+75% undead lifetime."
       },
       {
         "id": "O-5-NE-B4",
         "name": "Death Knight",
-        "cost": 9,
+        "cost": 8,
         "prerequisites": "O-5-NE-B3",
         "effect": "Every fifth qualifying summon is Death Knight instead, additional +100% base HP and damage; uses normal summon slot."
       },
       {
         "id": "O-5-NE-B5",
         "name": "Undead Legion",
-        "cost": 10,
+        "cost": 9,
         "prerequisites": "O-5-NE-B4",
         "effect": "Maximum active undead +50% rounded up; +25% undead attack rate."
       },
@@ -3887,7 +3887,8 @@
       "CAMPAIGN-PROGRESSION-001 — Every resolved normal campaign or Endless battle must provide at least 2 earned UP, even on zero-kill defeat. Top up only the shortfall after normal rewards and outcome bonuses; do not add a flat reward. Existing kill, class, prestige and boss rewards unchanged. Show total and any included top-up in battle report; no award on abandon/reload/debug or duplicate outcome. Frequent failures are intentional; prioritize meaningful progress toward upgrades rather than win rate. Target 1–3 purchases per attempt on average, with saving toward expensive tiles allowed.",
       "CAMPAIGN-PACING-002 — Supersedes six-kill cadence and +1 elite UP: cumulative 8 scheduled kills yield 1 UP; eligible elites add 0.5 UP before existing income modifiers. Carry remainder through attempts and mode changes, reset on prestige. Boss 5 UP, faction, class, mutation and minimum 2 UP rules retained. Prioritize progress on defeats, not win rate. Selected from two complete five-prestige engine campaigns; slower ten-kill alternative did not improve purchase pacing on the paired seed.",
       "CAMPAIGN-PACING-003 — Ordinary scheduled-kill and elite UP base rewards scale by completed prestige: P0–3 x1, P4 x0.8, P5+ x0.65, including Endless. Existing earned income multipliers apply after scaling, class and knowledge bonus UP, boss UP, faction UP, mutation Shards and minimum 2 UP unchanged. Selected to curb later upgrade floods without reducing enemy difficulty. Radius-aware tower pathing and actual perimeter contact resolve navigation deadlocks without changing approved hero targeting upgrades or immunity rules.",
-      "COMBAT-BAL-HERO-004 — Supersedes earlier base hero stats and relevant special parameters. Adopt explicit hero stat changes: {\"knight\":{\"hp\":43,\"damage\":5.2},\"archer\":{\"damage\":2.5,\"speed\":0.6},\"mage\":{\"damage\":4.2},\"hunter\":{\"damage\":4.6},\"barbarian\":{\"hp\":55,\"damage\":8.5},\"rogue\":{\"hp\":34,\"damage\":3,\"speed\":2.1},\"paladin\":{\"hp\":70,\"damage\":7.6},\"nun\":{\"hp\":46,\"damage\":5.8},\"beastmaster\":{\"hp\":42},\"dragonkin\":{\"hp\":108,\"damage\":16,\"speed\":0.48}}. Archer Arrow Volley max 3 targets, 3.2 base damage, radius 1.35; Dragonkin Dragon Breath base damage 21. Preserve class identity, prices, ability names and other mechanics. Target pooled ranged/melee final-blow rate advantage about 2–3x maximum; do not treat kill counts as full support or defensive value. Two active campaigns completed at prestige 5 with no zero-progression completed attempts. Further final-patch and controlled role validation required."
+      "COMBAT-BAL-HERO-004 — Supersedes earlier base hero stats and relevant special parameters. Adopt explicit hero stat changes: {\"knight\":{\"hp\":43,\"damage\":5.2},\"archer\":{\"damage\":2.5,\"speed\":0.6},\"mage\":{\"damage\":4.2},\"hunter\":{\"damage\":4.6},\"barbarian\":{\"hp\":55,\"damage\":8.5},\"rogue\":{\"hp\":34,\"damage\":3,\"speed\":2.1},\"paladin\":{\"hp\":70,\"damage\":7.6},\"nun\":{\"hp\":46,\"damage\":5.8},\"beastmaster\":{\"hp\":42},\"dragonkin\":{\"hp\":108,\"damage\":16,\"speed\":0.48}}. Archer Arrow Volley max 3 targets, 3.2 base damage, radius 1.35; Dragonkin Dragon Breath base damage 21. Preserve class identity, prices, ability names and other mechanics. Target pooled ranged/melee final-blow rate advantage about 2–3x maximum; do not treat kill counts as full support or defensive value. Two active campaigns completed at prestige 5 with no zero-progression completed attempts. Further final-patch and controlled role validation required.",
+      "SKILL-BAL-005 — Targeted branch tuning supersedes prior ordinary node values. Rogue Razor Daggers +60% damage, Poisoned Steel 35% over 4s; Potent Venom 4 UP and Toxic Overload 5 UP. Paladin Aegis absorption +35%, heal 7.5%. Priest Hallowed Vitality +60% HP, Greater Courage +75% of base bonus, Enduring Faith +60% duration, Divine Ascension 6 UP. Druid Ironwood Skin +75% HP, Savage Claws +100% bear damage, Primal Endurance 5 UP, Predator's Fury 25% actual damage lifesteal for 7 UP, Ancient Guardian 40% reduction for 8 UP. Necromancer Reinforced Bones, Grave Weapons and Eternal Servants +75%, Death Knight 8 UP and Undead Legion 9 UP. Alpha and Death Knight extra +100% use unmodified summon base stats (additive, no double scaling); Frugal Victory applies only to main-stage wins. Candidate tested on two matched seeds for five focal heroes. All 348 purchase paths retained; no changes to permanent tree topology or progression floor."
     ]
   }
 }
