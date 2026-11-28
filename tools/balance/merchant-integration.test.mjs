@@ -108,3 +108,26 @@ assert.equal(ns.debug().kills.knight,1,'faction does not grant class credit');
 ns.stealCoin();ns.stealCoin();assert.equal(ns.applyTheft('test-shop',3,2),1);assert.equal(ns.applyTheft('test-shop',3,2),1);assert.equal(ns.applyTheft('other-shop',3,2),0);
 const recovered=boot(false).window.FWSkillTree;assert.equal(recovered.shards(),2);assert.equal(recovered.debug().kills.knight,1);
 console.log('Persistent mutation/faction rewards, duplicate prevention, class credit and theft floor passed.');
+
+storage.clear();
+storage.set(normalKey,JSON.stringify({treeSchema:2,up:10,shards:10,resets:3,campaignStage:1,runHighest:1,highestClear:1,runWins:1,discoveredHeroes:['knight'],nodes:[],legacyNodes:[],ownedSkins:['knight:epic','knight:azure'],skinDuplicateStreak:0}));
+const oldRandom=Math.random;
+try{
+ Math.random=()=>0;
+ const x=boot(false),xs=x.window.FWSkillTree;
+ assert.equal(xs.skinCollection().owned,2);assert.equal(xs.skinCollection().eligible,4);
+ for(let i=0;i<3;i++){assert(xs.buySkinBox().duplicate);assert.equal(xs.shards(),(1000-95*(i+1))/100)}
+ assert.equal(xs.debug().skinDuplicateStreak,3);
+ const y=boot(false),ys=y.window.FWSkillTree;
+ assert.equal(ys.debug().skinDuplicateStreak,3);
+ const newSkin=ys.buySkinBox();assert(!newSkin.duplicate);assert.equal(newSkin.skin.id,'knight:ember');assert.equal(ys.shards(),6.15);
+ assert(ys.prestige());assert.equal(ys.debug().resets,4);assert.equal(ys.shards(),7.15);assert.equal(ys.skinCollection().owned,3);
+ const z=boot(false),zs=z.window.FWSkillTree;assert.equal(zs.skinCollection().owned,3);assert.equal(zs.shards(),7.15);
+ // Deterministic test selection of the owned Epic appearance, while still running normal merchant deployment.
+ z.window.FWSkillTree.drawSkin=id=>z.window.FWSkins.draw(z.window.FWMerchant.data.heroes,id,zs.debug().ownedSkins,()=>.99);
+ z.get('buyButton').fire('click');z.get('stageButton').fire('click');
+ const unit=z.window.__FW_DEMO__.snapshot().heroes[0];assert.equal(unit.name,'Knight');assert.equal(unit.skinRarity,'Epic');assert.equal(unit.skinMultiplier,1.5);assert.equal(unit.maxHp,19*1.5);assert(Math.abs(unit.damage-3.2*1.5)<1e-8);
+ assert.equal(unit.rarity,'Common');
+ assert.equal(zs.buySkinBox(),false,'no purchases during combat');
+ console.log('Skin collection integration: exact refunds, persisted protection, prestige preservation and Epic unit deployment passed.');
+}finally{Math.random=oldRandom}
