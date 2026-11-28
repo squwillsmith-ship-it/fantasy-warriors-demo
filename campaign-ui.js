@@ -2,7 +2,7 @@
 (function(){'use strict';
 const $=id=>document.getElementById(id), E=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e};
 let installed=false,screen='menu',previousMode=null,live=null,ui={},selected=null,lastCapture=null,rosterKey='',mapKey='';
-const art=window.FWPrototypeArt;const icons=['●','♣','⚑','◆','▲','✚','✶','☾','◈','✺'];let portraitKey='',dealTimer=null,dealGeneration=0,showcaseQueue=[],knownBefore=new Set(),seenAppearances=new Set();try{seenAppearances=new Set(JSON.parse(localStorage.getItem('fw-ui-seen-appearances')||'[]'))}catch{}
+const art=window.FWPrototypeArt;const icons=['●','♣','⚑','◆','▲','✚','✶','☾','◈','✺'];let sealed=false,portraitKey='',dealTimer=null,dealGeneration=0,showcaseQueue=[],knownBefore=new Set(),seenAppearances=new Set();try{seenAppearances=new Set(JSON.parse(localStorage.getItem('fw-ui-seen-appearances')||'[]'))}catch{}
 function canvas(w,h,cls){const x=E('canvas',cls);x.width=w;x.height=h;x.setAttribute('aria-hidden','true');return x}
 const active=s=>s&&s.mode!=='prep';
 function choosePage(page){
@@ -79,16 +79,16 @@ function sync(state,press,abandon,newGame,view,resume,speed){
  if(previousMode&&previousMode!=='prep'&&state.mode==='prep'){screen=previousMode==='clear'||previousMode==='champion'?'map':'shop';selected=null;lastCapture=null;window.scrollTo?.(0,0)}
  const began=state.mode==='battle'&&previousMode!=='battle';previousMode=state.mode;paint();
  if(began){window.scrollTo?.(0,0);if(!state.testMode)deal(state)}
- else if(state.mode!=='battle'){clearTimeout(dealTimer);dealGeneration++;ui.deployment.hidden=true;ui.shell.classList.remove('fw-dealing')}
+ else if(state.mode!=='battle'){clearTimeout(dealTimer);dealGeneration++;sealed=false;ui.deployment.hidden=true;ui.shell.classList.remove('fw-dealing')}
 }
 function deal(state){
  const generation=++dealGeneration,heroes=state.heroes.filter(h=>!h.summonKind);if(!heroes.length)return;
- state.paused=true;ui.shell.classList.add('fw-dealing');ui.deployment.hidden=false;ui.deployment.replaceChildren();
+ state.paused=true;sealed=true;ui.shell.classList.add('fw-dealing');ui.deployment.hidden=false;ui.deployment.replaceChildren();
  const v=ui.view;for(const h of heroes){const pack=E('div','fw-field-pack','✦');pack.style.left=(50+h.x/v.worldW*100)+'%';pack.style.top=(50+h.y/v.worldH*100)+'%';pack.style.setProperty('--rar',h.skin?.trim||h.base.color);ui.deployment.append(pack)}
  const novel=[];for(const h of heroes){const k=h.base.id+':'+(h.skin?.id||'base');if(!knownBefore.has(h.base.id)||h.skin?.key!=='default'&&!seenAppearances.has(k)){novel.push(h);knownBefore.add(h.base.id)}seenAppearances.add(k)}
  try{localStorage.setItem('fw-ui-seen-appearances',JSON.stringify([...seenAppearances]))}catch{}
  const finish=()=>{if(generation!==dealGeneration||live.mode!=='battle')return;ui.deployment.hidden=true;ui.shell.classList.remove('fw-dealing');ui.resume?.()};
- const reveal=()=>{if(generation!==dealGeneration||live.mode!=='battle')return;ui.deployment.replaceChildren(...heroes.map(h=>{const x=E('div','fw-field-burst','✦');x.style.left=(50+h.x/v.worldW*100)+'%';x.style.top=(50+h.y/v.worldH*100)+'%';x.style.color=h.skin?.trim||h.base.color;return x}));dealTimer=setTimeout(()=>{if(generation!==dealGeneration)return;if(!novel.length){finish();return}showcase(novel,finish,generation)},450)};
+ const reveal=()=>{if(generation!==dealGeneration||live.mode!=='battle')return;sealed=false;ui.deployment.replaceChildren(...heroes.map(h=>{const x=E('div','fw-field-burst','✦');x.style.left=(50+h.x/v.worldW*100)+'%';x.style.top=(50+h.y/v.worldH*100)+'%';x.style.color=h.skin?.trim||h.base.color;return x}));dealTimer=setTimeout(()=>{if(generation!==dealGeneration)return;if(!novel.length){finish();return}showcase(novel,finish,generation)},450)};
  dealTimer=setTimeout(reveal,1200);
 }
 function showcase(novel,finish,generation){
@@ -102,5 +102,5 @@ function beforeDeploy(){knownBefore=new Set(window.FWSkillTree.debug().discovere
 function inspect(id){if(!live||live.mode!=='battle'||id==null)return;if(selected!==id){selected=id;rosterKey='';renderRoster()}}
 function prepareField(){if(!installed)return;ui.layout.hidden=false;ui.side.hidden=false;ui.shell.classList.add('fw-combat');ui.shell.dataset.screen='battle';}
 function resetAppearanceHistory(){seenAppearances.clear();try{localStorage.removeItem('fw-ui-seen-appearances')}catch{}}
-window.FWCampaignUI={sync,prepareField,inspect,beforeDeploy,resetAppearanceHistory};
+window.FWCampaignUI={sync,prepareField,inspect,beforeDeploy,resetAppearanceHistory,isDealing:()=>!!ui.shell?.classList.contains('fw-dealing'),isPackSealed:()=>sealed};
 })();
