@@ -14,7 +14,7 @@ const dataset={
       "status": "live",
       "manifestoVersion": "1.16.0",
       "lastReviewed": "2026-11-28",
-      "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required.",
+      "notes": "Development campaign balance round 2: measured melee survivability, tower and Stage 4 adjustments. Further testing required. Reward pacing: 8 scheduled kills per UP; +0.5 elite UP.",
       "heroes": [
         {
           "id": "knight",
@@ -592,9 +592,9 @@ const dataset={
         "minionUPChance": 0.1,
         "bossUP": 5,
         "startingTowerHP": 100,
-        "minionUPMode": "deterministic-six",
-        "eligibleKillsPerUP": 6,
-        "eliteKillUP": 1
+        "minionUPMode": "deterministic-eight",
+        "eligibleKillsPerUP": 8,
+        "eliteKillUP": 0.5
       },
       "skill": {
         "costs": {
@@ -2362,7 +2362,8 @@ function validate(profile){
  }
  for(const key of ['damage','cooldownSeconds','projectileSpeed','projectileRadius'])finite(profile.towerFire?.[key],.01,10000,'towerFire.'+key);
  finite(profile.economy.eligibleKillsPerUP,1,1000,'UP cadence');
- if(profile.economy.minionUPMode!=='deterministic-six')error('UP mode');
+ if(!Number.isInteger(profile.economy.eligibleKillsPerUP)||!['deterministic-six','deterministic-eight'].includes(profile.economy.minionUPMode))error('UP mode');
+ finite(profile.economy.eliteKillUP,0,1000,'elite UP');
  for(const key of ['openingFraction','middleEndFraction','openingStart','openingEnd','middleEnd','finalInterval'])finite(profile.spawn.wavePhases?.[key],.01,30,'wave.'+key);
  if(!profile.eliteSchedule||profile.eliteSchedule.liveCaps?.length!==10)error('elite schedule');
  return true;
