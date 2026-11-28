@@ -29,7 +29,8 @@ function install(){
  const battleControls=$('liveBattleControls'),abandon=$('abandonButton'),speed=btn('1×',()=>{ui.changeSpeed?.();speed.textContent=(live.playbackSpeed||1)+'×'});abandon.addEventListener('click',()=>ui.abandon?.());battleControls.prepend(speed);const hud=E('div','fw-pixel-hud'),hp=E('b'),earned=E('b'),meter=E('progress');meter.max=100;hud.append(hp,meter,earned);field.prepend(hud);
  const roster=E('div','fw-live-roster'),portrait=E('div','fw-live-portrait'),rosterButtons=E('div','fw-live-roster-buttons'),glyph=canvas(72,96,'fw-portrait-art'),heroName=E('h3'),heroDetail=E('p'),health=E('progress'),rescue=btn('Rescue',()=>{if(selected!=null)ui.press?.(selected)});
  health.max=100;health.value=0;portrait.append(glyph,heroName,heroDetail,health,rescue);roster.append(E('small','fw-portrait-heading','HERO INSPECTION'),portrait,rosterButtons);
- const formation=$('formation');roster.append(formation);roster.append($('formationCount'));side.append(roster);
+ // Formation summary belongs to the old merchant diagnostics; the live portrait is the combat view.
+ side.append(roster);
  // Keep all original nodes and their listeners; only change where they are presented.
  const battleActions=$('battleActions'),canvasWrap=$('arena').parentElement;
  const buttons={};for(const [page,label] of [['menu','Menu'],['map','Realm'],['shop','Merchant'],['dev','Testing & log']]){buttons[page]=btn(label,()=>choosePage(page));nav.append(buttons[page])}
